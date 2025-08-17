@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+  "-//Checkstyle//DTD SuppressionFilter Configuration 1.0//EN"
+  "https://checkstyle.org/dtds/suppressions_1_0.dtd">
+
+<suppressions>
+  <suppress checks="[a-zA-Z0-9]*" files="[\\/]wsdl[\\/]"/>
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]target[/\\]" />
+  <suppress checks="Javadoc" files="Test"/>
+  <suppress checks="MethodName" files="Test"/>
+  <suppress checks="FileLength" files="ItDocumentSearchService"/>
+  <suppress checks="FileLength" files="GlobalArtistRosterSearchService"/>
+  <suppress checks="FileLength" files="ArtistDocumentSearchService"/>
+  <suppress checks="FileLength" files="ItDocumentSearchResourceIT"/>
+  <suppress checks="FileLength" files="DealTypeReversionSearchResourceIT"/>
+  <suppress checks="FileLength" files="RecordingProjectSearchResourceIT"/>
+  <suppress checks="FileLength" files="ArtistSearchResourceIT"/>
+  <suppress checks="FileLength" files="GlobalArtistRosterSearchResourceIT"/>
+  <suppress checks="FileLength" files="OpenSearchClient"/>
+  <suppress checks="FileLength" files="XlsColumnDescriptorFactory"/>
+  <suppress checks="FileLength" files="ArtistDocumentSearchResourceIT"/>
+</suppressions>
