@@ -30,7 +30,7 @@
   <!-- https://checkstyle.sourceforge.io/config_sizes.html#LineLength -->
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
-    <property name="max" value="160"/>
+    <property name="max" value="180"/>
     <property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://|@PreAuthorize.*"/>
   </module>
 
