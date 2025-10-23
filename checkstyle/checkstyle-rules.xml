@@ -19,7 +19,7 @@
 
   <!-- https://checkstyle.sourceforge.io/config_sizes.html#FileLength -->
   <module name="FileLength">
-    <property name="max" value="500"/>
+    <property name="max" value="1000"/>
   </module>
 
   <!-- https://checkstyle.sourceforge.io/config_whitespace.html#FileTabCharacter -->

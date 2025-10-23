@@ -101,4 +101,38 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  system:
+    domainUrl: http://localhost:8080
+    currencies: HUF, EUR
+    language: en_US, hu_HU
+  nav:
+    url: https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3
+    checkingFrequencyInMillis: 300000
+    header:
+      headerVersion: 1.0
+      requestVersion: 3.0
+    user:
+      login: jixhtgzomd5jw32
+      password: 5B1B3268E8B0555DF15028B2B455EEFD6F6E2B837BA6DE91F5ADAF2DE0669C4BBF97EB5E7DC3749B6D5ACD486706B348D9DCB02F88208E1BD828450535390E76
+      signKey: d5-923f-6e151530a4722O9NPD0WWN2P
+      changeKey: 2e2c2O9NPD0XD5G7
+      taxNumber: 14038905
+    software:
+      softwareId: 968573948510843958
+      softwareName: PCS Online Congressline Software
+      softwareMainVersion: 1.0
+      softwareDevName: developer
+      softwareDevContact: developer@congressline.hu
+      softwareDevCountryCode: HU
+      softwareDevTaxNumber: 14038905
+  payment:
+    gateway:
+      url: https://api.sandbox.khpos.hu/api/v1.0
+      merchantIdForEUR: M199002605
+      merchantIdForHUF: M199002604
+      paymentKeyFilePath: c:/worx/pcs/sign/v2
+      signRequired: true
+      returnUrl: https://pcs-system-test.congressline.hu/api/registration/online/kh/payment/result
+      checkingFrequencyInMillis: 60000
+

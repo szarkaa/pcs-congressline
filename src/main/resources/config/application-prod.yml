@@ -105,6 +105,7 @@ jhipster:
       host: localhost
       port: 5000
       ring-buffer-size: 512
+
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
@@ -114,4 +115,38 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  system:
+    domainUrl: https://pcs-system.congressline.hu
+    currencies: HUF, EUR
+    language: en_US, hu_HU
+  nav:
+    url: https://api.onlineszamla.nav.gov.hu/invoiceService/v3
+    checkingFrequencyInMillis: 60000
+    header:
+      headerVersion: 1.0
+      requestVersion: 3.0
+    user:
+      login: z3rtmlpqbypbqdk
+      password: C71797EA547991451F41775552225882A7D337D563EFA8071B266187F32DEC05A77391BF606A9909C5AE2B84604AA901ABC2AAF80C174F868DDD7F5B1F03AE44
+      signKey: dd-b714-909298c7fd5832A1IQLH0UNV
+      changeKey: 2f9032A1IQLH3DR8
+      taxNumber: 14038905
+    software:
+      softwareId: PCS-SYSTEM-9175261
+      softwareName: PCS Online Congressline Software
+      softwareMainVersion: 1.0
+      softwareDevName: developer
+      softwareDevContact: developer@congressline.hu
+      softwareDevCountryCode: HU
+      softwareDevTaxNumber: 14038905
+  payment:
+    gateway:
+      url: https://api.khpos.hu/api/v1.0
+      merchantIdForEUR: M199002605
+      merchantIdForHUF: M199002604
+      paymentKeyFilePath: /opt/congressline/pcs-system-prod/conf/v2
+      signRequired: true
+      returnUrl: https://pcs-system.congressline.hu/api/registration/online/kh/payment/result
+      checkingFrequencyInMillis: 60000
+
