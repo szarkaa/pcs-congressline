@@ -1,5 +1,7 @@
 package hu.congressline.pcs.domain;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -125,6 +127,30 @@ public class Company implements Serializable {
     @NotNull
     @Column(name = "payment_trx_id", nullable = false)
     private Integer paymentTrxId = 0;
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public String getFullAddress() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getZipCode()).append(" ")
+                .append(getCity()).append(" ")
+                .append(getStreetName()).append(" ")
+                .append(getPublicPlaceCategory()).append(" ")
+                .append(getNumber());
+
+        if (StringUtils.isNotEmpty(getBuilding())) {
+            sb.append(" ").append(getBuilding());
+        }
+        if (StringUtils.isNotEmpty(getStaircase())) {
+            sb.append(" ").append(getStaircase());
+        }
+        if (StringUtils.isNotEmpty(getFloor())) {
+            sb.append(" ").append(getFloor());
+        }
+        if (StringUtils.isNotEmpty(getDoor())) {
+            sb.append(" ").append(getDoor());
+        }
+        return sb.toString();
+    }
 
     @Override
     public boolean equals(Object o) {
