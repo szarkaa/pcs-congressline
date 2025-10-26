@@ -38,6 +38,13 @@ public class CongressService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public Congress findOne(Long id) {
+        log.debug("Request to get Congress : {}", id);
+        return congressRepository.findById(id).orElse(null);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
     public void migrateWorkplaces(Long fromCongressId, Long toCongressId) {
         workplaceService.migrate(fromCongressId, toCongressId);
     }

@@ -1,10 +1,12 @@
 package hu.congressline.pcs.web.rest.vm;
 
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 public class FinancialReportVM extends GeneralReportVM {
 
     private Boolean participantsToPay;

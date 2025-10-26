@@ -48,6 +48,7 @@
         <liquibase-plugin.url/>
         <liquibase-plugin.username/>
         <mapstruct.version>1.6.3</mapstruct.version>
+        <poi.ooxml.version>5.4.1</poi.ooxml.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
@@ -224,6 +225,11 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.ooxml.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
