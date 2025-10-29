@@ -60,10 +60,10 @@ public class DiscountService {
             BigDecimal discountPrice;
             if (amountPercentage != null) {
                 discountPrice = price.multiply(new BigDecimal(amountPercentage).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
-                discountPrice = discountPrice.setScale(scale, BigDecimal.ROUND_HALF_UP);
+                discountPrice = discountPrice.setScale(scale, RoundingMode.HALF_UP);
             } else {
                 discountPrice = new BigDecimal(item.getAmountValue());
-                discountPrice = discountPrice.setScale(scale, BigDecimal.ROUND_HALF_UP);
+                discountPrice = discountPrice.setScale(scale, RoundingMode.HALF_UP);
             }
 
             return price.subtract(discountPrice);
