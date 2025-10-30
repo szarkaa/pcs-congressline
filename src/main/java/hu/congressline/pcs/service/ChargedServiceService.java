@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import hu.congressline.pcs.domain.ChargedService;
 import hu.congressline.pcs.domain.ChargedServiceInvoiceHistory;
@@ -51,9 +52,16 @@ public class ChargedServiceService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public ChargedService findOne(Long id) {
+    public Optional<ChargedService> findById(Long id) {
+        log.debug("Request to find ChargedService : {}", id);
+        return chargedServiceRepository.findById(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public ChargedService getById(Long id) {
         log.debug("Request to get ChargedService : {}", id);
-        return chargedServiceRepository.findById(id).orElse(null);
+        return chargedServiceRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Charged service not found with id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

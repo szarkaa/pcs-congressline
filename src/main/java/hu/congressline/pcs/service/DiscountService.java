@@ -59,7 +59,7 @@ public class DiscountService {
             Integer amountPercentage = item.getAmountPercentage();
             BigDecimal discountPrice;
             if (amountPercentage != null) {
-                discountPrice = price.multiply(new BigDecimal(amountPercentage).divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP));
+                discountPrice = price.multiply(new BigDecimal(amountPercentage).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP));
                 discountPrice = discountPrice.setScale(scale, RoundingMode.HALF_UP);
             } else {
                 discountPrice = new BigDecimal(item.getAmountValue());

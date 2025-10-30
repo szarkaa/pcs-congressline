@@ -1,13 +1,12 @@
 package hu.congressline.pcs.service.dto;
 
-import org.hibernate.validator.constraints.Email;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import hu.congressline.pcs.config.Constants;
 import hu.congressline.pcs.domain.Authority;
 import hu.congressline.pcs.domain.User;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;

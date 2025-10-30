@@ -4,10 +4,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.Workplace;
-import hu.congressline.pcs.repository.CongressRepository;
 import hu.congressline.pcs.repository.RegistrationRepository;
 import hu.congressline.pcs.repository.WorkplaceRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class WorkplaceService {
 
-    private final CongressRepository congressRepository;
     private final WorkplaceRepository workplaceRepository;
     private final RegistrationRepository registrationRepository;
+    private final CongressService congressService;
 
     @SuppressWarnings("MissingJavadocMethod")
     public Workplace save(Workplace workplace) {
@@ -38,9 +38,16 @@ public class WorkplaceService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public Workplace findOne(Long id) {
+    public Optional<Workplace> findById(Long id) {
+        log.debug("Request to find Workplace : {}", id);
+        return workplaceRepository.findById(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public Workplace getById(Long id) {
         log.debug("Request to get Workplace : {}", id);
-        return workplaceRepository.findById(id).orElse(null);
+        return workplaceRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Workplace not found with id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -71,7 +78,7 @@ public class WorkplaceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
     public void merge(Long workplaceId, List<Long> selectedWorkplaceIdList) {
-        Workplace workplace = findOne(workplaceId);
+        Workplace workplace = getById(workplaceId);
         registrationRepository.updateMergedWorkplaceInRegistrations(workplace, selectedWorkplaceIdList);
         selectedWorkplaceIdList.forEach(this::delete);
     }
@@ -79,8 +86,8 @@ public class WorkplaceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
     public void migrate(Long fromCongressId, Long toCongressId) {
-        Congress fromCongress = congressRepository.findById(fromCongressId).orElseThrow(() -> new IllegalArgumentException("From congress not found with id: " + fromCongressId));
-        Congress toCongress = congressRepository.findById(toCongressId).orElseThrow(() -> new IllegalArgumentException("To congress not found with id: " + toCongressId));
+        Congress fromCongress = congressService.getById(fromCongressId);
+        Congress toCongress = congressService.getById(toCongressId);
         final List<Workplace> workplaces = findByCongressId(fromCongressId);
         workplaces.forEach(workplace -> {
             final Workplace copy = Workplace.copy(workplace);
@@ -89,6 +96,6 @@ public class WorkplaceService {
         });
 
         toCongress.setMigratedFromCongressCode(fromCongress.getMeetingCode());
-        congressRepository.save(toCongress);
+        congressService.update(toCongress);
     }
 }

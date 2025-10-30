@@ -45,7 +45,7 @@ public class FinancialReportService extends XlsReportService {
     public List<FinancialReportDTO> findAll(FinancialReportVM filter) {
         log.debug("Request to get all FinancialReportDTO");
         Map<String, FinancialReportDTO> financialReportMap = new HashMap<>();
-        final Congress congress = congressService.findOne(Long.valueOf(filter.getCongressId()));
+        final Congress congress = congressService.getById(Long.valueOf(filter.getCongressId()));
 
         // from registrations
         Query query = entityManager.createNativeQuery(composeRegistrationQuery(congress));

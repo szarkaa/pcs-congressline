@@ -42,7 +42,6 @@ import javax.imageio.ImageIO;
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.RegistrationRegistrationType;
 import hu.congressline.pcs.domain.RegistrationType;
-import hu.congressline.pcs.repository.CongressRepository;
 import hu.congressline.pcs.service.dto.GeneralRegistrationReportDTO;
 import hu.congressline.pcs.web.rest.vm.GeneralRegistrationReportVM;
 import jakarta.persistence.EntityManager;
@@ -60,7 +59,7 @@ public class GeneralRegistrationReportService extends XlsReportService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    private final CongressRepository congressRepository;
+    private final CongressService congressService;
     private final RegistrationRegistrationTypeService rrtService;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -361,8 +360,7 @@ public class GeneralRegistrationReportService extends XlsReportService {
             columns.put("QR code", 330);
         }
 
-        Congress congress = congressRepository.findById(Long.valueOf(congressId))
-                .orElseThrow(() -> new IllegalArgumentException("Congress not found with id: " + congressId));
+        Congress congress = congressService.getById(Long.valueOf(congressId));
         final XSSFSheet sheet = createXlsxTab(workbook, "General registration report", null, congress.getName(), getColumnWidthsAsArray(columns));
         addSubHeader(sheet, columns);
 
