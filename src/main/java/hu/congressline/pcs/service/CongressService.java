@@ -52,6 +52,13 @@ public class CongressService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public Congress getEagerById(Long id) {
+        log.debug("Request to get Congress eagerly: {}", id);
+        return congressRepository.findOneWithEagerRelationships(id).orElseThrow(() -> new IllegalArgumentException("Congress eager not found with id: " + id));
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
     public void migrateWorkplaces(Long fromCongressId, Long toCongressId) {
         workplaceService.migrate(fromCongressId, toCongressId);
     }
@@ -93,6 +100,6 @@ public class CongressService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public Set<Currency> getOnlineRegCurrenciesByCongressId(Long id) {
-        return Optional.ofNullable(congressRepository.findOneWithEagerRelationships(id)).map(Congress::getOnlineRegCurrencies).orElse(new HashSet<>());
+        return findById(id).map(Congress::getOnlineRegCurrencies).orElse(new HashSet<>());
     }
 }

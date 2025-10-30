@@ -4,7 +4,9 @@ import java.io.Serial;
 import java.io.Serializable;
 
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
+@Data
 public class PcsBatchUploadVm implements Serializable {
 
     @Serial
