@@ -21,7 +21,7 @@ public class CurrencyService implements MonetaryService {
     public BigDecimal convertCurrencyToHuf(BigDecimal value, String currency, LocalDate validDate) {
         BigDecimal exchangeRate = getRateForDate(currency, validDate);
         if (exchangeRate.compareTo(BigDecimal.ZERO) > 0) {
-            return roundUp(value.multiply(exchangeRate));
+            return roundUp(value.multiply(exchangeRate), 2);
         } else {
             return BigDecimal.ZERO;
         }
@@ -30,7 +30,7 @@ public class CurrencyService implements MonetaryService {
     @SuppressWarnings("MissingJavadocMethod")
     public BigDecimal convertCurrencyToHuf(@NonNull BigDecimal value, @NonNull BigDecimal exchangeRate) {
         if (exchangeRate.compareTo(BigDecimal.ZERO) > 0) {
-            return roundUp(value.multiply(exchangeRate));
+            return roundUp(value.multiply(exchangeRate), 2);
         } else {
             return BigDecimal.ZERO;
         }
@@ -38,6 +38,6 @@ public class CurrencyService implements MonetaryService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public BigDecimal getRateForDate(@NonNull String currency, @NonNull LocalDate validDate) {
-        return rateRepository.findOneByCurrencyCurrencyAndValid(currency, validDate).map(rate -> roundUp(rate.getRate())).orElse(null);
+        return rateRepository.findOneByCurrencyCurrencyAndValid(currency, validDate).map(rate -> roundUp(rate.getRate(), 2)).orElse(null);
     }
 }
