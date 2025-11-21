@@ -26,7 +26,7 @@ public class InvoicePdfContext extends PdfContext {
     private Map<PayingGroupItem, BigDecimal> activePayingGroups = new HashMap<>();
 
     public InvoicePdfContext(InvoiceRegistration invoiceRegistration, List<InvoiceItem> invoiceItemList, List<InvoiceCharge> invoiceChargeList) {
-        super(invoiceRegistration.getInvoice().getOptionalText(), new Locale(invoiceRegistration.getInvoice().getPrintLocale()));
+        super(invoiceRegistration.getInvoice().getOptionalText(), Locale.forLanguageTag(invoiceRegistration.getInvoice().getPrintLocale()));
         final Invoice invoice = invoiceRegistration.getInvoice();
         setRegistration(invoiceRegistration.getRegistration());
         setBankName(invoice.getBankName());

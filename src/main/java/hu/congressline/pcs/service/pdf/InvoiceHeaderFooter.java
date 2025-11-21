@@ -1,6 +1,5 @@
 package hu.congressline.pcs.service.pdf;
 
-import org.apache.commons.io.IOUtils;
 import com.lowagie.text.Chunk;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -16,6 +15,8 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
+
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.StringUtils;
@@ -49,7 +50,7 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
     private PdfPTable table;
 
     public InvoiceHeaderFooter(MessageSource messageSource, PdfContext pdfContext) {
-        this.baseFont = PcsPdfFont.BASE_FONT;
+        this.baseFont = PcsPdfFont.getBaseFont();
         this.messageSource = messageSource;
         this.pdfContext = pdfContext;
         //Font styles of the pdf

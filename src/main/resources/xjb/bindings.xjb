@@ -1,0 +1,43 @@
+<jxb:bindings
+        xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        version="2.1">
+
+	<jxb:bindings schemaLocation="../xsd/common.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="hu.gov.nav.ntca.common"></jxb:package>
+		</jxb:schemaBindings>
+	</jxb:bindings>
+
+
+	<jxb:bindings schemaLocation="../xsd/invoiceBase.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="hu.gov.nav.osa.base"></jxb:package>
+		</jxb:schemaBindings>
+	</jxb:bindings>
+
+	<jxb:bindings schemaLocation="../xsd/invoiceData.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="hu.gov.nav.osa.base"></jxb:package>
+		</jxb:schemaBindings>
+	</jxb:bindings>
+
+	<jxb:bindings schemaLocation="../xsd/invoiceAnnulment.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="hu.gov.nav.osa.annul"></jxb:package>
+		</jxb:schemaBindings>
+	</jxb:bindings>
+
+<!--
+	<jxb:bindings schemaLocation="../xsd/invoiceApi.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="hu.nav.api"></jxb:package>
+		</jxb:schemaBindings>
+		<jxb:bindings node="//xs:simpleType[@name='InvoiceType']">
+			<jxb:javaType name="java.lang.String" />
+		</jxb:bindings>
+	</jxb:bindings>
+-->
+
+</jxb:bindings>
+

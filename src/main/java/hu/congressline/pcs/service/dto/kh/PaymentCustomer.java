@@ -1,0 +1,83 @@
+package hu.congressline.pcs.service.dto.kh;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
+class PaymentCustomer extends ApiBase implements Signable {
+    private String name;
+    private String email;
+    private String homePhone;
+    private String workPhone;
+    private String mobilePhone;
+    private Account account;
+    private Login login;
+
+    @Override
+    public String toSign() {
+        StringBuilder sb = new StringBuilder();
+        add(sb, name);
+        add(sb, email);
+        add(sb, homePhone);
+        add(sb, workPhone);
+        add(sb, mobilePhone);
+        if (account != null) {
+            add(sb, account.toSign());
+        }
+        if (login != null) {
+            add(sb, login.toSign());
+        }
+        deleteLast(sb);
+        return sb.toString();
+    }
+
+    @Setter
+    @Getter
+    public static class Account extends ApiBase implements Signable {
+        private String createdAt;
+        private String changedAt;
+        private String changedPwdAt;
+        private int orderHistory;
+        private int paymentsDay;
+        private int paymentsYear;
+        private int oneclickAdds;
+        private Boolean suspicious;
+
+        @Override
+        public String toSign() {
+            StringBuilder sb = new StringBuilder();
+            add(sb, createdAt);
+            add(sb, changedAt);
+            add(sb, changedPwdAt);
+            add(sb, orderHistory);
+            add(sb, paymentsDay);
+            add(sb, paymentsYear);
+            add(sb, oneclickAdds);
+            add(sb, suspicious);
+            deleteLast(sb);
+            return sb.toString();
+        }
+    }
+
+    @Setter
+    @Getter
+    public static class Login extends ApiBase implements Signable {
+        private String auth;
+        private String authAt;
+        private String authData;
+
+        @Override
+        public String toSign() {
+            StringBuilder sb = new StringBuilder();
+            add(sb, auth);
+            add(sb, authAt);
+            add(sb, authData);
+            deleteLast(sb);
+            return sb.toString();
+        }
+    }
+}

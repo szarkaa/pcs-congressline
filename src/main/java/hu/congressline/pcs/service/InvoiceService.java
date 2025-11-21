@@ -147,9 +147,10 @@ public class InvoiceService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public InvoiceRegistration findInvoiceRegistrationByInvoiceId(Long id) {
+    public InvoiceRegistration getInvoiceRegistrationByInvoiceId(Long id) {
         log.debug("Request to get Invoice by invoice id: {}", id);
-        return invoiceRegistrationRepository.findByInvoiceId(id);
+        return invoiceRegistrationRepository.findByInvoiceId(id)
+                .orElseThrow(() -> new IllegalArgumentException("InvoiceRegistration not found by invoice id:" +  id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -388,7 +389,7 @@ public class InvoiceService {
             charge.setItemName(((RoomReservationRegistration) service.getChargeableItem()).getRoomReservation().getRoom().getCongressHotel().getHotel().getName());
             charge.setCurrency(service.getChargeableItem().getChargeableItemCurrency());
         } else if (service.getPaymentType().equals(ChargeableItemType.MISCELLANEOUS)) {
-            charge.setItemName(messageSource.getMessage("invoice.pdf.miscPayment", new Object[]{}, new Locale(invoice.getPrintLocale())));
+            charge.setItemName(messageSource.getMessage("invoice.pdf.miscPayment", new Object[]{}, Locale.forLanguageTag(invoice.getPrintLocale())));
             charge.setCurrency(registrationService.getRegistrationCurrency(service.getRegistration()));
         } else {
             charge.setItemName(service.getChargeableItem().getChargeableItemName());
@@ -414,7 +415,7 @@ public class InvoiceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
     public InvoiceDTO setPaymentDate(SetPaymentDateDTO setPaymentDateDTO) {
-        InvoiceRegistration ir = findInvoiceRegistrationByInvoiceId(setPaymentDateDTO.getId());
+        InvoiceRegistration ir = getInvoiceRegistrationByInvoiceId(setPaymentDateDTO.getId());
         if (ir == null) {
             return null;
         }

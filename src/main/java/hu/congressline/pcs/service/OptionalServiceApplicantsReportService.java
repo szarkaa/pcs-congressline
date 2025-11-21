@@ -11,6 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -62,12 +63,12 @@ public class OptionalServiceApplicantsReportService extends XlsReportService {
         bean.setPaid(ConverterUtil.getBigDecimalValue(row[8]));
         bean.setHotel((String) row[9]);
         if (row[10] != null) {
-            bean.setGroupCost(ConverterUtil.getBigDecimalValue(row[10]).setScale(2, BigDecimal.ROUND_HALF_UP));
+            bean.setGroupCost(ConverterUtil.getBigDecimalValue(row[10]).setScale(2, RoundingMode.HALF_UP));
         } else {
             bean.setGroupCost(BigDecimal.ZERO);
         }
         if (row[11] != null) {
-            bean.setPaidByGroup(ConverterUtil.getBigDecimalValue(row[11]).setScale(2, BigDecimal.ROUND_HALF_UP));
+            bean.setPaidByGroup(ConverterUtil.getBigDecimalValue(row[11]).setScale(2, RoundingMode.HALF_UP));
         } else {
             bean.setPaidByGroup(BigDecimal.ZERO);
         }

@@ -32,7 +32,7 @@ public class ConfirmationPdfContext extends PdfContext {
 
     public ConfirmationPdfContext(String optionalText, ConfirmationTitleType confirmationTitleType, String language, Registration registration,
                                   List<Long> ignoredChargeableItemIdList, Map<ChargeableItemType, BigDecimal> chargedServiceAmountsMap) {
-        super(optionalText, new Locale(language));
+        super(optionalText, Locale.forLanguageTag(language));
         this.confirmationTitleType = confirmationTitleType;
         this.registration = registration;
         this.ignoredChargeableItemIdList = ignoredChargeableItemIdList;

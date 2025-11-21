@@ -1,6 +1,5 @@
 package hu.congressline.pcs.service.pdf;
 
-import org.apache.commons.io.IOUtils;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -15,6 +14,8 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
+
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
@@ -50,7 +51,7 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
 
     @SuppressWarnings("MissingJavadocMethod")
     public ConfirmationHeaderFooter(MessageSource messageSource, PdfContext pdfContext) {
-        this.baseFont = PcsPdfFont.BASE_FONT;
+        this.baseFont = PcsPdfFont.getBaseFont();
         this.messageSource = messageSource;
         this.pdfContext = pdfContext;
         this.locale = pdfContext.getLocale();

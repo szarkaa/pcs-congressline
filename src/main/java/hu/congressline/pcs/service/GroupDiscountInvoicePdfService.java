@@ -289,7 +289,7 @@ public class GroupDiscountInvoicePdfService extends AbstractPdfService {
         // Summary table
         // Table summarizing the item prices by VAT
         Map<String, ServiceUtil.ItemRowByVat> itemRowsByVat = ServiceUtil.getItemRowsByVat(pdfContext.getInvoiceItemList());
-        boolean hasVatException = itemRowsByVat.values().stream().anyMatch(itemRowByVat -> itemRowByVat.vat.equals(0));
+        boolean hasVatException = itemRowsByVat.values().stream().anyMatch(itemRowByVat -> itemRowByVat.getVat().equals(0));
         if (hasVatException) {
             table = createTable(4, 70, new float[]{4, 1, 1, 1});
         } else {
@@ -401,7 +401,7 @@ public class GroupDiscountInvoicePdfService extends AbstractPdfService {
         }
         preface.add(table);
 
-        String additionalBillingText = pdfContext.getLocale().equals(new Locale("hu")) ? pdfContext.getPayingGroup().getCongress().getAdditionalBillingTextHu()
+        String additionalBillingText = pdfContext.getLocale().equals(Locale.forLanguageTag("hu")) ? pdfContext.getPayingGroup().getCongress().getAdditionalBillingTextHu()
                 : pdfContext.getPayingGroup().getCongress().getAdditionalBillingTextEn();
         if (StringUtils.hasText(additionalBillingText)) {
             Paragraph tempParagraph = new Paragraph();

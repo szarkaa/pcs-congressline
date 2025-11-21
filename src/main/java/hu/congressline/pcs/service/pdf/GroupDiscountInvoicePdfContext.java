@@ -18,7 +18,7 @@ public class GroupDiscountInvoicePdfContext extends PdfContext {
     private Map<PayingGroupItem, BigDecimal> activePayingGroups = new HashMap<>();
 
     public GroupDiscountInvoicePdfContext(InvoicePayingGroup invoicePayingGroup, List<InvoiceItem> invoiceItemList) {
-        super(invoicePayingGroup.getInvoice().getOptionalText(), new Locale(invoicePayingGroup.getInvoice().getPrintLocale()));
+        super(invoicePayingGroup.getInvoice().getOptionalText(), Locale.forLanguageTag(invoicePayingGroup.getInvoice().getPrintLocale()));
         final Invoice invoice = invoicePayingGroup.getInvoice();
         setBankName(invoice.getBankName());
         setBankAddress(invoice.getBankAddress());

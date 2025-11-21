@@ -18,7 +18,7 @@ public class MiscInvoicePdfContext extends PdfContext {
     private Congress congress;
 
     public MiscInvoicePdfContext(InvoiceCongress invoiceCongress, List<InvoiceItem> invoiceItemList) {
-        super(invoiceCongress.getInvoice().getOptionalText(), new Locale(invoiceCongress.getInvoice().getPrintLocale()));
+        super(invoiceCongress.getInvoice().getOptionalText(), Locale.forLanguageTag(invoiceCongress.getInvoice().getPrintLocale()));
         final Invoice invoice = invoiceCongress.getInvoice();
         setBankName(invoice.getBankName());
         setBankAddress(invoice.getBankAddress());

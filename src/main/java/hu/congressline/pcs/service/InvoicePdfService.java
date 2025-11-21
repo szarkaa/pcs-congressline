@@ -10,6 +10,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -488,7 +489,7 @@ public class InvoicePdfService extends AbstractPdfService {
         }
         preface.add(table);
 
-        String additionalBillingText = pdfContext.getLocale().equals(new Locale(Language.HU.toString().toLowerCase()))
+        String additionalBillingText = pdfContext.getLocale().equals(Locale.forLanguageTag(Language.HU.toString().toLowerCase()))
                 ? pdfContext.getRegistration().getCongress().getAdditionalBillingTextHu() : pdfContext.getRegistration().getCongress().getAdditionalBillingTextEn();
         if (StringUtils.hasText(additionalBillingText)) {
             Paragraph tempParagraph = new Paragraph();

@@ -7,6 +7,7 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
+
 import org.springframework.context.MessageSource;
 
 import java.util.Locale;
@@ -19,7 +20,7 @@ public class OnlineRegHeaderFooter extends PdfPageEventHelper {
     private PdfTemplate total;
 
     public OnlineRegHeaderFooter(MessageSource messageSource, Locale locale) {
-        this.baseFont = PcsPdfFont.BASE_FONT;
+        this.baseFont = PcsPdfFont.getBaseFont();
         this.messageSource = messageSource;
         this.locale = locale;
     }

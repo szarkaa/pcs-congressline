@@ -14,7 +14,7 @@ public class OnlineRegPdfContext extends PdfContext {
     private final List<OnlineRegistrationOptionalService> oros;
 
     public OnlineRegPdfContext(OnlineRegistration onlineReg, List<OnlineRegistrationRegistrationType> orrts, List<OnlineRegistrationOptionalService> oros) {
-        super("", new Locale("en"));
+        super("", Locale.forLanguageTag("en"));
         this.onlineReg = onlineReg;
         this.orrts = orrts;
         this.oros = oros;

@@ -1,6 +1,5 @@
 package hu.congressline.pcs.service;
 
-import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -8,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import hu.congressline.pcs.domain.Room;
+import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
 import hu.congressline.pcs.repository.RoomRepository;
 import hu.congressline.pcs.repository.RoomReservationEntryRepository;
 import lombok.RequiredArgsConstructor;

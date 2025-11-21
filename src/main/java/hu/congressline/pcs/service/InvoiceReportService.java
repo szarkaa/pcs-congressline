@@ -367,8 +367,7 @@ public class InvoiceReportService extends XlsReportService implements MonetarySe
             if (dto.getItems().isEmpty()) {
                 continue;
             }
-            String currency = dto.getItems().stream().findFirst().isPresent() ? dto.getItems().stream().findFirst().get().getCurrency() : null;
-            BigDecimal exchangeRate = dto.getItems().stream().findFirst().isPresent() ? dto.getItems().stream().findFirst().get().getExchangeRate() : BigDecimal.ZERO;
+
             final XSSFRow row = sheet.createRow(rowIndex);
             addCell(row, wrappingCellStyle, 0, dto.getInvoiceNumber());
             addCell(row, wrappingCellStyle, 1, dto.getStornoInvoiceNumber());
@@ -389,6 +388,9 @@ public class InvoiceReportService extends XlsReportService implements MonetarySe
             addCell(row, wrappingCellStyle, 16, dto.getDateOfPayment());
             addCell(row, wrappingCellStyle, 17, dto.getPaymentDeadline());
             int idx = 18;
+
+            String currency = dto.getItems().stream().findFirst().isPresent() ? dto.getItems().stream().findFirst().get().getCurrency() : null;
+            BigDecimal exchangeRate = dto.getItems().stream().findFirst().isPresent() ? dto.getItems().stream().findFirst().get().getExchangeRate() : BigDecimal.ZERO;
             // HUF
             for (String vatColumnId : vatColumnIds) {
                 final Optional<InvoiceReportDTO.InvoiceReportVatItemDTO> itemOpt = dto.getItems().stream().filter(o -> o.getVatTypeId().equals(vatColumnId)).findFirst();
@@ -568,14 +570,15 @@ public class InvoiceReportService extends XlsReportService implements MonetarySe
 
     @SuppressWarnings("MissingJavadocMethod")
     public byte[] createPdfByInvoiceId(Long invoiceId) {
-        final InvoiceRegistration invoiceRegistration = invoiceRegistrationRepository.findByInvoiceId(invoiceId);
-        if (invoiceRegistration != null) {
-            return invoicePdfService.generatePdf(invoicePdfService.createInvoicePdfContext(invoiceRegistration));
+        Optional<InvoiceRegistration> invoiceRegistration = invoiceRegistrationRepository.findByInvoiceId(invoiceId);
+
+        if (invoiceRegistration.isPresent()) {
+            return invoicePdfService.generatePdf(invoicePdfService.createInvoicePdfContext(invoiceRegistration.get()));
         }
 
-        final InvoicePayingGroup invoicePayingGroup = invoicePayingGroupRepository.findByInvoiceId(invoiceId);
-        if (invoicePayingGroup != null) {
-            return payingGroupPdfService.generatePdf(payingGroupPdfService.createInvoicePdfContext(invoicePayingGroup));
+        Optional<InvoicePayingGroup> invoicePayingGroup = invoicePayingGroupRepository.findByInvoiceId(invoiceId);
+        if (invoicePayingGroup.isPresent()) {
+            return payingGroupPdfService.generatePdf(payingGroupPdfService.createInvoicePdfContext(invoicePayingGroup.get()));
         }
 
         final InvoiceCongress invoiceCongress = invoiceCongressRepository.findByInvoiceId(invoiceId);

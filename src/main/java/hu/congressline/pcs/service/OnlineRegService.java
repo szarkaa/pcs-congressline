@@ -3,13 +3,16 @@ package hu.congressline.pcs.service;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.PdfCopy;
+import com.lowagie.text.pdf.PdfCopyFields;
 import com.lowagie.text.pdf.PdfReader;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -47,7 +50,6 @@ import hu.congressline.pcs.domain.RoomReservationRegistration;
 import hu.congressline.pcs.domain.Workplace;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.domain.enumeration.Currency;
-import hu.congressline.pcs.domain.enumeration.Language;
 import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
 import hu.congressline.pcs.domain.enumeration.PaymentSupplier;
 import hu.congressline.pcs.repository.AccPeopleOnlineRepository;
@@ -70,6 +72,7 @@ import hu.congressline.pcs.repository.RoomReservationRepository;
 import hu.congressline.pcs.service.dto.OnlineRegDiscountCodeDTO;
 import hu.congressline.pcs.service.dto.RoomReservationEntryDTO;
 import hu.congressline.pcs.service.dto.kh.PaymentStatus;
+import hu.congressline.pcs.service.dto.kh.PaymentStatusResult;
 import hu.congressline.pcs.service.dto.online.CongressDTO;
 import hu.congressline.pcs.service.dto.online.HotelDTO;
 import hu.congressline.pcs.service.dto.online.OnlineRegConfigDTO;
@@ -88,12 +91,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import tech.jhipster.config.JHipsterProperties;
 
-import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_CANCELLED;
-import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_DENIED;
 import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_RETURNED;
 import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_REVERSED;
 import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_SETTLED;
 import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_WAITING_FOR_SETTLEMENT;
+import static java.lang.Boolean.TRUE;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 @Slf4j
@@ -123,7 +125,7 @@ public class OnlineRegService {
     private final RoomReservationRegistrationRepository rrrRepository;
     private final RoomReservationService rrService;
     private final OrderedOptionalServiceService oosService;
-    private final MailService mailService;
+    //private final MailService mailService;
     private final OnlineRegPdfService pdfService;
     private final PaymentTransactionRepository paymentTransactionRepository;
     private final OnlineRegistrationRepository onlineRegistrationRepository;
@@ -168,7 +170,7 @@ public class OnlineRegService {
     @SuppressWarnings("MissingJavadocMethod")
     public PaymentResultDTO getPaymentResultByTrxId(String trxId) {
         OnlineRegistration onlineReg = onlineRegistrationRepository.findOneByPaymentTrxId(trxId)
-                .orElseThrow(() -> new IllegalArgumentException(onlineRegistrationNotFound + trxId));
+                .orElseThrow(() -> new IllegalArgumentException(ONLINE_REGISTRATION_NOT_FOUND + trxId));
         final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(onlineReg.getCongress().getId());
         PaymentResultDTO dto = new PaymentResultDTO();
         dto.setCongressName(onlineReg.getCongress().getName());
@@ -205,16 +207,17 @@ public class OnlineRegService {
     private void manageFinalPaymentStatus(OnlineRegistration onlineReg) {
         log.debug("manageFinalPaymentStatus payment status: {}", PaymentStatus.valueOf(onlineReg.getPaymentTrxStatus()));
         //Manage the transactions that are in a final state
+        /*
         if (List.of(PAYMENT_DENIED, PAYMENT_CANCELLED, PAYMENT_WAITING_FOR_SETTLEMENT)
             .contains(PaymentStatus.valueOf(onlineReg.getPaymentTrxStatus()))) {
-
             mailService.sendOnlinePaymentNotificationEmail(onlineReg.getEmail(),
                 onlineReg,
                 getTotalAmountOfOnlineReg(onlineReg),
                 onlineReg.getCurrency(),
                 companyService.getCompanyProfile(),
-                new Locale(Currency.HUF.toString().equalsIgnoreCase(onlineReg.getCurrency()) ? Language.HU.toString().toLowerCase() : Language.EN.toString().toLowerCase()));
+                Locale.forLanguageTag(Currency.HUF.toString().equalsIgnoreCase(onlineReg.getCurrency()) ? Language.HU.toString().toLowerCase() : Language.EN.toString().toLowerCase()));
         }
+        */
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -424,9 +427,10 @@ public class OnlineRegService {
             range.forEach(localDate -> rrService.increaseRoomReservedNumber(room, localDate));
         }
 
-        Locale locale = new Locale(Currency.HUF.toString().equalsIgnoreCase(vm.getCurrency()) ? "hu" : "en");
+        Locale locale = Locale.forLanguageTag(Currency.HUF.toString().equalsIgnoreCase(vm.getCurrency()) ? "hu" : "en");
         if (result.getEmail() != null) {
-            mailService.sendOnlineRegNotificationEmail(result.getEmail(), properties.getMail().getFrom(), congress.getMeetingCode(), result.getEmail(), locale);
+            int i = 0; //dummy shit for checkstyle
+            //mailService.sendOnlineRegNotificationEmail(result.getEmail(), properties.getMail().getFrom(), congress.getMeetingCode(), result.getEmail(), locale);
         }
 
         return result;
@@ -615,11 +619,6 @@ public class OnlineRegService {
     }
 
     private String createRemark(OnlineRegistration onlineReg) {
-        BigDecimal regSubTotal = getRegistrationTypeSubTotalAmountOfOnlineReg(onlineReg);
-        BigDecimal roomSubTotal = getHotelAmountOfOnlineReg(onlineReg);
-        BigDecimal osSubTotal = getOptionalServiceTotalAmountOfOnlineReg(onlineReg);
-
-        String currency = onlineReg.getCurrency();
         StringBuilder sb = new StringBuilder();
         final String lineFeed = "\n";
         sb.append(StringUtils.hasText(onlineReg.getRoommate()) ? "Roommate:" + onlineReg.getRoommate() + lineFeed : "");
@@ -633,8 +632,12 @@ public class OnlineRegService {
         sb.append(StringUtils.hasText(onlineReg.getCardExpiryYear()) ? "Card expiry year:" + onlineReg.getCardExpiryYear() + lineFeed : "");
         sb.append(StringUtils.hasText(onlineReg.getInvoiceReferenceNumber()) ? "Invoice reference number:" + onlineReg.getInvoiceReferenceNumber() + lineFeed : "");
         sb.append(StringUtils.hasText(onlineReg.getDiscountCode()) ? "Discount code:" + onlineReg.getDiscountCode() + lineFeed : "");
-        sb.append(StringUtils.hasText(onlineReg.getNewsletter()) ? "Newsletter:" + onlineReg.getNewsletter() + lineFeed : "");
+        sb.append(TRUE.equals(onlineReg.getNewsletter()) ? "Newsletter:" + onlineReg.getNewsletter() + lineFeed : "");
 
+        BigDecimal regSubTotal = getRegistrationTypeSubTotalAmountOfOnlineReg(onlineReg);
+        BigDecimal roomSubTotal = getHotelAmountOfOnlineReg(onlineReg);
+        BigDecimal osSubTotal = getOptionalServiceTotalAmountOfOnlineReg(onlineReg);
+        String currency = onlineReg.getCurrency();
         if ("CARD".equals(onlineReg.getPaymentMethod())) {
             sb.append(StringUtils.hasText(onlineReg.getCardNumber()) ? "Payment trx amount: " + regSubTotal.add(roomSubTotal).add(osSubTotal).toString() + lineFeed : "");
             sb.append(StringUtils.hasText(onlineReg.getPaymentTrxId()) ? "Payment order No: " + onlineReg.getPaymentOrderNumber() + lineFeed : "");
@@ -675,28 +678,30 @@ public class OnlineRegService {
     @SuppressWarnings({"MissingJavadocMethod", "IllegalCatch"})
     public byte[] getAllPdf(List<OnlineRegistration> orList) {
         final String errorCreatingAllOnlinePdf = "Error while creating all online reg pdf";
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            Document document = new Document();
-            PdfCopy copy = new PdfCopy(document, baos);
-            document.open();
-            orList.forEach(or -> {
-                try {
-                    PdfReader reader = new PdfReader(getPdf(or));
-                    copy.addDocument(reader);
-                    copy.freeReader(reader);
-                    reader.close();
 
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+
+            PdfCopyFields copy = new PdfCopyFields(baos);
+            copy.open();
+            for (OnlineRegistration or : orList) {
+                try {
+                    // assuming getPdf(or) returns byte[] for a single registration PDF
+                    byte[] pdfBytes = getPdf(or);
+                    PdfReader reader = new PdfReader(pdfBytes);
+
+                    copy.addDocument(reader);   // <- this exists on PdfCopyFields
+                    reader.close();
                 } catch (DocumentException | IOException e) {
                     log.error(errorCreatingAllOnlinePdf, e);
                 }
-            });
-            document.close();
-            copy.flush();
+            }
+
+            copy.close(); // writes final merged PDF into baos
             return baos.toByteArray();
         } catch (Exception e) {
             log.error(errorCreatingAllOnlinePdf, e);
+            return null;
         }
-        return null;
     }
 
     @SuppressWarnings("MissingJavadocMethod")

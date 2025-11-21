@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import hu.congressline.pcs.domain.Invoice;
 import hu.congressline.pcs.domain.InvoiceRegistration;
@@ -20,7 +21,7 @@ public interface InvoiceRegistrationRepository extends JpaRepository<InvoiceRegi
 
     List<InvoiceRegistration> findByInvoice(Invoice invoice);
 
-    InvoiceRegistration findByInvoiceId(Long id);
+    Optional<InvoiceRegistration> findByInvoiceId(Long id);
 
     List<InvoiceRegistration> findByRegistrationCongressId(Long id);
 

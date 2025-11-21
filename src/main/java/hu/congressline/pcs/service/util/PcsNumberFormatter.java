@@ -17,11 +17,11 @@ public class PcsNumberFormatter {
     private static final String NO_PATTERN_END = "'.";
 
     static {
-        PATTERNS.put(new Locale("hu"), "[,][ .]");
+        PATTERNS.put(Locale.forLanguageTag("hu"), "[,][ .]");
         final String pattern = "[.][,]";
-        PATTERNS.put(new Locale("en"), pattern);
-        PATTERNS.put(new Locale("es"), pattern);
-        PATTERNS.put(new Locale("pt"), pattern);
+        PATTERNS.put(Locale.forLanguageTag("en"), pattern);
+        PATTERNS.put(Locale.forLanguageTag("es"), pattern);
+        PATTERNS.put(Locale.forLanguageTag("pt"), pattern);
     }
 
     /** FormatSymbols thread local instance. */
