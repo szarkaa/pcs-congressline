@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-payment-refund-transaction" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="payment_refund_transaction"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="payment_refund_transaction">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="transaction_id" type="VARCHAR(15)"/>
+            <column name="payment_trx_auth_code" type="VARCHAR(32)"/>
+            <column name="payment_trx_result_code" type="VARCHAR(3)"/>
+            <column name="payment_trx_result_message" type="VARCHAR(100)"/>
+            <column name="payment_trx_date" type="DATETIME"/>
+
+            <column name="amount" type="DECIMAL(10,2)"/>
+            <column name="currency" type="VARCHAR(3)"/>
+            <column name="bank_auth_number" type="VARCHAR(32)"/>
+            <column name="payment_trx_status" type="VARCHAR(32)"/>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

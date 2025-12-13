@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-invoice-paying-group" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="invoice_paying_group"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="invoice_paying_group">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="date_of_group_payment" type="DATE"/>
+            <column name="invoice_id" type="BIGINT(20)"/>
+            <column name="paying_group_id" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="invoice_paying_group" indexName="idx_invoice_paying_group_invoice_id">
+            <column name="invoice_id"/>
+        </createIndex>
+
+        <createIndex tableName="invoice_paying_group" indexName="idx_invoice_paying_group_paying_group_id">
+            <column name="paying_group_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_invoice_paying_group_invoice_id"
+                                 baseTableName="invoice_paying_group"
+                                 baseColumnNames="invoice_id"
+                                 referencedTableName="invoice"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_invoice_paying_group_paying_group_id"
+                                 baseTableName="invoice_paying_group"
+                                 baseColumnNames="paying_group_id"
+                                 referencedTableName="paying_group"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

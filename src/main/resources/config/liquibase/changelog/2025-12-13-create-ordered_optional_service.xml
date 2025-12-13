@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-ordered-optional-service" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="ordered_optional_service"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="ordered_optional_service">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="participant" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_date" type="DATE"/>
+            <column name="optional_service_id" type="BIGINT(20)"/>
+            <column name="paying_group_item_id" type="BIGINT(20)"/>
+            <column name="registration_id" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="ordered_optional_service" indexName="idx_ordered_optional_service_optional_service_id">
+            <column name="optional_service_id"/>
+        </createIndex>
+
+        <createIndex tableName="ordered_optional_service" indexName="idx_ordered_optional_service_paying_group_item_id">
+            <column name="paying_group_item_id"/>
+        </createIndex>
+
+        <createIndex tableName="ordered_optional_service" indexName="idx_ordered_optional_service_registration_id">
+            <column name="registration_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_ordered_optional_service_chargeable_item_id"
+                                 baseTableName="ordered_optional_service"
+                                 baseColumnNames="id"
+                                 referencedTableName="chargeable_item"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_ordered_optional_service_optional_service_id"
+                                 baseTableName="ordered_optional_service"
+                                 baseColumnNames="optional_service_id"
+                                 referencedTableName="optional_service"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_ordered_optional_service_paying_group_item_id"
+                                 baseTableName="ordered_optional_service"
+                                 baseColumnNames="paying_group_item_id"
+                                 referencedTableName="paying_group_item"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_ordered_optional_service_registration_id"
+                                 baseTableName="ordered_optional_service"
+                                 baseColumnNames="registration_id"
+                                 referencedTableName="registration"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

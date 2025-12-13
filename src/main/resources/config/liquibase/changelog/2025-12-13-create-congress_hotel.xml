@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-congress-hotel" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="congress_hotel"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="congress_hotel">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="congress_id" type="BIGINT(20)"/>
+
+            <column name="hotel_id" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="congress_hotel" indexName="idx_congress_hotel_congress_id">
+            <column name="congress_id"/>
+        </createIndex>
+
+        <createIndex tableName="congress_hotel" indexName="fk_congress_hotel_hotel_id">
+            <column name="hotel_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_congress_hotel_congress_id"
+                                 baseTableName="congress_hotel"
+                                 baseColumnNames="congress_id"
+                                 referencedTableName="congress"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_congress_hotel_hotel_id"
+                                 baseTableName="congress_hotel"
+                                 baseColumnNames="hotel_id"
+                                 referencedTableName="hotel"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

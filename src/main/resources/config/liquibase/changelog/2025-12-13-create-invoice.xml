@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-invoice" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="invoice"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="invoice">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="invoice_number" type="VARCHAR(64)"/>
+            <column name="storno_invoice_number" type="VARCHAR(64)"/>
+            <column name="optional_name" type="VARCHAR(64)"/>
+            <column name="vat_reg_number" type="VARCHAR(64)"/>
+            <column name="city" type="VARCHAR(64)"/>
+            <column name="zip_code" type="VARCHAR(64)"/>
+            <column name="street" type="VARCHAR(128)"/>
+            <column name="country" type="VARCHAR(64)"/>
+            <column name="optional_text" type="VARCHAR(2048)"/>
+
+            <column name="start_date" type="DATE"/>
+            <column name="end_date" type="DATE"/>
+            <column name="payment_deadline" type="DATE"/>
+
+            <column name="billing_method" type="VARCHAR(12)"/>
+
+            <column name="bank_name" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="bank_account" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="swift_code" type="VARCHAR(32)"/>
+            <column name="print_locale" type="VARCHAR(8)"/>
+
+            <column name="storno" type="BIT(1)"/>
+            <column name="stornired" type="BIT(1)"/>
+
+            <column name="created_date" type="DATE"/>
+            <column name="date_of_fulfilment" type="DATE"/>
+
+            <column name="name1" type="VARCHAR(64)"/>
+            <column name="name2" type="VARCHAR(64)"/>
+
+            <column name="exchange_rate" type="DECIMAL(10,2)"/>
+
+            <column name="nav_status" type="VARCHAR(30)"/>
+            <column name="nav_trx_id" type="VARCHAR(30)"/>
+
+            <column name="bank_address" type="VARCHAR(250)"/>
+            <column name="country_code" type="VARCHAR(3)"/>
+            <column name="nav_vat_category" type="VARCHAR(30)"/>
+
+            <column name="invoice_type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name3" type="VARCHAR(64)"/>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

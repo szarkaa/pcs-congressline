@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-registration-registration-type" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="registration_registration_type"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="registration_registration_type">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="reg_fee" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="currency" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_date" type="DATE"/>
+            <column name="acc_people" type="INT(11)"/>
+
+            <column name="registration_type_id" type="BIGINT(20)"/>
+            <column name="paying_group_item_id" type="BIGINT(20)"/>
+            <column name="registration_id" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="registration_registration_type" indexName="idx_registration_registration_type_registration_type_id">
+            <column name="registration_type_id"/>
+        </createIndex>
+
+        <createIndex tableName="registration_registration_type" indexName="idx_registration_registration_type_paying_group_item_id">
+            <column name="paying_group_item_id"/>
+        </createIndex>
+
+        <createIndex tableName="registration_registration_type" indexName="idx_registration_registration_type_registration_id">
+            <column name="registration_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_registration_registration_type_chargeable_item_id"
+                                 baseTableName="registration_registration_type"
+                                 baseColumnNames="id"
+                                 referencedTableName="chargeable_item"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_registration_registration_type_paying_group_item_id"
+                                 baseTableName="registration_registration_type"
+                                 baseColumnNames="paying_group_item_id"
+                                 referencedTableName="paying_group_item"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_registration_registration_type_registration_id"
+                                 baseTableName="registration_registration_type"
+                                 baseColumnNames="registration_id"
+                                 referencedTableName="registration"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_registration_registration_type_registration_type_id"
+                                 baseTableName="registration_registration_type"
+                                 baseColumnNames="registration_type_id"
+                                 referencedTableName="registration_type"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

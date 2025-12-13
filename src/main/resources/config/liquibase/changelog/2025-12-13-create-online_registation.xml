@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-online-registation" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="online_registation"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="online_registation">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="arrival_date" type="DATE"/>
+            <column name="check_address" type="VARCHAR(255)"/>
+            <column name="check_name" type="VARCHAR(64)"/>
+            <column name="city" type="VARCHAR(64)"/>
+            <column name="department" type="VARCHAR(128)"/>
+            <column name="departure_date" type="DATE"/>
+            <column name="email" type="VARCHAR(64)"/>
+
+            <column name="first_name" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="invoice_address" type="VARCHAR(255)"/>
+            <column name="invoice_name" type="VARCHAR(128)"/>
+            <column name="invoice_reference_number" type="VARCHAR(64)"/>
+            <column name="invoice_tax_number" type="VARCHAR(64)"/>
+
+            <column name="last_name" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="newsletter" type="BIT(1)"/>
+            <column name="other_data" type="VARCHAR(255)"/>
+            <column name="payment_method" type="VARCHAR(64)"/>
+            <column name="phone" type="VARCHAR(64)"/>
+            <column name="position" type="VARCHAR(64)"/>
+            <column name="roommate" type="VARCHAR(64)"/>
+            <column name="street" type="VARCHAR(255)"/>
+            <column name="title" type="VARCHAR(16)"/>
+            <column name="zip_code" type="VARCHAR(32)"/>
+
+            <column name="congress_id" type="BIGINT(20)"/>
+            <column name="country_id" type="BIGINT(20)"/>
+            <column name="registration_type_id" type="BIGINT(20)"/>
+            <column name="room_id" type="BIGINT(20)"/>
+            <column name="room_remark" type="VARCHAR(255)"/>
+
+            <column name="card_expiry_month" type="VARCHAR(2)"/>
+            <column name="card_expiry_year" type="VARCHAR(2)"/>
+            <column name="card_holder_address" type="VARCHAR(64)"/>
+            <column name="card_holder_name" type="VARCHAR(64)"/>
+            <column name="card_number" type="VARCHAR(64)"/>
+            <column name="workplace" type="VARCHAR(255)"/>
+            <column name="card_type" type="VARCHAR(16)"/>
+
+            <column name="payment_trx_auth_code" type="VARCHAR(32)"/>
+            <column name="payment_trx_id" type="VARCHAR(15)"/>
+            <column name="payment_trx_result_code" type="VARCHAR(3)"/>
+
+            <column name="invoice_city" type="VARCHAR(64)"/>
+            <column name="invoice_country_id" type="BIGINT(20)"/>
+            <column name="invoice_zip_code" type="VARCHAR(32)"/>
+
+            <column name="payment_trx_date" type="DATETIME"/>
+
+            <column name="date_of_app" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="bank_auth_number" type="VARCHAR(32)"/>
+            <column name="payment_trx_result_message" type="VARCHAR(100)"/>
+
+            <column name="currency" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="discount_code" type="VARCHAR(32)"/>
+            <column name="discount_percentage" type="INT(11)"/>
+            <column name="discount_type" type="VARCHAR(32)"/>
+            <column name="payment_trx_status" type="VARCHAR(32)"/>
+            <column name="payment_order_number" type="VARCHAR(15)"/>
+        </createTable>
+
+        <createIndex tableName="online_registation" indexName="idx_online_registation_congress_id">
+            <column name="congress_id"/>
+        </createIndex>
+
+        <createIndex tableName="online_registation" indexName="idx_online_registation_registration_type_id">
+            <column name="registration_type_id"/>
+        </createIndex>
+
+        <createIndex tableName="online_registation" indexName="idx_online_registation_country_id">
+            <column name="country_id"/>
+        </createIndex>
+
+        <createIndex tableName="online_registation" indexName="idx_online_registation_room_id">
+            <column name="room_id"/>
+        </createIndex>
+
+        <createIndex tableName="online_registation" indexName="idx_online_registation_invoice_country_id">
+            <column name="invoice_country_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_online_registation_congress_id"
+                                 baseTableName="online_registation"
+                                 baseColumnNames="congress_id"
+                                 referencedTableName="congress"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_online_registation_registration_type_id"
+                                 baseTableName="online_registation"
+                                 baseColumnNames="registration_type_id"
+                                 referencedTableName="registration_type"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_online_registation_country_id"
+                                 baseTableName="online_registation"
+                                 baseColumnNames="country_id"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_online_registation_room_id"
+                                 baseTableName="online_registation"
+                                 baseColumnNames="room_id"
+                                 referencedTableName="room"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_online_registation_country_id"
+                                 baseTableName="online_registation"
+                                 baseColumnNames="invoice_country_id"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-optional-text" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="optional_text"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="optional_text">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="optional_text" type="VARCHAR(2048)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="congress_id" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="optional_text" indexName="idx_optional_text_congress_id">
+            <column name="congress_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_optional_text_congress_id"
+                                 baseTableName="optional_text"
+                                 baseColumnNames="congress_id"
+                                 referencedTableName="congress"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

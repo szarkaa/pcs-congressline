@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-registration" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="registration"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="registration">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="reg_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="last_name" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="first_name" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="short_name" type="VARCHAR(16)"/>
+            <column name="title" type="VARCHAR(16)"/>
+            <column name="position" type="VARCHAR(64)"/>
+            <column name="other_data" type="VARCHAR(255)"/>
+            <column name="department" type="VARCHAR(128)"/>
+            <column name="zip_code" type="VARCHAR(32)"/>
+            <column name="city" type="VARCHAR(64)"/>
+            <column name="street" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(64)"/>
+            <column name="email" type="VARCHAR(64)"/>
+            <column name="fax" type="VARCHAR(64)"/>
+            <column name="date_of_app" type="DATE"/>
+            <column name="remark" type="TEXT"/>
+
+            <column name="on_spot" type="BIT(1)"/>
+            <column name="cancelled" type="BIT(1)"/>
+            <column name="presenter" type="BIT(1)"/>
+            <column name="closed" type="BIT(1)"/>
+            <column name="etiquette" type="BIT(1)"/>
+
+            <column name="workplace_id" type="BIGINT(20)"/>
+            <column name="country_id" type="BIGINT(20)"/>
+            <column name="congress_id" type="BIGINT(20)"/>
+
+            <column name="invoice_address" type="VARCHAR(255)"/>
+            <column name="invoice_city" type="VARCHAR(64)"/>
+            <column name="invoice_country_id" type="BIGINT(20)"/>
+            <column name="invoice_name" type="VARCHAR(128)"/>
+            <column name="invoice_zip_code" type="VARCHAR(32)"/>
+            <column name="invoice_tax_number" type="VARCHAR(64)"/>
+        </createTable>
+
+        <createIndex tableName="registration" indexName="idx_registration_invoice_country_id">
+            <column name="invoice_country_id"/>
+        </createIndex>
+
+        <createIndex tableName="registration" indexName="idx_registration_workplace_id">
+            <column name="workplace_id"/>
+        </createIndex>
+
+        <createIndex tableName="registration" indexName="idx_registration_country_id">
+            <column name="country_id"/>
+        </createIndex>
+
+        <createIndex tableName="registration" indexName="idx_registration_congress_id">
+            <column name="congress_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_registration_country_id"
+                                 baseTableName="registration"
+                                 baseColumnNames="invoice_country_id"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_registration_congress_id"
+                                 baseTableName="registration"
+                                 baseColumnNames="congress_id"
+                                 referencedTableName="congress"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_registration_country_id"
+                                 baseTableName="registration"
+                                 baseColumnNames="country_id"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_registration_workplace_id"
+                                 baseTableName="registration"
+                                 baseColumnNames="workplace_id"
+                                 referencedTableName="workplace"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

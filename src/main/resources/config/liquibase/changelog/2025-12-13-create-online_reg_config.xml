@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-online-reg-config" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="online_reg_config"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="online_reg_config">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="city_required" type="BIT(1)"/>
+            <column name="city_visible" type="BIT(1)"/>
+            <column name="closed" type="BIT(1)"/>
+            <column name="color_code" type="VARCHAR(16)"/>
+            <column name="department_required" type="BIT(1)"/>
+            <column name="department_visible" type="BIT(1)"/>
+            <column name="email_required" type="BIT(1)"/>
+            <column name="email_visible" type="BIT(1)"/>
+            <column name="fax_required" type="BIT(1)"/>
+            <column name="fax_visible" type="BIT(1)"/>
+            <column name="first_name_required" type="BIT(1)"/>
+            <column name="first_name_visible" type="BIT(1)"/>
+            <column name="last_name_required" type="BIT(1)"/>
+            <column name="last_name_visible" type="BIT(1)"/>
+            <column name="phone_required" type="BIT(1)"/>
+            <column name="phone_visible" type="BIT(1)"/>
+            <column name="position_required" type="BIT(1)"/>
+            <column name="position_visible" type="BIT(1)"/>
+            <column name="roommate_required_visible" type="BIT(1)"/>
+            <column name="special_booking_request_visible" type="BIT(1)"/>
+            <column name="street_required" type="BIT(1)"/>
+            <column name="street_visible" type="BIT(1)"/>
+            <column name="title_required" type="BIT(1)"/>
+            <column name="title_visible" type="BIT(1)"/>
+            <column name="zip_code_required" type="BIT(1)"/>
+            <column name="zip_code_visible" type="BIT(1)"/>
+
+            <column name="congress_id" type="BIGINT(20)"/>
+            <column name="country_required" type="BIT(1)"/>
+            <column name="country_visible" type="BIT(1)"/>
+            <column name="other_data_required" type="BIT(1)"/>
+            <column name="other_data_visible" type="BIT(1)"/>
+
+            <column name="header_normal_content_type" type="VARCHAR(255)"/>
+            <column name="header_normal_name" type="VARCHAR(255)"/>
+
+            <column name="billing_remark_en" type="TEXT"/>
+            <column name="billing_remark_hu" type="TEXT"/>
+            <column name="browser_remark_en" type="TEXT"/>
+            <column name="browser_remark_hu" type="TEXT"/>
+            <column name="gdpr_remark_en" type="TEXT"/>
+            <column name="gdpr_remark_hu" type="TEXT"/>
+            <column name="marketing_remark_en" type="TEXT"/>
+            <column name="marketing_remark_hu" type="TEXT"/>
+            <column name="optional_service_remark_en" type="TEXT"/>
+            <column name="optional_service_remark_hu" type="TEXT"/>
+
+            <column name="other_data_label_en" type="VARCHAR(200)"/>
+            <column name="other_data_label_hu" type="VARCHAR(200)"/>
+
+            <column name="personal_data_remark_en" type="TEXT"/>
+            <column name="personal_data_remark_hu" type="TEXT"/>
+            <column name="position_label_en" type="TEXT"/>
+            <column name="position_label_hu" type="TEXT"/>
+
+            <column name="reg_type_first_fee_label_en" type="VARCHAR(100)"/>
+            <column name="reg_type_first_fee_label_hu" type="VARCHAR(100)"/>
+            <column name="reg_type_remark_en" type="TEXT"/>
+            <column name="reg_type_remark_hu" type="TEXT"/>
+            <column name="reg_type_second_fee_label_en" type="VARCHAR(100)"/>
+            <column name="reg_type_second_fee_label_hu" type="VARCHAR(100)"/>
+            <column name="reg_type_third_fee_label_en" type="VARCHAR(100)"/>
+            <column name="reg_type_third_fee_label_hu" type="VARCHAR(100)"/>
+
+            <column name="room_remark_en" type="TEXT"/>
+            <column name="room_remark_hu" type="TEXT"/>
+            <column name="terms_and_conditions_remark_en" type="TEXT"/>
+            <column name="terms_and_conditions_remark_hu" type="TEXT"/>
+
+            <column name="workplace_required" type="BIT(1)"/>
+            <column name="workplace_visible" type="BIT(1)"/>
+
+            <column name="header_normal" type="MEDIUMBLOB"/>
+
+            <column name="bank_transfer_info_en" type="TEXT"/>
+            <column name="bank_transfer_info_hu" type="TEXT"/>
+            <column name="bank_transfer_visible" type="BIT(1)"/>
+            <column name="check_visible" type="BIT(1)"/>
+            <column name="credit_card_visible" type="BIT(1)"/>
+
+            <column name="conditions_and_granting_remark_en" type="TEXT"/>
+            <column name="conditions_and_granting_remark_hu" type="TEXT"/>
+
+            <column name="optional_service_extra_title_en" type="VARCHAR(255)"/>
+            <column name="optional_service_extra_title_hu" type="VARCHAR(255)"/>
+            <column name="reg_type_extra_title_en" type="VARCHAR(255)"/>
+            <column name="reg_type_extra_title_hu" type="VARCHAR(255)"/>
+
+            <column name="default_country_id" type="BIGINT(20)"/>
+
+            <column name="no_payment_required" type="BIT(1)"/>
+            <column name="title_selectable" type="BIT(1)"/>
+            <column name="payment_supplier" type="VARCHAR(8)"/>
+            <column name="stripe_secret_key" type="VARCHAR(255)"/>
+            <column name="stripe_public_key" type="VARCHAR(255)"/>
+
+            <column name="browser_remark_es" type="TEXT"/>
+            <column name="position_label_es" type="TEXT"/>
+            <column name="other_data_label_es" type="VARCHAR(200)"/>
+            <column name="reg_type_first_fee_label_es" type="VARCHAR(100)"/>
+            <column name="reg_type_second_fee_label_es" type="VARCHAR(100)"/>
+            <column name="reg_type_third_fee_label_es" type="VARCHAR(100)"/>
+            <column name="reg_type_extra_title_es" type="VARCHAR(255)"/>
+            <column name="optional_service_extra_title_es" type="VARCHAR(255)"/>
+            <column name="personal_data_remark_es" type="TEXT"/>
+            <column name="reg_type_remark_es" type="TEXT"/>
+            <column name="room_remark_es" type="TEXT"/>
+            <column name="optional_service_remark_es" type="TEXT"/>
+            <column name="billing_remark_es" type="TEXT"/>
+            <column name="bank_transfer_info_es" type="TEXT"/>
+            <column name="terms_and_conditions_remark_es" type="TEXT"/>
+            <column name="gdpr_remark_es" type="TEXT"/>
+            <column name="marketing_remark_es" type="TEXT"/>
+            <column name="conditions_and_granting_remark_es" type="TEXT"/>
+
+            <column name="browser_remark_pt" type="TEXT"/>
+            <column name="position_label_pt" type="TEXT"/>
+            <column name="other_data_label_pt" type="VARCHAR(200)"/>
+            <column name="reg_type_first_fee_label_pt" type="VARCHAR(100)"/>
+            <column name="reg_type_second_fee_label_pt" type="VARCHAR(100)"/>
+            <column name="reg_type_third_fee_label_pt" type="VARCHAR(100)"/>
+            <column name="reg_type_extra_title_pt" type="VARCHAR(255)"/>
+            <column name="optional_service_extra_title_pt" type="VARCHAR(255)"/>
+            <column name="personal_data_remark_pt" type="TEXT"/>
+            <column name="reg_type_remark_pt" type="TEXT"/>
+            <column name="room_remark_pt" type="TEXT"/>
+            <column name="optional_service_remark_pt" type="TEXT"/>
+            <column name="billing_remark_pt" type="TEXT"/>
+            <column name="bank_transfer_info_pt" type="TEXT"/>
+            <column name="terms_and_conditions_remark_pt" type="TEXT"/>
+            <column name="gdpr_remark_pt" type="TEXT"/>
+            <column name="marketing_remark_pt" type="TEXT"/>
+            <column name="conditions_and_granting_remark_pt" type="TEXT"/>
+        </createTable>
+
+        <createIndex tableName="online_reg_config" indexName="idx_online_reg_config_congress_id">
+            <column name="congress_id"/>
+        </createIndex>
+
+        <createIndex tableName="online_reg_config" indexName="idx_online_reg_config_default_country_id">
+            <column name="default_country_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_online_reg_config_country_id"
+                                 baseTableName="online_reg_config"
+                                 baseColumnNames="default_country_id"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_online_reg_config_congress_id"
+                                 baseTableName="online_reg_config"
+                                 baseColumnNames="congress_id"
+                                 referencedTableName="congress"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

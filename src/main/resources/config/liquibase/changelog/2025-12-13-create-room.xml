@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-room" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="room"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="room">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="room_type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="bed" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="quantity" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="currency_id" type="BIGINT(20)"/>
+            <column name="vat_info_id" type="BIGINT(20)"/>
+            <column name="congress_hotel_id" type="BIGINT(20)"/>
+
+            <column name="online_visibility" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="online_label" type="VARCHAR(200)"/>
+            <column name="online_external_link" type="VARCHAR(255)"/>
+            <column name="online_external_email" type="VARCHAR(64)"/>
+        </createTable>
+
+        <createIndex tableName="room" indexName="idx_room_currency_id">
+            <column name="currency_id"/>
+        </createIndex>
+
+        <createIndex tableName="room" indexName="idx_room_vat_info_id">
+            <column name="vat_info_id"/>
+        </createIndex>
+
+        <createIndex tableName="room" indexName="idx_room_congress_hotel_id">
+            <column name="congress_hotel_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_room_congress_hotel_id"
+                                 baseTableName="room"
+                                 baseColumnNames="congress_hotel_id"
+                                 referencedTableName="congress_hotel"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_room_currency_id"
+                                 baseTableName="room"
+                                 baseColumnNames="currency_id"
+                                 referencedTableName="currency"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_room_vat_info_id"
+                                 baseTableName="room"
+                                 baseColumnNames="vat_info_id"
+                                 referencedTableName="vat_info"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

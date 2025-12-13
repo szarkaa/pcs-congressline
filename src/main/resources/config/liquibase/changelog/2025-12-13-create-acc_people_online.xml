@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-acc-people-online" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="acc_people_online"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="acc_people_online">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="first_name" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="last_name" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="title" type="VARCHAR(8)"/>
+
+            <column name="online_registration_registration_type_id" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="acc_people_online" indexName="idx_online_registration_registration_type_id">
+            <column name="online_registration_registration_type_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_acc_people_online_online_registration_registration_type_id" baseTableName="acc_people_online"
+                                 baseColumnNames="online_registration_registration_type_id"
+                                 referencedTableName="online_registration_registration_type"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

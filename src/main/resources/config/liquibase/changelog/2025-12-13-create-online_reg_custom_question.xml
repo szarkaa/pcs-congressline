@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-online-reg-custom-question" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="online_reg_custom_question"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="online_reg_custom_question">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="congress_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="question" type="VARCHAR(1000)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="question_order" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="required" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="currency_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="online_visibility" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

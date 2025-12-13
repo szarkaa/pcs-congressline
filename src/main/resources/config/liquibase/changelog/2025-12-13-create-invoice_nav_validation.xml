@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-invoice-nav-validation" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="invoice_nav_validation"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="invoice_nav_validation">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="error_code" type="VARCHAR(255)"/>
+            <column name="message" type="VARCHAR(1000)"/>
+
+            <column name="validation_severity" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="validation_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="invoice" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="invoice_nav_validation" indexName="idx_invoice_nav_validation_invoice">
+            <column name="invoice"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_invoice_nav_validation_invoice_id"
+                                 baseTableName="invoice_nav_validation"
+                                 baseColumnNames="invoice"
+                                 referencedTableName="invoice"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

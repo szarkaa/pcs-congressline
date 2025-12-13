@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-misc-invoice-item" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="misc_invoice_item"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="misc_invoice_item">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="item_quantity" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="misc_service_id" type="BIGINT(20)"/>
+            <column name="invoice_id" type="BIGINT(20)"/>
+            <column name="date_of_payment" type="DATE"/>
+        </createTable>
+
+        <createIndex tableName="misc_invoice_item" indexName="idx_misc_invoice_item_invoice_id">
+            <column name="invoice_id"/>
+        </createIndex>
+
+        <createIndex tableName="misc_invoice_item" indexName="idx_misc_invoice_item_misc_service_id">
+            <column name="misc_service_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_misc_invoice_item_invoice_id"
+                                 baseTableName="misc_invoice_item"
+                                 baseColumnNames="invoice_id"
+                                 referencedTableName="invoice"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_misc_invoice_item_misc_service_id"
+                                 baseTableName="misc_invoice_item"
+                                 baseColumnNames="misc_service_id"
+                                 referencedTableName="misc_service"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

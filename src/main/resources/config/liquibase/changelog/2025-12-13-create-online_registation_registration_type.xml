@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-online-registration-registration-type" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="online_registration_registration_type"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="online_registration_registration_type">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="registration_id" type="BIGINT(20)"/>
+            <column name="registration_type_id" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="online_registration_registration_type" indexName="idx_online_registration_registration_type_registration_id">
+            <column name="registration_id"/>
+        </createIndex>
+
+        <createIndex tableName="online_registration_registration_type" indexName="idx_online_registration_registration_type_registration_type_id">
+            <column name="registration_type_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_online_registration_registration_type_online_registation_id"
+                                 baseTableName="online_registration_registration_type"
+                                 baseColumnNames="registration_id"
+                                 referencedTableName="online_registation"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_online_registration_registration_type_online_registation_type_id"
+                                 baseTableName="online_registration_registration_type"
+                                 baseColumnNames="registration_type_id"
+                                 referencedTableName="registration_type"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+</databaseChangeLog>

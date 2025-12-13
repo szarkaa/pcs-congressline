@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-misc-service" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="misc_service"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="misc_service">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="description" type="VARCHAR(500)"/>
+
+            <column name="measure" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vat_info_id" type="BIGINT(20)"/>
+            <column name="currency_id" type="BIGINT(20)"/>
+            <column name="congress_id" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="misc_service" indexName="idx_misc_service_vat_info_id">
+            <column name="vat_info_id"/>
+        </createIndex>
+
+        <createIndex tableName="misc_service" indexName="idx_misc_service_currency_id">
+            <column name="currency_id"/>
+        </createIndex>
+
+        <createIndex tableName="misc_service" indexName="idx_misc_service_congress_id">
+            <column name="congress_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_misc_service_congress_id"
+                                 baseTableName="misc_service"
+                                 baseColumnNames="congress_id"
+                                 referencedTableName="congress"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_misc_service_currency_id"
+                                 baseTableName="misc_service"
+                                 baseColumnNames="currency_id"
+                                 referencedTableName="currency"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_misc_service_vat_info_id"
+                                 baseTableName="misc_service"
+                                 baseColumnNames="vat_info_id"
+                                 referencedTableName="vat_info"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

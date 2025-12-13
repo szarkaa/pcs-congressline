@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-bank-account" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="bank_account"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="bank_account">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="bank_name" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="bank_account" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="swift_code" type="VARCHAR(32)"/>
+
+            <column name="currency_id" type="BIGINT(20)"/>
+
+            <column name="bank_address" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="bank_account" indexName="fk_bank_account_currency_id">
+            <column name="currency_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_bank_account_currency_id" baseTableName="bank_account" baseColumnNames="currency_id"
+                                 referencedTableName="currency" referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

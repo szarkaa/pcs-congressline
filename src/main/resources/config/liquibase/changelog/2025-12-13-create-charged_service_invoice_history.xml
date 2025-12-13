@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-charged-service-invoice-history" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="charged_service_invoice_history"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="charged_service_invoice_history">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="charged_service" type="BIGINT(20)"/>
+
+            <column name="invoice" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="charged_service_invoice_history"
+                     indexName="fk_charged_service_invoice_history_charged_service_id">
+            <column name="charged_service"/>
+        </createIndex>
+
+        <createIndex tableName="charged_service_invoice_history" indexName="idx_charged_service_invoice_history_invoice_id">
+            <column name="invoice"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_charged_service_invoice_history_charged_service_id"
+                                 baseTableName="charged_service_invoice_history"
+                                 baseColumnNames="charged_service"
+                                 referencedTableName="charged_service"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_charged_service_invoice_history_invoice_id"
+                                 baseTableName="charged_service_invoice_history"
+                                 baseColumnNames="invoice"
+                                 referencedTableName="invoice"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

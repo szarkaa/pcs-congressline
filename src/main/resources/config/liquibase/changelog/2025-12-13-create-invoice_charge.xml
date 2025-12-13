@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-invoice-charge" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="invoice_charge"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="invoice_charge">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="amount" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="currency" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="item_desc" type="VARCHAR(255)"/>
+            <column name="item_name" type="VARCHAR(255)"/>
+
+            <column name="item_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="invoice" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="invoice_charge" indexName="idx_invoice_charge_invoice">
+            <column name="invoice"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_invoice_charge_invoice_id"
+                                 baseTableName="invoice_charge"
+                                 baseColumnNames="invoice"
+                                 referencedTableName="invoice"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-registration-type" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="registration_type"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="registration_type">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="code" type="VARCHAR(16)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(100)"/>
+
+            <column name="first_reg_fee" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="first_deadline" type="DATE"/>
+
+            <column name="second_reg_fee" type="DECIMAL(10,2)"/>
+            <column name="second_deadline" type="DATE"/>
+
+            <column name="third_reg_fee" type="DECIMAL(10,2)"/>
+
+            <column name="registration_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="currency_id" type="BIGINT(20)"/>
+            <column name="vat_info_id" type="BIGINT(20)"/>
+            <column name="congress_id" type="BIGINT(20)"/>
+
+            <column name="online_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="online_visibility" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="online_label" type="VARCHAR(200)"/>
+            <column name="online_order" type="INT(11)"/>
+
+            <column name="name2" type="VARCHAR(64)"/>
+        </createTable>
+
+        <createIndex tableName="registration_type" indexName="idx_registration_type_currency_id">
+            <column name="currency_id"/>
+        </createIndex>
+
+        <createIndex tableName="registration_type" indexName="idx_registration_type_vat_info_id">
+            <column name="vat_info_id"/>
+        </createIndex>
+
+        <createIndex tableName="registration_type" indexName="idx_registration_type_congress_id">
+            <column name="congress_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_registration_type_congress_id"
+                                 baseTableName="registration_type"
+                                 baseColumnNames="congress_id"
+                                 referencedTableName="congress"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_registration_type_currency_id"
+                                 baseTableName="registration_type"
+                                 baseColumnNames="currency_id"
+                                 referencedTableName="currency"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_registration_type_vat_info_id"
+                                 baseTableName="registration_type"
+                                 baseColumnNames="vat_info_id"
+                                 referencedTableName="vat_info"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

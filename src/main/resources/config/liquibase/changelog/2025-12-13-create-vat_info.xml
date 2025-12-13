@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-vat-info" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="vat_info"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="vat_info">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(128)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vat" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="szj" type="VARCHAR(20)"/>
+
+            <column name="chargeable_item_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="congress_id" type="BIGINT(20)"/>
+
+            <column name="vat_rate_type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vat_exception_reason" type="VARCHAR(200)"/>
+        </createTable>
+
+        <createIndex tableName="vat_info" indexName="idx_vat_info_congress_id">
+            <column name="congress_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_vat_info_congress_id"
+                                 baseTableName="vat_info"
+                                 baseColumnNames="congress_id"
+                                 referencedTableName="congress"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

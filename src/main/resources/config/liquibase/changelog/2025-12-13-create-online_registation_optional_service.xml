@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-online-registration-optional-service" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="online_registration_optional_service"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="online_registration_optional_service">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="participant" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="registration_id" type="BIGINT(20)"/>
+            <column name="optional_service_id" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="online_registration_optional_service" indexName="idx_online_registration_optional_service_optional_service_id">
+            <column name="optional_service_id"/>
+        </createIndex>
+
+        <createIndex tableName="online_registration_optional_service" indexName="idx_online_registration_optional_service_registration_id">
+            <column name="registration_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_online_registration_optional_service_optional_service_id"
+                                 baseTableName="online_registration_optional_service"
+                                 baseColumnNames="optional_service_id"
+                                 referencedTableName="optional_service"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_online_registration_optional_service_online_registation_id"
+                                 baseTableName="online_registration_optional_service"
+                                 baseColumnNames="registration_id"
+                                 referencedTableName="online_registation"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

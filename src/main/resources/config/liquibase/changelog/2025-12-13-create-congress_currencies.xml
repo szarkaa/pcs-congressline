@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-congress-currencies" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="congress_currencies"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="congress_currencies">
+            <column name="currencies_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="congresses_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="congress_currencies" columnNames="congresses_id,currencies_id" constraintName="pk_congress_currencies"/>
+
+        <createIndex tableName="congress_currencies" indexName="idx_congress_currencies_currencies_id">
+            <column name="currencies_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_congress_currencies_congresses_id"
+                                 baseTableName="congress_currencies"
+                                 baseColumnNames="congresses_id"
+                                 referencedTableName="congress"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_congress_currencies_currencies_id"
+                                 baseTableName="congress_currencies"
+                                 baseColumnNames="currencies_id"
+                                 referencedTableName="currency"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-company" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="company"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="company">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="name_2" type="VARCHAR(255)"/>
+            <column name="address_2" type="VARCHAR(255)"/>
+
+            <column name="tax_number" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="eu_tax_number" type="VARCHAR(64)"/>
+            <column name="phone" type="VARCHAR(64)"/>
+            <column name="fax" type="VARCHAR(64)"/>
+            <column name="licence_number" type="VARCHAR(255)"/>
+
+            <column name="invoice_number_prefix" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="invoice_number" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="building" type="VARCHAR(10)"/>
+            <column name="city" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="country_code" type="VARCHAR(2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="door" type="VARCHAR(10)"/>
+            <column name="floor" type="VARCHAR(10)"/>
+
+            <column name="number" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="public_place_category" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="staircase" type="VARCHAR(10)"/>
+
+            <column name="street_name" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="zip_code" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="annual_year_prefix" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="payment_trx_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="proforma_invoice_number" type="INT(11)" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

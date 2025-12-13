@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-invoice-item" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="invoice_item"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="invoice_item">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="currency" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="item_desc" type="VARCHAR(255)"/>
+            <column name="item_name" type="VARCHAR(255)"/>
+
+            <column name="item_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="szj" type="VARCHAR(20)"/>
+
+            <column name="total" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="unit_price" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vat" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vat_base" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vat_value" type="DECIMAL(10,2)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="invoice" type="BIGINT(20)"/>
+
+            <column name="vat_name" type="VARCHAR(255)"/>
+            <column name="unit" type="INT(11)"/>
+            <column name="unit_of_measure" type="VARCHAR(255)"/>
+
+            <column name="vat_rate_type" type="VARCHAR(32)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="vat_exception_reason" type="VARCHAR(200)"/>
+        </createTable>
+
+        <createIndex tableName="invoice_item" indexName="idx_invoice_item_invoice">
+            <column name="invoice"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_invoice_item_invoice_id"
+                                 baseTableName="invoice_item"
+                                 baseColumnNames="invoice"
+                                 referencedTableName="invoice"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

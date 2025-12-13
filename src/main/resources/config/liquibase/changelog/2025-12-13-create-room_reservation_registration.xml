@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-room-reservation-registration" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="room_reservation_registration"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="room_reservation_registration">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="created_date" type="DATE"/>
+            <column name="comment" type="VARCHAR(255)"/>
+
+            <column name="room_reservation_id" type="BIGINT(20)"/>
+            <column name="registration_id" type="BIGINT(20)"/>
+            <column name="paying_group_item_id" type="BIGINT(20)"/>
+        </createTable>
+
+        <createIndex tableName="room_reservation_registration" indexName="idx_room_reservation_registration_room_reservation_id">
+            <column name="room_reservation_id"/>
+        </createIndex>
+
+        <createIndex tableName="room_reservation_registration" indexName="idx_room_reservation_registration_registration_id">
+            <column name="registration_id"/>
+        </createIndex>
+
+        <createIndex tableName="room_reservation_registration" indexName="idx_room_reservation_registration_paying_group_item_id">
+            <column name="paying_group_item_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_room_reservation_registration_paying_group_item_id"
+                                 baseTableName="room_reservation_registration"
+                                 baseColumnNames="paying_group_item_id"
+                                 referencedTableName="paying_group_item"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_room_reservation_registration_registration_id"
+                                 baseTableName="room_reservation_registration"
+                                 baseColumnNames="registration_id"
+                                 referencedTableName="registration"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_room_reservation_registration_room_reservation_id"
+                                 baseTableName="room_reservation_registration"
+                                 baseColumnNames="room_reservation_id"
+                                 referencedTableName="room_reservation"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

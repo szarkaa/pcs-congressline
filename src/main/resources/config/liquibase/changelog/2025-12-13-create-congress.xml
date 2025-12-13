@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2025-12-13-create-congress" author="aszarka">
+
+        <preConditions onFail="MARK_RAN" onError="MARK_RAN">
+            <not>
+                <tableExists tableName="congress"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="congress">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="meeting_code" type="VARCHAR(15)"/>
+
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="start_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="end_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="contact_person" type="VARCHAR(128)"/>
+            <column name="contact_email" type="VARCHAR(64)"/>
+            <column name="program_number" type="VARCHAR(64)"/>
+            <column name="additional_billing_text_hu" type="VARCHAR(1000)"/>
+            <column name="additional_billing_text_en" type="VARCHAR(1000)"/>
+
+            <column name="default_country_id" type="BIGINT(20)"/>
+
+            <column name="uuid" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="archive" type="BIT(1)"/>
+            <column name="website" type="VARCHAR(1000)"/>
+            <column name="migrated_from_congress_code" type="VARCHAR(15)"/>
+        </createTable>
+
+        <addUniqueConstraint tableName="congress" columnNames="uuid" constraintName="uc_congress_uuid"/>
+
+        <addUniqueConstraint tableName="congress" columnNames="meeting_code" constraintName="uc_congress_meeting_code"/>
+
+        <createIndex tableName="congress" indexName="idx_congress_default_country_id">
+            <column name="default_country_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint constraintName="fk_congress_default_country_id"
+                                 baseTableName="congress"
+                                 baseColumnNames="default_country_id"
+                                 referencedTableName="country"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>
