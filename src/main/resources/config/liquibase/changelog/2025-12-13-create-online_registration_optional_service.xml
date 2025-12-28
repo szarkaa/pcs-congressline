@@ -37,10 +37,10 @@
                                  referencedTableName="optional_service"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint constraintName="fk_online_registration_optional_service_online_registation_id"
+        <addForeignKeyConstraint constraintName="fk_online_registration_optional_service_online_registration_id"
                                  baseTableName="online_registration_optional_service"
                                  baseColumnNames="registration_id"
-                                 referencedTableName="online_registation"
+                                 referencedTableName="online_registration"
                                  referencedColumnNames="id"/>
 
     </changeSet>

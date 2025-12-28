@@ -24,7 +24,7 @@
             <column name="congress_id"/>
         </createIndex>
 
-        <createIndex tableName="congress_hotel" indexName="fk_congress_hotel_hotel_id">
+        <createIndex tableName="congress_hotel" indexName="idx_congress_hotel_hotel_id">
             <column name="hotel_id"/>
         </createIndex>
 

@@ -632,7 +632,8 @@
                         <dependency>
                             <groupId>org.glassfish.jaxb</groupId>
                             <artifactId>jaxb-runtime</artifactId>
-                            <version>${maven.jaxb2.version}</version>
+                            <version>2.3.3</version>
+<!--                            <version>${maven.jaxb2.version}</version>-->
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -881,6 +882,7 @@
                 </dependency>
             </dependencies>
         </profile>
+<!--
         <profile>
             <id>docker-compose</id>
             <activation>
@@ -894,6 +896,7 @@
                 </dependency>
             </dependencies>
         </profile>
+-->
         <profile>
             <!--
                 Profile for applying IDE-specific configuration.

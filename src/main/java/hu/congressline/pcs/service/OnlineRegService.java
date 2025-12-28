@@ -1,8 +1,6 @@
 package hu.congressline.pcs.service;
 
-import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfCopy;
 import com.lowagie.text.pdf.PdfCopyFields;
 import com.lowagie.text.pdf.PdfReader;
 
@@ -12,7 +10,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -215,7 +212,8 @@ public class OnlineRegService {
                 getTotalAmountOfOnlineReg(onlineReg),
                 onlineReg.getCurrency(),
                 companyService.getCompanyProfile(),
-                Locale.forLanguageTag(Currency.HUF.toString().equalsIgnoreCase(onlineReg.getCurrency()) ? Language.HU.toString().toLowerCase() : Language.EN.toString().toLowerCase()));
+                Locale.forLanguageTag(Currency.HUF.toString().equalsIgnoreCase(onlineReg.getCurrency()) ? Language.HU.toString().toLowerCase()
+                : Language.EN.toString().toLowerCase()));
         }
         */
     }

@@ -94,7 +94,7 @@ spring:
     name: pcs
   docker:
     compose:
-      enabled: true
+      enabled: false
       lifecycle-management: start-only
       file: src/main/docker/services.yml
   profiles:
@@ -136,6 +136,9 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
         implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+  liquibase:
+    database-change-log-table: PCS_DATABASECHANGELOG
+    database-change-log-lock-table: PCS_DATABASECHANGELOGLOCK
   messages:
     basename: i18n/messages
   main:
@@ -219,4 +222,6 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  liquibase:
+    async-start: false

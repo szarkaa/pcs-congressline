@@ -25,7 +25,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "online_registation")
+@Table(name = "online_registration")
 public class OnlineRegistration implements Serializable {
 
     @Serial

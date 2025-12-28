@@ -150,7 +150,7 @@ public class InvoiceService {
     public InvoiceRegistration getInvoiceRegistrationByInvoiceId(Long id) {
         log.debug("Request to get Invoice by invoice id: {}", id);
         return invoiceRegistrationRepository.findByInvoiceId(id)
-                .orElseThrow(() -> new IllegalArgumentException("InvoiceRegistration not found by invoice id:" +  id));
+                .orElseThrow(() -> new IllegalArgumentException("InvoiceRegistration not found by invoice id:" + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

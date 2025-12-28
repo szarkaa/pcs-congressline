@@ -75,7 +75,7 @@
             <column name="congress_id"/>
         </createIndex>
 
-        <addForeignKeyConstraint constraintName="fk_registration_country_id"
+        <addForeignKeyConstraint constraintName="fk_registration_invoice_country_id"
                                  baseTableName="registration"
                                  baseColumnNames="invoice_country_id"
                                  referencedTableName="country"

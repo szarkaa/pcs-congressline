@@ -143,7 +143,7 @@ public class GroupDiscountInvoiceXlsService extends XlsReportService {
             final XSSFRow row = sheet.createRow(rowIndex.get());
             addCell(row, wrappingCellStyle, 0, details.getRegistrationId());
             addCell(row, wrappingCellStyle, 1, details.getName());
-            addCell(row, wrappingCellStyle, 2, details.getRegistationDiscount().intValue());
+            addCell(row, wrappingCellStyle, 2, details.getRegistrationDiscount().intValue());
             addCell(row, wrappingCellStyle, 3, details.getAccomodationDiscount().intValue());
             addCell(row, wrappingCellStyle, 4, details.getOrderedServiceDiscount().intValue());
             rowIndex.getAndIncrement();
@@ -200,7 +200,7 @@ public class GroupDiscountInvoiceXlsService extends XlsReportService {
             final XSSFRow row = sheet.createRow(rowIndex.get());
             addCell(row, wrappingCellStyle, 0, details.getRegistrationId());
             addCell(row, wrappingCellStyle, 1, details.getName());
-            addCell(row, wrappingCellStyle, 2, details.getRegistationDiscount().intValue());
+            addCell(row, wrappingCellStyle, 2, details.getRegistrationDiscount().intValue());
             addCell(row, wrappingCellStyle, 3, details.getAccomodationDiscount().intValue());
             addCell(row, wrappingCellStyle, 4, details.getOrderedServiceDiscount().intValue());
             rowIndex.getAndIncrement();
@@ -262,7 +262,7 @@ public class GroupDiscountInvoiceXlsService extends XlsReportService {
         private final Integer registrationId;
         private final String name;
         private BigDecimal accomodationDiscount = BigDecimal.ZERO;
-        private BigDecimal registationDiscount = BigDecimal.ZERO;
+        private BigDecimal registrationDiscount = BigDecimal.ZERO;
         private BigDecimal orderedServiceDiscount = BigDecimal.ZERO;
 
         public GroupDiscountInvoiceDetails(Integer registrationId, String name) {
@@ -275,7 +275,7 @@ public class GroupDiscountInvoiceXlsService extends XlsReportService {
         }
 
         public void addRegistrationDiscount(BigDecimal discount) {
-            registationDiscount = registationDiscount.add(discount);
+            registrationDiscount = registrationDiscount.add(discount);
         }
 
         public void addOrderedServiceDiscount(BigDecimal discount) {

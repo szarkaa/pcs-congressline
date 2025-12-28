@@ -2,15 +2,15 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-    <changeSet id="2025-12-13-create-online-registation" author="aszarka">
+    <changeSet id="2025-12-13-create-online-registration" author="aszarka">
 
         <preConditions onFail="MARK_RAN" onError="MARK_RAN">
             <not>
-                <tableExists tableName="online_registation"/>
+                <tableExists tableName="online_registration"/>
             </not>
         </preConditions>
 
-        <createTable tableName="online_registation">
+        <createTable tableName="online_registration">
             <column name="id" type="BIGINT(20)" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -88,52 +88,52 @@
             <column name="payment_order_number" type="VARCHAR(15)"/>
         </createTable>
 
-        <createIndex tableName="online_registation" indexName="idx_online_registation_congress_id">
+        <createIndex tableName="online_registration" indexName="idx_online_registration_congress_id">
             <column name="congress_id"/>
         </createIndex>
 
-        <createIndex tableName="online_registation" indexName="idx_online_registation_registration_type_id">
+        <createIndex tableName="online_registration" indexName="idx_online_registration_registration_type_id">
             <column name="registration_type_id"/>
         </createIndex>
 
-        <createIndex tableName="online_registation" indexName="idx_online_registation_country_id">
+        <createIndex tableName="online_registration" indexName="idx_online_registration_country_id">
             <column name="country_id"/>
         </createIndex>
 
-        <createIndex tableName="online_registation" indexName="idx_online_registation_room_id">
+        <createIndex tableName="online_registration" indexName="idx_online_registration_room_id">
             <column name="room_id"/>
         </createIndex>
 
-        <createIndex tableName="online_registation" indexName="idx_online_registation_invoice_country_id">
+        <createIndex tableName="online_registration" indexName="idx_online_registration_invoice_country_id">
             <column name="invoice_country_id"/>
         </createIndex>
 
-        <addForeignKeyConstraint constraintName="fk_online_registation_congress_id"
-                                 baseTableName="online_registation"
+        <addForeignKeyConstraint constraintName="fk_online_registration_congress_id"
+                                 baseTableName="online_registration"
                                  baseColumnNames="congress_id"
                                  referencedTableName="congress"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint constraintName="fk_online_registation_registration_type_id"
-                                 baseTableName="online_registation"
+        <addForeignKeyConstraint constraintName="fk_online_registration_registration_type_id"
+                                 baseTableName="online_registration"
                                  baseColumnNames="registration_type_id"
                                  referencedTableName="registration_type"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint constraintName="fk_online_registation_country_id"
-                                 baseTableName="online_registation"
+        <addForeignKeyConstraint constraintName="fk_online_registration_country_id"
+                                 baseTableName="online_registration"
                                  baseColumnNames="country_id"
                                  referencedTableName="country"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint constraintName="fk_online_registation_room_id"
-                                 baseTableName="online_registation"
+        <addForeignKeyConstraint constraintName="fk_online_registration_room_id"
+                                 baseTableName="online_registration"
                                  baseColumnNames="room_id"
                                  referencedTableName="room"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint constraintName="fk_online_registation_country_id"
-                                 baseTableName="online_registation"
+        <addForeignKeyConstraint constraintName="fk_online_registration_invoice_country_id"
+                                 baseTableName="online_registration"
                                  baseColumnNames="invoice_country_id"
                                  referencedTableName="country"
                                  referencedColumnNames="id"/>

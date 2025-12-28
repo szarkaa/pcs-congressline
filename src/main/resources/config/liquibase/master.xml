@@ -12,7 +12,71 @@
     <property name="timeType" value="time(6)" dbms="mariadb"/>
 
     <include file="/config/liquibase/changelog/pcs_initial_schema.xml" relativeToChangelogFile="false"/>
-    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
-    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
-    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+    <include file="/config/liquibase/changelog/2025-12-13-create-currency.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-country.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-bank_account.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-company.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-congress.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-optional_text.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-congress_bank_account.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-congress_currencies.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-workplace.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-vat_info.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-rate.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-hotel.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-congress_hotel.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-room.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-chargeable_item.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-invoice.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-registration.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-registration_type.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-room_reservation.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-room_reservation_entry.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-optional_service.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-charged_service.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-paying_group.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-paying_group_item.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-registration_registration_type.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-room_reservation_registration.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-ordered_optional_service.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-acc_people.xml" relativeToChangelogFile="false"/>
+
+    <include file="/config/liquibase/changelog/2025-12-13-create-invoice_item.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-invoice_congress.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-invoice_charge.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-invoice_registration.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-invoice_paying_group.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-invoice_nav_validation.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-misc_service.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-misc_invoice_item.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-chargeable_item_invoice_history.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-charged_service_invoice_history.xml" relativeToChangelogFile="false"/>
+
+    <include file="/config/liquibase/changelog/2025-12-13-create-payment_transaction.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-payment_refund_transaction.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-group_discount_payment.xml" relativeToChangelogFile="false"/>
+
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_other_data_en_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_other_data_es_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_other_data_hu_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_other_data_pt_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_position_en_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_position_es_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_position_hu_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_position_pt_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_workplace_en_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_workplace_es_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_workplace_hu_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_config_workplace_pt_values.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_discount_code.xml" relativeToChangelogFile="false"/>
+
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_registration.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_registration_registration_type.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_registration_optional_service.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_acc_people.xml" relativeToChangelogFile="false"/>
+
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_custom_question.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_reg_custom_question_answers.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-online_registration_custom_answer.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

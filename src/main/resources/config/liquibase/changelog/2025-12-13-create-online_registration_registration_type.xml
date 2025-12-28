@@ -27,13 +27,13 @@
             <column name="registration_type_id"/>
         </createIndex>
 
-        <addForeignKeyConstraint constraintName="fk_online_registration_registration_type_online_registation_id"
+        <addForeignKeyConstraint constraintName="fk_online_registration_registration_type_online_reg_id"
                                  baseTableName="online_registration_registration_type"
                                  baseColumnNames="registration_id"
-                                 referencedTableName="online_registation"
+                                 referencedTableName="online_registration"
                                  referencedColumnNames="id"/>
 
-        <addForeignKeyConstraint constraintName="fk_online_registration_registration_type_online_registation_type_id"
+        <addForeignKeyConstraint constraintName="fk_online_registration_registration_type_online_reg_type_id"
                                  baseTableName="online_registration_registration_type"
                                  baseColumnNames="registration_type_id"
                                  referencedTableName="registration_type"
