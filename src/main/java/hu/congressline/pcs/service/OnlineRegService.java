@@ -1,15 +1,9 @@
 package hu.congressline.pcs.service;
 
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfCopyFields;
-import com.lowagie.text.pdf.PdfReader;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -37,7 +31,6 @@ import hu.congressline.pcs.domain.OnlineRegistrationOptionalService;
 import hu.congressline.pcs.domain.OnlineRegistrationRegistrationType;
 import hu.congressline.pcs.domain.OptionalService;
 import hu.congressline.pcs.domain.OrderedOptionalService;
-import hu.congressline.pcs.domain.PaymentTransaction;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.RegistrationRegistrationType;
 import hu.congressline.pcs.domain.RegistrationType;
@@ -61,7 +54,6 @@ import hu.congressline.pcs.repository.OnlineRegistrationRegistrationTypeReposito
 import hu.congressline.pcs.repository.OnlineRegistrationRepository;
 import hu.congressline.pcs.repository.OptionalServiceRepository;
 import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
-import hu.congressline.pcs.repository.PaymentTransactionRepository;
 import hu.congressline.pcs.repository.RegistrationTypeRepository;
 import hu.congressline.pcs.repository.RoomReservationEntryRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
@@ -69,7 +61,6 @@ import hu.congressline.pcs.repository.RoomReservationRepository;
 import hu.congressline.pcs.service.dto.OnlineRegDiscountCodeDTO;
 import hu.congressline.pcs.service.dto.RoomReservationEntryDTO;
 import hu.congressline.pcs.service.dto.kh.PaymentStatus;
-import hu.congressline.pcs.service.dto.kh.PaymentStatusResult;
 import hu.congressline.pcs.service.dto.online.CongressDTO;
 import hu.congressline.pcs.service.dto.online.HotelDTO;
 import hu.congressline.pcs.service.dto.online.OnlineRegConfigDTO;
@@ -78,7 +69,6 @@ import hu.congressline.pcs.service.dto.online.OptionalServiceDTO;
 import hu.congressline.pcs.service.dto.online.PaymentResultDTO;
 import hu.congressline.pcs.service.dto.online.RegistrationTypeDTO;
 import hu.congressline.pcs.service.dto.online.RoomDTO;
-import hu.congressline.pcs.service.pdf.OnlineRegPdfContext;
 import hu.congressline.pcs.web.rest.vm.AccPeopleVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegFilterVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegOptionalServiceVM;
@@ -86,11 +76,8 @@ import hu.congressline.pcs.web.rest.vm.OnlineRegRegTypeVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegistrationVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tech.jhipster.config.JHipsterProperties;
 
-import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_RETURNED;
-import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_REVERSED;
-import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_SETTLED;
+import static hu.congressline.pcs.service.OnlinePaymentService.BANK_AUTH_NUMBER;
 import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_WAITING_FOR_SETTLEMENT;
 import static java.lang.Boolean.TRUE;
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -100,7 +87,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @Service
 @Transactional
 public class OnlineRegService {
-    private static final String BANK_AUTH_NUMBER = "bankAuthNumber";
     private static final String ONLINE_REGISTRATION_NOT_FOUND = "OnlineRegistration not found by trx id: ";
 
     private final CongressRepository congressRepository;
@@ -123,15 +109,11 @@ public class OnlineRegService {
     private final RoomReservationService rrService;
     private final OrderedOptionalServiceService oosService;
     //private final MailService mailService;
-    private final OnlineRegPdfService pdfService;
-    private final PaymentTransactionRepository paymentTransactionRepository;
+
     private final OnlineRegistrationRepository onlineRegistrationRepository;
-    private final OnlinePaymentService paymentService;
     private final RoomReservationEntryRepository rreRepository;
     private final WorkplaceService workplaceService;
-    private final JHipsterProperties properties;
     private final ApplicationProperties applicationProperties;
-    private final CompanyService companyService;
     private final OnlineRegDiscountCodeRepository discountCodeRepository;
     private final PaymentTransactionService paymentTransactionService;
 
@@ -147,6 +129,13 @@ public class OnlineRegService {
     public OnlineRegistration getById(Long id) {
         log.debug("Request to get OnlineRegistration : {}", id);
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OnlineRegistration not found with id: " + id));
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public List<OnlineRegistration> findAllByPaymentTrxStatus() {
+        log.debug("Request to find all OnlineRegistration by payment trx status");
+        return repository.findByPaymentTrxStatusIn(Stream.of(PAYMENT_WAITING_FOR_SETTLEMENT).map(PaymentStatus::toString).collect(Collectors.toList()));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -216,49 +205,6 @@ public class OnlineRegService {
                 : Language.EN.toString().toLowerCase()));
         }
         */
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    public void checkPendingPaymentResults() {
-        List<PaymentTransaction> paymentTransactionList = paymentTransactionRepository.findByPaymentTrxStatus(PAYMENT_WAITING_FOR_SETTLEMENT.toString());
-        List<OnlineRegistration> onlineRegList = onlineRegistrationRepository.findByPaymentTrxStatusIn(
-            List.of(PAYMENT_WAITING_FOR_SETTLEMENT)
-                .stream()
-                .map(PaymentStatus::toString)
-                .collect(Collectors.toList()));
-        log.debug("checkPendingPaymentResults: found {} pending online registrations", onlineRegList.size());
-        onlineRegList.forEach(onlineReg -> {
-            final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(onlineReg.getCongress().getId());
-            if (PaymentSupplier.KH.equals(onlineRegConfig.getPaymentSupplier())) {
-                String currency = onlineReg.getCurrency();
-                final PaymentStatusResult statusResult = paymentService.sendPaymentStatusRequest(onlineReg.getPaymentTrxId(), currency);
-                onlineReg.setPaymentTrxResultCode(statusResult.getResultCode() != null ? statusResult.getResultCode().toString() : null);
-                onlineReg.setPaymentTrxStatus(statusResult.getPaymentStatus() != null ? PaymentStatus.getByCode(statusResult.getPaymentStatus()).toString() : null);
-                onlineReg.setPaymentTrxAuthCode(statusResult.getAuthCode());
-                onlineReg.setBankAuthNumber(BANK_AUTH_NUMBER);
-                onlineReg.setPaymentTrxResultMessage(statusResult.getResultMessage());
-                onlineRegistrationRepository.save(onlineReg);
-            }
-        });
-
-        log.debug("checkPendingPaymentResults: found {} pending payment transactions", paymentTransactionList.size());
-        paymentTransactionList.forEach(paymentTransaction -> {
-            final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(paymentTransaction.getCongress().getId());
-            if (PaymentSupplier.KH.equals(onlineRegConfig.getPaymentSupplier())) {
-                String currency = paymentTransaction.getCurrency();
-                final PaymentStatusResult statusResult = paymentService.sendPaymentStatusRequest(paymentTransaction.getTransactionId(), currency);
-                if (statusResult.getPaymentStatus() != null && List.of(PAYMENT_REVERSED, PAYMENT_RETURNED, PAYMENT_SETTLED)
-                        .contains(PaymentStatus.getByCode(statusResult.getPaymentStatus()))) {
-                    paymentTransaction.setPaymentTrxResultCode(statusResult.getResultCode() != null ? statusResult.getResultCode().toString() : null);
-                    paymentTransaction.setPaymentTrxStatus(statusResult.getPaymentStatus() != null ? PaymentStatus.getByCode(statusResult.getPaymentStatus()).toString() : null);
-                    paymentTransaction.setPaymentTrxAuthCode(statusResult.getAuthCode());
-                    paymentTransaction.setBankAuthNumber(BANK_AUTH_NUMBER);
-                    paymentTransaction.setPaymentTrxResultMessage(statusResult.getResultMessage());
-                    paymentTransactionRepository.save(paymentTransaction);
-                }
-            }
-        });
-
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -663,43 +609,6 @@ public class OnlineRegService {
             }
         }
         return status;
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    public byte[] getPdf(OnlineRegistration onlineReg) {
-        final List<OnlineRegistrationRegistrationType> orrtList = orrtRepository.findAllByRegistration(onlineReg);
-        final List<OnlineRegistrationOptionalService> orosList = orosRepository.findAllByRegistration(onlineReg);
-
-        return pdfService.generatePdf(new OnlineRegPdfContext(onlineReg, orrtList, orosList));
-    }
-
-    @SuppressWarnings({"MissingJavadocMethod", "IllegalCatch"})
-    public byte[] getAllPdf(List<OnlineRegistration> orList) {
-        final String errorCreatingAllOnlinePdf = "Error while creating all online reg pdf";
-
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-
-            PdfCopyFields copy = new PdfCopyFields(baos);
-            copy.open();
-            for (OnlineRegistration or : orList) {
-                try {
-                    // assuming getPdf(or) returns byte[] for a single registration PDF
-                    byte[] pdfBytes = getPdf(or);
-                    PdfReader reader = new PdfReader(pdfBytes);
-
-                    copy.addDocument(reader);   // <- this exists on PdfCopyFields
-                    reader.close();
-                } catch (DocumentException | IOException e) {
-                    log.error(errorCreatingAllOnlinePdf, e);
-                }
-            }
-
-            copy.close(); // writes final merged PDF into baos
-            return baos.toByteArray();
-        } catch (Exception e) {
-            log.error(errorCreatingAllOnlinePdf, e);
-            return null;
-        }
     }
 
     @SuppressWarnings("MissingJavadocMethod")

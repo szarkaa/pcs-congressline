@@ -1,5 +1,7 @@
 package hu.congressline.pcs.service;
 
+import hu.congressline.pcs.domain.Registration;
+import hu.congressline.pcs.repository.RegistrationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,12 +33,11 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class RoomReservationService {
 
+    private final RegistrationRepository registrationRepository;
     private final RoomReservationRepository rrRepository;
     private final RoomReservationRegistrationRepository rrrRepository;
-    private final RegistrationService registrationService;
     private final DiscountService discountService;
     private final RoomService roomService;
-    private final RoomReservationRegistrationService rrrService;
     private final RoomReservationEntryRepository rreRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -50,8 +51,10 @@ public class RoomReservationService {
         rr.setRoomReservationRegistrations(new ArrayList<>());
         final RoomReservation rrResult = rrRepository.save(rr);
 
+        final Registration registration = registrationRepository.findById(vm.getRegistrationId())
+                .orElseThrow(() -> new IllegalArgumentException("Registration not found with id: " + vm.getRegistrationId()));
         RoomReservationRegistration rrr = new RoomReservationRegistration();
-        rrr.setRegistration(registrationService.getById(vm.getRegistrationId()));
+        rrr.setRegistration(registration);
         rrr.setRoomReservation(rr);
         rrr.setPayingGroupItem(vm.getPayingGroupItem());
         rrr.setComment(vm.getComment());
@@ -87,7 +90,8 @@ public class RoomReservationService {
     @SuppressWarnings("MissingJavadocMethod")
     public RoomReservationVM update(RoomReservationVM vm) {
         log.debug("Request to update RoomReservation : {}", vm);
-        RoomReservationRegistration rrr = rrrService.getById(vm.getId());
+        RoomReservationRegistration rrr = rrrRepository.findById(vm.getId())
+                .orElseThrow(() -> new IllegalArgumentException("RoomReservationRegistration not found with id: " + vm.getId()));
         // decrease the room reservations on dates according to the old date values
         Stream<LocalDate> range = Stream.iterate(rrr.getRoomReservation().getArrivalDate(), d -> d.plusDays(1))
                 .limit(ChronoUnit.DAYS.between(rrr.getRoomReservation().getArrivalDate(), rrr.getRoomReservation().getDepartureDate()));

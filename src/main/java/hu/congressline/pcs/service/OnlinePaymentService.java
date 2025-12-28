@@ -7,6 +7,10 @@ import com.stripe.model.checkout.Session;
 import com.stripe.net.RequestOptions;
 import com.stripe.param.checkout.SessionCreateParams;
 
+import hu.congressline.pcs.domain.PaymentTransaction;
+import hu.congressline.pcs.domain.enumeration.PaymentSupplier;
+import hu.congressline.pcs.repository.PaymentTransactionRepository;
+import hu.congressline.pcs.service.dto.kh.PaymentStatus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -52,20 +56,65 @@ import hu.congressline.pcs.service.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_RETURNED;
+import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_REVERSED;
+import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_SETTLED;
+import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_WAITING_FOR_SETTLEMENT;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class OnlinePaymentService {
+    public static final String BANK_AUTH_NUMBER = "bankAuthNumber";
     private static final String PAYMENT_INIT_REQUEST_FAILED = "Payment init request sending failed!";
     private static final String PAYMENT_CURRENCY = "Payment currency has to be HUF or EUR!";
     private static final Gson GSON = new Gson();
 
     private final ApplicationProperties properties;
+    private final PaymentTransactionRepository paymentTransactionRepository;
     private final CompanyService companyService;
     private final OnlineRegService onlineRegService;
     private final OnlineRegConfigRepository onlineRegConfigRepository;
     private final PaymentCryptoService paymentCryptoService;
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public void checkPendingPaymentResults() {
+        List<PaymentTransaction> paymentTransactionList = paymentTransactionRepository.findByPaymentTrxStatus(PAYMENT_WAITING_FOR_SETTLEMENT.toString());
+        List<OnlineRegistration> onlineRegList = onlineRegService.findAllByPaymentTrxStatus();
+        log.debug("checkPendingPaymentResults: found {} pending online registrations", onlineRegList.size());
+        onlineRegList.forEach(onlineReg -> {
+            final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(onlineReg.getCongress().getId());
+            if (PaymentSupplier.KH.equals(onlineRegConfig.getPaymentSupplier())) {
+                String currency = onlineReg.getCurrency();
+                final PaymentStatusResult statusResult = sendPaymentStatusRequest(onlineReg.getPaymentTrxId(), currency);
+                onlineReg.setPaymentTrxResultCode(statusResult.getResultCode() != null ? statusResult.getResultCode().toString() : null);
+                onlineReg.setPaymentTrxStatus(statusResult.getPaymentStatus() != null ? PaymentStatus.getByCode(statusResult.getPaymentStatus()).toString() : null);
+                onlineReg.setPaymentTrxAuthCode(statusResult.getAuthCode());
+                onlineReg.setBankAuthNumber(BANK_AUTH_NUMBER);
+                onlineReg.setPaymentTrxResultMessage(statusResult.getResultMessage());
+                onlineRegService.save(onlineReg);
+            }
+        });
+
+        log.debug("checkPendingPaymentResults: found {} pending payment transactions", paymentTransactionList.size());
+        paymentTransactionList.forEach(paymentTransaction -> {
+            final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(paymentTransaction.getCongress().getId());
+            if (PaymentSupplier.KH.equals(onlineRegConfig.getPaymentSupplier())) {
+                String currency = paymentTransaction.getCurrency();
+                final PaymentStatusResult statusResult = sendPaymentStatusRequest(paymentTransaction.getTransactionId(), currency);
+                if (statusResult.getPaymentStatus() != null && List.of(PAYMENT_REVERSED, PAYMENT_RETURNED, PAYMENT_SETTLED)
+                        .contains(PaymentStatus.getByCode(statusResult.getPaymentStatus()))) {
+                    paymentTransaction.setPaymentTrxResultCode(statusResult.getResultCode() != null ? statusResult.getResultCode().toString() : null);
+                    paymentTransaction.setPaymentTrxStatus(statusResult.getPaymentStatus() != null ? PaymentStatus.getByCode(statusResult.getPaymentStatus()).toString() : null);
+                    paymentTransaction.setPaymentTrxAuthCode(statusResult.getAuthCode());
+                    paymentTransaction.setBankAuthNumber(BANK_AUTH_NUMBER);
+                    paymentTransaction.setPaymentTrxResultMessage(statusResult.getResultMessage());
+                    paymentTransactionRepository.save(paymentTransaction);
+                }
+            }
+        });
+
+    }
     @SuppressWarnings("MissingJavadocMethod")
     public String makeStripePaymentCheckout(OnlineRegistration onlineReg) {
         String retVal = null;

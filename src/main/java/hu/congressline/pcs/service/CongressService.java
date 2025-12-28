@@ -22,14 +22,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-@Service
 @Transactional
+@Service
 public class CongressService {
 
     private final CongressRepository congressRepository;
     private final OnlineRegConfigRepository onlineRegConfigRepository;
     private final OnlineRegCustomQuestionRepository onlineRegCustomQuestionRepository;
-    private final WorkplaceService workplaceService;
 
     @SuppressWarnings("MissingJavadocMethod")
     public List<CongressVM> findAllCongresses() {
@@ -56,11 +55,6 @@ public class CongressService {
     public Congress getEagerById(Long id) {
         log.debug("Request to get Congress eagerly: {}", id);
         return congressRepository.findOneWithEagerRelationships(id).orElseThrow(() -> new IllegalArgumentException("Congress eager not found with id: " + id));
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    public void migrateWorkplaces(Long fromCongressId, Long toCongressId) {
-        workplaceService.migrate(fromCongressId, toCongressId);
     }
 
     @SuppressWarnings("MissingJavadocMethod")

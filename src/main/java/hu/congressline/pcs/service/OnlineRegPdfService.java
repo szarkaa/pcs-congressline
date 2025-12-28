@@ -6,13 +6,16 @@ import com.lowagie.text.Element;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfCopyFields;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -50,6 +53,43 @@ public class OnlineRegPdfService extends AbstractPdfService {
     private final AccPeopleOnlineRepository accPeopleOnlineRepository;
     private final OnlineRegService onlineRegService;
     private final ApplicationProperties properties;
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public byte[] getPdf(OnlineRegistration onlineReg) {
+        final List<OnlineRegistrationRegistrationType> orrtList = orrtRepository.findAllByRegistration(onlineReg);
+        final List<OnlineRegistrationOptionalService> orosList = orosRepository.findAllByRegistration(onlineReg);
+
+        return generatePdf(new OnlineRegPdfContext(onlineReg, orrtList, orosList));
+    }
+
+    @SuppressWarnings({"MissingJavadocMethod", "IllegalCatch"})
+    public byte[] getAllPdf(List<OnlineRegistration> orList) {
+        final String errorCreatingAllOnlinePdf = "Error while creating all online reg pdf";
+
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+
+            PdfCopyFields copy = new PdfCopyFields(baos);
+            copy.open();
+            for (OnlineRegistration or : orList) {
+                try {
+                    // assuming getPdf(or) returns byte[] for a single registration PDF
+                    byte[] pdfBytes = getPdf(or);
+                    PdfReader reader = new PdfReader(pdfBytes);
+
+                    copy.addDocument(reader);   // <- this exists on PdfCopyFields
+                    reader.close();
+                } catch (DocumentException | IOException e) {
+                    log.error(errorCreatingAllOnlinePdf, e);
+                }
+            }
+
+            copy.close(); // writes final merged PDF into baos
+            return baos.toByteArray();
+        } catch (Exception e) {
+            log.error(errorCreatingAllOnlinePdf, e);
+            return null;
+        }
+    }
 
     @SuppressWarnings("IllegalCatch")
     @Override

@@ -26,37 +26,37 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class RoomReservationRegistrationService {
 
-    private final RoomReservationRegistrationRepository roomReservationRegistrationRepository;
-    private final RoomReservationRepository roomReservationRepository;
     private final RoomReservationService roomReservationService;
+    private final RoomReservationRegistrationRepository rrrRepository;
+    private final RoomReservationRepository rrRepository;
     private final ChargeableItemInvoiceHistoryRepository ciihRepository;
     private final GroupDiscountInvoiceHistoryRepository gdihRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     public RoomReservationRegistration save(RoomReservationRegistration roomReservationRegistration) {
         log.debug("Request to save RoomReservationRegistration : {}", roomReservationRegistration);
-        return roomReservationRegistrationRepository.save(roomReservationRegistration);
+        return rrrRepository.save(roomReservationRegistration);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<RoomReservationRegistration> findAll() {
         log.debug("Request to get all RoomReservationRegistrations");
-        return roomReservationRegistrationRepository.findAll();
+        return rrrRepository.findAll();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<RoomReservationRegistration> findById(Long id) {
         log.debug("Request to find RoomReservationRegistration : {}", id);
-        return roomReservationRegistrationRepository.findById(id);
+        return rrrRepository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public RoomReservationRegistration getById(Long id) {
         log.debug("Request to get RoomReservationRegistration : {}", id);
-        return roomReservationRegistrationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("RoomReservationRegistration not found with id: " + id));
+        return rrrRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("RoomReservationRegistration not found with id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -83,9 +83,9 @@ public class RoomReservationRegistrationService {
             final Stream<LocalDate> range = Stream.iterate(rr.getArrivalDate(), d -> d.plusDays(1))
                     .limit(ChronoUnit.DAYS.between(rr.getArrivalDate(), rr.getDepartureDate()));
             range.forEach(localDate -> roomReservationService.decreaseRoomReservedNumber(rr.getRoom(), localDate));
-            roomReservationRepository.deleteById(rrr.getRoomReservation().getId());
+            rrRepository.deleteById(rrr.getRoomReservation().getId());
         } else {
-            roomReservationRegistrationRepository.deleteById(id);
+            rrrRepository.deleteById(id);
         }
     }
 }
