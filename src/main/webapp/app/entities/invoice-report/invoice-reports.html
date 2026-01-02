@@ -1,0 +1,150 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.invoiceReport.home.title">Registation Report</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-3 no-padding-left">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.programNumber" autocomplete="off" id="programNumber" name="programNumber" placeholder="{{ 'pcsApp.invoiceReport.programNumber' | translate }}">
+                                            </div>
+                                            <div class="col-md-2 no-padding-left">
+                                                <div class="input-group">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('fromDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                    <input id="field_fromDate" type="text" class="form-control" name="fromDate" uib-datepicker-popup="{{dateformat}}" autocomplete="off"
+                                                           ng-model="vm.reportFilter.fromDate" is-open="vm.datePickerOpenStatus.fromDate" placeholder="{{ 'pcsApp.invoiceReport.fromDate' | translate }}" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 no-padding-left">
+                                                <div class="input-group">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('toDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                    <input id="field_toDate" type="text" class="form-control" name="toDate" uib-datepicker-popup="{{dateformat}}" autocomplete="off"
+                                                           ng-model="vm.reportFilter.toDate" is-open="vm.datePickerOpenStatus.toDate" placeholder="{{ 'pcsApp.invoiceReport.toDate' | translate }}" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 no-padding-left">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.invoiceNumber" autocomplete="off" id="invoiceNumber" name="invoiceNumber" placeholder="{{ 'pcsApp.invoiceReport.invoiceNumber' | translate }}">
+                                            </div>
+                                            <div class="col-md-3 input-group">
+                                                <select class="form-control full-width" name="filterProforma" ng-model="vm.reportFilter.filterProforma" id="id_filterProforma">
+                                                    <option ng-selected="vm.filterProforma" ng-value="true">Regular</option>
+                                                    <option ng-selected="!vm.filterProforma" ng-value="false">Pro forma</option>
+                                                </select>
+                                                <span  class="input-group-btn width-min" >
+                                                    <button class="btn btn-info" ng-click="vm.search()">
+                                                        <span class="glyphicon glyphicon-search"></span>
+                                                    </button>
+                                                    <button class="btn btn-danger" ng-if="vm.reportList.length || vm.isAnyFilterSet()" ng-click="vm.clear()">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                    <button class="btn btn-primary" ng-if="vm.reportList.length" tooltip-placement="left" uib-tooltip="Download xls report" type="submit" ng-click="vm.downloadReportXls()">
+                                                        <i class="fa fa-download"></i>
+                                                    </button>
+                                                    <button class="btn btn-primary" ng-if="vm.reportList.length" tooltip-placement="left" uib-tooltip="Download accountant xls report" type="submit" ng-click="vm.downloadAccountantReportXls()">
+                                                        <i class="fa fa-book"></i>
+                                                    </button>
+                                                    <button class="btn btn-primary" ng-if="vm.reportList.length" tooltip-placement="left" uib-tooltip="Download NAV report" type="submit" ng-click="vm.downloadNavXmlArchive()">
+                                                        <i class="fa fa-file-zip-o"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content" ng-show="vm.reportList.length">
+                    <table datatable="ng" id="invoice-report-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th><span data-translate="pcsApp.invoiceReport.navStatus">NAV status</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.invoiceNumber">Invoice number</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.stornoInvoiceNumber">Storno invoice number</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.invoiceReportType">Type</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.invoiceType">Invoice type</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.name2">Name2</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.name1">Name1</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.optionalName">Optional name</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.taxNumber">Tax no.</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.zipCode">Zipcode</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.city">City</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.street">Street</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.country">Country</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.congressName">Congress name</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.programNumber">Prg. num.</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.createdDate">Date of invoice</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.dateOfFulfilment">Date of fulfilment</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.paymentDeadline">Payment deadline</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.billingMethod">Method of payment</span></th>
+                            <th ng-repeat-start="vatColumn in vm.reportListVatColumn">
+                                <span data-translate="pcsApp.invoiceReport.vatNettoColumn" data-translate-values="{vat: '{{ vatColumn }}'}" >VAT Netto column</span>
+                            </th>
+                            <th ng-repeat-end><span data-translate="pcsApp.invoiceReport.vatValueColumn" data-translate-values="{vat: '{{ vatColumn }}'}" >VAT value column</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.vatNettoTotal">VAT Netto Total</span></th>
+                            <th><span data-translate="pcsApp.invoiceReport.vatValueTotal">VAT Value Total</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="ir in vm.reportList track by ir.id">
+                            <td>
+                                <send-invoice-email-dialog invoice="{{ir.id}}" email="{{vm.registration.email}}">
+                                    <button class="btn btn-info m-b-xs" tooltip-placement="right" uib-tooltip="Resend invoice via email" type="button"><i class="fa fa-envelope"></i></button>
+                                </send-invoice-email-dialog>
+                                <button class="btn btn-info m-b-xs" type="button" tooltip-placement="right" uib-tooltip="Download invoice"
+                                        ng-click="vm.downloadPdf(ir.id)"><i class="fa fa-download"></i></button>
+                                <button ng-show="vm.isSendToNavButtonVisible(ir.invoiceType, ir.navStatus)" class="btn btn-danger m-b-xs" type="submit" tooltip-placement="right" uib-tooltip="Send to NAV"
+                                        ui-sref="invoice-report.send-to-nav({id:ir.id})"><i class="fa fa-upload"></i></button>
+                                <button  ng-show="vm.hasInvoiceSendingStatus(ir.navStatus)" class="btn btn-info" type="submit" tooltip-placement="right" uib-tooltip="NAV invoice sending status"
+                                        ui-sref="invoice-report.show-nav-sending-status({id:ir.id})"><i class="fa fa-list"></i></button>
+                            </td>
+                            <td>{{ir.navStatus}}</td>
+                            <td>{{ir.invoiceNumber}}</td>
+                            <td>{{ir.stornoInvoiceNumber}}</td>
+                            <td>{{ir.invoiceReportType}}</td>
+                            <td data-translate="pcsApp.InvoiceType.{{ir.invoiceType}}"></td>
+                            <td>{{ir.name2}}</td>
+                            <td>{{ir.name1}}</td>
+                            <td>{{ir.optionalName}}</td>
+                            <td>{{ir.vatRegNumber}}</td>
+                            <td>{{ir.zipCode}}</td>
+                            <td>{{ir.city}}</td>
+                            <td>{{ir.street}}</td>
+                            <td>{{ir.country}}</td>
+                            <td>{{ir.congressName}}</td>
+                            <td>{{ir.programNumber}}</td>
+                            <td>{{ir.createdDate | date: 'mediumDate' }}</td>
+                            <td>{{ir.dateOfFulfilment | date: 'mediumDate' }}</td>
+                            <td>{{ir.paymentDeadline | date: 'mediumDate' }}</td>
+                            <td>{{ "pcsApp.invoiceReport.billingMethodOption." + ir.billingMethod | translate }}</td>
+                            <td ng-repeat-start="vatColumn in vm.reportListVatColumn">{{vm.getInvoiceReportItemVatNettoValue(ir, vatColumn)}}</td>
+                            <td ng-repeat-end>{{vm.getInvoiceReportItemVatValue(ir, vatColumn)}}</td>
+                            <td><strong>{{vm.getInvoiceReportVatNettoTotal(ir, vatColumn)}}</strong></td>
+                            <td><strong>{{vm.getInvoiceReportVatValueTotal(ir, vatColumn)}}</strong></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

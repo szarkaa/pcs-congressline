@@ -1,0 +1,54 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.select()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myGroupDiscountItemLabel" data-translate="pcsApp.groupDiscountItem.home.createOrEditLabel">Create or edit a Group Discount Item</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label data-translate="pcsApp.groupDiscountItem.payingGroup" for="field_payingGroup">Paying Group</label>
+            <ui-select ng-model="vm.groupDiscountItemFilter.payingGroup" name="payingGroup" id="field_payingGroup" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="payingGroup in (vm.payingGroups | filter: $select.search) track by payingGroup.id">
+                    <div ng-bind-html="payingGroup.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.payingGroup.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.payingGroup.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.groupDiscountItem.chargeableItemType" for="field_chargeableItemType">Chargeable Item Type</label>
+            <select class="form-control" name="chargeableItemType" ng-model="vm.groupDiscountItemFilter.chargeableItemType" id="field_chargeableItemType" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="ALL" data-translate="pcsApp.ChargeableItemType.ALL">ALL</option>
+                <option value="REGISTRATION" data-translate="pcsApp.ChargeableItemType.REGISTRATION">REGISTRATION</option>
+                <option value="HOTEL" data-translate="pcsApp.ChargeableItemType.HOTEL">HOTEL</option>
+                <option value="OPTIONAL_SERVICE" data-translate="pcsApp.ChargeableItemType.OPTIONAL_SERVICE">OPTIONAL_SERVICE</option>
+                <option value="MISCELLANEOUS" data-translate="pcsApp.ChargeableItemType.MISCELLANEOUS">MISCELLANEOUS</option>
+            </select>
+            <div ng-show="editForm.chargeableItemType.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.chargeableItemType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.select">Select</span>
+        </button>
+    </div>
+</form>

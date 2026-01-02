@@ -1,0 +1,12 @@
+{
+    "pcsApp": {
+        "ChargeableItemType" : {
+            "null": "",
+            "ALL": "All",
+            "REGISTRATION": "Registration",
+            "HOTEL": "Hotel",
+            "OPTIONAL_SERVICE": "Optional service",
+            "MISCELLANEOUS": "Miscellaneous"
+        }
+    }
+}

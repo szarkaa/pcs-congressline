@@ -1,0 +1,232 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div style="padding-left: 15px">
+        <h2 data-translate="pcsApp.backendOnlineReg.home.createOrEditLabel" translate-values="{lastName: '{{vm.backendOnlineReg.lastName}}', firstName: '{{vm.backendOnlineReg.firstName}}'}">Create a new registration for {{vm.backendOnlineReg.lastName + ', ' + vm.backendOnlineReg.firstName}}</h2>
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-content">
+                    <div class="row m-b-sm">
+                        <div class="col-xs-2">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.title" for="field_title">Title</label>
+                            <input type="text" class="form-control" name="title" id="field_title" autocomplete="off" disabled ng-value="vm.backendOnlineReg.title" />
+                        </div>
+                        <div class="col-xs-5">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.lastName" for="field_lastName">Last name</label>
+                            <input type="text" class="form-control" name="lastName" id="field_lastName" autocomplete="off" disabled ng-value="vm.backendOnlineReg.lastName" />
+                        </div>
+                        <div class="col-xs-5">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.firstName" for="field_firstName">First name</label>
+                            <input type="text" class="form-control" name="firstName" id="field_firstName" autocomplete="off" disabled ng-value="vm.backendOnlineReg.firstName" />
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.position" for="field_position">Position</label>
+                            <input type="text" class="form-control" name="position" id="field_position" autocomplete="off" disabled ng-value="vm.backendOnlineReg.position" />
+                        </div>
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.department" for="field_department">Department</label>
+                            <input type="text" class="form-control" name="department" id="field_department" autocomplete="off" disabled ng-value="vm.backendOnlineReg.department" />
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.workplace" for="field_workplace">Workplace</label>
+                            <input type="text" class="form-control" name="workplace" id="field_workplace" autocomplete="off" disabled ng-value="vm.backendOnlineReg.workplace" />
+                        </div>
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.otherData" for="field_otherData">Other data</label>
+                            <input type="text" class="form-control" name="otherData" id="field_otherData" autocomplete="off" disabled ng-value="vm.backendOnlineReg.otherData" />
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-xs-2">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.zipCode" for="field_zipCode">Zip code</label>
+                            <input type="text" class="form-control" name="zipCode" id="field_zipCode" autocomplete="off" disabled ng-value="vm.backendOnlineReg.zipCode" />
+                        </div>
+                        <div class="col-xs-4">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.city" for="field_city">City</label>
+                            <input type="text" class="form-control" name="city" id="field_city" autocomplete="off" disabled ng-value="vm.backendOnlineReg.city" />
+                        </div>
+                        <div class="col-xs-4">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.street" for="field_street">Street</label>
+                            <input type="text" class="form-control" name="street" id="field_street" autocomplete="off" disabled ng-value="vm.backendOnlineReg.street" />
+                        </div>
+                        <div class="col-xs-2">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.country" for="field_country">Country</label>
+                            <input type="text" class="form-control" name="country" id="field_country" autocomplete="off" disabled ng-value="vm.backendOnlineReg.country.name" />
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.phone" for="field_phone">Phone</label>
+                            <input type="text" class="form-control" name="phone" id="field_phone" autocomplete="off" disabled ng-value="vm.backendOnlineReg.phone" />
+                        </div>
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.email" for="field_email">Email</label>
+                            <input type="text" class="form-control" name="email" id="field_email" autocomplete="off" disabled ng-value="vm.backendOnlineReg.email" />
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-xs-12">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.registration" for="field_regType">Registration</label>
+                            <input type="text" class="form-control" name="regType" id="field_regType" autocomplete="off" disabled ng-value="vm.backendOnlineReg.registrationType.name" />
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-xs-12">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.home.extraRegistration">Extra Registration(s)</label>
+                            <table class="table chargeable-item online-accept-table">
+                                <thead>
+                                <tr>
+                                    <th data-translate="pcsApp.onlineReg.type">Type</th>
+                                    <th data-translate="pcsApp.onlineReg.accompanies">Accompanies</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="rt in vm.backendOnlineReg.extraRegTypes track by $index">
+                                    <td>
+                                        {{rt.registrationType.name}}
+                                    </td>
+                                    <td>
+                                        <small ng-repeat="acc in rt.accompanies">{{!$first ? ', ' : ''}}{{acc.lastName + ' ' + acc.firstName}}</small>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-xs-8">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.room" for="field_room">Room</label>
+                            <input type="text" class="form-control" name="room" id="field_room" autocomplete="off" disabled ng-value="vm.backendOnlineReg.room.roomType + ' ' + vm.backendOnlineReg.room.hotelName" />
+                        </div>
+                        <div class="col-xs-2">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.arrivalDate" for="field_arrivalDate">Arrival date</label>
+                            <input type="text" class="form-control" name="arrivalDate" id="field_arrivalDate" autocomplete="off" disabled ng-value="vm.backendOnlineReg.arrivalDate" />
+                        </div>
+                        <div class="col-xs-2">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.departureDate" for="field_departureDate">Departure date</label>
+                            <input type="text" class="form-control" name="departureDate" id="field_departureDate" autocomplete="off" disabled ng-value="vm.backendOnlineReg.departureDate" />
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-xs-12">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.roommate" for="field_roommate">Roommate</label>
+                            <input type="text" class="form-control" name="roommate" id="field_roommate" autocomplete="off" disabled ng-value="vm.backendOnlineReg.roommate" />
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-xs-12">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.roomRemark" for="field_roomRemark">Room remark</label>
+                            <textarea class="form-control" name="roomRemark" id="field_roomRemark" row="5" autocomplete="off" disabled>{{vm.backendOnlineReg.roomRemark}}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-xs-12">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.home.optionalService">Optional services</label>
+                            <table class="table chargeable-item online-accept-table">
+                                <thead>
+                                <tr>
+                                    <th data-translate="pcsApp.onlineReg.osName">Name</th>
+                                    <th data-translate="pcsApp.onlineReg.osPax">Pax</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="os in vm.backendOnlineReg.optionalServices track by $index">
+                                    <td>
+                                        {{os.optionalService.name}} <small>{{os.optionalService.startDate | date: 'longDate'}}</small>
+                                    </td>
+                                    <td>
+                                        {{os.participants}}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-xs-12">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.paymentMethod" for="field_paymentMethod">Payment method</label>
+                            <input type="text" class="form-control" name="paymentMethod" id="field_paymentMethod" autocomplete="off" disabled ng-value="vm.backendOnlineReg.paymentMethod" />
+                        </div>
+                    </div>
+
+                    <div class="row m-b-sm">
+                        <div class="col-xs-8">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.invoiceName" for="field_invoiceName">Invoice name</label>
+                            <input type="text" class="form-control" name="invoiceName" id="field_invoiceName" autocomplete="off" disabled ng-value="vm.backendOnlineReg.invoiceName" />
+                        </div>
+                        <div class="col-xs-4">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.invoiceCountry" for="field_invoiceCountry">Invoice country</label>
+                            <input type="text" class="form-control" name="invoiceCountry" id="field_invoiceCountry" autocomplete="off" disabled ng-value="vm.backendOnlineReg.invoiceCountry.name" />
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.invoiceZipCode" for="field_invoiceZipCode">Invoice zipcode</label>
+                            <input type="text" class="form-control" name="invoiceZipCode" id="field_invoiceZipCode" autocomplete="off" disabled ng-value="vm.backendOnlineReg.invoiceZipCode" />
+                        </div>
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.invoiceCity" for="field_invoiceCity">Invoice address</label>
+                            <input type="text" class="form-control" name="invoiceAddress" id="field_invoiceCity" autocomplete="off" disabled ng-value="vm.backendOnlineReg.invoiceCity" />
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-xs-12">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.invoiceAddress" for="field_invoiceAddress">Invoice address</label>
+                            <input type="text" class="form-control" name="invoiceAddress" id="field_invoiceAddress" autocomplete="off" disabled ng-value="vm.backendOnlineReg.invoiceAddress" />
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.invoiceReferenceNumberShort" for="field_invoiceReferenceNumber">Invoice ref number</label>
+                            <input type="text" class="form-control" name="invoiceReferenceNumber" id="field_invoiceReferenceNumber" autocomplete="off" disabled ng-value="vm.backendOnlineReg.invoiceReferenceNumber" />
+                        </div>
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.invoiceTaxNumberShort" for="field_invoiceTaxNumber">Invoice tax number</label>
+                            <input type="text" class="form-control" name="invoiceTaxNumber" id="field_invoiceTaxNumber" autocomplete="off" disabled ng-value="vm.backendOnlineReg.invoiceTaxNumber" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox" ng-if="vm.customAnswers.length">
+                <div class="ibox-content">
+                    <div class="row m-b-sm" ng-repeat="answer in vm.customAnswers track by answer.id">
+                        <div class="col-xs-12">
+                            <label class="control-label" for="field_custom_answer{{answer.id}}">{{answer.question.question}}</label>
+                            <input type="text" class="form-control" name="custom_answer{{answer.id}}"
+                                   id="field_custom_answer{{answer.id}}" autocomplete="off" disabled ng-value="answer.answer" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button type="submit" ui-sref="backend-online-reg.accept-confirmation({id: vm.backendOnlineReg.id})" class="btn btn-primary">
+                        <span class="fa fa-group"></span>&nbsp;<span data-translate="entity.action.accept ">Accept</span>
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="vm.cancel()">
+                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

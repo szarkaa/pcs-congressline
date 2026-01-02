@@ -1,0 +1,57 @@
+{
+    "pcsApp": {
+        "invoiceReport" : {
+            "home": {
+                "title": "Invoice Report",
+                "search": "Search for Invoices"
+            },
+            "sendToNavConfirmDialog": {
+                "title": "Confirm sending to NAV operation",
+                "question": "Are you sure you want to send this invoice to NAV?",
+                "created": "Invoice {{ param }} has been successfully sent to NAV"
+            },
+            "showNavSendingStatusDialog": {
+                "title": "NAV validation status of invoice",
+                "id": "ID",
+                "errorCode": "Error code",
+                "validationType": "Type",
+                "validationSeverity": "Severity",
+                "message": "Message"
+            },
+            "created": "Invoice ({{ param }}) posted to the NAV successfully",
+            "congressName": "Congress name",
+            "programNumber": "Program number",
+            "invoiceNumber": "Invoice number",
+            "stornoInvoiceNumber": "Storno invoice number",
+            "fromDate": "Date from",
+            "toDate": "Date to",
+            "name1": "Name",
+            "name2": "Name2",
+            "invoiceReportType": "Type",
+            "invoiceType": "Invoice type",
+            "optionalName": "Optional name",
+            "taxNumber": "Tax No.",
+            "zipCode": "Zipcode",
+            "city": "City",
+            "street": "Street",
+            "phone": "Phone",
+            "email": "Email",
+            "remark": "Remark",
+            "country": "Country",
+            "createdDate": "Date of invoice",
+            "dateOfFulfilment": "Date of fulfilment",
+            "paymentDeadline": "Payment deadline",
+            "billingMethod": "Method of payment",
+            "vatNettoColumn": "{{ vat }}% Netto",
+            "vatValueColumn": "{{ vat }}% VAT",
+            "vatNettoTotal": "N. Total",
+            "vatValueTotal": "V. Total",
+            "navStatus": "NAV status",
+            "billingMethodOption": {
+                "TRANSFER": "Transfer",
+                "CASH": "Cash",
+                "CARD": "Card"
+            }
+        }
+    }
+}

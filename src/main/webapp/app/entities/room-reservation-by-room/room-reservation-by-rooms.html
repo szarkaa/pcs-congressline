@@ -1,0 +1,76 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.roomReservationByRoom.home.title">Room Reservation By Rooms</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ui-sref="room-reservation-by-room.selection">
+                        <i class="fa fa-search-plus"></i>
+                    </button>
+                    <button class="btn btn-primary" type="submit" ng-show="vm.listFilter.congressHotel" ng-click="vm.downloadReportXls()">
+                        <i class="fa fa-download"></i>
+                    </button>&nbsp;&nbsp;
+                    <span ng-show="vm.listFilter.congressHotel">Hotel: <strong>{{vm.listFilter.congressHotel.hotel.name}}</strong>&nbsp;&nbsp;</span>
+                </div>
+                <div class="ibox-content" ng-show="vm.roomReservationByRooms.length">
+                    <table datatable="ng" id="room-reservation-by-room-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.roomType">Room type</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.regId">Reg Id</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.name">Name</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.country">Country</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.arrivalDate">Arrival date</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.departureDate">Departure date</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.nights">Nights</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.personCost">P cost</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.personPaid">P paid</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.personToPay">P to pay</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.groupCost">G cost</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.groupPaid">G paid</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.groupToPay">G to pay</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.totalCost">T cost</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.totalPaid">T paid</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.totalToPay">T to pay</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.currency">Currency</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.payingGroupName">Paying group</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByRoom.comment">Comment</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="roomReservationByRoom in vm.roomReservationByRooms track by roomReservationByRoom.id">
+                            <td>{{roomReservationByRoom.roomType}}</td>
+                            <td>{{roomReservationByRoom.regId}}</td>
+                            <td>{{roomReservationByRoom.name}}</td>
+                            <td>{{roomReservationByRoom.country}}</td>
+                            <td>{{roomReservationByRoom.arrivalDate}}</td>
+                            <td>{{roomReservationByRoom.departureDate}}</td>
+                            <td>{{roomReservationByRoom.nights}}</td>
+                            <td>{{roomReservationByRoom.personCost}}</td>
+                            <td>{{roomReservationByRoom.personPaid}}</td>
+                            <td>{{roomReservationByRoom.personToPay}}</td>
+                            <td>{{roomReservationByRoom.groupCost}}</td>
+                            <td>{{roomReservationByRoom.groupPaid}}</td>
+                            <td>{{roomReservationByRoom.groupToPay}}</td>
+                            <td>{{roomReservationByRoom.totalCost}}</td>
+                            <td>{{roomReservationByRoom.totalPaid}}</td>
+                            <td>{{roomReservationByRoom.totalToPay}}</td>
+                            <td>{{roomReservationByRoom.currency}}</td>
+                            <td>{{roomReservationByRoom.payingGroupName}}</td>
+                            <td>{{roomReservationByRoom.comment}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

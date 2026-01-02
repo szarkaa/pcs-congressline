@@ -1,0 +1,58 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.regFeeDetails.home.title">Reg fee payment details</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins" ng-show="vm.reportList.length">
+                    <button class="btn btn-primary" type="submit" ng-click="vm.downloadReportXls()">
+                        <i class="fa fa-download"></i>
+                    </button>
+                </div>
+                <div class="ibox-content" ng-show="vm.reportList.length">
+                    <table datatable="ng" id="regfee-details-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><span data-translate="pcsApp.regFeeDetails.code">Code</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.name">Name</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.firstCount">First count</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.secondCount">Second count</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.thirdCount">Third count</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.firstFee">First fee</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.secondFee">Second fee</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.thirdFee">Third fee</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.total">Total</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.paidByPerson">Paid by person</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.paidByGroup">Paid by group</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetails.currency">Currency</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="regFeeDetails in vm.reportList track by regFeeDetails.id">
+                            <td>{{regFeeDetails.code}}</td>
+                            <td>{{regFeeDetails.name}}</td>
+                            <td>{{regFeeDetails.firstCount}}</td>
+                            <td>{{regFeeDetails.secondCount}}</td>
+                            <td>{{regFeeDetails.thirdCount}}</td>
+                            <td>{{regFeeDetails.firstFee}}</td>
+                            <td>{{regFeeDetails.secondFee}}</td>
+                            <td>{{regFeeDetails.thirdFee}}</td>
+                            <td>{{regFeeDetails.total}}</td>
+                            <td>{{regFeeDetails.paidByPerson}}</td>
+                            <td>{{regFeeDetails.paidByGroup}}</td>
+                            <td>{{regFeeDetails.currency}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

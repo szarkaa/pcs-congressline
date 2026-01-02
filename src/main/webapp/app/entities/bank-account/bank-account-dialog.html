@@ -1,0 +1,123 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myBankAccountLabel" data-translate="pcsApp.bankAccount.home.createOrEditLabel">Create or edit a Bank Account</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.bankAccount.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name" autocomplete="off"
+                    ng-model="vm.bankAccount.name"
+                    required ng-minlength="3" ng-maxlength="32" />
+            <div ng-show="editForm.name.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block" ng-show="editForm.name.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="3">
+                    This field is required to be at least 3 characters.
+                </p>
+                <p class="error-block" ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="32">
+                    This field cannot be longer than 32 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.bankAccount.bankName" for="field_bankName">Bank Name</label>
+            <input type="text" class="form-control" name="bankName" id="field_bankName" autocomplete="off"
+                    ng-model="vm.bankAccount.bankName" required ng-minlength="3" ng-maxlength="32" />
+            <div ng-show="editForm.bankName.$invalid">
+                <p class="error-block" ng-show="editForm.bankName.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block" ng-show="editForm.bankName.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="3">
+                    This field is required to be at least 3 characters.
+                </p>
+                <p class="error-block" ng-show="editForm.bankName.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="32">
+                    This field cannot be longer than 32 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.bankAccount.bankAddress" for="field_bankAddress">Bank Address</label>
+            <input type="text" class="form-control" name="bankAddress" id="field_bankAddress" autocomplete="off"
+                   ng-model="vm.bankAccount.bankAddress" required ng-minlength="8" ng-maxlength="250" />
+            <div ng-show="editForm.bankAddress.$invalid">
+                <p class="error-block" ng-show="editForm.bankAddress.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block" ng-show="editForm.bankAddress.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="8">
+                    This field is required to be at least 8 characters.
+                </p>
+                <p class="error-block" ng-show="editForm.bankAddress.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="250">
+                    This field cannot be longer than 250 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.bankAccount.bankAccount" for="field_bankAccount">Bank Account</label>
+            <input type="text" class="form-control" name="bankAccount" id="field_bankAccount" autocomplete="off"
+                   ng-pattern="/^[0-9]{8}[-][0-9]{8}[-][0-9]{8}|[0-9]{8}[-][0-9]{8}|[A-Z]{2}[0-9]{2}[0-9A-Za-z]{11,30}$/"
+                   ng-model="vm.bankAccount.bankAccount" required ng-minlength="8" ng-maxlength="32" />
+            <div ng-show="editForm.bankAccount.$invalid">
+                <p class="error-block" ng-show="editForm.bankAccount.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block" ng-show="editForm.bankAccount.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="8">
+                    This field is required to be at least 8 characters.
+                </p>
+                <p class="error-block" ng-show="editForm.bankAccount.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="32">
+                    This field cannot be longer than 32 characters.
+                </p>
+                <p class="error-block" ng-show="editForm.bankAccount.$error.pattern"
+                   data-translate="entity.validation.pattern" data-translate-values="{ pattern: '[0-9]{8}[-][0-9]{8}[-][0-9]{8}|[0-9]{8}[-][0-9]{8}|[A-Z]{2}[0-9]{2}[0-9A-Za-z]{11,30}' }">
+                    Ez a mező csak a köv számokat tartalmazhat pl.: 36703125678
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.bankAccount.swiftCode" for="field_swiftCode">Swift Code</label>
+            <input type="text" class="form-control" name="swiftCode" id="field_swiftCode" autocomplete="off"
+                    ng-model="vm.bankAccount.swiftCode" ng-required="vm.bankAccount.currency.currency != 'HUF'" ng-maxlength="32" />
+            <div ng-show="editForm.swiftCode.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.swiftCode.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.swiftCode.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="32">
+                    This field cannot be longer than 32 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label translate="pcsApp.bankAccount.currency" for="field_currency">Currency</label>
+            <ui-select ng-model="vm.bankAccount.currency" name="currency" id="field_currency" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.currency"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="currency in (vm.currencies | filter: $select.search) track by currency.id">
+                    <div ng-bind-html="currency.currency | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.currency.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.currency.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

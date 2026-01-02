@@ -1,0 +1,43 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.send()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myLabel" data-translate="pcsApp.invoice.sendInvoiceDialog.title">Send invoice dialog</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.invoice.sendInvoiceDialog.email" for="field_email">Email</label>
+            <input class="form-control" id="field_email" name="email" ng-minlength="5" ng-maxlength="255" autocomplete="off"
+                   ng-model="vm.invoiceEmail.email" type="email" required>
+            <div ng-show="editForm.email.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.email.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.email.$error.email" translate="global.messages.validate.email.invalid">
+                    Your e-mail is invalid.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.email.$error.minlength" translate="entity.validation.minlength" translate-value-min="5">
+                    This field is required to be at least 5 characters.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.email.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="255">
+                    This field cannot be longer than 255 characters.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.send">Send</span>
+        </button>
+    </div>
+</form>

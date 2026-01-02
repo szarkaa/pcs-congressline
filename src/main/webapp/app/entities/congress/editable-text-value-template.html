@@ -1,0 +1,12 @@
+<div class="input-group" ng-show="editMode()">
+    <input type="text" class="form-control full-width" ng-model="editableTextValue" autocomplete="off" ng-maxlength="64">
+    <span class="input-group-btn width-min">
+        <button class="btn btn-primary btn-md" type="button" ng-click="save()">
+            <i class="fa fa-check"></i>
+        </button>
+        <button class="btn btn-default btn-md" type="button" ng-click="cancel()">
+            <i class="fa fa-times"></i>
+        </button>
+    </span>
+</div>
+<span ng-show="!editMode()">{{ editableTextList[editableTextIdx] }}</span>

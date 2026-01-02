@@ -1,0 +1,14 @@
+{
+    "pcsApp": {
+        "sendConfirmationDialog" : {
+            "home": {
+                "title": "Send confirmation via email",
+                "createLabel": "Send confirmation via email"
+            },
+            "created": "Confirmation successfully sent [email: {{ param }}].",
+            "language": "Language",
+            "optionalText": "Optional text",
+            "email": "Email"
+        }
+    }
+}

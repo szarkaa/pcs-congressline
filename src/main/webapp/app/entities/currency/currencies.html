@@ -1,0 +1,44 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 translate="pcsApp.currency.home.title">Currencies</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ui-sref="currency.new">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <table id="currency-table" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.currency.currency">Currency</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="currency in vm.currencies track by currency.id">
+                            <td>{{currency.currency}}</td>
+                            <td>
+                                <button class="btn btn-info" type="submit"
+                                        ui-sref="currency.edit({id:currency.id})"><i class="fa fa-pencil-square-o"></i></button>
+                                <button class="btn btn-danger" type="submit"
+                                        ui-sref="currency.delete({id:currency.id})"><i class="fa fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

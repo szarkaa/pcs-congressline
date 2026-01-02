@@ -1,0 +1,102 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.paymentTransactionReport.home.title">Payment Transaction Report</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-3 no-padding-left">
+                                                <div class="input-group">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('fromDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                    <input id="field_fromDate" type="text" class="form-control" name="fromDate" uib-datepicker-popup="{{dateformat}}"
+                                                           ng-model="vm.reportFilter.fromDate" is-open="vm.datePickerOpenStatus.fromDate" placeholder="{{ 'pcsApp.paymentTransactionReport.fromDate' | translate }}" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 no-padding-left">
+                                                <div class="input-group">
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('toDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    </span>
+                                                    <input id="field_toDate" type="text" class="form-control" name="toDate" uib-datepicker-popup="{{dateformat}}"
+                                                           ng-model="vm.reportFilter.toDate" is-open="vm.datePickerOpenStatus.toDate" placeholder="{{ 'pcsApp.paymentTransactionReport.toDate' | translate }}" required/>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 no-padding-left">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.orderNumber" autocomplete="off" id="orderNumber" name="orderNumber" placeholder="{{ 'pcsApp.paymentTransactionReport.orderNumber' | translate }}">
+                                            </div>
+                                            <div class="col-md-3 input-group">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.transactionId" autocomplete="off" id="transactionId" name="transactionId" placeholder="{{ 'pcsApp.paymentTransactionReport.transactionId' | translate }}">
+                                                <span  class="input-group-btn width-min" >
+                                                    <button class="btn btn-info" ng-click="vm.search()">
+                                                        <span class="glyphicon glyphicon-search"></span>
+                                                    </button>
+                                                    <button class="btn btn-danger" ng-if="vm.reportList.length || vm.isAnyFilterSet()" ng-click="vm.clear()">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                    <button class="btn btn-primary" ng-if="vm.reportList.length" type="submit" ng-click="vm.downloadReportXls()">
+                                                        <i class="fa fa-download"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content" ng-show="vm.reportList.length">
+                    <table datatable="ng" id="payment-transaction-report-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th><span data-translate="pcsApp.paymentTransactionReport.paymentTrxDate">Payment trx date</span></th>
+                            <th><span data-translate="pcsApp.paymentTransactionReport.firstName">First name</span></th>
+                            <th><span data-translate="pcsApp.paymentTransactionReport.lastName">Last name</span></th>
+                            <th><span data-translate="pcsApp.paymentTransactionReport.orderNumber">Order No</span></th>
+                            <th><span data-translate="pcsApp.paymentTransactionReport.transactionId">Transaction ID</span></th>
+                            <th><span data-translate="pcsApp.paymentTransactionReport.amount">Amount</span></th>
+                            <th><span data-translate="pcsApp.paymentTransactionReport.currency">Currency</span></th>
+                            <th><span data-translate="pcsApp.paymentTransactionReport.congressName">Congress name</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="pt in vm.reportList track by pt.id">
+                            <td>
+                                <button class="btn btn-danger btn-sm" type="submit"
+                                        ui-sref="payment-transaction-report.refund({id:pt.id})">
+                                <i class="fa fa-reply"></i></button>
+                                <button class="btn btn-info btn-sm" type="submit" tooltip-placement="right" uib-tooltip="Payment refund transactions" ng-show="pt.hasRefundTransaction"
+                                         ui-sref="payment-transaction-report.show-payment-refund-transaction({id:pt.transactionId})"><i class="fa fa-list"></i></button>
+                            </td>
+                            <td>{{pt.paymentTrxDate | date: 'yyyy-MM-dd HH:mm:ss'}}</td>
+                            <td>{{pt.firstName}}</td>
+                            <td>{{pt.lastName}}</td>
+                            <td>{{pt.orderNumber}}</td>
+                            <td>{{pt.transactionId}}</td>
+                            <td>{{pt.amount}}</td>
+                            <td>{{pt.currency}}</td>
+                            <td>{{pt.congressName}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

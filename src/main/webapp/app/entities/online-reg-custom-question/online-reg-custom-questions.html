@@ -1,0 +1,57 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.onlineRegCustomQuestion.home.title" data-translate-values="{ meetingCode: '{{ vm.congress.meetingCode }}' }">Online reg custom questions</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ui-sref="online-reg-custom-question.new">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <button class="btn btn-info" type="submit" ui-sref="congress">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                </div>
+                <div class="ibox-content">
+                    <table datatable="ng" id="online-reg-custom-question-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.onlineRegCustomQuestion.question">Question</span></th>
+                            <th><span translate="pcsApp.onlineRegCustomQuestion.currency">Currency</span></th>
+                            <th><span translate="pcsApp.onlineRegCustomQuestion.required">Required</span></th>
+                            <th><span translate="pcsApp.onlineRegCustomQuestion.onlineVisibility">Online visibility</span></th>
+                            <th><span translate="pcsApp.onlineRegCustomQuestion.questionOrder">Order</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="question in vm.questions track by question.id">
+                            <td>{{question.question}}</td>
+                            <td>{{question.currency.currency}}</td>
+                            <td>{{question.required}}</td>
+                            <td>{{'pcsApp.OnlineVisibility.' + question.onlineVisibility | translate}}</td>
+                            <td>{{question.questionOrder}}</td>
+                            <td>
+                                <button class="btn btn-info" type="submit"
+                                        ui-sref="online-reg-custom-question.edit({id: question.id})">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </button>
+                                <button class="btn btn-danger" type="submit"
+                                        ui-sref="online-reg-custom-question.delete({id: question.id})"><i class="fa fa-trash-o"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

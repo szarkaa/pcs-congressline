@@ -1,0 +1,60 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.hotelGeneralReport.home.title">Hotel General Report</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ng-click="vm.downloadReportXls()">
+                        <i class="fa fa-download"></i>
+                    </button>
+                </div>
+                <div class="ibox-content" ng-show="vm.hotelGeneralReports.length">
+                    <table datatable="ng" id="hotel-general-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.regId">Reg Id</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.name">Name</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.regTypes">Reg types</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.payingGroupName">Paying group</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.country">Country</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.city">City</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.phone">Phone</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.email">Email</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.hotelName">Hotel name</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.roomType">Room type</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.arrivalDate">Arrival date</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.departureDate">Departure date</span></th>
+                            <th><span data-translate="pcsApp.hotelGeneralReport.roomMates">Room mates</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="hotelGeneralReport in vm.hotelGeneralReports track by hotelGeneralReport.id">
+                            <td>{{hotelGeneralReport.regId}}</td>
+                            <td>{{hotelGeneralReport.name}}</td>
+                            <td>{{hotelGeneralReport.regTypes}}</td>
+                            <td>{{hotelGeneralReport.payingGroupName}}</td>
+                            <td>{{hotelGeneralReport.country}}</td>
+                            <td>{{hotelGeneralReport.city}}</td>
+                            <td>{{hotelGeneralReport.phone}}</td>
+                            <td><email-dialog email="{{hotelGeneralReport.email}}" last-name="{{hotelGeneralReport.name}}" first-name="">{{hotelGeneralReport.email}}</email-dialog></td>
+                            <td>{{hotelGeneralReport.hotelName}}</td>
+                            <td>{{hotelGeneralReport.roomType}}</td>
+                            <td>{{hotelGeneralReport.arrivalDate}}</td>
+                            <td>{{hotelGeneralReport.departureDate}}</td>
+                            <td>{{hotelGeneralReport.roomMates}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

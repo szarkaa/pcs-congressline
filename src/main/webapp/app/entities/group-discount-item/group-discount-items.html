@@ -1,0 +1,72 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.groupDiscountItem.home.title">Group financial administration</h2>
+        <small class="text-danger" ng-show="!vm.hasValidCurrencyRate">Please add valid currency rate in order to make valid invoices!</small>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ui-sref="group-discount-item.selection">
+                        <i class="fa fa-search-plus"></i>
+                    </button>
+                    <button class="btn btn-primary" type="submit" ng-show="vm.groupDiscountItemFilter.payingGroup" ng-disabled="!vm.isSelectedPayingGroupInvoiceable() || !vm.isAnyChargeableItemIdSelected() || !vm.hasValidCurrencyRate" ui-sref="group-discount-item.setup">
+                        <i class="fa fa-dollar"></i>
+                    </button>
+                    <button class="btn btn-primary" type="submit" ng-show="vm.groupDiscountItemFilter.payingGroup" ng-click="vm.downloadReportXls()">
+                        <i class="fa fa-download"></i>
+                    </button>
+                    <button class="btn btn-primary" type="submit" ng-show="vm.groupDiscountItemFilter.payingGroup" ng-click="vm.downloadProFormaGroupInvoiceReportXls()">
+                        <i class="fa fa-file-excel-o"></i>
+                    </button>&nbsp;&nbsp;
+                    &nbsp;&nbsp;
+                    <span ng-show="vm.groupDiscountItemFilter.payingGroup">Paying group: <strong>{{vm.groupDiscountItemFilter.payingGroup.name}}</strong>&nbsp;&nbsp;</span>
+                    <span ng-show="vm.groupDiscountItemFilter.chargeableItemType">Item type: <strong data-translate="pcsApp.ChargeableItemType.{{vm.groupDiscountItemFilter.chargeableItemType}}">{{vm.groupDiscountItemFilter.chargeableItemType}}</strong></span>
+                    <p ng-show="vm.sumRegistration || vm.sumHotel || vm.sumOptionalService"><small>Registration: <strong>{{vm.sumRegistration}}</strong>&nbsp;&nbsp;&nbsp;Hotel: <strong>{{vm.sumHotel}}</strong>&nbsp;&nbsp;&nbsp;Optional service: <strong>{{vm.sumOptionalService}}</strong></small></p>
+                    <p ng-show="vm.groupPaidRegistration || vm.groupPaidHotel || vm.groupPaidOptionalService"><small>Group paid registration: <strong>{{vm.groupPaidRegistration}}</strong>&nbsp;&nbsp;&nbsp;Group paid hotel: <strong>{{vm.groupPaidHotel}}</strong>&nbsp;&nbsp;&nbsp;Group paid optional service: <strong>{{vm.groupPaidOptionalService}}</strong></small></p>
+                    <p ng-show="vm.groupPaidRegistration || vm.groupPaidHotel || vm.groupPaidOptionalService"><small>Group to be paid registration: <strong>{{vm.sumRegistration - vm.groupPaidRegistration}}</strong>&nbsp;&nbsp;&nbsp;Group to be paid hotel: <strong>{{vm.sumHotel - vm.groupPaidHotel}}</strong>&nbsp;&nbsp;&nbsp;Group paid optional service: <strong>{{vm.sumOptionalService - vm.groupPaidOptionalService}}</strong></small></p>
+                </div>
+                <div class="ibox-content" ng-show="vm.groupDiscountItems.length">
+                    <table datatable="ng" id="group-discount-item-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><input ng-model="vm.allChargeableItemIdSelected" ng-change="vm.toggleAllGroupDiscountSelection()" type="checkbox" /></th>
+                            <th><span data-translate="pcsApp.groupDiscountItem.regId">Reg Id</span></th>
+                            <th><span data-translate="pcsApp.groupDiscountItem.lastName">Last Name</span></th>
+                            <th><span data-translate="pcsApp.groupDiscountItem.firstName">First Name</span></th>
+                            <th><span data-translate="pcsApp.groupDiscountItem.chargeableItemType">Chargeable Item Type</span></th>
+                            <th><span data-translate="pcsApp.groupDiscountItem.payingGroup">Paying Group</span></th>
+                            <th><span data-translate="pcsApp.groupDiscountItem.payingGroupItemName">Paying Group Item Name</span></th>
+                            <th><span data-translate="pcsApp.groupDiscountItem.amount">Amount</span></th>
+                            <th><span data-translate="pcsApp.groupDiscountItem.dateOfPayment">Date Of Payment</span></th>
+                            <th><span data-translate="pcsApp.groupDiscountItem.invoiceNumber">Invoice Number</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="groupDiscountItem in vm.groupDiscountItems track by groupDiscountItem.id">
+                            <td>
+                                <input ng-show="!groupDiscountItem.invoiceNumber" ng-model="vm.groupDiscountItemFilter.selectedChargeableItemIds[groupDiscountItem.chargeableItemId.toString()]" ng-change="vm.toggleGroupDiscountSelection(groupDiscountItem.chargeableItemId)" type="checkbox" />
+                            </td>
+                            <td>{{groupDiscountItem.regId}}</td>
+                            <td>{{groupDiscountItem.lastName}}</td>
+                            <td>{{groupDiscountItem.firstName}}</td>
+                            <td data-translate="{{'pcsApp.ChargeableItemType.' + groupDiscountItem.chargeableItemType}}">{{groupDiscountItem.chargeableItemType}}</td>
+                            <td>{{groupDiscountItem.payingGroup.name}}</td>
+                            <td>{{groupDiscountItem.payingGroupItemName}}</td>
+                            <td>{{groupDiscountItem.amount}}</td>
+                            <td>{{groupDiscountItem.dateOfPayment | date:'mediumDate'}}</td>
+                            <td>{{groupDiscountItem.invoiceNumber}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

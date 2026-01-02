@@ -1,0 +1,270 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myRegistrationTypeLabel" data-translate="pcsApp.registrationType.home.createOrEditLabel">Create or edit a Registration Type</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.code" for="field_code">Code</label>
+            <input type="text" class="form-control" name="code" id="field_code" autocomplete="off"
+                    ng-model="vm.registrationType.code"
+                    required ng-maxlength="16" />
+            <div ng-show="editForm.code.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.code.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.code.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="16">
+                    This field cannot be longer than 16 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name" autocomplete="off"
+                    ng-model="vm.registrationType.name"
+                    required ng-minlength="5" ng-maxlength="100" />
+            <div ng-show="editForm.name.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.name.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="5">
+                    This field is required to be at least 5 characters.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.firstRegFee" for="field_firstRegFee">First Reg Fee</label>
+            <input type="number" class="form-control" name="firstRegFee" id="field_firstRegFee" autocomplete="off"
+                    ng-model="vm.registrationType.firstRegFee" required min="-1000000" max="1000000" />
+            <div ng-show="editForm.firstRegFee.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.firstRegFee.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.firstRegFee.$error.min" data-translate="entity.validation.min" translate-value-min="-1000000">
+                    This field should be more than -1000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.firstRegFee.$error.max" data-translate="entity.validation.min" translate-value-max="1000000">
+                    This field should be more than 1000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.firstRegFee.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.firstDeadline" for="field_firstDeadline">First Deadline</label>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('firstDeadline')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                <input id="field_firstDeadline" type="text" class="form-control" autocomplete="off" name="firstDeadline" uib-datepicker-popup="{{dateformat}}"
+                       ng-model="vm.registrationType.firstDeadline" is-open="vm.datePickerOpenStatus.firstDeadline"
+                       ng-required="vm.registrationType.secondDeadline || vm.registrationType.secondRegFee || vm.registrationType.thirdRegFee"/>
+            </div>
+            <div ng-show="editForm.firstDeadline.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.firstDeadline.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.secondRegFee" for="field_secondRegFee">Second Reg Fee</label>
+            <input type="number" class="form-control" name="secondRegFee" id="field_secondRegFee" autocomplete="off" ng-required="vm.registrationType.firstDeadline || vm.registrationType.secondDeadline || vm.registrationType.thirdRegFee"
+                    ng-model="vm.registrationType.secondRegFee" min="-1000000" max="1000000" />
+            <div ng-show="editForm.secondRegFee.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.secondRegFee.$error.min" data-translate="entity.validation.min" translate-value-min="-1000000">
+                    This field should be more than -1000000.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.secondRegFee.$error.max" data-translate="entity.validation.min" translate-value-max="1000000">
+                    This field should be more than 1000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.secondRegFee.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.secondRegFee.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.secondDeadline" for="field_secondDeadline">Second Deadline</label>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('secondDeadline')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                <input id="field_secondDeadline" date-less-than="{{vm.registrationType.firstDeadline}}" type="text" class="form-control" name="secondDeadline" autocomplete="off" uib-datepicker-popup="{{dateformat}}"
+                       ng-model="vm.registrationType.secondDeadline" is-open="vm.datePickerOpenStatus.secondDeadline" ng-required="vm.registrationType.thirdRegFee"/>
+            </div>
+            <div ng-show="editForm.secondDeadline.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.secondDeadline.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block" ng-show="editForm.secondDeadline.$error.dateLessThan" translate="pcsApp.registrationType.messages.secondDeadlineLessThanFirstDeadline">
+                    End date must be later than Start date.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.thirdRegFee" for="field_thirdRegFee">Third Reg Fee</label>
+            <input type="number" class="form-control" name="thirdRegFee" id="field_thirdRegFee" autocomplete="off"
+                    ng-model="vm.registrationType.thirdRegFee" ng-required="vm.registrationType.secondDeadline" min="-1000000" max="1000000" />
+            <div ng-show="editForm.thirdRegFee.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.thirdRegFee.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.thirdRegFee.$error.min" data-translate="entity.validation.min" translate-value-min="-1000000">
+                    This field should be more than -1000000.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.thirdRegFee.$error.max" data-translate="entity.validation.min" translate-value-max="1000000">
+                    This field should be more than 1000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.thirdRegFee.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.registrationType" for="field_registrationType">Registration Type</label>
+            <select class="form-control" name="registrationType" ng-model="vm.registrationType.registrationType" id="field_registrationType" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="REGISTRATION_FEE" data-translate="pcsApp.RegistrationTypeType.REGISTRATION_FEE">REGISTRATION_FEE</option>
+                <option value="ACCOMPANYING_FEE" data-translate="pcsApp.RegistrationTypeType.ACCOMPANYING_FEE">ACCOMPANYING_FEE</option>
+            </select>
+            <div ng-show="editForm.registrationType.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.registrationType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.registrationType.currency" for="field_currency">Currency</label>
+            <ui-select ng-model="vm.registrationType.currency" name="currency" id="field_currency" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.currency"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="currency in (vm.currencies | filter: $select.search) track by currency.id">
+                    <div ng-bind-html="currency.currency | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.currency.$invalid">
+                <p class="error-block" ng-show="editForm.currency.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.registrationType.vatInfo" for="field_vatInfo">Vat info</label>
+            <ui-select ng-model="vm.registrationType.vatInfo" name="vatInfo" id="field_vatInfo" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="vatInfo in (vm.vatInfos | filter: $select.search) track by vatInfo.id">
+                    <div ng-bind-html="vatInfo.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.vatInfo.$invalid">
+                <p class="error-block" ng-show="editForm.vatInfo.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.onlineLabel" for="field_onlineLabel">Online label</label>
+            <input type="text" class="form-control" name="onlineLabel" id="field_onlineLabel" autocomplete="off"
+                   ng-model="vm.registrationType.onlineLabel" ng-maxlength="200" />
+            <div ng-show="editForm.onlineLabel.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.onlineLabel.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                    This field cannot be longer than 200 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.onlineOrder" for="field_onlineOrder">Online order</label>
+            <input type="number" class="form-control" name="onlineOrder" id="field_onlineOrder" autocomplete="off"
+                   ng-model="vm.registrationType.onlineOrder" ng-required="vm.registrationType.onlineVisibility == 'VISIBLE'" min="0" max="100" />
+            <div ng-show="editForm.onlineOrder.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.onlineOrder.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.onlineOrder.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.onlineOrder.$error.max" data-translate="entity.validation.max" translate-value-max="100">
+                    This field cannot be more than 100.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.onlineOrder.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.onlineVisibility" for="onlineVisibility">Online visibility</label>
+            <select class="form-control" name="onlineVisibility" ng-model="vm.registrationType.onlineVisibility" id="onlineVisibility" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="VISIBLE" data-translate="pcsApp.OnlineVisibility.VISIBLE">VISIBLE</option>
+                <option value="NOT_VISIBLE" data-translate="pcsApp.OnlineVisibility.NOT_VISIBLE">NOT_VISIBLE</option>
+            </select>
+            <div ng-show="editForm.onlineVisibility.$invalid">
+                <p class="error-block" ng-show="editForm.onlineVisibility.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationType.onlineType" for="onlineType">Online type</label>
+            <select class="form-control" name="onlineType" ng-model="vm.registrationType.onlineType" id="onlineType" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="NORMAL" data-translate="pcsApp.OnlineType.NORMAL">NORMAL</option>
+                <option value="EXTRA" data-translate="pcsApp.OnlineType.EXTRA">EXTRA</option>
+            </select>
+            <div ng-show="editForm.onlineType.$invalid">
+                <p class="error-block" ng-show="editForm.onlineType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

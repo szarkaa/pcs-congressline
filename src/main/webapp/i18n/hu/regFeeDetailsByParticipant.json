@@ -1,0 +1,17 @@
+{
+    "pcsApp": {
+        "regFeeDetailsByParticipant" : {
+            "home": {
+                "title": "Reg fee payment details by type by participant"
+            },
+            "regId": "Reg Id",
+            "name": "Name",
+            "firstFee": "Order (1st d.)",
+            "secondFee": "Order (2nd d.)",
+            "thirdFee": "Order (3rd d.)",
+            "paidByPerson": "Paid by person",
+            "payingGroupName": "Group name",
+            "paidByGroup": "Paid by group"
+        }
+    }
+}

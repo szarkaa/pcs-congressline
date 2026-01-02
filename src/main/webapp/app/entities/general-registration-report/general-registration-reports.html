@@ -1,0 +1,354 @@
+<script>
+    $('.advanced_search_box__more').click(function(){
+        $(this).find('i').toggleClass('fa-chevron-down');
+        $('#advanced_search_box').toggleClass('hide');
+        return false;
+    });
+</script>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.generalRegistrationReport.home.title">Registation Report</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="col-md-1 no-padding-left">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.regId" autocomplete="off" id="regId" name="regId" placeholder="{{ 'pcsApp.generalRegistrationReport.regId' | translate }}">
+                                            </div>
+                                            <div class="col-md-3 no-padding-left">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.lastName" autocomplete="off" id="lastName" name="lastName" placeholder="{{ 'pcsApp.generalRegistrationReport.lastName' | translate }}">
+                                            </div>
+                                            <div class="col-md-3 no-padding-left">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.firstName" autocomplete="off" id="firstName" name="firstName" placeholder="{{ 'pcsApp.generalRegistrationReport.firstName' | translate }}">
+                                            </div>
+                                            <div class="col-md-2 no-padding-left">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.invoiceName" autocomplete="off" id="invoiceName" name="invoiceName" placeholder="{{ 'pcsApp.generalRegistrationReport.invoiceName' | translate }}">
+                                            </div>
+                                            <div class="col-md-3 input-group">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.email" autocomplete="off" id="email" name="email" placeholder="{{ 'pcsApp.generalRegistrationReport.email' | translate }}">
+                                                <span  class="input-group-btn width-min" >
+                                                    <button class="btn btn-info" ng-click="vm.search()">
+                                                        <span class="glyphicon glyphicon-search"></span>
+                                                    </button>
+                                                    <button class="btn btn-danger" ng-if="vm.isFiltered" ng-click="vm.clear()">
+                                                        <span class="glyphicon glyphicon-trash"></span>
+                                                    </button>
+                                                    <button class="btn btn-primary" ng-if="vm.reportList.length" type="submit" ng-click="vm.downloadReportXls()">
+                                                        <i class="fa fa-download"></i>
+                                                    </button>
+                                                    <button class="btn btn-success" ng-if="vm.reportList.length" type="submit" ng-click="vm.downloadReportXlsWithQRCode()">
+                                                        <i class="fa fa-qrcode"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <a href="#" class="advanced_search_box__more pull-right">
+                                <i class="fa fa-chevron-down fa-chevron-up"></i><span data-translate="pcsApp.generalRegistrationReport.advancedSearch">Advanced search</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div id="advanced_search_box" class="hide">
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 col-sm-4">
+                                <div class="form-group full-width">
+                                    <label class="control-label control-label" data-translate="pcsApp.generalRegistrationReport.workplace"
+                                           for="workplace"></label>
+                                    <ui-select ng-model="vm.reportFilter.workplace" name="workplace" id="workplace" theme="bootstrap" required>
+                                        <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                            <span ng-bind="$select.selected.name"></span>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="workplace in (vm.workplaces | filter: $select.search) track by workplace.id">
+                                            <div ng-bind-html="workplace.name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label control-label" data-translate="pcsApp.generalRegistrationReport.registrationType"
+                                           for="registrationType"></label>
+                                    <ui-select ng-model="vm.reportFilter.registrationType" name="registrationType" id="registrationType" theme="bootstrap" required>
+                                        <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                            <span ng-bind="$select.selected.name"></span>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="registrationType in (vm.registrationTypes | filter: $select.search) track by registrationType.id">
+                                            <div ng-bind-html="registrationType.name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.position"></label>
+                                    <ui-select ng-model="vm.reportFilter.position" name="position" id="position" theme="bootstrap" required>
+                                        <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                            <span ng-bind="$select.selected"></span>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="position in (vm.positions | filter: $select.search) track by position">
+                                            <div ng-bind-html="position | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.presenter"
+                                           for="presenter"></label>
+                                    <select class="form-control full-width" name="presenter" ng-model="vm.reportFilter.presenter" id="presenter">
+                                        <option value="" data-translate="global.form.please.select">Please select</option>
+                                        <option value="true">true</option>
+                                        <option value="false">false</option>
+                                    </select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.onSpot"
+                                           for="on-spot"></label>
+                                    <select class="form-control full-width" name="on-spot" ng-model="vm.reportFilter.onSpot" id="on-spot">
+                                        <option value="" data-translate="global.form.please.select">Please select</option>
+                                        <option value="true">true</option>
+                                        <option value="false">false</option>
+                                    </select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-4">
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.payingGroup"
+                                           for="payingGroup"></label>
+                                    <ui-select ng-model="vm.reportFilter.payingGroup" name="payingGroup" id="payingGroup" theme="bootstrap" required>
+                                        <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                            <span ng-bind="$select.selected.name"></span>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="payingGroup in (vm.payingGroups | filter: $select.search) track by payingGroup.id">
+                                            <div ng-bind-html="payingGroup.name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label control-label" data-translate="pcsApp.generalRegistrationReport.country"
+                                           for="country"></label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <input type="checkbox" name="countryNegation" id="countryNegation" ng-model="vm.reportFilter.countryNegation" class="ng-valid ng-dirty ng-valid-parse ng-empty ng-touched">
+                                        </span>
+                                        <ui-select ng-model="vm.reportFilter.country" name="country" id="country" theme="bootstrap" required>
+                                            <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                                <span ng-bind="$select.selected.name"></span>
+                                            </ui-select-match>
+                                            <ui-select-choices repeat="country in (vm.countries | filter: $select.search) track by country.id">
+                                                <div ng-bind-html="country.name | highlight: $select.search"></div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.otherData"></label>
+                                    <ui-select ng-model="vm.reportFilter.otherData" name="otherData" id="otherData" theme="bootstrap" required>
+                                        <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                            <span ng-bind="$select.selected"></span>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="otherData in (vm.otherDatas | filter: $select.search) track by otherData">
+                                            <div ng-bind-html="otherData | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.etiquette"
+                                           for="etiquette"></label>
+                                    <select class="form-control full-width" name="etiquette" ng-model="vm.reportFilter.etiquette"
+                                            id="etiquette">
+                                        <option value="" data-translate="global.form.please.select">Please select</option>
+                                        <option value="true">true</option>
+                                        <option value="false">false</option>
+                                    </select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.cancelled"
+                                           for="cancelled"></label>
+                                    <select class="form-control full-width" name="cancelled" ng-model="vm.reportFilter.cancelled"
+                                            id="cancelled">
+                                        <option value="" data-translate="global.form.please.select">Please select</option>
+                                        <option value="true">true</option>
+                                        <option value="false">false</option>
+                                    </select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                            </div>
+                            <div class="col-lg-4 col-md-6 col-sm-4">
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.optionalService"
+                                           for="optionalService"></label>
+                                    <ui-select ng-model="vm.reportFilter.optionalService" name="optionalService" id="optionalService" theme="bootstrap" required>
+                                        <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                            <span ng-bind="$select.selected.name"></span>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="optionalService in (vm.optionalServices | filter: $select.search) track by optionalService.id">
+                                            <div ng-bind-html="optionalService.name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.hotelNames"
+                                           for="optionalService"></label>
+                                    <ui-select ng-model="vm.reportFilter.congressHotel" name="hotel" id="hotel" theme="bootstrap" required>
+                                        <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                            <span ng-bind="$select.selected.hotel.name"></span>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="congressHotel in (vm.congressHotels | filter: $select.search) track by congressHotel.id">
+                                            <div ng-bind-html="congressHotel.hotel.name | highlight: $select.search"></div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width clearfix">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.accPeople"></label>
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-6 no-padding-left">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.accPeopleLastName" id="accPeopleLastName" name="accPeopleLastName" placeholder="{{ 'pcsApp.generalRegistrationReport.lastName' | translate }}"/>
+                                            </div>
+                                            <div class="col-md-6 no-padding">
+                                                <input type="text" class="form-control full-width" ng-model="vm.reportFilter.accPeopleFirstName" id="accPeopleFirstName" name="accPeopleFirstName" placeholder="{{ 'pcsApp.generalRegistrationReport.firstName' | translate }}"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.closed" for="closed"></label>
+                                    <select class="form-control full-width" name="closed" ng-model="vm.reportFilter.closed" id="closed">
+                                        <option value="" data-translate="global.form.please.select">Please select</option>
+                                        <option value="true">true</option>
+                                        <option value="false">false</option>
+                                    </select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                            </div>
+                        </div>
+                        <div class="row gutter_helper">
+                            <div class="col-md-12 form-group">
+                                <div class="col-sm-8 col-sm-offset-2">
+                                    <button class="btn btn-primary m-r-sm" ng-click="vm.search()" type="button" data-translate="entity.action.search">Search</button>
+                                    <send-confirmation-to-all-dialog filter="vm.reportFilter">
+                                        <button class="btn btn-info m-r-sm" type="button" data-translate="pcsApp.generalRegistrationReport.sendConfirmationToAll">Send confirmation to all</button>
+                                    </send-confirmation-to-all-dialog>
+                                    <send-all-confirmation-to-email-dialog filter="vm.reportFilter">
+                                        <button class="btn btn-info m-r-sm" type="button" data-translate="pcsApp.generalRegistrationReport.sendAllConfirmationToEmail">Send selected confirmations to email</button>
+                                    </send-all-confirmation-to-email-dialog>
+                                    <send-general-email-to-all-dialog filter="vm.reportFilter">
+                                        <button class="btn btn-info" type="button" data-translate="pcsApp.generalRegistrationReport.sendGeneralEmailToAll">Send email to all</button>
+                                    </send-general-email-to-all-dialog>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content" ng-show="vm.reportList.length">
+                    <table datatable="ng" id="general-registration-report-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover datatable-selector">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.regId">Reg ID</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.lastName">Family Name</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.firstName">First Name</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.shortName">Short Name</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.invoiceName">Invoice Name</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.title">Title</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.position">Position</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.zipCode">Zipcode</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.city">City</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.street">Street</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.country">Country</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.phone">Phone</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.email">Email</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.workplaceName">Wp. Name</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.workplaceDepartment">Wp. Dept."</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.workplaceZipCode">Wp. Zipcode</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.workplaceCity">Wp. City</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.workplaceStreet">Wp. Street</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.workplaceCountry">Wp. Country</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.workplacePhone">Wp. Phone</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.workplaceEmail">Wp. Email</span></th>
+                            <th ng-repeat="regTypeColumn in vm.regTypeColumnList">
+                                <span data-translate="pcsApp.generalRegistrationReport.registrationTypeColName" data-translate-values="{colName: '{{ regTypeColumn }}'}">Reg. type {{regTypeColumn}}</span>
+                            </th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.accompanyingNum">Accompanying No.</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.accompanyingNames">Accompanying Names</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.otherData">Other data</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.hotelNames">Hotel Names</span></th>
+                            <th><span data-translate="pcsApp.generalRegistrationReport.remark">Remark</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="grr in vm.reportList track by grr.id">
+                            <td>
+                                <button class="btn btn-info m-b-xs" type="submit" tooltip-placement="right" uib-tooltip="Print confirmation"
+                                        ng-click="vm.printConfirmation(grr.id, grr.countryCode)"><i class="fa fa-paperclip"></i></button>
+                                <button class="btn btn-success m-b-xs" type="submit" tooltip-placement="right" uib-tooltip="Registration details"
+                                        ng-click="vm.showRegistrationDetails(grr.id)"><i class="fa fa-info-circle"></i></button>
+                                <send-confirmation-dialog email="{{grr.email}}" reg-id="{{grr.id}}">
+                                    <button class="btn btn-info m-b-xs" type="submit" tooltip-placement="right" uib-tooltip="Send confirmation via email">
+                                        <i class="fa fa-envelope-square email-icon"></i>
+                                    </button>
+                                </send-confirmation-dialog>
+                            </td>
+                            <td>{{grr.regId}}</td>
+                            <td>{{grr.lastName}}</td>
+                            <td>{{grr.firstName}}</td>
+                            <td>{{grr.shortName}}</td>
+                            <td>{{grr.invoiceName}}</td>
+                            <td>{{grr.title}}</td>
+                            <td>{{grr.position}}</td>
+                            <td>{{grr.zipCode}}</td>
+                            <td>{{grr.city}}</td>
+                            <td>{{grr.street}}</td>
+                            <td>{{grr.country}}</td>
+                            <td>{{grr.phone}}</td>
+                            <td><email-dialog email="{{grr.email}}" last-name="{{grr.lastName}}" first-name="{{grr.firstName}}">{{grr.email}}</email-dialog></td>
+                            <td>{{grr.workplaceName}}</td>
+                            <td>{{grr.workplaceDepartment}}</td>
+                            <td>{{grr.workplaceZipCode}}</td>
+                            <td>{{grr.workplaceCity}}</td>
+                            <td>{{grr.workplaceStreet}}</td>
+                            <td>{{grr.workplaceCountry}}</td>
+                            <td>{{grr.workplacePhone}}</td>
+                            <td>{{grr.workplaceEmail}}</td>
+                            <td ng-repeat="regTypeColumn in vm.regTypeColumnList">{{vm.getAvailableRegType(grr, regTypeColumn)}}</td>
+                            <td>{{grr.accompanyingNum ? grr.accompanyingNum : ""}}</td>
+                            <td>{{grr.accompanyingNames}}</td>
+                            <td>{{grr.otherData}}</td>
+                            <td>{{grr.hotelNames}}</td>
+                            <td>{{grr.remark}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

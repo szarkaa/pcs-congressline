@@ -1,0 +1,64 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.registration.home.uploadTitle">Registration upload</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <div class="form-group">
+                        <label class="control-label" translate="pcsApp.registration.uploadFile" for="field_upload">Upload file</label>
+                        <div class="input-group">
+                            <input type="text" value="{{vm.uploadFile.name}} {{vm.byteSize(vm.uploadFile.file)}}"
+                                   autocomplete="off" class="form-control file-upload" >
+                            <input type="hidden" class="form-control" name="upload" id="field_upload" ng-model="vm.uploadFile.file"
+                                   maxbytes="2000000" />
+                            <span class="input-group-btn">
+                                <button type="file" tooltip-placement="top" uib-tooltip="Select file" class="btn btn-info" ngf-select ngf-change="vm.setFile($file, vm.uploadFile)"
+                                        ngf-pattern="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet">
+                                    <i class="fa fa-file"></i>
+                                </button>
+                                <button type="button" tooltip-placement="top" uib-tooltip="Remove file" class="btn btn-danger" ng-if="vm.uploadFile.file" ng-click="vm.clearFile(vm.uploadFile)">
+                                    <i class="fa fa-remove"></i>
+                                </button>
+                                <button type="button" tooltip-placement="top" uib-tooltip="Upload file" class="btn btn-primary" ng-if="vm.uploadFile.file" ng-click="vm.sendUpload()">
+                                    <i class="fa fa-upload"></i>
+                                </button>
+                                <button type="button" tooltip-placement="top" uib-tooltip="Back to registrations" class="btn btn-success" ng-click="vm.back()">
+                                    <i class="fa fa-arrow-left"></i>
+                                </button>
+                            </span>
+                        </div>
+                        <div ng-show="editForm.upload.$invalid">
+                            <p class="error-block"
+                               ng-show="editForm.upload.$error.maxbytes" translate="entity.validation.maxbytes" translate-value-max="2000000">
+                                This field cannot be more than 2000000 bytes.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content" ng-show="vm.messages.length">
+                    <table datatable="ng" id="registration-upload-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><span data-translate="pcsApp.registration.uploadMessage">Upload messages</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="message in vm.messages track by $index">
+                            <td>{{message}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

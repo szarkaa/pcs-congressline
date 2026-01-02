@@ -1,0 +1,15 @@
+{
+    "pcsApp": {
+        "paymentSummary" : {
+            "home": {
+                "title": "Payment summary"
+            },
+            "currency": "Currency",
+            "regFee": "Registration fee",
+            "reservationFee": "Hotel fee",
+            "optionalFee": "Optional service fee",
+            "miscFee": "Misc fee",
+            "total": "Total"
+        }
+    }
+}

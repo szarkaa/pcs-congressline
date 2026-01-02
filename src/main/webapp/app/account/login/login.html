@@ -1,0 +1,35 @@
+<div class="middle-box text-center loginscreen  animated fadeInDown">
+    <div>
+        <h1 class="logo-name">PCS+</h1>
+    </div>
+    <h3>Welcome to PCS System!</h3>
+
+    <!--<p translate="login.title">Sign in</p>-->
+
+    <div class="alert alert-danger" ng-show="vm.authenticationError" translate="login.messages.error.authentication">
+        <strong>Failed to sign in!</strong> Please check your credentials and try again.
+    </div>
+    <div class="loginscreen form-box">
+        <form class="m-t" role="form" ng-submit="vm.login($event)">
+            <div class="form-group">
+                <label for="username" translate="global.form.username">Login</label>
+                <input type="text" class="form-control" id="username" placeholder="{{'global.form.username.placeholder' | translate}}" ng-model="vm.username">
+            </div>
+            <div class="form-group">
+                <label for="password" translate="login.form.password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"
+                       ng-model="vm.password">
+            </div>
+            <div class="form-group">
+                <label for="rememberMe">
+                    <input type="checkbox" id="rememberMe" ng-model="vm.rememberMe" checked>
+                    <span translate="login.form.rememberme">Remember me</span>
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary block full-width m-b" translate="login.form.button">Sign in</button>
+
+            <a class="alert-link" href="#/reset/request" translate="login.password.forgot">Did you forget your password?</a>
+        </form>
+    </div>
+</div>

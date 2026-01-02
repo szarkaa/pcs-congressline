@@ -1,0 +1,27 @@
+{
+    "pcsApp": {
+        "roomReservationRegistration" : {
+            "home": {
+                "title": "RoomReservationRegistrations",
+                "createLabel": "Create a new RoomReservationRegistration",
+                "createOrEditLabel": "Create or edit a RoomReservationRegistration",
+                "search": "Search for RoomReservationRegistration"
+            },
+            "created": "A new RoomReservationRegistration is created with identifier {{ param }}",
+            "updated": "A RoomReservationRegistration is updated with identifier {{ param }}",
+            "deleted": "A RoomReservationRegistration is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete RoomReservationRegistration {{ id }}?"
+            },
+            "detail": {
+                "title": "RoomReservationRegistration"
+            },
+            "dateOfGroupPayment": "DateOfGroupPayment",
+            "createdDate": "CreatedDate",
+            "comment": "Comment",
+            "roomReservation": "RoomReservation",
+            "registration": "Registration",
+            "payingGroupItem": "PayingGroupItem"
+        }
+    }
+}

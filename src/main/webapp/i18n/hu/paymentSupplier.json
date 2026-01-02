@@ -1,0 +1,9 @@
+{
+    "pcsApp": {
+        "PaymentSupplier" : {
+            "null": "",
+            "KH": "K&H Bank",
+            "STRIPE": "Stripe"
+        }
+    }
+}

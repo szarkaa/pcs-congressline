@@ -1,0 +1,25 @@
+{
+    "pcsApp": {
+        "groupDiscountInvoiceHistory" : {
+            "home": {
+                "title": "Group Invoice Histories",
+                "createLabel": "Create a new Group Invoice History",
+                "createOrEditLabel": "Create or edit a Group Invoice History",
+                "search": "Search for Group Invoice History"
+            },
+            "created": "A new Group Invoice History is created with identifier {{ param }}",
+            "updated": "A Group Invoice History is updated with identifier {{ param }}",
+            "deleted": "A Group Invoice History is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Group Invoice History {{ id }}?"
+            },
+            "detail": {
+                "title": "Group Invoice History"
+            },
+            "chargeableItemId": "Chargeable Item Id",
+            "chargeableItemType": "Chargeable Item Type",
+            "df": "Df",
+            "groupDiscountInvoice": "Group Invoice"
+        }
+    }
+}

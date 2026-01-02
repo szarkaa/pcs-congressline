@@ -1,0 +1,126 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myVatInfoLabel" data-translate="pcsApp.vatInfo.home.createOrEditLabel">Create or edit a Vat Info</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.vatInfo.vatRateType" for="field_vatRateType">Vat Rate Type</label>
+            <select class="form-control" name="vatRateType" ng-model="vm.vatInfo.vatRateType" id="field_vatRateType" ng-change="vm.vatRateTypeChanged()" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="REGULAR" data-translate="pcsApp.VatRateType.REGULAR">REGULAR</option>
+                <option value="EUFAD37" data-translate="pcsApp.VatRateType.EUFAD37">EUFAD37</option>
+                <option value="HO" data-translate="pcsApp.VatRateType.HO">HO</option>
+                <option value="ATK" data-translate="pcsApp.VatRateType.ATK">ATK</option>
+                <option value="EUE" data-translate="pcsApp.VatRateType.EUE">EUE</option>
+                <option value="NAM" data-translate="pcsApp.VatRateType.NAM">NAM</option>
+                <option value="NAM" data-translate="pcsApp.VatRateType.TAM">TAM</option>
+            </select>
+            <div ng-show="editForm.vatRateType.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.vatRateType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.vatInfo.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name" autocomplete="off"
+                    ng-model="vm.vatInfo.name" required ng-minlength="3" ng-maxlength="128" />
+            <div ng-show="editForm.name.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.name.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="3">
+                    This field is required to be at least 3 characters.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="128">
+                    This field cannot be longer than 128 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vm.vatInfo.vatRateType === 'REGULAR'">
+            <label class="control-label" data-translate="pcsApp.vatInfo.vat" for="field_vat">Vat</label>
+            <input type="number" class="form-control" name="vat" id="field_vat" autocomplete="off"
+                    ng-model="vm.vatInfo.vat" ng-required="vm.vatInfo.vatRateType === 'REGULAR'" min="0" max="100" />
+            <div ng-show="editForm.vat.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.vat.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.vat.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.vat.$error.max" data-translate="entity.validation.max" translate-value-max="100">
+                    This field cannot be more than 100.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.vat.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.vatInfo.szj" for="field_szj">Szj</label>
+            <input type="text" class="form-control" name="szj" id="field_szj" autocomplete="off"
+                    ng-model="vm.vatInfo.szj"
+                    ng-maxlength="20" />
+            <div ng-show="editForm.szj.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.szj.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="20">
+                    This field cannot be longer than 20 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.vatInfo.chargeableItemType" for="field_chargeableItemType">Chargeable Item Type</label>
+            <select class="form-control" name="chargeableItemType" ng-model="vm.vatInfo.chargeableItemType" id="field_chargeableItemType" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="REGISTRATION" data-translate="pcsApp.ChargeableItemType.REGISTRATION">REGISTRATION</option>
+                <option value="HOTEL" data-translate="pcsApp.ChargeableItemType.HOTEL">HOTEL</option>
+                <option value="OPTIONAL_SERVICE" data-translate="pcsApp.ChargeableItemType.OPTIONAL_SERVICE">OPTIONAL_SERVICE</option>
+                <option value="MISCELLANEOUS" data-translate="pcsApp.ChargeableItemType.MISCELLANEOUS">MISCELLANEOUS</option>
+            </select>
+            <div ng-show="editForm.chargeableItemType.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.chargeableItemType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vm.vatInfo.vatRateType !== 'REGULAR'">
+            <label class="control-label" translate="pcsApp.vatInfo.vatExceptionReason" for="field_vatExceptionReason">Vat exception reason</label>
+            <textarea class="form-control" name="vatExceptionReason" id="field_vatExceptionReason" rows="10" autocomplete="off"
+                      ng-required="vm.vatInfo.vatRateType !== 'REGULAR'" ng-model="vm.vatInfo.vatExceptionReason" ng-maxlength="200" >
+            </textarea>
+            <div ng-show="editForm.vatExceptionReason.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.vatExceptionReason.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.vatExceptionReason.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="200">
+                    This field cannot be longer than 200 characters.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

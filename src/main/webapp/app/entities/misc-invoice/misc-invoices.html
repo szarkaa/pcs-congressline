@@ -1,0 +1,58 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 translate="pcsApp.miscInvoice.home.title">Misc Invoices</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ui-sref="misc-invoice-item">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <table datatable="ng" id="misc-invoice-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.miscInvoice.invoiceNumber">Invoice number</span></th>
+                            <th><span translate="pcsApp.miscInvoice.stornoInvoiceNumber">Storno invoice number</span></th>
+                            <th><span translate="pcsApp.miscInvoice.invoiceType">Invoice type</span></th>
+                            <th><span translate="pcsApp.miscInvoice.createdDate">Create date</span></th>
+                            <th><span translate="pcsApp.miscInvoice.name1">Name1</span></th>
+                            <th><span translate="pcsApp.miscInvoice.vatRegNumber">Vat Reg number</span></th>
+                            <th><span translate="pcsApp.miscInvoice.dateOfPayment">Date of payment</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="invoiceCongress in vm.miscInvoices track by invoiceCongress.id">
+                            <td>{{invoiceCongress.invoice.invoiceNumber}}</td>
+                            <td>{{invoiceCongress.invoice.stornoInvoiceNumber}}</td>
+                            <td data-translate="pcsApp.InvoiceType.{{invoiceCongress.invoice.invoiceType}}"></td>
+                            <td>{{invoiceCongress.invoice.createdDate | date: 'mediumDate'}}</td>
+                            <td>{{invoiceCongress.invoice.name1}}</td>
+                            <td>{{invoiceCongress.invoice.vatRegNumber}}</td>
+                            <td>{{invoiceCongress.dateOfPayment}}</td>
+                            <td>
+                                <button class="btn btn-info" type="button"
+                                        ng-click="vm.downloadPdf(invoiceCongress.id)"><i class="fa fa-download"></i></button>
+                                <button class="btn btn-danger" type="submit" ng-hide="invoiceCongress.invoice.storno || invoiceCongress.invoice.stornired || invoiceCongress.invoice.invoiceType == 'PRO_FORMA'"
+                                        ui-sref="misc-invoice.storno({invoiceId: invoiceCongress.id})"><i class="fa fa-undo"></i></button>
+                                <button class="btn btn-success" type="submit" ng-hide="invoiceCongress.invoice.storno || invoiceCongress.invoice.stornired"
+                                        ui-sref="misc-invoice.set-payment-date({id: invoiceCongress.id})" tooltip-placement="left" uib-tooltip="Set payment date"><i class="fa fa-calendar"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

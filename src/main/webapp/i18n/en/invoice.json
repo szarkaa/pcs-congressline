@@ -1,0 +1,73 @@
+{
+    "pcsApp": {
+        "invoice" : {
+            "home": {
+                "title": "Invoices for registration",
+                "invoiceListLabel": "Invoices for {{lastName}}, {{firstName}}",
+                "createLabel": "Create a new invoice for {{lastName}}, {{firstName}}",
+                "setupLabel": "Print setup of creating invoice for {{lastName}}, {{firstName}}",
+                "miscSetupLabel": "Misc invoice print setup",
+                "billingInfoLabel": "Customer billing info",
+                "invoiceSetupDateLabel": "Invoice setup changeable data",
+                "paymentMethodLabel": "Payment method",
+                "setPaymentDateLabel": "Setting payment date",
+                "stornoLabel": "Confirm storno operation"
+            },
+            "created": "A new Invoice is created with identifier {{ param }}",
+            "updated": "A Invoice is updated with identifier {{ param }}",
+            "deleted": "A Invoice is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Invoice {{ id }}?"
+            },
+            "detail": {
+                "title": "Invoice"
+            },
+            "sendInvoiceDialog": {
+                "title": "Send invoice via mail",
+                "email": "Email"
+            },
+            "language": "Language",
+            "navVatCategory": "NAV vat category",
+            "invoiceType": "Invoice type",
+            "partner": "Set billing address by workplace/partner",
+            "invoiceNumber": "Invoice number",
+            "stornoInvoiceNumber": "Storno Invoice number",
+            "lastName": "Family name",
+            "firstName": "First name",
+            "optionalName": "Optional name",
+            "name1": "Name1",
+            "name2": "Name2",
+            "name3": "Name3",
+            "vatRegNumber": "Vat Reg number",
+            "city": "City",
+            "zipCode": "Zip code",
+            "street": "Street",
+            "country": "Country",
+            "optionalText": "Optional text",
+            "startDate": "Start date",
+            "endDate": "End date",
+            "dateOfFulfilment": "Date of fulfilment",
+            "paymentDeadline": "Payment deadline",
+            "billingMethod": "Billing method",
+            "bankAccount": "Bank account",
+            "printLocale": "Locale",
+            "storno": "Storno",
+            "stornired": "Stornired",
+            "createdDate": "Created date",
+            "printInvoice": "Print invoice",
+            "sendInvoiceByMail": "Send invoice by mail",
+            "createInvoice": "Create invoice",
+            "totalDue": "Total payable",
+            "dateOfPayment": "Date Of Payment",
+            "message": {
+                "endDateLessThanStartDate": "End date must be later than Start date.",
+                "dateOfFulfilmentLessThanStartDate": "Date of fulfilment must be later than Start date.",
+                "emailResent": "Invoice has been successfully resent."
+            },
+            "confirmation": {
+                "email": "Sending invoice to the following email address",
+                "storno": "Are you sure you want to storno this invoice: {{ invoiceNumber }}?"
+            }
+        }
+    }
+}

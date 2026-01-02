@@ -1,0 +1,62 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.optionalServiceApplicant.home.title">Optional Service By Applicants</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ui-sref="optional-service-applicant.selection">
+                        <i class="fa fa-search-plus"></i>
+                    </button>
+                    <button class="btn btn-primary" type="submit" ng-show="vm.listFilter.optionalService" ng-click="vm.downloadReportXls()">
+                        <i class="fa fa-download"></i>
+                    </button>&nbsp;&nbsp;
+                    <span ng-show="vm.listFilter.optionalService">Optional service: <strong>{{vm.listFilter.optionalService.name}}</strong>&nbsp;&nbsp;</span>
+                </div>
+                <div class="ibox-content" ng-show="vm.optionalServiceApplicants.length">
+                    <table datatable="ng" id="optional-service-applicant-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.regId">Reg Id</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.lastName">Last Name</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.firstName">First Name</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.applicants">Applicants</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.country">Country</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.currency">Currency</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.orderedPrice">Ordered Price</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.paid">Paid</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.hotel">Hotel</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.payingGroup">Paying Group</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.groupCost">Group cost</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.paidByGroup">Paid By Group</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="optionalServiceApplicant in vm.optionalServiceApplicants track by optionalServiceApplicant.id">
+                            <td>{{optionalServiceApplicant.regId}}</td>
+                            <td>{{optionalServiceApplicant.lastName}}</td>
+                            <td>{{optionalServiceApplicant.firstName}}</td>
+                            <td>{{optionalServiceApplicant.numOfApplicants}}</td>
+                            <td>{{optionalServiceApplicant.country}}</td>
+                            <td>{{optionalServiceApplicant.currency}}</td>
+                            <td>{{optionalServiceApplicant.orderedPrice}}</td>
+                            <td>{{optionalServiceApplicant.paid}}</td>
+                            <td>{{optionalServiceApplicant.hotel}}</td>
+                            <td>{{optionalServiceApplicant.payingGroupName}}</td>
+                            <td>{{optionalServiceApplicant.groupCost}}</td>
+                            <td>{{optionalServiceApplicant.paidByGroup}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

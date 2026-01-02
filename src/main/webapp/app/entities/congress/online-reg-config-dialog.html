@@ -1,0 +1,1961 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" class="form-horizontal" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myCongressLabel" data-translate="pcsApp.onlineRegConfig.home.createOrEditLabel">Modify online registration configuration</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="tabs-container">
+
+            <uib-tabset>
+                <uib-tab heading="Online">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-xs-2">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.closed">Closed</label>
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="closed" id="field_closed"
+                                               ng-model="vm.onlineRegConfig.closed" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_closed">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-3">
+                                <label translate="pcsApp.onlineRegConfig.defaultCountry" for="field_defaultCountry">Default Country</label>
+                                <ui-select ng-model="vm.onlineRegConfig.defaultCountry" name="defaultCountry" id="field_defaultCountry" theme="bootstrap">
+                                    <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                        <span ng-bind="$select.selected.name"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="country in (vm.countries | filter: $select.search) track by country.id">
+                                        <div ng-bind-html="country.name | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+
+                            <div class="form-group col-xs-2">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.colorCode">Color code</label>
+                                <input type="text" class="form-control" name="colorCode" id="field_colorCode"
+                                       ng-model="vm.onlineRegConfig.colorCode" autocomplete="off"
+                                       required ng-maxlength="16"/>
+                                <div ng-show="editForm.colorCode.$invalid">
+                                    <p class="error-block"
+                                       ng-show="editForm.colorCode.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block"
+                                       ng-show="editForm.colorCode.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="16">
+                                        This field cannot be longer than 16 characters.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-xs-5" style="margin-left: 30px;">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.headerNormal" for="field_headerNormal">Header image</label>
+                                <div class="input-group">
+                                    <input type="text" value="{{vm.onlineRegConfig.headerNormalName}} {{vm.onlineRegConfig.headerNormalContentType}} {{vm.byteSize(vm.onlineRegConfig.headerNormalFile)}}"
+                                           autocomplete="off" class="form-control" >
+                                    <input type="hidden" class="form-control" name="headerNormal" id="field_headerNormal" ng-change="vm.changeValue()" ng-model="vm.onlineRegConfig.headerNormalFile"
+                                           maxbytes="2000000" />
+                                    <span class="input-group-btn">
+                                    <button type="file" class="btn btn-white" ngf-select ngf-change="vm.setNormalFile($file, vm.onlineRegConfig)"
+                                            ng-if="!vm.onlineRegConfig.headerNormalFile">Select file</button>
+                                    <button type="button" class="btn btn-white" ng-if="vm.onlineRegConfig.headerNormalFile"
+                                            ng-click="vm.clearNormalFile()"><i class="fa fa-trash-o"></i></button>
+                                    <button type="button" class="btn btn-white" ng-if="vm.onlineRegConfig.headerNormalFile"
+                                            ng-click="vm.openFile(vm.onlineRegConfig.headerNormalContentType, vm.onlineRegConfig.headerNormalFile)"><i class="fa fa-download"></i></button>
+                                </span>
+                                </div>
+                                <div ng-show="editForm.headerNormal.$invalid">
+                                    <p class="error-block"
+                                       ng-show="editForm.headerNormal.$error.maxbytes" translate="entity.validation.maxbytes" translate-value-max="2000000">
+                                        This field cannot be more than 2000000 bytes.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.noPaymentRequired">No payment required</label>
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="closed" id="field_no_payment_required" ng-change="vm.noPaymentRequiredChanged()"
+                                               ng-model="vm.onlineRegConfig.noPaymentRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_no_payment_required">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3" ng-hide="vm.onlineRegConfig.noPaymentRequired">
+                                <label translate="pcsApp.onlineRegConfig.paymentSupplier" for="field_paymentSupplier">Payment Supplier</label>
+                                <select class="form-control" name="paymentSupplier" ng-model="vm.onlineRegConfig.paymentSupplier" id="field_paymentSupplier"
+                                        ng-change="vm.paymentSupplierChanged()" ng-required="!vm.onlineRegConfig.noPaymentRequired">
+                                    <option value="" data-translate="global.form.please.select">Please select</option>
+                                    <option value="KH" data-translate="pcsApp.PaymentSupplier.KH">KH</option>
+                                    <option value="STRIPE" data-translate="pcsApp.PaymentSupplier.STRIPE">STRIPE</option>
+                                </select>
+                                <div ng-show="editForm.paymentSupplier.$invalid">
+                                    <p class="error-block" ng-show="editForm.paymentSupplier.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3" ng-show="!vm.onlineRegConfig.noPaymentRequired && vm.onlineRegConfig.paymentSupplier === 'STRIPE'">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.stripeSecretKey">Stripe secret key</label>
+                                <input type="text" class="form-control" name="stripeSecretKey" id="field_stripeSecretKey"
+                                       ng-model="vm.onlineRegConfig.stripeSecretKey" autocomplete="off" ng-required="vm.onlineRegConfig.paymentSupplier === 'STRIPE'"/>
+                                <div ng-show="editForm.stripeSecretKey.$invalid">
+                                    <p class="error-block" ng-show="editForm.stripeSecretKey.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3" ng-show="!vm.onlineRegConfig.noPaymentRequired && vm.onlineRegConfig.paymentSupplier === 'STRIPE'">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.stripePublicKey">Stripe api key</label>
+                                <input type="text" class="form-control" name="stripePublicKey" id="field_stripePublicKey"
+                                       ng-model="vm.onlineRegConfig.stripePublicKey" autocomplete="off" ng-required="vm.onlineRegConfig.paymentSupplier === 'STRIPE'"/>
+                                <div ng-show="editForm.stripePublicKey.$invalid">
+                                    <p class="error-block" ng-show="editForm.stripePublicKey.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.browserRemarkHu" for="field_browserRemarkHu">Browser remark(hu)</label>
+                            <summernote id="field_browserRemarkHu" name="browserRemarkHu" ng-model="vm.onlineRegConfig.browserRemarkHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.browserRemarkHu.$invalid">
+                                <p class="help-block"
+                                   ng-show="editForm.browserRemarkHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="help-block"
+                                   ng-show="editForm.browserRemarkHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.browserRemarkEn" for="field_browserRemarkEn">Browser remark(en)</label>
+                            <summernote id="field_browserRemarkEn" name="browserRemarkEn" ng-model="vm.onlineRegConfig.browserRemarkEn" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.browserRemarkEn.$invalid">
+                                <p class="help-block"
+                                   ng-show="editForm.browserRemarkEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="help-block"
+                                   ng-show="editForm.browserRemarkEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.browserRemarkEs" for="field_browserRemarkEs">Browser remark(es)</label>
+                            <summernote id="field_browserRemarkEs" name="browserRemarkEs" ng-model="vm.onlineRegConfig.browserRemarkEs" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.browserRemarkEs.$invalid">
+                                <p class="help-block"
+                                   ng-show="editForm.browserRemarkEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="help-block"
+                                   ng-show="editForm.browserRemarkEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.browserRemarkPt" for="field_browserRemarkPt">Browser remark(pt)</label>
+                            <summernote id="field_browserRemarkPt" name="browserRemarkPt" ng-model="vm.onlineRegConfig.browserRemarkPt" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.browserRemarkPt.$invalid">
+                                <p class="help-block"
+                                   ng-show="editForm.browserRemarkPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="help-block"
+                                   ng-show="editForm.browserRemarkPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="Personal data">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.titleVisible">Title visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="titleVisible" id="field_titleVisible"
+                                               ng-model="vm.onlineRegConfig.titleVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_titleVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.titleSelectable">Title selectable</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="titleSelectable" id="field_titleSelectable"
+                                               ng-model="vm.onlineRegConfig.titleSelectable" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_titleSelectable">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.lastNameVisible">Last name visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="lastNameVisible" id="field_lastNameVisible"
+                                               ng-model="vm.onlineRegConfig.lastNameVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_lastNameVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.firstNameVisible">First name visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="firstNameVisible" id="field_firstNameVisible"
+                                               ng-model="vm.onlineRegConfig.firstNameVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_firstNameVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-6">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.titleRequired">Title required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="titleRequired" id="field_titleRequired"
+                                               ng-model="vm.onlineRegConfig.titleRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_titleRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.lastNameRequired">Last name required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="lastNameRequired" id="field_lastNameRequired"
+                                               ng-model="vm.onlineRegConfig.lastNameRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_lastNameRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.firstNameRequired">First name required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="firstNameRequired" id="field_firstNameRequired"
+                                               ng-model="vm.onlineRegConfig.firstNameRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_firstNameRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.departmentVisible">Department visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="departmentVisible" id="field_departmentVisible"
+                                               ng-model="vm.onlineRegConfig.departmentVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_departmentVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.phoneVisible">Phone visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="phoneVisible" id="field_phoneVisible"
+                                               ng-model="vm.onlineRegConfig.phoneVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_phoneVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.emailVisible">Email visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="emailVisible" id="field_emailVisible"
+                                               ng-model="vm.onlineRegConfig.emailVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_emailVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.departmentRequired">Department required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="departmentRequired" id="field_departmentRequired"
+                                               ng-model="vm.onlineRegConfig.departmentRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_departmentRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.phoneRequired">Phone required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="phoneRequired" id="field_phoneRequired"
+                                               ng-model="vm.onlineRegConfig.phoneRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_phoneRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.emailRequired">Email required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="emailRequired" id="field_emailRequired"
+                                               ng-model="vm.onlineRegConfig.emailRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_emailRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.countryVisible">Country visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="countryVisible" id="field_countryVisible"
+                                               ng-model="vm.onlineRegConfig.countryVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_countryVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.zipCodeVisible">Zip code visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="zipCodeVisible" id="field_zipCodeVisible"
+                                               ng-model="vm.onlineRegConfig.zipCodeVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_zipCodeVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.cityVisible">City visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="cityVisible" id="field_cityVisible"
+                                               ng-model="vm.onlineRegConfig.cityVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_cityVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.streetVisible">Street visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="streetVisible" id="field_streetVisible"
+                                               ng-model="vm.onlineRegConfig.streetVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_streetVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.countryRequired">Country required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="countryRequired" id="field_countryRequired"
+                                               ng-model="vm.onlineRegConfig.countryRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_countryRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.zipCodeRequired">Zip code required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="zipCodeRequired" id="field_zipCodeRequired"
+                                               ng-model="vm.onlineRegConfig.zipCodeRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_zipCodeRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.cityRequired">City required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="cityRequired" id="field_cityRequired"
+                                               ng-model="vm.onlineRegConfig.cityRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_cityRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.streetRequired">Street required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="streetRequired" id="field_streetRequired"
+                                               ng-model="vm.onlineRegConfig.streetRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_streetRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.workplaceVisible">workplace visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="workplaceVisible" id="field_workplaceVisible"
+                                               ng-model="vm.onlineRegConfig.workplaceVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_workplaceVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.workplaceRequired">Workplace required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="workplaceRequired" id="field_workplaceRequired"
+                                               ng-model="vm.onlineRegConfig.workplaceRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_workplaceRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 m-t-xs">
+                                <table id="workplace-selectable-hu-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Workplace selectable values(hu)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.workplaceHuValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="workplaceValue in vm.onlineRegConfig.workplaceHuValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.workplaceHuValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.workplaceHuValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.workplaceHuValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="workplace-selectable-en-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Workplace selectable values(en)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.workplaceEnValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="workplaceValue in vm.onlineRegConfig.workplaceEnValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.workplaceEnValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.workplaceEnValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.workplaceEnValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="workplace-selectable-es-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Workplace selectable values(es)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.workplaceEsValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="workplaceValue in vm.onlineRegConfig.workplaceEsValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.workplaceEsValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.workplaceEsValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.workplaceEsValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="workplace-selectable-pt-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Workplace selectable values(pt)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.workplacePtValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="workplaceValue in vm.onlineRegConfig.workplacePtValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.workplacePtValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.workplacePtValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.workplacePtValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.positionVisible">Position visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="positionVisible" id="field_positionVisible"
+                                               ng-model="vm.onlineRegConfig.positionVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_positionVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-9">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.positionRequired">Position required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="positionRequired" id="field_positionRequired"
+                                               ng-model="vm.onlineRegConfig.positionRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_positionRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.positionLabelHu"  for="field_positionLabelHu">Position label(hu)</label>
+                                <input type="text" class="form-control" name="positionLabelHu" id="field_positionLabelHu"
+                                       ng-model="vm.onlineRegConfig.positionLabelHu" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.positionLabelHu.$invalid">
+                                    <p class="error-block" ng-show="editForm.positionLabelHu.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.positionLabelHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.positionLabelEn" for="field_positionLabelEn">Position label(en)</label>
+                                <input type="text" class="form-control" name="positionLabelEn" id="field_positionLabelEn"
+                                       ng-model="vm.onlineRegConfig.positionLabelEn" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.positionLabelEn.$invalid">
+                                    <p class="error-block" ng-show="editForm.positionLabelEn.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.positionLabelEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.positionLabelEs" for="field_positionLabelEs">Position label(es)</label>
+                                <input type="text" class="form-control" name="positionLabelEs" id="field_positionLabelEs"
+                                       ng-model="vm.onlineRegConfig.positionLabelEs" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.positionLabelEs.$invalid">
+                                    <p class="error-block" ng-show="editForm.positionLabelEs.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.positionLabelEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.positionLabelPt" for="field_positionLabelPt">Position label(pt)</label>
+                                <input type="text" class="form-control" name="positionLabelPt" id="field_positionLabelPt"
+                                       ng-model="vm.onlineRegConfig.positionLabelPt" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.positionLabelPt.$invalid">
+                                    <p class="error-block" ng-show="editForm.positionLabelPt.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.positionLabelPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 m-t-xs">
+                                <table id="position-selectable-hu-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Position selectable values(hu)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.positionHuValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="positionValue in vm.onlineRegConfig.positionHuValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.positionHuValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.positionHuValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.positionHuValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="position-selectable-en-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Position selectable values(en)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.positionEnValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="positionValue in vm.onlineRegConfig.positionEnValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.positionEnValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.positionEnValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.positionEnValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="position-selectable-es-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Position selectable values(es)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.positionEsValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="positionValue in vm.onlineRegConfig.positionEsValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.positionEsValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.positionEsValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.positionEsValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="position-selectable-pt-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Position selectable values(pt)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.positionPtValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="positionValue in vm.onlineRegConfig.positionPtValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.positionPtValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.positionPtValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.positionPtValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.otherDataVisible">Other data visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="otherDataVisible" id="field_otherDataVisible"
+                                               ng-model="vm.onlineRegConfig.otherDataVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_otherDataVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-9">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.otherDataRequired">Other data required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="otherDataRequired" id="field_otherDataRequired"
+                                               ng-model="vm.onlineRegConfig.otherDataRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_otherDataRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.otherDataLabelHu">Other data label(hu)</label>
+                                <input type="text" class="form-control" name="otherDataLabelHu" id="field_otherDataLabelHu"
+                                       ng-model="vm.onlineRegConfig.otherDataLabelHu" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.otherDataLabelHu.$invalid">
+                                    <p class="error-block" ng-show="editForm.otherDataLabelHu.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.otherDataLabelHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.otherDataLabelEn">Other data label(en)</label>
+                                <input type="text" class="form-control" name="otherDataLabelEn" id="field_otherDataLabelEn"
+                                       ng-model="vm.onlineRegConfig.otherDataLabelEn" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.otherDataLabelEn.$invalid">
+                                    <p class="error-block" ng-show="editForm.otherDataLabelEn.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.otherDataLabelEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.otherDataLabelEs">Other data label(es)</label>
+                                <input type="text" class="form-control" name="otherDataLabelEs" id="field_otherDataLabelEs"
+                                       ng-model="vm.onlineRegConfig.otherDataLabelEs" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.otherDataLabelEs.$invalid">
+                                    <p class="error-block" ng-show="editForm.otherDataLabelEs.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.otherDataLabelEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.otherDataLabelPt">Other data label(pt)</label>
+                                <input type="text" class="form-control" name="otherDataLabelPt" id="field_otherDataLabelPt"
+                                       ng-model="vm.onlineRegConfig.otherDataLabelPt" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.otherDataLabelPt.$invalid">
+                                    <p class="error-block" ng-show="editForm.otherDataLabelPt.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.otherDataLabelPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 m-t-xs">
+                                <table id="otherdata-selectable-hu-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Other data selectable values(hu)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.otherDataHuValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="otherDataValue in vm.onlineRegConfig.otherDataHuValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.otherDataHuValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.otherDataHuValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.otherDataHuValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="otherdata-selectable-en-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Other data selectable values(en)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.otherDataEnValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="otherDataValue in vm.onlineRegConfig.otherDataEnValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.otherDataEnValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.otherDataEnValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.otherDataEnValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="otherdata-selectable-es-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Other data selectable values(es)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.otherDataEsValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="otherDataValue in vm.onlineRegConfig.otherDataEsValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.otherDataEsValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.otherDataEsValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.otherDataEsValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="otherdata-selectable-pt-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Other data selectable values(pt)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.otherDataPtValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="otherDataValue in vm.onlineRegConfig.otherDataPtValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.otherDataPtValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.otherDataPtValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.otherDataPtValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.personalDataRemarkHu" for="field_personalDataRemarkHu">Personal data remark</label>
+                            <summernote id="field_personalDataRemarkHu" name="personalDataRemarkHu" ng-model="vm.onlineRegConfig.personalDataRemarkHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.personalDataRemarkHu.$invalid">
+                                    <p class="error-block"
+                                   ng-show="editForm.personalDataRemarkHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.personalDataRemarkHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.personalDataRemarkEn" for="field_personalDataRemarkEn">Personal data remark</label>
+                            <summernote id="field_personalDataRemarkEn" name="personalDataRemarkEn" ng-model="vm.onlineRegConfig.personalDataRemarkEn" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.personalDataRemarkEn.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.personalDataRemarkEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.personalDataRemarkEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.personalDataRemarkEs" for="field_personalDataRemarkEs">Personal data remark</label>
+                            <summernote id="field_personalDataRemarkEs" name="personalDataRemarkEs" ng-model="vm.onlineRegConfig.personalDataRemarkEs" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.personalDataRemarkEs.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.personalDataRemarkEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.personalDataRemarkEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.personalDataRemarkPt" for="field_personalDataRemarkPt">Personal data remark</label>
+                            <summernote id="field_personalDataRemarkPt" name="personalDataRemarkPt" ng-model="vm.onlineRegConfig.personalDataRemarkPt" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.personalDataRemarkPt.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.personalDataRemarkPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.personalDataRemarkPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="Registration">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeFirstFeeLabelHu"  for="field_regTypeFirstFeeLabelHu">First fee label(hu)</label>
+                                <input type="text" class="form-control" name="regTypeFirstFeeLabelHu" id="field_regTypeFirstFeeLabelHu"
+                                       ng-model="vm.onlineRegConfig.regTypeFirstFeeLabelHu" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeFirstFeeLabelHu.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeFirstFeeLabelHu.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeFirstFeeLabelHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeSecondFeeLabelHu"  for="field_regTypeSecondFeeLabelHu">Second fee label(hu)</label>
+                                <input type="text" class="form-control" name="regTypeSecondFeeLabelHu" id="field_regTypeSecondFeeLabelHu"
+                                       ng-model="vm.onlineRegConfig.regTypeSecondFeeLabelHu" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeSecondFeeLabelHu.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeSecondFeeLabelHu.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeSecondFeeLabelHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeThirdFeeLabelHu"  for="field_regTypeThirdFeeLabelHu">Third fee label(hu)</label>
+                                <input type="text" class="form-control" name="regTypeThirdFeeLabelHu" id="field_regTypeThirdFeeLabelHu"
+                                       ng-model="vm.onlineRegConfig.regTypeThirdFeeLabelHu" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeThirdFeeLabelHu.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeThirdFeeLabelHu.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeThirdFeeLabelHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeFirstFeeLabelEn"  for="field_regTypeFirstFeeLabelEn">First fee label(en)</label>
+                                <input type="text" class="form-control" name="regTypeFirstFeeLabelEn" id="field_regTypeFirstFeeLabelEn"
+                                       ng-model="vm.onlineRegConfig.regTypeFirstFeeLabelEn" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeFirstFeeLabelEn.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeFirstFeeLabelEn.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeFirstFeeLabelEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeSecondFeeLabelEn"  for="field_regTypeSecondFeeLabelEn">Second fee label(en)</label>
+                                <input type="text" class="form-control" name="regTypeSecondFeeLabelEn" id="field_regTypeSecondFeeLabelEn"
+                                       ng-model="vm.onlineRegConfig.regTypeSecondFeeLabelEn" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeSecondFeeLabelEn.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeSecondFeeLabelEn.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeSecondFeeLabelEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeThirdFeeLabelEn"  for="field_regTypeThirdFeeLabelEn">Third fee label(en)</label>
+                                <input type="text" class="form-control" name="regTypeThirdFeeLabelEn" id="field_regTypeThirdFeeLabelEn"
+                                       ng-model="vm.onlineRegConfig.regTypeThirdFeeLabelEn" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeThirdFeeLabelEn.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeThirdFeeLabelEn.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeThirdFeeLabelEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeFirstFeeLabelEs"  for="field_regTypeFirstFeeLabelEs">First fee label(es)</label>
+                                <input type="text" class="form-control" name="regTypeFirstFeeLabelEs" id="field_regTypeFirstFeeLabelEs"
+                                       ng-model="vm.onlineRegConfig.regTypeFirstFeeLabelEs" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeFirstFeeLabelEs.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeFirstFeeLabelEs.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeFirstFeeLabelEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeSecondFeeLabelEs"  for="field_regTypeSecondFeeLabelEs">Second fee label(es)</label>
+                                <input type="text" class="form-control" name="regTypeSecondFeeLabelEs" id="field_regTypeSecondFeeLabelEs"
+                                       ng-model="vm.onlineRegConfig.regTypeSecondFeeLabelEs" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeSecondFeeLabelEs.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeSecondFeeLabelEs.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeSecondFeeLabelEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeThirdFeeLabelEs"  for="field_regTypeThirdFeeLabelEs">Third fee label(es)</label>
+                                <input type="text" class="form-control" name="regTypeThirdFeeLabelEs" id="field_regTypeThirdFeeLabelEs"
+                                       ng-model="vm.onlineRegConfig.regTypeThirdFeeLabelEs" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeThirdFeeLabelEs.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeThirdFeeLabelEs.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeThirdFeeLabelEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeFirstFeeLabelPt"  for="field_regTypeFirstFeeLabelPt">First fee label(pt)</label>
+                                <input type="text" class="form-control" name="regTypeFirstFeeLabelPt" id="field_regTypeFirstFeeLabelPt"
+                                       ng-model="vm.onlineRegConfig.regTypeFirstFeeLabelPt" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeFirstFeeLabelPt.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeFirstFeeLabelPt.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeFirstFeeLabelPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeSecondFeeLabelPt"  for="field_regTypeSecondFeeLabelPt">Second fee label(pt)</label>
+                                <input type="text" class="form-control" name="regTypeSecondFeeLabelPt" id="field_regTypeSecondFeeLabelPt"
+                                       ng-model="vm.onlineRegConfig.regTypeSecondFeeLabelPt" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeSecondFeeLabelPt.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeSecondFeeLabelPt.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeSecondFeeLabelPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-4">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeThirdFeeLabelPt"  for="field_regTypeThirdFeeLabelPt">Third fee label(pt)</label>
+                                <input type="text" class="form-control" name="regTypeThirdFeeLabelPt" id="field_regTypeThirdFeeLabelPt"
+                                       ng-model="vm.onlineRegConfig.regTypeThirdFeeLabelPt" autocomplete="off" ng-maxlength="100"/>
+                                <div ng-show="editForm.regTypeThirdFeeLabelPt.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeThirdFeeLabelPt.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.regTypeThirdFeeLabelPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeRemarkHu" for="field_regTypeRemarkHu">Reg type remark(hu)</label>
+                            <summernote id="field_regTypeRemarkHu" name="regTypeRemarkHu" ng-model="vm.onlineRegConfig.regTypeRemarkHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.regTypeRemarkHu.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.regTypeRemarkHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.regTypeRemarkHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeRemarkEn" for="field_regTypeRemarkEn">Reg type remark(en)</label>
+                            <summernote id="field_regTypeRemarkEn" name="regTypeRemarkEn" ng-model="vm.onlineRegConfig.regTypeRemarkEn" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.regTypeRemarkEn.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.regTypeRemarkEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.regTypeRemarkEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeRemarkEs" for="field_regTypeRemarkEs">Reg type remark(es)</label>
+                            <summernote id="field_regTypeRemarkEs" name="regTypeRemarkEs" ng-model="vm.onlineRegConfig.regTypeRemarkEs" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.regTypeRemarkEs.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.regTypeRemarkEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.regTypeRemarkEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeRemarkPt" for="field_regTypeRemarkPt">Reg type remark(pt)</label>
+                            <summernote id="field_regTypeRemarkPt" name="regTypeRemarkPt" ng-model="vm.onlineRegConfig.regTypeRemarkPt" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.regTypeRemarkPt.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.regTypeRemarkPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.regTypeRemarkPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </uib-tab>
+                <uib-tab heading="Title&Remarks">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeExtraTitleHu"  for="field_regTypeExtraTitleHu">Reg type extra title(hu)</label>
+                                <input type="text" class="form-control" name="regTypeFirstFeeLabelHu" id="field_regTypeExtraTitleHu"
+                                       ng-model="vm.onlineRegConfig.regTypeExtraTitleHu" autocomplete="off" ng-maxlength="255"/>
+                                <div ng-show="editForm.regTypeExtraTitleHu.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeExtraTitleHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeExtraTitleEn"  for="field_regTypeExtraTitleEn">Reg type extra title(en)</label>
+                                <input type="text" class="form-control" name="regTypeFirstFeeLabelEn" id="field_regTypeExtraTitleEn"
+                                       ng-model="vm.onlineRegConfig.regTypeExtraTitleEn" autocomplete="off" ng-maxlength="255"/>
+                                <div ng-show="editForm.regTypeExtraTitleEn.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeExtraTitleEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeExtraTitleEs"  for="field_regTypeExtraTitleEs">Reg type extra title(es)</label>
+                                <input type="text" class="form-control" name="regTypeFirstFeeLabelEs" id="field_regTypeExtraTitleEs"
+                                       ng-model="vm.onlineRegConfig.regTypeExtraTitleEs" autocomplete="off" ng-maxlength="255"/>
+                                <div ng-show="editForm.regTypeExtraTitleEs.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeExtraTitleEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.regTypeExtraTitlePt"  for="field_regTypeExtraTitlePt">Reg type extra title(pt)</label>
+                                <input type="text" class="form-control" name="regTypeFirstFeeLabelPt" id="field_regTypeExtraTitlePt"
+                                       ng-model="vm.onlineRegConfig.regTypeExtraTitlePt" autocomplete="off" ng-maxlength="255"/>
+                                <div ng-show="editForm.regTypeExtraTitlePt.$invalid">
+                                    <p class="error-block" ng-show="editForm.regTypeExtraTitlePt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.optionalServiceExtraTitleHu"  for="field_optionalServiceExtraTitleHu">Optional service extra title(hu)</label>
+                                <input type="text" class="form-control" name="optionalServiceFirstFeeLabelHu" id="field_optionalServiceExtraTitleHu"
+                                       ng-model="vm.onlineRegConfig.optionalServiceExtraTitleHu" autocomplete="off" ng-maxlength="255"/>
+                                <div ng-show="editForm.optionalServiceExtraTitleHu.$invalid">
+                                    <p class="error-block" ng-show="editForm.optionalServiceExtraTitleHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.optionalServiceExtraTitleEn"  for="field_optionalServiceExtraTitleEn">Optional service extra title(en)</label>
+                                <input type="text" class="form-control" name="optionalServiceFirstFeeLabelEn" id="field_optionalServiceExtraTitleEn"
+                                       ng-model="vm.onlineRegConfig.optionalServiceExtraTitleEn" autocomplete="off" ng-maxlength="255"/>
+                                <div ng-show="editForm.optionalServiceExtraTitleEn.$invalid">
+                                    <p class="error-block" ng-show="editForm.optionalServiceExtraTitleEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.optionalServiceExtraTitleEs"  for="field_optionalServiceExtraTitleEs">Optional service extra title(es)</label>
+                                <input type="text" class="form-control" name="optionalServiceFirstFeeLabelEs" id="field_optionalServiceExtraTitleEs"
+                                       ng-model="vm.onlineRegConfig.optionalServiceExtraTitleEs" autocomplete="off" ng-maxlength="255"/>
+                                <div ng-show="editForm.optionalServiceExtraTitleEs.$invalid">
+                                    <p class="error-block" ng-show="editForm.optionalServiceExtraTitleEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.optionalServiceExtraTitlePt"  for="field_optionalServiceExtraTitlePt">Optional service extra title(pt)</label>
+                                <input type="text" class="form-control" name="optionalServiceFirstFeeLabelPt" id="field_optionalServiceExtraTitlePt"
+                                       ng-model="vm.onlineRegConfig.optionalServiceExtraTitlePt" autocomplete="off" ng-maxlength="255"/>
+                                <div ng-show="editForm.optionalServiceExtraTitlePt.$invalid">
+                                    <p class="error-block" ng-show="editForm.optionalServiceExtraTitlePt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.roomRemarkHu" for="field_roomRemarkHu">Room remark(hu)</label>
+                            <summernote id="field_roomRemarkHu" name="roomRemarkHu" ng-model="vm.onlineRegConfig.roomRemarkHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.roomRemarkHu.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.roomRemarkHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.roomRemarkHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.roomRemarkEn" for="field_roomRemarkEn">Room remark(en)</label>
+                            <summernote id="field_roomRemarkEn" name="roomRemarkEn" ng-model="vm.onlineRegConfig.roomRemarkEn" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.roomRemarkEn.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.roomRemarkEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.roomRemarkEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.roomRemarkEs" for="field_roomRemarkEs">Room remark(es)</label>
+                            <summernote id="field_roomRemarkEs" name="roomRemarkEs" ng-model="vm.onlineRegConfig.roomRemarkEs" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.roomRemarkEs.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.roomRemarkEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.roomRemarkEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.roomRemarkPt" for="field_roomRemarkPt">Room remark(pt)</label>
+                            <summernote id="field_roomRemarkPt" name="roomRemarkPt" ng-model="vm.onlineRegConfig.roomRemarkPt" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.roomRemarkPt.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.roomRemarkPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.roomRemarkPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.optionalServiceRemarkHu" for="field_optionalServiceRemarkHu">Optional service remark(hu)</label>
+                            <summernote id="field_optionalServiceRemarkHu" name="optionalServiceRemarkHu" ng-model="vm.onlineRegConfig.optionalServiceRemarkHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.optionalServiceRemarkHu.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.optionalServiceRemarkHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.optionalServiceRemarkHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.optionalServiceRemarkEn" for="field_optionalServiceRemarkEn">Optional service remark(en)</label>
+                            <summernote id="field_optionalServiceRemarkEn" name="optionalServiceRemarkEn" ng-model="vm.onlineRegConfig.optionalServiceRemarkEn" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.optionalServiceRemarkEn.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.optionalServiceRemarkEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.optionalServiceRemarkEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.optionalServiceRemarkEs" for="field_optionalServiceRemarkEs">Optional service remark(es)</label>
+                            <summernote id="field_optionalServiceRemarkEs" name="optionalServiceRemarkEs" ng-model="vm.onlineRegConfig.optionalServiceRemarkEs" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.optionalServiceRemarkEs.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.optionalServiceRemarkEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.optionalServiceRemarkEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.optionalServiceRemarkPt" for="field_optionalServiceRemarkPt">Optional service remark(pt)</label>
+                            <summernote id="field_optionalServiceRemarkPt" name="optionalServiceRemarkPt" ng-model="vm.onlineRegConfig.optionalServiceRemarkPt" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.optionalServiceRemarkPt.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.optionalServiceRemarkPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.optionalServiceRemarkPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="Billing">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.bankTransferVisible">Bank transfer visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="bankTransferVisible" id="field_bankTransferVisible" ng-disabled="vm.onlineRegConfig.paymentSupplier === 'STRIPE'"
+                                               ng-model="vm.onlineRegConfig.bankTransferVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_bankTransferVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.checkVisible">Check visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="checkVisible" id="field_checkVisible" ng-disabled="vm.onlineRegConfig.paymentSupplier === 'STRIPE'"
+                                               ng-model="vm.onlineRegConfig.checkVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_checkVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.creditCardVisible">First name visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="creditCardVisible" id="field_creditCardVisible" ng-disabled="vm.onlineRegConfig.paymentSupplier === 'STRIPE'"
+                                               ng-model="vm.onlineRegConfig.creditCardVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_creditCardVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.bankTransferInfoHu" for="field_bankTransferInfoHu">Bank transfer info(hu)</label>
+                            <summernote id="field_bankTransferInfoHu" name="bankTransferInfoHu" ng-model="vm.onlineRegConfig.bankTransferInfoHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.bankTransferInfoHu.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.bankTransferInfoHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.bankTransferInfoHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.bankTransferInfoEn" for="field_bankTransferInfoEn">Bank transfer info(en)</label>
+                            <summernote id="field_bankTransferInfoEn" name="bankTransferInfoEn" ng-model="vm.onlineRegConfig.bankTransferInfoEn" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.bankTransferInfoEn.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.bankTransferInfoEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.bankTransferInfoEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.bankTransferInfoEs" for="field_bankTransferInfoEs">Bank transfer info(es)</label>
+                            <summernote id="field_bankTransferInfoEs" name="bankTransferInfoEs" ng-model="vm.onlineRegConfig.bankTransferInfoEs" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.bankTransferInfoEs.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.bankTransferInfoEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.bankTransferInfoEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.bankTransferInfoPt" for="field_bankTransferInfoPt">Bank transfer info(pt)</label>
+                            <summernote id="field_bankTransferInfoPt" name="bankTransferInfoPt" ng-model="vm.onlineRegConfig.bankTransferInfoPt" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.bankTransferInfoPt.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.bankTransferInfoPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.bankTransferInfoPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.billingRemarkHu" for="field_billingRemarkHu">Billing remark(hu)</label>
+                            <summernote id="field_billingRemarkHu" name="billingRemarkHu" ng-model="vm.onlineRegConfig.billingRemarkHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.billingRemarkHu.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.billingRemarkHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.billingRemarkHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.billingRemarkEn" for="field_billingRemarkEn">Billing remark(en)</label>
+                            <summernote id="field_billingRemarkEn" name="billingRemarkEn" ng-model="vm.onlineRegConfig.billingRemarkEn" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.billingRemarkEn.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.billingRemarkEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.billingRemarkEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.billingRemarkEs" for="field_billingRemarkEs">Billing remark(es)</label>
+                            <summernote id="field_billingRemarkEs" name="billingRemarkEs" ng-model="vm.onlineRegConfig.billingRemarkEs" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.billingRemarkEs.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.billingRemarkEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.billingRemarkEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.billingRemarkPt" for="field_billingRemarkPt">Billing remark(pt)</label>
+                            <summernote id="field_billingRemarkPt" name="billingRemarkPt" ng-model="vm.onlineRegConfig.billingRemarkPt" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.billingRemarkPt.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.billingRemarkPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.billingRemarkPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="Conditions and granting">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.termsAndConditionsRemarkHu" for="field_termsAndConditionsRemarkHu">Terms and conditions remark(hu)</label>
+                            <summernote id="field_termsAndConditionsRemarkHu" name="termsAndConditionsRemarkHu" ng-model="vm.onlineRegConfig.termsAndConditionsRemarkHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.termsAndConditionsRemarkHu.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.termsAndConditionsRemarkHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.termsAndConditionsRemarkHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.termsAndConditionsRemarkEn" for="field_termsAndConditionsRemarkEn">Terms and conditions remark(en)</label>
+                            <summernote id="field_termsAndConditionsRemarkEn" name="termsAndConditionsRemarkEn" ng-model="vm.onlineRegConfig.termsAndConditionsRemarkEn" config="vm.summerNoteConfig"> </summernote>
+                            <div ng-show="editForm.termsAndConditionsRemarkEn.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.termsAndConditionsRemarkEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.termsAndConditionsRemarkEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.termsAndConditionsRemarkEs" for="field_termsAndConditionsRemarkEs">Terms and conditions remark(es)</label>
+                            <summernote id="field_termsAndConditionsRemarkEs" name="termsAndConditionsRemarkEs" ng-model="vm.onlineRegConfig.termsAndConditionsRemarkEs" config="vm.summerNoteConfig"> </summernote>
+                            <div ng-show="editForm.termsAndConditionsRemarkEs.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.termsAndConditionsRemarkEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.termsAndConditionsRemarkEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.termsAndConditionsRemarkPt" for="field_termsAndConditionsRemarkPt">Terms and conditions remark(pt)</label>
+                            <summernote id="field_termsAndConditionsRemarkPt" name="termsAndConditionsRemarkPt" ng-model="vm.onlineRegConfig.termsAndConditionsRemarkPt" config="vm.summerNoteConfig"> </summernote>
+                            <div ng-show="editForm.termsAndConditionsRemarkPt.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.termsAndConditionsRemarkPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.termsAndConditionsRemarkPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.gdprRemarkHu" for="field_gdprRemarkHu">GDPR remark(hu)</label>
+                            <summernote id="field_gdprRemarkHu" name="gdprRemarkHu" ng-model="vm.onlineRegConfig.gdprRemarkHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.gdprRemarkHu.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.gdprRemarkHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.gdprRemarkHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.gdprRemarkEn" for="field_gdprRemarkEn">GDPR remark(en)</label>
+                            <summernote id="field_gdprRemarkEn" name="gdprRemarkEn" ng-model="vm.onlineRegConfig.gdprRemarkEn" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.gdprRemarkEn.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.gdprRemarkEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.gdprRemarkEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.gdprRemarkEs" for="field_gdprRemarkEs">GDPR remark(es)</label>
+                            <summernote id="field_gdprRemarkEs" name="gdprRemarkEs" ng-model="vm.onlineRegConfig.gdprRemarkEs" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.gdprRemarkEs.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.gdprRemarkEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.gdprRemarkEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.gdprRemarkPt" for="field_gdprRemarkPt">GDPR remark(pt)</label>
+                            <summernote id="field_gdprRemarkPt" name="gdprRemarkPt" ng-model="vm.onlineRegConfig.gdprRemarkPt" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.gdprRemarkPt.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.gdprRemarkPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.gdprRemarkPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.marketingRemarkHu" for="field_marketingRemarkHu">Marketing remark(hu)</label>
+                            <summernote id="field_marketingRemarkHu" name="marketingRemarkHu" ng-model="vm.onlineRegConfig.marketingRemarkHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.marketingRemarkHu.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.marketingRemarkHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.marketingRemarkHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.marketingRemarkEn" for="field_marketingRemarkEn">Marketing remark(en)</label>
+                            <summernote id="field_marketingRemarkEn" name="marketingRemarkEn" ng-model="vm.onlineRegConfig.marketingRemarkEn" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.marketingRemarkEn.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.marketingRemarkEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.marketingRemarkEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.marketingRemarkEs" for="field_marketingRemarkEs">Marketing remark(es)</label>
+                            <summernote id="field_marketingRemarkEs" name="marketingRemarkEs" ng-model="vm.onlineRegConfig.marketingRemarkEs" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.marketingRemarkEs.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.marketingRemarkEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.marketingRemarkEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.marketingRemarkPt" for="field_marketingRemarkPt">Marketing remark(pt)</label>
+                            <summernote id="field_marketingRemarkPt" name="marketingRemarkPt" ng-model="vm.onlineRegConfig.marketingRemarkPt" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.marketingRemarkPt.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.marketingRemarkPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.marketingRemarkPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.conditionsAndGrantingRemarkHu" for="field_conditionsAndGrantingRemarkHu">Conditions and Granting remark(hu)</label>
+                            <summernote id="field_conditionsAndGrantingRemarkHu" name="conditionsAndGrantingRemarkHu" ng-model="vm.onlineRegConfig.conditionsAndGrantingRemarkHu" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.conditionsAndGrantingRemarkHu.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.conditionsAndGrantingRemarkHu.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.conditionsAndGrantingRemarkHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.conditionsAndGrantingRemarkEn" for="field_conditionsAndGrantingRemarkEn">Conditions and granting remark(en)</label>
+                            <summernote id="field_conditionsAndGrantingRemarkEn" name="conditionsAndGrantingRemarkEn" ng-model="vm.onlineRegConfig.conditionsAndGrantingRemarkEn" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.conditionsAndGrantingRemarkEn.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.conditionsAndGrantingRemarkEn.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.conditionsAndGrantingRemarkEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.conditionsAndGrantingRemarkEs" for="field_conditionsAndGrantingRemarkEs">Conditions and granting remark(es)</label>
+                            <summernote id="field_conditionsAndGrantingRemarkEs" name="conditionsAndGrantingRemarkEs" ng-model="vm.onlineRegConfig.conditionsAndGrantingRemarkEs" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.conditionsAndGrantingRemarkEs.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.conditionsAndGrantingRemarkEs.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.conditionsAndGrantingRemarkEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineRegConfig.conditionsAndGrantingRemarkPt" for="field_conditionsAndGrantingRemarkPt">Conditions and granting remark(pt)</label>
+                            <summernote id="field_conditionsAndGrantingRemarkPt" name="conditionsAndGrantingRemarkPt" ng-model="vm.onlineRegConfig.conditionsAndGrantingRemarkPt" config="vm.summerNoteConfig"></summernote>
+                            <div ng-show="editForm.conditionsAndGrantingRemarkPt.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.conditionsAndGrantingRemarkPt.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.conditionsAndGrantingRemarkPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="60000">
+                                    This field cannot be longer than 60000 characters.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+            </uib-tabset>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

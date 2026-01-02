@@ -1,0 +1,33 @@
+{
+    "pcsApp": {
+        "payingGroup" : {
+            "home": {
+                "title": "Paying groups",
+                "createLabel": "Create a new Paying group",
+                "createOrEditLabel": "Create or edit a Paying group",
+                "search": "Search for Paying group"
+            },
+            "created": "A new PayingGroup is created with identifier {{ param }}",
+            "updated": "A PayingGroup is updated with identifier {{ param }}",
+            "deleted": "A PayingGroup is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Paying group {{ id }}?"
+            },
+            "detail": {
+                "title": "Paying group"
+            },
+            "name": "Name",
+            "zipCode": "Zip code",
+            "city": "City",
+            "street": "Street",
+            "contactName": "Contact name",
+            "email": "Email",
+            "phone": "Phone",
+            "fax": "Fax",
+            "country": "Country",
+            "currency": "Currency",
+            "taxNumber": "Tax number",
+            "congress": "Congress"
+        }
+    }
+}

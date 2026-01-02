@@ -1,0 +1,13 @@
+{
+    "pcsApp": {
+        "sendFinancialNoticeToAllDialog" : {
+            "home": {
+                "title": "Send financial notice to all",
+                "createLabel": "Send financial notice to all"
+            },
+            "created": "Notice successfully sent to {{ param }} registration(s)",
+            "language": "Language",
+            "optionalText": "Optional text"
+        }
+    }
+}

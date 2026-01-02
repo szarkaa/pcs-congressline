@@ -1,0 +1,129 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myPayingGroupItemLabel" data-translate="pcsApp.payingGroupItem.home.createOrEditLabel">Create or edit a Paying Group Item</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.payingGroupItem.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name" autocomplete="off"
+                    ng-model="vm.payingGroupItem.name" required ng-maxlength="128" />
+            <div ng-show="editForm.name.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="128">
+                    This field cannot be longer than 128 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.payingGroupItem.amountPercentage" for="field_amountPercentage">Amount Percentage</label>
+            <input type="number" class="form-control" name="amountPercentage" id="field_amountPercentage" ng-change="vm.clearOtherFields('PERCENTAGE')"
+                    ng-model="vm.payingGroupItem.amountPercentage" autocomplete="off" min="0" max="100" ng-required="vm.isFieldRequired()" />
+            <div ng-show="editForm.amountPercentage.$invalid">
+                <p class="error-block" ng-show="editForm.amountPercentage.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.amountPercentage.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.amountPercentage.$error.max" data-translate="entity.validation.max" translate-value-max="100">
+                    This field cannot be more than 100.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.amountPercentage.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.payingGroupItem.amountValue" for="field_amountValue">Amount Value</label>
+            <input type="number" class="form-control" name="amountValue" id="field_amountValue" ng-change="vm.clearOtherFields('VALUE')"
+                    ng-model="vm.payingGroupItem.amountValue" autocomplete="off" min="0" max="100000000" ng-required="vm.isFieldRequired()" />
+            <div ng-show="editForm.amountValue.$invalid">
+                <p class="error-block" ng-show="editForm.amountValue.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.amountValue.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.amountValue.$error.max" data-translate="entity.validation.max" translate-value-max="100000000">
+                    This field cannot be more than 100000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.amountValue.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vm.isHotelDateDiscountVisible()">
+            <label class="control-label" data-translate="pcsApp.payingGroupItem.hotelDateFrom" for="field_hotelDateFrom">Hotel Date From</label>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('hotelDateFrom')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                <input id="field_hotelDateFrom" type="text" class="form-control" name="hotelDateFrom" uib-datepicker-popup="{{dateformat}}" autocomplete="off"
+                       ng-required="vm.isFieldRequired() || vm.payingGroupItem.hotelDateTo" ng-change="vm.clearOtherFields('HOTEL_DATE')" ng-model="vm.payingGroupItem.hotelDateFrom" is-open="vm.datePickerOpenStatus.hotelDateFrom"/>
+            </div>
+            <div ng-show="editForm.hotelDateFrom.$invalid">
+                <p class="error-block" ng-show="editForm.hotelDateFrom.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vm.isHotelDateDiscountVisible()">
+            <label class="control-label" data-translate="pcsApp.payingGroupItem.hotelDateTo" for="field_hotelDateTo">Hotel Date To</label>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('hotelDateTo')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                <input id="field_hotelDateTo" type="text" class="form-control" name="hotelDateTo" uib-datepicker-popup="{{dateformat}}" date-less-than={{vm.payingGroupItem.hotelDateFrom}}
+                       autocomplete="off" ng-required="vm.isFieldRequired() || vm.payingGroupItem.hotelDateFrom" ng-change="vm.clearOtherFields('HOTEL_DATE')" ng-model="vm.payingGroupItem.hotelDateTo" is-open="vm.datePickerOpenStatus.hotelDateTo"/>
+            </div>
+            <div ng-show="editForm.hotelDateTo.$invalid">
+                <p class="error-block" ng-show="editForm.hotelDateTo.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block" ng-show="editForm.hotelDateTo.$error.dateLessThan" translate="pcsApp.payingGroupItem.message.endDateLessThanStartDate">
+                    End date must be later than Start date.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.payingGroupItem.chargeableItemType" for="field_chargeableItemType">Chargeable Item Type</label>
+            <select class="form-control" name="chargeableItemType" ng-model="vm.payingGroupItem.chargeableItemType" id="field_chargeableItemType" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="REGISTRATION" data-translate="pcsApp.ChargeableItemType.REGISTRATION">REGISTRATION</option>
+                <option value="HOTEL" data-translate="pcsApp.ChargeableItemType.HOTEL">HOTEL</option>
+                <option value="OPTIONAL_SERVICE" data-translate="pcsApp.ChargeableItemType.OPTIONAL_SERVICE">OPTIONAL_SERVICE</option>
+                <option value="MISCELLANEOUS" data-translate="pcsApp.ChargeableItemType.MISCELLANEOUS">MISCELLANEOUS</option>
+            </select>
+            <div ng-show="editForm.chargeableItemType.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.chargeableItemType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

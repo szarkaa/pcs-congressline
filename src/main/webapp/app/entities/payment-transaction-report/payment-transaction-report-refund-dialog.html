@@ -1,0 +1,44 @@
+<form name="editForm" ng-submit="vm.confirm()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" data-translate="pcsApp.paymentTransactionReport.home.refundTitle">Confirm KH refund operation</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.paymentTransactionReport.refund" for="field_refundAmount">Refund</label>
+            <div class="input-group m-b">
+                <span class="input-group-addon">{{vm.paymentTransaction.currency}}</span>
+                <input type="number" class="form-control" name="refundAmount" id="field_refundAmount" autocomplete="off" ng-disabled="vm.isReverse()"
+                       ng-model="vm.refundAmount" required min="0" max="{{vm.paymentTransaction.amount}}" />
+            </div>
+            <div ng-show="editForm.refundAmount.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.refundAmount.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.refundAmount.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.refundAmount.$error.max" data-translate="entity.validation.max" translate-value-max="{{vm.paymentTransaction.amount}}">
+                    This field cannot be more than {{vm.paymentTransaction.amount}}.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.refundAmount.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+            <span class="fa fa-reply"></span>&nbsp;<span data-translate="entity.action.refund">Refund</span>
+        </button>
+    </div>
+</form>

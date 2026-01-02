@@ -1,0 +1,37 @@
+{
+    "pcsApp": {
+        "room" : {
+            "home": {
+                "title": "Rooms",
+                "listTitle": "Rooms for {{ hotelName }}",
+                "createLabel": "Create a new Room",
+                "createOrEditLabel": "Create or edit a room for {{ name }}",
+                "search": "Search for Room"
+            },
+            "created": "A new Room is created with identifier {{ param }}",
+            "updated": "A Room is updated with identifier {{ param }}",
+            "deleted": "A Room is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Room {{ id }}?"
+            },
+            "detail": {
+                "title": "Room"
+            },
+            "roomType": "Room type",
+            "bed": "Bed",
+            "quantity": "Quantity",
+            "reserved": "Reserved",
+            "price": "Price",
+            "description": "Description",
+            "currency": "Currency",
+            "vatInfo": "Vat info",
+            "onlineVisibility": "Online visibility",
+            "onlineExternalLink": "Online external link",
+            "onlineExternalEmail": "Online external email",
+            "onlineLabel": "Online label",
+            "error": {
+                "quantityExceededByReserved": "Quantity can not be smaller than the already reserved number of rooms."
+            }
+        }
+    }
+}

@@ -1,0 +1,331 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <!--    <div class="col-lg-2">-->
+    <div class="pull-right reg-toolbar-button">
+        <button class="btn-lg btn-success" type="submit" tooltip-placement="top" uib-tooltip="First" ng-disabled="!vm.hasPrevRegId()" ui-sref="registration({registrationId: vm.firstRegId()})">
+            <i class="fa fa-angle-double-left"></i>
+        </button>
+        <button class="btn-lg btn-success" type="submit" tooltip-placement="top" uib-tooltip="Previous" ng-disabled="!vm.hasPrevRegId()" ui-sref="registration({registrationId: vm.prevRegId()})">
+            <i class="fa fa-angle-left"></i>
+        </button>
+        <button class="btn-lg btn-success" type="submit" ng-disabled="!vm.hasNextRegId()" tooltip-placement="top" uib-tooltip="Next" ui-sref="registration({registrationId: vm.nextRegId()})">
+            <i class="fa fa-angle-right"></i>
+        </button>
+        <button class="btn-lg btn-success" type="submit" ng-disabled="!vm.hasNextRegId()" tooltip-placement="top" uib-tooltip="Last" ui-sref="registration({registrationId: vm.lastRegId()})">
+            <i class="fa fa-angle-double-right"></i>
+        </button>
+
+        <button class="btn-lg btn-success m-l-sm" type="submit" ng-disabled="!vm.registration.id" tooltip-placement="top" uib-tooltip="Summary"
+                ui-sref="registration.summary"><i class="fa fa-bar-chart-o"></i>
+        </button>
+
+        <button class="btn-lg btn-info m-l-sm" type="submit" tooltip-placement="top" uib-tooltip="Upload registrations"
+                ui-sref="registration.upload"><i class="fa fa-upload"></i>
+        </button>
+        <button class="btn-lg btn-info m-l-sm" type="submit" ng-disabled="!vm.registration.id" tooltip-placement="top" uib-tooltip="Edit"
+                ui-sref="registration.edit({id:vm.registration.id})"><i class="fa fa-pencil-square-o"></i>
+        </button>
+        <button class="btn-lg btn-danger" type="submit" ng-disabled="!vm.registration.id" tooltip-placement="top" uib-tooltip="Delete"
+                ui-sref="registration.delete({id:vm.registration.id})"><i class="fa fa-trash-o"></i>
+        </button>
+        <button class="btn-lg btn-info m-l-sm" type="submit" tooltip-placement="top" uib-tooltip="Invoice"
+                ui-sref="invoice({id:vm.registration.id})"><i class="fa fa-dollar"></i>
+        </button>
+
+        <button class="btn-lg btn-info m-l-sm" type="submit" ng-disabled="!vm.registration.id" tooltip-placement="top" uib-tooltip="Confirmation"
+                ui-sref="confirmation({id:vm.registration.id})"><i class="fa fa-paperclip"></i>
+        </button>
+
+        <button class="btn-lg btn-primary m-l-sm" type="submit" ui-sref="registration.new" tooltip-placement="top" uib-tooltip="New">
+            <i class="fa fa-plus"></i>
+        </button>
+
+        <button class="btn-lg btn-success m-l-sm" ui-sref="registration.search" tooltip-placement="top" uib-tooltip="Search">
+            <i class="fa fa-search"></i>
+        </button>
+
+    </div>
+
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight" ng-if="vm.registration.id">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{ "pcsApp.registration.personalData" | translate }}</h5>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <address>
+                        <strong>{{ "pcsApp.registration.regId" | translate }}: </strong>{{vm.registration.regId}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.name" | translate }}: </strong>{{vm.registration.title}} {{vm.registration.lastName}}, {{vm.registration.firstName}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.position" | translate }}: </strong>{{vm.registration.position}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.email" | translate }}: </strong>{{vm.registration.email}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.phone" | translate }}: </strong>{{vm.registration.phone}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.fax" | translate }}: </strong>{{vm.registration.fax}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.workplace" | translate }}: </strong>{{vm.registration.workplace.name}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.address" | translate }}: </strong>{{vm.registration.city}} {{vm.registration.zipCode}} {{vm.registration.street}} {{vm.registration.country.name}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.otherData" | translate }}: </strong>{{vm.registration.otherData}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.invoiceName" | translate }}: </strong>{{vm.registration.invoiceName}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.invoiceAddress" | translate }}: </strong>{{vm.registration.invoiceCountry ? vm.registration.invoiceCountry.name : ''}} {{vm.registration.invoiceZipCode}} {{vm.registration.invoiceCity}} {{vm.registration.invoiceAddress}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.invoiceTaxNumber" | translate }}: </strong>{{vm.registration.invoiceTaxNumber}}
+                    </address>
+                    <address>
+                        <strong>{{ "pcsApp.registration.dateOfApp" | translate }}: </strong>{{ vm.registration.dateOfApp | date:'mediumDate' }}
+                    </address>
+                </div>
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{ "pcsApp.registration.properties" | translate }}</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="checkbox-inline">
+                            <input ng-model="vm.registration.presenter" id="presenterCheckbox" ng-click="vm.saveCheckboxProperties('presenter')"
+                                   ng-disabled="vm.isSaving" type="checkbox">
+                            <strong>{{ "pcsApp.registration.presenter" | translate }}</strong></label>
+                        <label class="checkbox-inline">
+                            <input ng-model="vm.registration.etiquette" id="etiquetteCheckbox" ng-click="vm.saveCheckboxProperties('etiquette')"
+                                   ng-disabled="vm.isSaving" type="checkbox">
+                            <strong>{{ "pcsApp.registration.etiquette" | translate }}</strong></label>
+                        <label class="checkbox-inline">
+                            <input ng-model="vm.registration.closed" id="closedCheckbox" ng-click="vm.saveCheckboxProperties('closed')"
+                                   ng-disabled="vm.isSaving" type="checkbox">
+                            <strong>{{ "pcsApp.registration.closed" | translate }}</strong></label>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-inline">
+                            <input ng-model="vm.registration.cancelled" id="cancelledCheckbox" ng-click="vm.saveCheckboxProperties('closed')"
+                                   ng-disabled="vm.isSaving" type="checkbox">
+                            <strong>{{ "pcsApp.registration.cancelled" | translate }}</strong></label>
+                        <label class="checkbox-inline">
+                            <input ng-model="vm.registration.onSpot" id="onSpotCheckbox" ng-click="vm.saveCheckboxProperties('onSpot')"
+                                   ng-disabled="vm.isSaving" type="checkbox">
+                            <strong>{{ "pcsApp.registration.onSpot" | translate }}</strong></label>
+                    </div>
+                </div>
+            </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{{ "pcsApp.registration.remark" | translate }}</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="text-center">
+                        <textarea class="form-control" name="remark" id="field_remark" rows="6" autocomplete="off"
+                                  ng-model="vm.registration.remark" ng-blur="vm.save()">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="ibox">
+                <div class="ibox-title ibox-title-reg float-e-margins">
+                    <div class="ibox-title-button-block">
+                        <button class="btn btn-primary btn-sm" type="submit" ui-sref="registration-registration-type.new">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <strong>{{'pcsApp.registrationRegistrationType.home.title' | translate}}</strong>
+                    </div>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <table id="registration-type-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.registrationRegistrationType.registrationType">Registration Type</span></th>
+                            <th><span translate="pcsApp.registrationRegistrationType.regFee">Price</span></th>
+                            <th><span translate="pcsApp.registrationRegistrationType.accPeople">Acc People</span></th>
+                            <th><span translate="pcsApp.registrationRegistrationType.payingGroupItem">Discount</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="rrt in vm.registrationRegistrationTypes track by rrt.id">
+                            <td>{{rrt.registrationTypeName}}</td>
+                            <td>{{rrt.chargeableItemPrice + ' ' + rrt.chargeableItemCurrency}}</td>
+                            <td>{{ vm.displayRRTAccPeople(rrt) }}</td>
+                            <td>{{rrt.payingGroupName}}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" type="submit"
+                                        ui-sref="registration-registration-type.edit({regTypeId:rrt.id})"><i class="fa fa-pencil-square-o"></i></button>
+                                <button class="btn btn-danger btn-sm" type="submit"
+                                        ui-sref="registration-registration-type.delete({regTypeId:rrt.id})"><i class="fa fa-trash-o"></i></button>
+                                <button class="btn btn-primary btn-sm" type="submit" ng-if="rrt.registrationTypeType == 'ACCOMPANYING_FEE'"
+                                        ui-sref="acc-people({regTypeId:rrt.id})"><i class="fa fa-sitemap"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title ibox-title-reg float-e-margins">
+                    <div class="ibox-title-button-block">
+                        <button class="btn btn-primary btn-sm" type="submit" ui-sref="room-reservation.new">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button class="btn btn-primary btn-sm" type="submit" ui-sref="room-reservation.shared-selection" tooltip-placement="top" uib-tooltip="Shared room selection">
+                            <i class="fa fa-users"></i>
+                        </button>
+                        <strong>{{'pcsApp.roomReservation.home.title' | translate}}</strong>
+                    </div>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <table id="room-reservation-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.roomReservation.id">Res #</span></th>
+                            <th><span translate="pcsApp.roomReservation.room">Room type</span></th>
+                            <th><span translate="pcsApp.roomReservation.hotel">Hotel</span></th>
+                            <th><span translate="pcsApp.roomReservation.shared">Shared</span></th>
+                            <th><span translate="pcsApp.roomReservation.arrivalDate">Arrival Date</span></th>
+                            <th><span translate="pcsApp.roomReservation.departureDate">Departure Date</span></th>
+                            <th><span translate="pcsApp.roomReservation.price">Price</span></th>
+                            <th><span translate="pcsApp.roomReservation.payingGroupItem">Discount</span></th>
+                            <th><span translate="pcsApp.roomReservation.roomMates">Roommates</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="rrr in vm.roomReservations track by rrr.id">
+                            <td>{{rrr.id}}</td>
+                            <td>{{rrr.roomType}}</td>
+                            <td>{{rrr.hotelName}}</td>
+                            <td>{{rrr.shared}}</td>
+                            <td>{{rrr.arrivalDate | date:'mediumDate'}}</td>
+                            <td>{{rrr.departureDate | date:'mediumDate'}}</td>
+                            <td>{{rrr.chargeableItemPrice + ' ' + rrr.chargeableItemCurrency}}</td>
+                            <td>{{rrr.payingGroupName}}</td>
+                            <td>{{rrr.roomMates}}</td>
+                            <td>
+                                <button popover-placement="left" ng-show="rrr.comment" uib-popover="{{rrr.comment}}" class="btn btn-success btn-sm"><i class="fa fa-info-circle"></i></button>
+                                <button class="btn btn-info btn-sm" type="submit"
+                                        ui-sref="room-reservation.edit({rrrId:rrr.id})"><i class="fa fa-pencil-square-o"></i></button>
+                                <button class="btn btn-danger btn-sm" type="submit"
+                                        ui-sref="room-reservation.delete({rrrId:rrr.id})"><i class="fa fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title ibox-title-reg float-e-margins">
+                    <div class="ibox-title-button-block">
+                        <button class="btn btn-primary btn-sm" type="submit" ui-sref="ordered-optional-service.new">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <strong>{{'pcsApp.orderedOptionalService.home.title' | translate}}</strong>
+                    </div>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <table id="optional-service-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.orderedOptionalService.optionalService">Optional Service</span></th>
+                            <th><span translate="pcsApp.orderedOptionalService.price">Price</span></th>
+                            <th><span translate="pcsApp.orderedOptionalService.participant">Participant</span></th>
+                            <th><span translate="pcsApp.orderedOptionalService.payingGroupItem">Discount</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="oos in vm.orderedOptionalServices track by oos.id">
+                            <td>{{oos.chargeableItemName}}</td>
+                            <td>{{oos.chargeableItemPrice + ' ' + oos.chargeableItemCurrency}}</td>
+                            <td>{{oos.participant}}</td>
+                            <td>{{oos.payingGroupName}}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" type="submit"
+                                        ui-sref="ordered-optional-service.edit({optionalServiceId:oos.id})"><i class="fa fa-pencil-square-o"></i></button>
+                                <button class="btn btn-danger btn-sm" type="submit"
+                                        ui-sref="ordered-optional-service.delete({optionalServiceId:oos.id})"><i class="fa fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="ibox">
+                <div class="ibox-title ibox-title-reg float-e-margins">
+                    <div class="ibox-title-button-block">
+                        <button class="btn btn-primary btn-sm" type="submit" ui-sref="charged-service.new">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <strong>{{'pcsApp.chargedService.home.title' | translate}}</strong>
+                    </div>
+                    <div ibox-tools></div>
+                </div>
+                <div class="ibox-content">
+                    <table id="charged-service-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.chargedService.paymentMode">Payment mode</span></th>
+                            <th><span translate="pcsApp.chargedService.paymentType">Payment type</span></th>
+                            <th><span translate="pcsApp.chargedService.debitedItem">Debited item</span></th>
+                            <th><span translate="pcsApp.chargedService.amount">Amount</span></th>
+                            <th><span translate="pcsApp.chargedService.dateOfPayment">Date of Payment</span></th>
+                            <th><span translate="pcsApp.chargedService.invoiceNumber">Invoice number</span></th>
+                            <th><span translate="pcsApp.chargedService.transactionId">Transaction Id</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="chargedService in vm.chargedServices track by chargedService.id">
+                            <td><span translate="pcsApp.ChargedServicePaymentMode.{{chargedService.paymentMode}}">{{chargedService.paymentMode}}</span></td>
+                            <td><span translate="pcsApp.ChargeableItemType.{{chargedService.paymentType}}">{{chargedService.paymentType}}</span></td>
+                            <td>{{chargedService.chargeableItemName}}</td>
+                            <td>{{chargedService.amount + ' ' + chargedService.chargeableItem.chargeableItemCurrency}}</td>
+                            <td>{{chargedService.dateOfPayment | date:'mediumDate'}}</td>
+                            <td>{{chargedService.invoiceNumber}}</td>
+                            <td>{{chargedService.transactionId}}</td>
+                            <td>
+                                <button popover-placement="left" ng-show="chargedService.comment" uib-popover="{{chargedService.comment}}" class="btn btn-success btn-sm"><i class="fa fa-info-circle"></i></button>
+                                <button class="btn btn-info btn-sm" type="submit"
+                                        ui-sref="charged-service.edit({chargedServiceId: chargedService.id})"><i class="fa fa-pencil-square-o"></i></button>
+                                <button class="btn btn-danger btn-sm" type="submit"
+                                        ui-sref="charged-service.delete({chargedServiceId: chargedService.id})"><i class="fa fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+                        <tr ng-show="vm.chargedServices.length">
+                            <td colspan="3">&nbsp;</td>
+                            <td><strong>{{ (vm.chargedServices | sumByKey: 'amount') + ' ' + vm.chargedServices[0].chargeableItem.chargeableItemCurrency }}</strong></td>
+                            <td colspan="4">&nbsp;</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

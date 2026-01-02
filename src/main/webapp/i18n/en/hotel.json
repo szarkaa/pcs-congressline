@@ -1,0 +1,32 @@
+{
+    "pcsApp": {
+        "hotel" : {
+            "home": {
+                "title": "Hotels",
+                "createLabel": "Create a new Hotel",
+                "createOrEditLabel": "Create or edit a Hotel",
+                "search": "Search for Hotel"
+            },
+            "created": "A new Hotel is created with identifier {{ param }}",
+            "updated": "A Hotel is updated with identifier {{ param }}",
+            "deleted": "A Hotel is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Hotel {{ id }}?"
+            },
+            "detail": {
+                "title": "Hotel"
+            },
+            "name": "Name",
+            "code": "Code",
+            "city": "City",
+            "street": "Street",
+            "zipCode": "Zip code",
+            "latitude": "Latitude",
+            "longitude": "Longitude",
+            "phone": "Phone",
+            "fax": "Fax",
+            "email": "Email",
+            "contactName": "Contact name"
+        }
+    }
+}

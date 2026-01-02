@@ -1,0 +1,31 @@
+{
+    "pcsApp": {
+        "payingGroupItem" : {
+            "home": {
+                "title": "Paying group items for Group {{ groupName }}",
+                "createLabel": "Create a new Paying group item",
+                "createOrEditLabel": "Create or edit a Paying group item",
+                "search": "Search for Paying group item"
+            },
+            "created": "A new Paying group item is created with identifier {{ param }}",
+            "updated": "A Paying group item is updated with identifier {{ param }}",
+            "deleted": "A Paying group item is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Paying group item {{ id }}?"
+            },
+            "detail": {
+                "title": "Paying group item"
+            },
+            "name": "Name",
+            "amountPercentage": "Amount as percentage",
+            "amountValue": "Amount as value",
+            "hotelDateFrom": "Hotel date from",
+            "hotelDateTo": "Hotel date to",
+            "chargeableItemType": "Item type",
+            "payingGroup": "Paying group",
+            "message" : {
+                "endDateLessThanStartDate": "End date must be later than Start date."
+            }
+        }
+    }
+}

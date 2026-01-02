@@ -1,0 +1,50 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.optionalProgramsMembers.home.title">Optional service report</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ng-click="vm.downloadReportXls()">
+                        <i class="fa fa-download"></i>
+                    </button>
+                </div>
+                <div class="ibox-content" ng-show="vm.optionalProgramsMembers.length">
+                    <table datatable="ng" id="optional-program-members-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><span data-translate="pcsApp.optionalProgramsMembers.program">Program</span></th>
+                            <th><span data-translate="pcsApp.optionalProgramsMembers.name">Name</span></th>
+                            <th><span data-translate="pcsApp.optionalProgramsMembers.start">Start</span></th>
+                            <th><span data-translate="pcsApp.optionalProgramsMembers.end">End</span></th>
+                            <th><span data-translate="pcsApp.optionalProgramsMembers.price">Price</span></th>
+                            <th><span data-translate="pcsApp.optionalProgramsMembers.currency">Currency</span></th>
+                            <th><span data-translate="pcsApp.optionalProgramsMembers.applicantsNumber">Applicants no.</span></th>
+                            <th><span data-translate="pcsApp.optionalProgramsMembers.maxCapacity">Max.capacity</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="optionalProgramMember in vm.optionalProgramsMembers track by optionalProgramMember.program">
+                            <td>{{optionalProgramMember.program}}</td>
+                            <td>{{optionalProgramMember.name}}</td>
+                            <td>{{optionalProgramMember.startDate}}</td>
+                            <td>{{optionalProgramMember.endDate}}</td>
+                            <td>{{optionalProgramMember.price}}</td>
+                            <td>{{optionalProgramMember.currency}}</td>
+                            <td>{{optionalProgramMember.numberOfApplicants}}</td>
+                            <td>{{optionalProgramMember.maxPerson}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

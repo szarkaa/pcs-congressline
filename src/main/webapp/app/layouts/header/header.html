@@ -1,0 +1,40 @@
+<div class="row border-bottom">
+    <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <span minimaliza-sidebar></span>
+        </div>
+        <ul class="nav navbar-top-links navbar-left">
+            <li uib-dropdown>
+                <a class="count-info" href uib-dropdown-toggle>{{hd.selectedCongress ? hd.selectedCongress.name : 'Please select a congress!'}}</a>
+
+                <ul uib-dropdown-menu class="animated fadeInRight m-t-xs">
+                    <li active-menu="{{congress}}" ng-repeat="congress in hd.congresses track by congress.id">
+                        <a href="" ng-click="hd.selectCongress(congress)">{{congress.meetingCode}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <ul class="nav navbar-top-links navbar-right">
+<!--
+            <li uib-dropdown ng-controller="JhiLanguageController as languageVm">
+                <a class="count-info" href uib-dropdown-toggle>
+                    Language
+                </a>
+                <ul uib-dropdown-menu class="animated fadeInRight m-t-xs" ng-if="languageVm.languages.length > 1">
+                    <li active-menu="{{language}}" ng-repeat="language in languageVm.languages">
+                        <a href="" ng-click="languageVm.changeLanguage(language);">{{language | findLanguageFromKey}}</a>
+                    </li>
+                </ul>
+            </li>
+-->
+            <li>
+                <a href="" ng-click="hd.logout()">
+                    <i class="fa fa-sign-out"></i> Log out
+                </a>
+            </li>
+        </ul>
+
+    </nav>
+</div>
+

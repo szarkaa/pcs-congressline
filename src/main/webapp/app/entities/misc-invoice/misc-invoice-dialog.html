@@ -1,0 +1,338 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myMiscInvoiceLabel" data-translate="pcsApp.miscInvoice.home.createOrEditLabel">Create or edit a Misc Invoice</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.miscInvoice.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.miscInvoice.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.invoiceNumber" for="field_invoiceNumber">Invoice Number</label>
+            <input type="text" class="form-control" name="invoiceNumber" id="field_invoiceNumber"
+                    ng-model="vm.miscInvoice.invoiceNumber"
+                    ng-maxlength="30" />
+            <div ng-show="editForm.invoiceNumber.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.invoiceNumber.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="30">
+                    This field cannot be longer than 30 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.stornoInvoiceNumber" for="field_stornoInvoiceNumber">Storno Invoice Number</label>
+            <input type="text" class="form-control" name="stornoInvoiceNumber" id="field_stornoInvoiceNumber"
+                    ng-model="vm.miscInvoice.stornoInvoiceNumber"
+                    ng-maxlength="30" />
+            <div ng-show="editForm.stornoInvoiceNumber.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.stornoInvoiceNumber.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="30">
+                    This field cannot be longer than 30 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.name1" for="field_name1">Name 1</label>
+            <input type="text" class="form-control" name="name1" id="field_name1"
+                    ng-model="vm.miscInvoice.name1"
+                    ng-maxlength="80" />
+            <div ng-show="editForm.name1.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.name1.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="80">
+                    This field cannot be longer than 80 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.name2" for="field_name2">Name 2</label>
+            <input type="text" class="form-control" name="name2" id="field_name2"
+                    ng-model="vm.miscInvoice.name2"
+                    ng-maxlength="80" />
+            <div ng-show="editForm.name2.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.name2.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="80">
+                    This field cannot be longer than 80 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.name3" for="field_name3">Name 3</label>
+            <input type="text" class="form-control" name="name3" id="field_name3"
+                    ng-model="vm.miscInvoice.name3"
+                    ng-maxlength="80" />
+            <div ng-show="editForm.name3.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.name3.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="80">
+                    This field cannot be longer than 80 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.vatRegNumber" for="field_vatRegNumber">Vat Reg Number</label>
+            <input type="text" class="form-control" name="vatRegNumber" id="field_vatRegNumber"
+                    ng-model="vm.miscInvoice.vatRegNumber"
+                    ng-maxlength="80" />
+            <div ng-show="editForm.vatRegNumber.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.vatRegNumber.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="80">
+                    This field cannot be longer than 80 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.city" for="field_city">City</label>
+            <input type="text" class="form-control" name="city" id="field_city"
+                    ng-model="vm.miscInvoice.city"
+                    ng-maxlength="80" />
+            <div ng-show="editForm.city.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.city.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="80">
+                    This field cannot be longer than 80 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.zipCode" for="field_zipCode">Zip Code</label>
+            <input type="text" class="form-control" name="zipCode" id="field_zipCode"
+                    ng-model="vm.miscInvoice.zipCode"
+                    ng-maxlength="80" />
+            <div ng-show="editForm.zipCode.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.zipCode.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="80">
+                    This field cannot be longer than 80 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.street" for="field_street">Street</label>
+            <input type="text" class="form-control" name="street" id="field_street"
+                    ng-model="vm.miscInvoice.street"
+                    ng-maxlength="128" />
+            <div ng-show="editForm.street.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.street.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="128">
+                    This field cannot be longer than 128 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.country" for="field_country">Country</label>
+            <input type="text" class="form-control" name="country" id="field_country"
+                    ng-model="vm.miscInvoice.country"
+                    ng-maxlength="80" />
+            <div ng-show="editForm.country.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.country.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="80">
+                    This field cannot be longer than 80 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.optionalText" for="field_optionalText">Optional Text</label>
+            <input type="text" class="form-control" name="optionalText" id="field_optionalText"
+                    ng-model="vm.miscInvoice.optionalText"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.startDate" for="field_startDate">Start Date</label>
+            <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{dateformat}}"
+                       ng-model="vm.miscInvoice.startDate" is-open="vm.datePickerOpenStatus.startDate" required/>
+            </div>
+            <div ng-show="editForm.startDate.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.startDate.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.endDate" for="field_endDate">End Date</label>
+            <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{dateformat}}"
+                       ng-model="vm.miscInvoice.endDate" is-open="vm.datePickerOpenStatus.endDate" date-less-than={{vm.miscInvoice.startDate}} required/>
+            </div>
+            <div ng-show="editForm.endDate.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.endDate.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block" ng-show="editForm.endDate.$error.dateLessThan" translate="pcsApp.miscInvoice.message.endDateLessThanStartDate">
+                    End date must be later than Start date.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.dateOfFulfilment" for="field_dateOfFulfilment">End Date</label>
+            <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dateOfFulfilment')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                <input id="field_dateOfFulfilment" type="text" class="form-control" name="dateOfFulfilment" uib-datepicker-popup="{{dateformat}}"
+                       ng-model="vm.miscInvoice.dateOfFulfilment" is-open="vm.datePickerOpenStatus.dateOfFulfilment" date-less-than={{vm.miscInvoice.startDate}} required/>
+            </div>
+            <div ng-show="editForm.dateOfFulfilment.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.dateOfFulfilment.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block" ng-show="editForm.dateOfFulfilment.$error.dateLessThan" translate="pcsApp.miscInvoice.message.dateOfFulfilmentLessThanStartDate">
+                    Date of fullfilment must be later than Start date.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.paymentDeadline" for="field_paymentDeadline">Payment Deadline</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('paymentDeadline')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <input id="field_paymentDeadline" type="text" class="form-control" name="paymentDeadline" uib-datepicker-popup="{{dateformat}}" ng-model="vm.miscInvoice.paymentDeadline" is-open="vm.datePickerOpenStatus.paymentDeadline"
+                    />
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.billingMethod" for="field_billingMethod">Billing Method</label>
+            <input type="text" class="form-control" name="billingMethod" id="field_billingMethod"
+                    ng-model="vm.miscInvoice.billingMethod"
+                    ng-maxlength="12" />
+            <div ng-show="editForm.billingMethod.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.billingMethod.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="12">
+                    This field cannot be longer than 12 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.dateOfGroupPayment" for="field_dateOfGroupPayment">Date Of Group Payment</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dateOfGroupPayment')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <input id="field_dateOfGroupPayment" type="text" class="form-control" name="dateOfGroupPayment" uib-datepicker-popup="{{dateformat}}" ng-model="vm.miscInvoice.dateOfGroupPayment" is-open="vm.datePickerOpenStatus.dateOfGroupPayment"
+                    />
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.bankName" for="field_bankName">Bank Name</label>
+            <input type="text" class="form-control" name="bankName" id="field_bankName"
+                    ng-model="vm.miscInvoice.bankName"
+                    required ng-minlength="3" ng-maxlength="32" />
+            <div ng-show="editForm.bankName.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.bankName.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.bankName.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="3">
+                    This field is required to be at least 3 characters.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.bankName.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="32">
+                    This field cannot be longer than 32 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.bankAccount" for="field_bankAccount">Bank Account</label>
+            <input type="text" class="form-control" name="bankAccount" id="field_bankAccount"
+                    ng-model="vm.miscInvoice.bankAccount"
+                    required ng-minlength="8" ng-maxlength="32" />
+            <div ng-show="editForm.bankAccount.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.bankAccount.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.bankAccount.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="8">
+                    This field is required to be at least 8 characters.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.bankAccount.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="32">
+                    This field cannot be longer than 32 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.swiftCode" for="field_swiftCode">Swift Code</label>
+            <input type="text" class="form-control" name="swiftCode" id="field_swiftCode"
+                    ng-model="vm.miscInvoice.swiftCode"
+                    required ng-minlength="4" ng-maxlength="32" />
+            <div ng-show="editForm.swiftCode.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.swiftCode.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.swiftCode.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="4">
+                    This field is required to be at least 4 characters.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.swiftCode.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="32">
+                    This field cannot be longer than 32 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.printLocale" for="field_printLocale">Print Locale</label>
+            <input type="text" class="form-control" name="printLocale" id="field_printLocale"
+                    ng-model="vm.miscInvoice.printLocale"
+                    ng-maxlength="8" />
+            <div ng-show="editForm.printLocale.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.printLocale.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="8">
+                    This field cannot be longer than 8 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.storno" for="field_storno">Storno</label>
+            <input type="checkbox" class="form-control" name="storno" id="field_storno"
+                    ng-model="vm.miscInvoice.storno"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.stornired" for="field_stornired">Stornired</label>
+            <input type="checkbox" class="form-control" name="stornired" id="field_stornired"
+                    ng-model="vm.miscInvoice.stornired"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscInvoice.createdDate" for="field_createdDate">Created Date</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('createdDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <input id="field_createdDate" type="text" class="form-control" name="createdDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.miscInvoice.createdDate" is-open="vm.datePickerOpenStatus.createdDate"
+                    />
+                </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="pcsApp.miscInvoice.congress" for="field_congress">Congress</label>
+            <select class="form-control" id="field_congress" name="congress" ng-model="vm.miscInvoice.congress" ng-options="congress as congress.id for congress in vm.congresses track by congress.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

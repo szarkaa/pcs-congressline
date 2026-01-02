@@ -1,0 +1,104 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myRoomReservationLabel" data-translate="pcsApp.roomReservation.home.createOrEditLabel">Create or edit a Room Reservation</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group">
+            <label translate="pcsApp.roomReservation.room" for="field_room">Room</label>
+            <ui-select ng-model="vm.roomReservation.roomId" name="room" id="field_room" theme="bootstrap" required ng-disabled="vm.roomReservation.id">
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.hotelName + ' - ' + $select.selected.roomType"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="room.id as room in (vm.rooms | filterChargeableItemsByCurrency: {searchText: $select.search, registrationCurrency: vm.registrationCurrency, criteria: vm.filterChargeableItemsByCurrencyCriteria }) track by room.id">
+                    <div ng-bind-html="room.hotelName + ' - ' + room.roomType | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.room.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.room.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.roomReservation.shared" for="field_shared">shared</label>
+            <div class="checkbox" style="margin-top: 0px; margin-bottom: 0px;">
+                <input type="checkbox" id="field_shared" name="shared" ng-model="vm.roomReservation.shared" ng-disabled="vm.roomReservation.id" />
+                <label style="cursor: default"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.roomReservation.arrivalDate" for="field_arrivalDate">Arrival Date</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('arrivalDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <input id="field_arrivalDate" type="text" class="form-control" name="arrivalDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.roomReservation.arrivalDate"
+                           is-open="vm.datePickerOpenStatus.arrivalDate" ng-disabled="!vm.isDateEditable()" required/>
+                </div>
+            <div ng-show="editForm.arrivalDate.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.arrivalDate.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.roomReservation.departureDate" for="field_departureDate">Departure Date</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('departureDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <input id="field_departureDate" type="text" class="form-control" name="departureDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.roomReservation.departureDate"
+                           is-open="vm.datePickerOpenStatus.departureDate" ng-disabled="!vm.isDateEditable()" required/>
+                </div>
+            <div ng-show="editForm.departureDate.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.departureDate.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.roomReservation.payingGroupItem" for="field_payingGroupItem">Discount</label>
+            <ui-select ng-model="vm.roomReservation.payingGroupItem" name="payingGroupItem" id="field_payingGroupItem" theme="bootstrap">
+                <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.payingGroup.name + '/' + $select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="payingGroupItem as payingGroupItem in (vm.payingGroupItems | filter: { payingGroup: { currency: { currency: vm.registrationCurrency }}} | filter: $select.search) track by payingGroupItem.id">
+                    <div ng-bind-html="payingGroupItem.payingGroup.name + '/' + payingGroupItem.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" translate="pcsApp.roomReservation.comment" for="field_comment">Comment</label>
+            <textarea class="form-control" name="comment" id="field_comment" rows="3" autocomplete="off"
+                      ng-model="vm.roomReservation.comment" ng-maxlength="1024" >
+            </textarea>
+            <div ng-show="editForm.comment.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.comment.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="1024">
+                    This field cannot be longer than 1024 characters.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

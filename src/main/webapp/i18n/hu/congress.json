@@ -1,0 +1,43 @@
+{
+    "pcsApp": {
+        "congress" : {
+            "home": {
+                "title": "Congresses",
+                "createLabel": "Create a new Congress",
+                "createOrEditLabel": "Create or edit a Congress",
+                "search": "Search for Congress"
+            },
+            "created": "A new Congress is created with identifier {{ param }}",
+            "updated": "A Congress is updated with identifier {{ param }}",
+            "deleted": "A Congress is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Congress {{ id }}?"
+            },
+            "detail": {
+                "title": "Congress"
+            },
+            "migrate": {
+                "created": "Workplaces have been migrated successfully from {{ param }}!"
+            },
+            "meetingCode": "Meeting code",
+            "name": "Name",
+            "startDate": "Start date",
+            "endDate": "End date",
+            "contactPerson": "Contact person",
+            "contactEmail": "Contact email",
+            "website": "Website",
+            "programNumber": "Program number",
+            "defaultCountry": "Default country",
+            "archive": "Archive",
+            "currencies": "Currencies",
+            "onlineRegCurrencies": "Currencies for online reg",
+            "additionalBillingTextHu": "Additional billing text (HU)",
+            "additionalBillingTextEn": "Additional billing text (EN)",
+            "bankAccounts": "Bank account for {{ currency }}",
+            "congressFromCopyWp": "Migrate workplaces from this congress",
+            "message" : {
+                "endDateLessThanStartDate": "End date must be later than Start date."
+            }
+        }
+    }
+}

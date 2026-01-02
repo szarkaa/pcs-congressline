@@ -1,0 +1,12 @@
+{
+    "pcsApp": {
+        "emailDialog" : {
+            "home": {
+                "title": "Send email",
+                "createLabel": "Sending email to {{ lastName }} {{ firstName }}"
+            },
+            "created": "Email successfully sent [email: {{ param }}].",
+            "body": "Email body"
+        }
+    }
+}

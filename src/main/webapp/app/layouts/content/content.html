@@ -1,0 +1,19 @@
+<!-- Navigation -->
+<div ui-view="navbar" ng-cloak></div>
+
+<!-- Page wraper -->
+<!-- ng-class with current state name give you the ability to extended customization your view -->
+<div id="page-wrapper" class="gray-bg {{$state.current.name}}">
+
+    <!-- Page wrapper -->
+    <div ui-view="header" ng-cloak></div>
+
+    <!-- Main view  -->
+    <div ui-view="content">
+        <!-- Angular views -->
+    </div>
+
+    <!-- Footer -->
+    <div ui-view="footer" ng-cloak></div>
+</div>
+<!-- End page wrapper-->

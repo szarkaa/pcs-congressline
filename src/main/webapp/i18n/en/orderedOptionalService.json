@@ -1,0 +1,30 @@
+{
+    "pcsApp": {
+        "orderedOptionalService" : {
+            "home": {
+                "title": "Optional services",
+                "createLabel": "Create a new Optional service",
+                "createOrEditLabel": "Create or edit a Optional service",
+                "search": "Search for Optional service"
+            },
+            "created": "A new Optional service is created with identifier {{ param }}",
+            "updated": "A Optional service is updated with identifier {{ param }}",
+            "deleted": "A Optional service is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Optional service {{ id }}?"
+            },
+            "detail": {
+                "title": "Optional service"
+            },
+            "participant": "No. of Participant",
+            "currency": "Currency",
+            "price": "Price",
+            "optionalService": "Optional service",
+            "payingGroupItem": "Group",
+            "registration": "Registration",
+            "error": {
+                "exceededMaxPerson": "Available free spots exceeded. Max participants can be {{notReservedSpots}}."
+            }
+        }
+    }
+}

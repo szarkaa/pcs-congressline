@@ -1,0 +1,53 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myGroupDiscountInvoiceHistoryLabel" data-translate="pcsApp.groupDiscountInvoiceHistory.home.createOrEditLabel">Create or edit a Group Invoice History</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.groupDiscountInvoiceHistory.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.groupDiscountInvoiceHistory.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.groupDiscountInvoiceHistory.chargeableItemId" for="field_chargeableItemId">Chargeable Item Id</label>
+            <input type="number" class="form-control" name="chargeableItemId" id="field_chargeableItemId"
+                    ng-model="vm.groupDiscountInvoiceHistory.chargeableItemId"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.groupDiscountInvoiceHistory.chargeableItemType" for="field_chargeableItemType">Chargeable Item Type</label>
+            <select class="form-control" name="chargeableItemType" ng-model="vm.groupDiscountInvoiceHistory.chargeableItemType" id="field_chargeableItemType">
+                <option value="REGISTRATION" data-translate="pcsApp.ChargeableItemType.REGISTRATION">REGISTRATION</option>
+                <option value="HOTEL" data-translate="pcsApp.ChargeableItemType.HOTEL">HOTEL</option>
+                <option value="OPTIONAL_SERVICE" data-translate="pcsApp.ChargeableItemType.OPTIONAL_SERVICE">OPTIONAL_SERVICE</option>
+                <option value="MISCELLANEOUS" data-translate="pcsApp.ChargeableItemType.MISCELLANEOUS">MISCELLANEOUS</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.groupDiscountInvoiceHistory.df" for="field_df">Df</label>
+            <input type="text" class="form-control" name="df" id="field_df"
+                    ng-model="vm.groupDiscountInvoiceHistory.df"
+                     />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="pcsApp.groupDiscountInvoiceHistory.groupDiscountInvoice" for="field_groupDiscountInvoice">Group Invoice</label>
+            <select class="form-control" id="field_groupDiscountInvoice" name="groupDiscountInvoice" ng-model="vm.groupDiscountInvoiceHistory.groupDiscountInvoice" ng-options="groupDiscountInvoice as groupDiscountInvoice.id for groupDiscountInvoice in vm.groupdiscountinvoices track by groupDiscountInvoice.id">
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

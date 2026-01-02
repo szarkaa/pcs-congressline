@@ -1,0 +1,60 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 translate="pcsApp.room.home.listTitle" translate-values="{hotelName: '{{vm.congressHotel.hotel.name}}'}">Rooms for {{vm.congressHotel.hotel.name}}</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ui-sref="room.new">
+                        <i class="fa fa-plus"></i>
+                    </button>
+
+                    <button class="btn btn-info" type="submit" ui-sref="congress-hotel">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <table datatable="ng" id="room-datatable" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.room.roomType">RoomType</span></th>
+                            <th><span translate="pcsApp.room.bed">Bed</span></th>
+                            <th><span translate="pcsApp.room.quantity">Quantity</span></th>
+                            <th><span translate="pcsApp.room.reserved">Reserved</span></th>
+                            <th><span translate="pcsApp.room.price">Price</span></th>
+                            <th><span translate="pcsApp.room.currency">Currency</span></th>
+                            <th><span translate="pcsApp.room.vatInfo">Vat Info</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="room in vm.rooms track by room.id">
+                            <td>{{room.roomType}}</td>
+                            <td>{{room.bed}}</td>
+                            <td>{{room.quantity}}</td>
+                            <td><span ng-repeat=" reservation in room.reservations track by reservation.id">{{reservation.reservationDate | date: 'yyyy-MM-dd' }}: {{reservation.reserved }}<br></span></td>
+                            <td>{{room.price}}</td>
+                            <td>{{room.currency.currency}}</td>
+                            <td>{{room.vatInfo.name}}</td>
+                            <td>
+                                <button class="btn btn-info" type="submit"
+                                        ui-sref="room.edit({id: room.id})"><i class="fa fa-pencil-square-o"></i></button>
+                                <button class="btn btn-danger" type="submit"
+                                        ui-sref="room.delete({id: room.id})"><i class="fa fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

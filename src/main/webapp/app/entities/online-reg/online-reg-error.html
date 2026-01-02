@@ -1,0 +1,25 @@
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content p-xl gray-bg">
+    <div class="container animated fadeInRight">
+        <div class="row">
+            <div class="col-md-12">
+                <img class="online-reg-header-image" ng-src="{{'/api/registration/online/header/' + vm.congress.uuid }}" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h2 data-translate="pcsApp.onlineReg.home.errorTitle">Online registration error</h2>
+                    </div>
+                    <div class="ibox-content text-center p-md">
+                        <h2 class="text-danger" data-translate="pcsApp.onlineReg.error.{{vm.errorId}}">Online registration error</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="online-reg-footer" data-translate="pcsApp.onlineReg.footer">
+            Congressline Kft. • 1065 Budapest, Révay köz 2. • Tel: (+36-1) 429-0146, (+36-1) 312-1582 Fax: (+36-1) 429-0147 • Web: <a href="http://www.congressline.hu" target="_blank">www.congressline.hu</a>
+        </div>
+    </div>
+</div>

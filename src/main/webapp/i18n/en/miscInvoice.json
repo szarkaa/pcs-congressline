@@ -1,0 +1,56 @@
+{
+    "pcsApp": {
+        "miscInvoice" : {
+            "home": {
+                "title": "Misc Invoices",
+                "createLabel": "Create a new Misc Invoice",
+                "setPaymentDateLabel": "Setting payment date",
+                "createOrEditLabel": "Create or edit a Misc Invoice",
+                "search": "Search for Misc Invoice",
+                "stornoLabel": "Confirm storno operation"
+            },
+            "created": "A new Misc Invoice is created with identifier {{ param }}",
+            "updated": "A Misc Invoice is updated with identifier {{ param }}",
+            "deleted": "A Misc Invoice is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Misc Invoice {{ id }}?"
+            },
+            "detail": {
+                "title": "Misc Invoice"
+            },
+            "invoiceType": "Invoice type",
+            "invoiceNumber": "Invoice number",
+            "stornoInvoiceNumber": "Storno invoice number",
+            "name1": "Name1",
+            "name2": "Name2",
+            "name3": "Name3",
+            "vatRegNumber": "Vat Reg number",
+            "navVatCategory": "NAV vat category",
+            "city": "City",
+            "zipCode": "Zip code",
+            "street": "Street",
+            "country": "Country",
+            "optionalText": "Optional text",
+            "startDate": "Start date",
+            "endDate": "End date",
+            "dateOfFulfilment": "Date of fulfilment",
+            "paymentDeadline": "Payment deadline",
+            "billingMethod": "Billing method",
+            "dateOfGroupPayment": "Date of Group payment",
+            "locale": "Locale",
+            "storno": "Storno",
+            "stornired": "Stornired",
+            "dateOfPayment": "Date Of Payment",
+            "createdDate": "Created date",
+            "message": {
+                "endDateLessThanStartDate": "End date must be later than Start date.",
+                "dateOfFulfilmentLessThanStartDate": "Date of fulfilment must be later than Start date.",
+                "emailResent": "Invoice has been successfully resent."
+            },
+            "confirmation": {
+                "email": "Sending misc invoice to the following email address",
+                "storno": "Are you sure you want to storno this misc invoice: {{ invoiceNumber }}?"
+            }
+        }
+    }
+}

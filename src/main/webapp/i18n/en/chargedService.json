@@ -1,0 +1,33 @@
+{
+    "pcsApp": {
+        "chargedService" : {
+            "home": {
+                "title": "Payment type - Service Type",
+                "createLabel": "Create a new Payment",
+                "createOrEditLabel": "Create or edit a Payment",
+                "search": "Search for Payment"
+            },
+            "created": "A new Payment is created with identifier {{ param }}",
+            "updated": "A Payment is updated with identifier {{ param }}",
+            "deleted": "A Payment is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Payment {{ id }}?"
+            },
+            "detail": {
+                "title": "Payment"
+            },
+            "paymentMode": "Payment mode",
+            "paymentType": "Payment type",
+            "dateOfPayment": "Date of payment",
+            "amount": "Amount",
+            "invoiceNumber": "Invoice number",
+            "cardType": "Card type",
+            "cardNumber": "Card number",
+            "cardExpirationDate": "Card expiration date",
+            "transactionId": "Transaction ID",
+            "comment": "Comment",
+            "chargeableItem": "Chargeable item",
+            "debitedItem": "Debited item"
+        }
+    }
+}

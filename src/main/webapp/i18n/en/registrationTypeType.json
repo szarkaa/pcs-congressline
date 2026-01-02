@@ -1,0 +1,9 @@
+{
+    "pcsApp": {
+        "RegistrationTypeType" : {
+            "null": "",
+            "REGISTRATION_FEE": "Registration fee",
+            "ACCOMPANYING_FEE": "Accompaning fee"
+        }
+    }
+}

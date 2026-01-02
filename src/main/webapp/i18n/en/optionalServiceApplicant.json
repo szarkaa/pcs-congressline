@@ -1,0 +1,24 @@
+{
+    "pcsApp": {
+        "optionalServiceApplicant" : {
+            "home": {
+                "title": "Ordered service by applicants report",
+                "createLabel": "Ordered service selection",
+                "createOrEditLabel": "Optional service selection"
+            },
+            "regId": "Reg Id",
+            "lastName": "Family name",
+            "firstName": "First name",
+            "applicants": "Applicants",
+            "country": "Country",
+            "currency": "Currency",
+            "orderedPrice": "Ordered price",
+            "paid": "Paid",
+            "hotel": "Hotel",
+            "groupCost": "Group cost",
+            "paidByGroup": "Paid by group",
+            "payingGroup": "Paying group",
+            "optionalService": "Optional service"
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "pcsApp": {
+        "OnlineVisibility" : {
+            "null": "",
+            "VISIBLE": "Visible",
+            "NOT_VISIBLE": "Not visible"
+        }
+    }
+}

@@ -1,0 +1,149 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myUserLabel" data-translate="userManagement.home.createOrEditLabel">
+            Create or edit a User</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" name="id"
+                   ng-model="vm.user.id" readonly>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="userManagement.login">Login</label>
+            <input type="text" class="form-control" name="login" autocomplete="off"
+                   ng-model="vm.user.login" ng-required="vm.user.id == null" ng-minlength=1 ng-maxlength=50 ng-pattern="/^[_'.@A-Za-z0-9-]*$/">
+
+            <div ng-show="editForm.login.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.login.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+
+                <p class="error-block"
+                   ng-show="editForm.login.$error.maxlength" data-translate="entity.validation.maxlength"
+                   translate-value-max="50">
+                    This field cannot be longer than 50 characters.
+                </p>
+
+                <p class="error-block"
+                       ng-show="editForm.login.$error.pattern"
+                       data-translate="entity.validation.pattern" data-translate-values="{ pattern: '_ . @ A-Z a-z 0-9 -' }">
+                Ez a mező csak számokat tartalmazhat pl.: 36703125678
+            </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="userManagement.firstName">First Name</label>
+            <input type="text" class="form-control" name="firstName" required autocomplete="off"
+                   ng-model="vm.user.firstName" ng-maxlength="50">
+
+            <div ng-show="editForm.firstName.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.lastName.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.firstName.$error.maxlength" data-translate="entity.validation.maxlength"
+                   translate-value-max="50">
+                    This field cannot be longer than 50 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label data-translate="userManagement.lastName">Last Name</label>
+            <input type="text" class="form-control" name="lastName" required autocomplete="off"
+                   ng-model="vm.user.lastName" ng-maxlength="50">
+
+            <div ng-show="editForm.lastName.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.lastName.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.lastName.$error.maxlength" data-translate="entity.validation.maxlength"
+                   translate-value-max="50">
+                    This field cannot be longer than 50 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="userManagement.email">Email</label>
+            <input type="email" class="form-control" name="email" autocomplete="off"
+                   ng-model="vm.user.email" required ng-maxlength="100">
+
+            <div ng-show="editForm.email.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.email.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+
+                <p class="error-block"
+                   ng-show="editForm.email.$error.maxlength" data-translate="entity.validation.maxlength"
+                   translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+				<p class="error-block"
+                   ng-show="editForm.email.$error.email" data-translate="global.messages.validate.email.invalid">
+                    Your e-mail is invalid.
+                 </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="activated">
+                <input ng-disabled="vm.user.id === null" type="checkbox" id="activated" name="activated" ng-model="vm.user.activated">
+                <span data-translate="userManagement.activated">Activated</span>
+            </label>
+        </div>
+
+<!--
+        <div class="form-group">
+            <label data-translate="userManagement.langKey">Lang Key</label>
+            <select class="form-control" name="langKey" ng-model="vm.user.langKey"
+                    ng-options="language as language for language in vm.languages track by language">
+            </select>
+        </div>
+-->
+
+        <div class="form-group">
+            <label translate="userManagement.profiles" for="field_authority">Profiles</label>
+            <ui-select multiple ng-model="vm.user.authorities" class="form-control" id="field_authority" name="authority" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">{{$item}}</ui-select-match>
+                <ui-select-choices repeat="authority in vm.authorities | filter: $select.search">
+                    <div ng-bind-html="authority | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.authority.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.authority.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="userManagement.congresses" for="field_congresses">Congresses</label>
+            <ui-select multiple ng-model="vm.user.congresses" id="field_congresses" name="congresses" theme="bootstrap">
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">{{$item.meetingCode}}</ui-select-match>
+                <ui-select-choices repeat="congress in vm.congresses | filter: $select.search track by congress.id">
+                    <div ng-bind-html="congress.meetingCode | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span
+            data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

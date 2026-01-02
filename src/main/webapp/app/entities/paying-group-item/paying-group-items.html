@@ -1,0 +1,58 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 translate="pcsApp.payingGroupItem.home.title" translate-values="{groupName: '{{vm.payingGroup.name}}'}">Paying Group Items for Group: {{vm.payingGroup.name}}</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ui-sref="paying-group-item.new">
+                        <i class="fa fa-plus"></i>
+                    </button>
+
+                    <button class="btn btn-info" type="submit" ui-sref="paying-group">
+                        <i class="fa fa-arrow-left"></i>
+                    </button>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <table datatable="ng" id="paying-group-item-datatable" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.payingGroupItem.name">Name</span></th>
+                            <th><span translate="pcsApp.payingGroupItem.amountPercentage">AmountPercentage</span></th>
+                            <th><span translate="pcsApp.payingGroupItem.amountValue">AmountValue</span></th>
+                            <th><span translate="pcsApp.payingGroupItem.hotelDateFrom">HotelDateFrom</span></th>
+                            <th><span translate="pcsApp.payingGroupItem.hotelDateTo">HotelDateTo</span></th>
+                            <th><span translate="pcsApp.payingGroupItem.chargeableItemType">Item Type</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="payingGroupItem in vm.payingGroupItems track by payingGroupItem.id">
+                            <td>{{payingGroupItem.name}}</td>
+                            <td>{{payingGroupItem.amountPercentage}}</td>
+                            <td>{{payingGroupItem.amountValue}}</td>
+                            <td>{{payingGroupItem.hotelDateFrom | date:'mediumDate'}}</td>
+                            <td>{{payingGroupItem.hotelDateTo | date:'mediumDate'}}</td>
+                            <td data-translate="{{'pcsApp.ChargeableItemType.' + payingGroupItem.chargeableItemType}}">{{payingGroupItem.chargeableItemType}}</td>
+                            <td>
+                                <button class="btn btn-info" type="submit"
+                                        ui-sref="paying-group-item.edit({id: payingGroupItem.id})"><i class="fa fa-pencil-square-o"></i></button>
+                                <button class="btn btn-danger" type="submit"
+                                        ui-sref="paying-group-item.delete({id: payingGroupItem.id})"><i class="fa fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

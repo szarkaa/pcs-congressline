@@ -1,0 +1,52 @@
+{
+    "pcsApp": {
+        "generalRegistrationReport" : {
+            "home": {
+                "title": "Registration Report",
+                "search": "Search for Registations"
+            },
+            "regId": "Reg ID",
+            "lastName": "Family Name",
+            "firstName": "First Name",
+            "shortName": "Short Name",
+            "invoiceName": "Invoice Name",
+            "title": "Title",
+            "position": "Position",
+            "otherData": "Other Data",
+            "zipCode": "Zipcode",
+            "city": "City",
+            "country": "Country",
+            "street": "Street",
+            "phone": "Phone",
+            "email": "Email",
+            "workplaceName": "Wp. Name",
+            "workplaceDepartment": "Wp. Dept.",
+            "workplaceZipCode": "Wp. Zipcode",
+            "workplaceCity": "Wp. City",
+            "workplaceStreet": "Wp. Street",
+            "workplacePhone": "Wp. Phone",
+            "workplaceEmail": "Wp. Email",
+            "workplaceCountry": "Wp. Country",
+            "remark": "Remark",
+            "accompanyingNum": "Accompanying no.",
+            "accompanyingNames": "Accompanying names",
+            "otherData": "Other data",
+            "hotelNames": "Hotel",
+            "registrationTypeColName": "Reg. type: {{ colName }}",
+            "registrationType": "Registration Type",
+            "workplace": "Workplace",
+            "payingGroup": "Paying Group",
+            "optionalService": "Optional Service",
+            "accPeople": "Acc. People",
+            "presenter": "Presenter",
+            "etiquette": "Etiquette",
+            "closed": "Closed",
+            "onSpot": "On spot",
+            "cancelled": "Cancelled",
+            "advancedSearch": "Advanced search",
+            "sendConfirmationToAll": "Send confirmation to all",
+            "sendAllConfirmationToEmail": "Send selected confirmations to email",
+            "sendGeneralEmailToAll": "Send email to all"
+        }
+    }
+}

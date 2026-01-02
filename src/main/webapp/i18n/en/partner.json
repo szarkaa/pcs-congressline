@@ -1,0 +1,31 @@
+{
+    "pcsApp": {
+        "workplace" : {
+            "home": {
+                "title": "Partners",
+                "createLabel": "Create a new Partner",
+                "createOrEditLabel": "Create or edit a Partner",
+                "search": "Search for Partner"
+            },
+            "created": "A new Partner is created with identifier {{ param }}",
+            "updated": "A Partner is updated with identifier {{ param }}",
+            "deleted": "A Partner is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Partner {{ id }}?"
+            },
+            "detail": {
+                "title": "Partner"
+            },
+            "name": "Name",
+            "vatRegNumber": "Vat Reg Number",
+            "department": "Department",
+            "zipCode": "Zip code",
+            "city": "City",
+            "street": "Street",
+            "phone": "Phone",
+            "fax": "Fax",
+            "email": "Email",
+            "country": "Country"
+        }
+    }
+}

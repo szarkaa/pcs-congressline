@@ -1,0 +1,26 @@
+{
+    "pcsApp": {
+        "creditCardReport" : {
+            "home": {
+                "title": "Credit Card Report",
+                "search": "Search for Credit Card Payments"
+            },
+            "congressName": "Congress name",
+            "programNumber": "Program number",
+            "fromDate": "Date from",
+            "toDate": "Date to",
+            "regId": "Reg Id",
+            "name": "Name",
+            "amount": "Amount",
+            "currency": "Currency",
+            "dateOfPayment": "Date of payment",
+            "cardNumber": "Card number",
+            "transactionId": "Transaction Id",
+            "country": "Country",
+            "street": "Street",
+            "phone": "Phone",
+            "email": "Email",
+            "comment": "Comment"
+        }
+    }
+}

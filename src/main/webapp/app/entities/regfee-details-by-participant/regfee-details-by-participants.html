@@ -1,0 +1,73 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 data-translate="pcsApp.regFeeDetailsByParticipant.home.title">Reg Fee Details By Participant</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-8"></div>
+                            <div class="col-md-4 input-group">
+                                <ui-select ng-model="vm.reportFilter.regType" name="regType" id="search_regType" theme="bootstrap">
+                                    <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                        <span ng-bind="$select.selected.name"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="registrationType in vm.registrationTypes | filter: $select.search track by registrationType.id">
+                                        <div ng-bind-html="registrationType.name | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span  class="input-group-btn width-min" >
+                                    <button class="btn btn-info" ng-click="vm.search()">
+                                        <span class="glyphicon glyphicon-search"></span>
+                                    </button>
+                                    <button class="btn btn-danger" ng-if="vm.reportList.length || vm.isAnyFilterSet()" ng-click="vm.clear()">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                    <button class="btn btn-primary" ng-if="vm.reportList.length" type="submit" ng-click="vm.downloadReportXls()">
+                                        <i class="fa fa-download"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox-content" ng-show="vm.reportList.length">
+                    <table datatable="ng" id="regfee-details-by-participant-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th><span data-translate="pcsApp.regFeeDetailsByParticipant.regId">Reg Id</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetailsByParticipant.name">Name</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetailsByParticipant.firstFee">First fee</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetailsByParticipant.secondFee">Second fee</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetailsByParticipant.thirdFee">Third fee</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetailsByParticipant.paidByPerson">Paid by person</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetailsByParticipant.payingGroupName">Group name</span></th>
+                            <th><span data-translate="pcsApp.regFeeDetailsByParticipant.paidByGroup">Paid by group</span></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="regFeeDetails in vm.reportList track by regFeeDetails.regId">
+                            <td>{{regFeeDetails.regId}}</td>
+                            <td>{{regFeeDetails.name}}</td>
+                            <td>{{regFeeDetails.firstFee}}</td>
+                            <td>{{regFeeDetails.secondFee}}</td>
+                            <td>{{regFeeDetails.thirdFee}}</td>
+                            <td>{{regFeeDetails.paidByPerson}}</td>
+                            <td>{{regFeeDetails.payingGroupName}}</td>
+                            <td>{{regFeeDetails.paidByGroup}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

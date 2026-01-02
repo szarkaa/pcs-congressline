@@ -1,0 +1,65 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myAccPeopleLabel" data-translate="pcsApp.accPeople.home.createOrEditLabel">Create or edit a Acc People</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.accPeople.title" for="field_title">Title</label>
+            <input type="text" class="form-control" name="title" id="field_title" autocomplete="off"
+                    ng-model="vm.accPeople.title"
+                    ng-maxlength="8" />
+            <div ng-show="editForm.title.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.title.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="8">
+                    This field cannot be longer than 8 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.accPeople.lastName" for="field_lastName">Last Name</label>
+            <input type="text" class="form-control" name="lastName" id="field_lastName" autocomplete="off"
+                    ng-model="vm.accPeople.lastName"
+                    required ng-maxlength="64" />
+            <div ng-show="editForm.lastName.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.lastName.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.lastName.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                    This field cannot be longer than 64 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.accPeople.firstName" for="field_firstName">First Name</label>
+            <input type="text" class="form-control" name="firstName" id="field_firstName" autocomplete="off"
+                    ng-model="vm.accPeople.firstName"
+                    required ng-maxlength="64" />
+            <div ng-show="editForm.firstName.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.firstName.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.firstName.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                    This field cannot be longer than 64 characters.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

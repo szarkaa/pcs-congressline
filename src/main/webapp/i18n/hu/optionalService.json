@@ -1,0 +1,37 @@
+{
+    "pcsApp": {
+        "optionalService" : {
+            "home": {
+                "title": "Optional services",
+                "createLabel": "Create a new Optional service",
+                "createOrEditLabel": "Create or edit a Optional service",
+                "search": "Search for Optional service"
+            },
+            "created": "A new OptionalService is created with identifier {{ param }}",
+            "updated": "A OptionalService is updated with identifier {{ param }}",
+            "deleted": "A OptionalService is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Optional service {{ id }}?"
+            },
+            "error": {
+                "maxPersonExceededByReserved": "Max person can not be smaller than the already reserved number of optional service."
+            },
+            "code": "Code",
+            "name": "Name",
+            "startDate": "Start date",
+            "endDate": "End date",
+            "price": "Price",
+            "maxPerson": "Max person",
+            "reserved": "Reserved",
+            "currency": "Currency",
+            "onlineVisibility": "Online visibility",
+            "onlineType": "Online type",
+            "onlineLabel": "Online label",
+            "onlineOrder": "Online order",
+            "vatInfo": "Vat info",
+            "message" : {
+                "endDateLessThanStartDate": "End date must be later than Start date."
+            }
+        }
+    }
+}

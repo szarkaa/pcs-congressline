@@ -1,0 +1,250 @@
+{
+    "global": {
+        "title": "PCS+",
+        "browsehappy": "You are using an <strong>outdated</strong> browser. Please <a href=\"http://browsehappy.com/?locale=en\">upgrade your browser</a> to improve your experience.",
+        "menu": {
+            "home": "Home",
+            "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+            "entities": {
+                "main": "Entities",
+                "bankAccount": "Bank Account",
+                "vatInfo": "Vat Info",
+                "optionalText": "Optional Text",
+                "registrationType": "Registration Type",
+                "optionalService": "Optional Service",
+                "payingGroup": "Paying Group",
+                "payingGroupItem": "Paying Group Item",
+                "congressHotel": "Congress Hotel",
+                "miscInvoiceItem": "Misc Invoice Item",
+                "registrationRegistrationType": "Registration Registration Type",
+                "roomReservation": "Room Reservation",
+                "roomReservationRegistration": "Room Reservation Registration",
+                "orderedOptionalService": "Ordered Optional Service",
+                "chargedService": "Charged Service",
+                "accPeople": "Acc People",
+                "invoice": "Invoice",
+                "groupDiscountItem": "Group Invoice Item",
+                "groupDiscountInvoice": "Group Invoice",
+                "groupDiscountInvoiceHistory": "Group Invoice History",
+                "groupDiscountPayment": "Group Discount Payment",
+                "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
+            },
+            "constraints": {
+                "bank_account": "Bank account",
+                "country": "Country",
+                "currency": "Currency",
+                "congress_currency": "Congress/Currency",
+                "congress_bank_account": "Congress/Bank account",
+                "jhi_user_congress": "User/Congress",
+                "congress": "Congress",
+                "congress_hotel": "Selected hotel",
+                "hotel": "Hotel",
+                "company": "Company",
+                "vatInfo": "Vat info",
+                "optional_service": "Optional service",
+                "registration_type": "Registration type",
+                "paying_group": "Paying group",
+                "paying_group_item": "Paying group item",
+                "rate": "Rate",
+                "room": "Room",
+                "workplace": "Workplace",
+                "registration": "Registration",
+                "group_discount_invoice_history": "Paying Group Invoice",
+                "registration_registration_type": "Registration/Registration type",
+                "acc_people": "Registration/Registration type/Acc people",
+                "room_reservation": "Registration/Room reservation",
+                "room_reservation_registration": "Registration/Room reservation",
+                "ordered_optional_service": "Registration/Optional service",
+                "charged_service": "Registration/Payments",
+                "chargeable_item_invoice_history": "Registration/Invoice",
+                "charged_service_invoice_history": "Registration/Invoice",
+                "misc_service": "Misc Service",
+                "misc_invoice": "Misc Invoice",
+                "misc_invoice_item": "Misc Invoice/Item",
+                "online_reg": "Online registration"
+            },
+            "administration": {
+                "main": "Administration",
+                "registration": "Registration",
+                "onlineReg": "Online Reg",
+                "registrationType": "Registration type",
+                "vatInfo": "VAT info",
+                "selectedHotel": "Selected hotel",
+                "optionalService": "Optional service",
+                "workplace": "Workplace",
+                "payingGroup": "Group registration",
+                "miscInvoice": "Misc Invoice",
+                "miscService": "Misc Service",
+                "optionalText": "Optional text",
+                "groupPayment": "Group payment",
+                "groupFinancial": "Group financial",
+                "groupInvoice": "Group invoice"
+            },
+            "maintenance": {
+                "main": "Maintenance",
+                "bankAccount": "Bank account",
+                "country": "Country",
+                "hotel": "Hotel",
+                "invoiceReport": "Invoice Report",
+                "creditCardReport": "Credit Card Report",
+                "paymentTransactionReport": "KH Payment Report",
+                "rate": "Currency rate",
+                "congress": "Congress",
+                "vatInfo": "VAT info",
+                "partner": "Partner",
+                "companyProfile": "Company profile"
+            },
+            "report": {
+                "main": "Report",
+                "generalRegistrationReport": "Registration report",
+                "financialReport": "Financial report",
+                "hotelGeneralReport": "Hotel general report",
+                "roomReservationByParticipant": "Reservation by participants",
+                "roomReservationByRoom": "Reservation by rooms",
+                "hotelSummary": "Hotel summary",
+                "optionalServiceApplicant": "Ordered service by applicants",
+                "optionalProgramsMembers": "Optional service",
+                "paymentSummary": "Payment summary",
+                "regFeeDetailsByParticipant": "Regfee by participant",
+                "regFeeDetails": "Regfee details",
+                "onlineRegCustomAnswerReport": "Online custom answer report"
+            },
+            "account": {
+                "main": "Account",
+                "settings": "Settings",
+                "password": "Password",
+                "sessions": "Sessions",
+                "login": "Sign in",
+                "logout": "Sign out",
+                "register": "Register"
+            },
+            "admin": {
+                "main": "System",
+                "user-management": "User management",
+                "currency": "Currency",
+                "tracker": "User tracker",
+                "metrics": "Metrics",
+                "health": "Health",
+                "configuration": "Configuration",
+                "logs": "Logs",
+                "audits": "Audits",
+                "apidocs": "API",
+                "database": "Database",
+                "jhipster-needle-menu-add-admin-element": "JHipster will add additional menu entries here (do not translate!)"
+            },
+            "language": "Language"
+        },
+        "form": {
+            "username": "Username",
+            "username.placeholder": "Your username",
+            "newpassword": "New password",
+            "newpassword.placeholder": "New password",
+            "confirmpassword": "New password confirmation",
+            "confirmpassword.placeholder": "Confirm the new password",
+            "email": "E-mail",
+            "email.placeholder": "Your e-mail",
+            "please.select": "Please select"
+        },
+        "messages": {
+            "info": {
+                "authenticated": "If you want to <a class=\"alert-link\" href=\"\" ng-click=\"vm.login()\">sign in</a>, you can try the default accounts:<br/>- Administrator (login=\"admin\" and password=\"admin\") <br/>- User (login=\"user\" and password=\"user\").",
+                "register": "You don't have an account yet? <a class=\"alert-link\" href=\"\" ng-click=\"vm.register()\">Register a new account</a>"
+            },
+            "error": {
+                "dontmatch": "The password and its confirmation do not match!"
+            },
+            "validate": {
+                "newpassword": {
+                    "required": "Your password is required.",
+                    "minlength": "Your password is required to be at least 4 characters.",
+                    "maxlength": "Your password cannot be longer than 50 characters.",
+                    "strength": "Password strength:"
+                },
+                "confirmpassword": {
+                    "required": "Your confirmation password is required.",
+                    "minlength": "Your confirmation password is required to be at least 4 characters.",
+                    "maxlength": "Your confirmation password cannot be longer than 50 characters."
+                },
+                "email": {
+                    "required": "Your e-mail is required.",
+                    "invalid": "Your e-mail is invalid.",
+                    "minlength": "Your e-mail is required to be at least 5 characters.",
+                    "maxlength": "Your e-mail cannot be longer than 50 characters."
+                }
+            }
+        },
+        "field": {
+            "id": "ID"
+        },
+        "ribbon": {
+            "dev":"Development"
+        }
+    },
+    "entity": {
+        "action": {
+            "addblob": "Add blob",
+            "addimage": "Add image",
+            "back": "Back",
+            "cancel": "Cancel",
+            "delete": "Delete",
+            "edit": "Edit",
+            "open": "Open",
+            "close": "Close",
+            "save": "Save",
+            "view": "View",
+            "send": "Send",
+            "search": "Search",
+            "select": "Select",
+            "ok": "OK",
+            "merge": "Merge",
+            "refund": "Refund",
+            "accept": "Accept"
+        },
+        "detail": {
+            "field": "Field",
+            "value": "Value"
+        },
+        "delete": {
+            "title": "Confirm delete operation"
+        },
+        "merge": {
+            "title": "Confirm merge operation"
+        },
+        "accept": {
+            "title": "Confirm accept operation"
+        },
+        "validation": {
+            "required": "This field is required.",
+            "unique": "This field must be unique.",
+            "minlength": "This field is required to be at least {{ min }} characters.",
+            "maxlength": "This field cannot be longer than {{ max }} characters.",
+            "min": "This field should be more than {{ min }}.",
+            "max": "This field cannot be more than {{ max }}.",
+            "minbytes": "This field should be more than {{ min }} bytes.",
+            "maxbytes": "This field cannot be more than {{ max }} bytes.",
+            "pattern": "This field should follow pattern {{ pattern }}.",
+            "number": "This field should be a number.",
+            "datetimelocal": "This field should be a date and time."
+        }
+    },
+    "error": {
+        "internalServerError": "Internal server error occured!",
+        "server.not.reachable": "Server not reachable",
+        "url.not.found": "Not found",
+        "NotNull": "Field {{ fieldName }} cannot be empty!",
+        "Size": "Field {{ fieldName }} does not meet min/max size requirements!",
+        "userexists": "Login name already used!",
+        "emailexists": "E-mail is already in use!",
+        "currencyexists": "Currency already exists!",
+        "rateexists": "Rate for this currency already exists valid from this day!",
+        "meetingcodeexists": "Meeting code already exists!",
+        "hotelcodeexists": "Hotel code already exists!",
+        "regtypecodeexists": "Registration type code already exists!",
+        "optionalservicecodeexists": "Optional service code already exists!",
+        "idexists": "A new {{ entityName }} cannot already have an ID",
+        "constraintsviolationexists": "Item can not be deleted, has one or more reference on it.",
+        "constraintsviolationdetailed": "Item can not be deleted, {{ entityName }} has a reference on it.",
+        "countrycodeexists": "Country code already exists!",
+        "noAvailableRoom": "No more available room left, on the following days: {{ entityName }}. Please change dates accordingly or select another room type."
+    }
+}

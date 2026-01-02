@@ -1,0 +1,35 @@
+{
+    "pcsApp": {
+        "roomReservationByRoom" : {
+            "home": {
+                "title": "Room reservation by rooms report",
+                "createLabel": "Hotel selection",
+                "createOrEditLabel": "Hotel selection"
+            },
+            "regId": "Reg Id",
+            "name": "Name",
+            "roomType": "Room type",
+            "country": "Country",
+            "date": "Date",
+            "arrivalDate": "Arrival date",
+            "departureDate": "Departure date",
+            "nights": "Nights",
+            "personTitle": "Person<br>cost/paid/to pay",
+            "groupTitle": "Group<br>cost/paid/to pay",
+            "totalTitle": "Total<br>cost/paid/to pay",
+            "personCost": "P cost",
+            "personPaid": "P paid",
+            "personToPay": "P to pay",
+            "groupCost": "G cost",
+            "groupPaid": "G paid",
+            "groupToPay": "G to pay",
+            "totalCost": "T cost",
+            "totalPaid": "T paid",
+            "totalToPay": "T to pay",
+            "currency": "Currency",
+            "payingGroupName": "Paying group",
+            "comment": "Comment",
+            "hotel": "Hotel"
+        }
+    }
+}

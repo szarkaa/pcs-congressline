@@ -1,0 +1,201 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myChargedServiceLabel" data-translate="pcsApp.chargedService.home.createOrEditLabel">Create or edit a Charged Service</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.chargedService.paymentMode" for="field_paymentMode">Payment Mode</label>
+            <select class="form-control" name="paymentMode" ng-model="vm.chargedService.paymentMode" id="field_paymentMode" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="CARD" data-translate="pcsApp.ChargedServicePaymentMode.CARD">CARD</option>
+                <option value="CHECK" data-translate="pcsApp.ChargedServicePaymentMode.CHECK">CHECK</option>
+                <option value="CASH" data-translate="pcsApp.ChargedServicePaymentMode.CASH">CASH</option>
+                <option value="BANK_TRANSFER" data-translate="pcsApp.ChargedServicePaymentMode.BANK_TRANSFER">BANK_TRANSFER</option>
+            </select>
+            <div ng-show="editForm.paymentMode.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.paymentMode.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.chargedService.paymentType" for="field_paymentType">Payment Type</label>
+            <select class="form-control" name="paymentType" ng-model="vm.chargedService.paymentType" ng-change="vm.chargeableItemTypeOnChanged()" id="field_paymentType" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="REGISTRATION" data-translate="pcsApp.ChargeableItemType.REGISTRATION">REGISTRATION</option>
+                <option value="HOTEL" data-translate="pcsApp.ChargeableItemType.HOTEL">HOTEL</option>
+                <option value="OPTIONAL_SERVICE" data-translate="pcsApp.ChargeableItemType.OPTIONAL_SERVICE">OPTIONAL_SERVICE</option>
+                <option value="MISCELLANEOUS" data-translate="pcsApp.ChargeableItemType.MISCELLANEOUS">MISCELLANEOUS</option>
+            </select>
+            <div ng-show="editForm.paymentType.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.paymentType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        
+        <div class="form-group" ng-show="vm.chargedService.paymentType === 'REGISTRATION'">
+            <label translate="pcsApp.chargedService.chargeableItem" for="field_rrt_for_chargeableItem">Chargeable item</label>
+            <ui-select ng-model="vm.chargedService.chargeableItem" name="rrtForChargeableItem" id="field_rrt_for_chargeableItem" ng-change="vm.setDefaultPrice()"
+                       theme="bootstrap" ng-required="vm.chargedService.paymentType === 'REGISTRATION'">
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.chargeableItemName"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="registrationRegistrationType in (vm.registrationRegistrationTypes | filter: $select.search) track by registrationRegistrationType.id">
+                    <div ng-bind-html="registrationRegistrationType.chargeableItemName | highlight: $select.search"></div>
+                </ui-select-choices>
+
+            </ui-select>
+            <div ng-show="editForm.rrtForChargeableItem.$invalid">
+                <p class="error-block" ng-show="editForm.chargeableItem.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="vm.chargedService.paymentType === 'HOTEL'">
+            <label translate="pcsApp.chargedService.chargeableItem" for="field_rr_for_chargeableItem">Chargeable item</label>
+            <ui-select ng-model="vm.chargedService.chargeableItem" name="rrForChargeableItem" id="field_rr_for_chargeableItem" ng-change="vm.setDefaultPrice()"
+                       theme="bootstrap" ng-required="vm.chargedService.paymentType === 'HOTEL'">
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.chargeableItemName"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="rr in (vm.roomReservations | filter: $select.search) track by rr.id">
+                    <div ng-bind-html="rr.chargeableItemName | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.chargeableItem.$invalid">
+                <p class="error-block" ng-show="editForm.rrForChargeableItem.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="vm.chargedService.paymentType === 'OPTIONAL_SERVICE'">
+            <label translate="pcsApp.chargedService.chargeableItem" for="field_oos_for_chargeableItem">Chargeable item</label>
+            <ui-select ng-model="vm.chargedService.chargeableItem" name="oosForChargeableItem" id="field_oos_for_chargeableItem" ng-change="vm.setDefaultPrice()"
+                       theme="bootstrap" ng-required="vm.chargedService.paymentType === 'OPTIONAL_SERVICE'">
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.chargeableItemName"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="orderedOptionalService in (vm.orderedOptionalServices | filter: $select.search) track by orderedOptionalService.id">
+                    <div ng-bind-html="orderedOptionalService.chargeableItemName | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.oosForChargeableItem.$invalid">
+                <p class="error-block" ng-show="editForm.chargeableItem.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.chargedService.dateOfPayment" for="field_dateOfPayment">Date Of Payment</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dateOfPayment')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <input id="field_dateOfPayment" type="text" class="form-control" autocomplete="off" name="dateOfPayment" uib-datepicker-popup="{{dateformat}}" ng-model="vm.chargedService.dateOfPayment" is-open="vm.datePickerOpenStatus.dateOfPayment"
+                           required/>
+                </div>
+            <div ng-show="editForm.dateOfPayment.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.dateOfPayment.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.chargedService.amount" for="field_amount">Amount</label>
+            <input type="number" class="form-control" name="amount" id="field_amount" autocomplete="off"
+                   ng-model="vm.chargedService.amount" required min="-1000000" max="1000000" />
+            <div ng-show="editForm.amount.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.amount.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.amount.$error.min" data-translate="entity.validation.min" translate-value-min="-1000000">
+                    This field should be more than -1000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.amount.$error.max" data-translate="entity.validation.max" translate-value-max="1000000">
+                    This field cannot be more than 1000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.amount.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group"ng-show="vm.chargedService.paymentMode === 'CARD'">
+            <label class="control-label" data-translate="pcsApp.chargedService.cardType" for="field_cardType">Card Type</label>
+            <select class="form-control" name="cardType" ng-model="vm.chargedService.cardType" id="field_cardType">
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="VISA">VISA</option>
+                <option value="EC/MC">EC/MC</option>
+                <option value="AMEX">AMEX</option>
+            </select>
+            <div ng-show="editForm.cardType.$invalid">
+                <p class="error-block" ng-show="editForm.cardType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vm.chargedService.paymentMode === 'CARD'">
+            <label class="control-label" data-translate="pcsApp.chargedService.cardNumber" for="field_cardNumber">Card Number</label>
+            <input type="text" class="form-control" name="cardNumber" id="field_cardNumber" autocomplete="off"
+                   ng-model="vm.chargedService.cardNumber" ng-maxlength="50" />
+            <div ng-show="editForm.cardNumber.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.cardNumber.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="50">
+                    This field cannot be longer than 50 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group" ng-show="vm.chargedService.paymentMode === 'CARD'">
+            <label class="control-label" data-translate="pcsApp.chargedService.cardExpirationDate" for="field_cardExpirationDate">Card Expiration Date</label>
+            <input type="text" class="form-control" name="cardExpirationDate" id="field_cardExpirationDate"
+                    ng-model="vm.chargedService.cardExpirationDate" autocomplete="off" ng-maxlength="8" />
+            <div ng-show="editForm.cardExpirationDate.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.cardExpirationDate.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="8">
+                    This field cannot be longer than 8 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.chargedService.transactionId" for="field_transactionId">Transaction Id</label>
+            <input type="text" class="form-control" name="transactionId" id="field_transactionId"
+                    ng-model="vm.chargedService.transactionId" autocomplete="off" ng-maxlength="50" />
+            <div ng-show="editForm.transactionId.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.transactionId.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="50">
+                    This field cannot be longer than 50 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="pcsApp.chargedService.comment" for="field_comment">Comment</label>
+            <textarea class="form-control" name="comment" id="field_comment" rows="3" autocomplete="off"
+                      ng-model="vm.chargedService.comment" ng-maxlength="1024" >
+            </textarea>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,13 @@
+{
+    "pcsApp": {
+        "sendConfirmationToAllDialog" : {
+            "home": {
+                "title": "Send confirmation to all",
+                "createLabel": "Send confirmation to all"
+            },
+            "created": "Confirmation successfully sent to {{ param }} registration(s)",
+            "language": "Language",
+            "optionalText": "Optional text"
+        }
+    }
+}

@@ -1,0 +1,10 @@
+{
+    "pcsApp": {
+        "InvoiceType" : {
+            "null": "",
+            "REGULAR": "Regular invoice",
+            "PREPAYMENT": "Prepayment invoice",
+            "PRO_FORMA": "Pro forma invoice"
+        }
+    }
+}

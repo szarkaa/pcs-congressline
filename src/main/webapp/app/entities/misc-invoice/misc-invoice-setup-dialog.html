@@ -1,0 +1,392 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div style="padding-left: 15px">
+        <h2 data-translate="pcsApp.invoice.home.miscSetupLabel">Misc Invoice Print Setup</h2>
+    </div>
+</div>
+<jhi-alert-error></jhi-alert-error>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <form name="editForm" role="form" novalidate ng-submit="vm.printInvoice()" show-validation>
+            <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
+                <div class="ibox-title float-e-margins">
+                    <strong>{{'pcsApp.invoice.language' | translate}}</strong>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <div><label><input ng-model="vm.invoice.language" value="hu" id="languageHu" name="language" type="radio"> Hungarian</label></div>
+                    <div><label><input ng-model="vm.invoice.language" value="en" id="languageEn" name="language" type="radio"> English</label></div>
+                </div>
+            </div>
+
+            <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
+                <div class="ibox-title float-e-margins">
+                    <strong>{{'pcsApp.invoice.invoiceType' | translate}}</strong>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <select class="form-control" name="invoiceType" ng-model="vm.invoice.invoiceType" id="field_invoiceType" ng-change="vm.invoiceTypeChanged()" required>
+                        <option value="" data-translate="global.form.please.select">Please select</option>
+                        <option value="REGULAR" data-translate="pcsApp.InvoiceType.REGULAR">REGULAR</option>
+                        <option value="PREPAYMENT" data-translate="pcsApp.InvoiceType.PREPAYMENT">PREPAYMENT</option>
+                        <option value="PRO_FORMA" data-translate="pcsApp.InvoiceType.PRO_FORMA">PRO_FORMA</option>
+                    </select>
+                    <div ng-show="editForm.invoiceType.$invalid">
+                        <p class="error-block" ng-show="editForm.invoiceType.$error.required" data-translate="entity.validation.required">
+                            This field is required.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox" ng-show="!vm.isShowConfirmationPanel && vm.invoice.invoiceType !== 'PRO_FORMA'">
+                <div class="ibox-title float-e-margins">
+                    <strong>{{'pcsApp.invoice.navVatCategory' | translate}}</strong>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <select class="form-control" name="navVatCategory" ng-model="vm.invoice.navVatCategory" id="field_navVatCategory" ng-change="vm.navVatCategoryChanged()" required>
+                        <option value="" data-translate="global.form.please.select">Please select</option>
+                        <option value="DOMESTIC_NORMAL_VAT_TAX_NUMBER" data-translate="pcsApp.NavVatCategory.DOMESTIC_NORMAL_VAT_TAX_NUMBER">DOMESTIC_NORMAL_VAT_TAX_NUMBER</option>
+                        <option value="PRIVATE_PERSON" data-translate="pcsApp.NavVatCategory.PRIVATE_PERSON">PRIVATE_PERSON</option>
+                        <option value="EU_VAT_EU_TAX_NUMBER" data-translate="pcsApp.NavVatCategory.EU_VAT_EU_TAX_NUMBER">EU_VAT_EU_TAX_NUMBER</option>
+                        <option value="OTHER_COUNTRY" data-translate="pcsApp.NavVatCategory.OTHER_COUNTRY">OTHER_COUNTRY</option>
+                        <option value="EU_NO_VAT_EU_TAX_NUMBER" data-translate="pcsApp.NavVatCategory.EU_NO_VAT_EU_TAX_NUMBER">EU_NO_VAT_EU_TAX_NUMBER</option>
+                        <option value="OTHER_CUSTOMER" data-translate="pcsApp.NavVatCategory.OTHER_CUSTOMER">OTHER_CUSTOMER</option>
+                        <option value="DOMESTIC_GROUP_VAT_TAX_NUMBER" data-translate="pcsApp.NavVatCategory.DOMESTIC_GROUP_VAT_TAX_NUMBER">DOMESTIC_GROUP_VAT_TAX_NUMBER</option>
+                    </select>
+                    <div ng-show="editForm.navVatCategory.$invalid">
+                        <p class="error-block" ng-show="editForm.navVatCategory.$error.required" data-translate="entity.validation.required">
+                            This field is required.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
+                <div class="ibox-title float-e-margins">
+                    <strong>{{'pcsApp.invoice.partner' | translate}}</strong>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <ui-select ng-model="dummyvalue" ng-change="vm.selectPartner($select.selected)" name="partner-search" id="partner-search" theme="bootstrap">
+                        <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                            <span ng-bind="$select.selected.name"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="partner in (vm.partners | filter: $select.search) track by partner.id">
+                            <div ng-bind-html="partner.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+
+            <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
+                <div class="ibox-title float-e-margins">
+                    <strong>{{'pcsApp.invoice.home.billingInfoLabel' | translate}}</strong>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.name1" for="field_name1">Name1</label>
+                        <input type="text" class="form-control" name="name1" id="field_name1" autocomplete="off"
+                               ng-model="vm.invoice.name1" required ng-maxlength="64" />
+                        <div ng-show="editForm.name1.$invalid">
+                            <p class="error-block" ng-show="editForm.name1.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                            <p class="error-block"
+                               ng-show="editForm.name1.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                                This field cannot be longer than 64 characters.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.name2" for="field_name2">Name2</label>
+                        <input type="text" class="form-control" name="name2" id="field_name2" autocomplete="off"
+                               ng-model="vm.invoice.name2"
+                               ng-maxlength="64" />
+                        <div ng-show="editForm.name2.$invalid">
+                            <p class="error-block"
+                               ng-show="editForm.name2.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                                This field cannot be longer than 64 characters.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.name3" for="field_name3">Name3</label>
+                        <input type="text" class="form-control" name="name3" id="field_name3" autocomplete="off"
+                               ng-model="vm.invoice.name3"
+                               ng-maxlength="64" />
+                        <div ng-show="editForm.name3.$invalid">
+                            <p class="error-block"
+                               ng-show="editForm.name3.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                                This field cannot be longer than 64 characters.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.vatRegNumber" for="field_vatRegNumber">VatRegNumber</label>
+                        <input type="text" class="form-control" name="vatRegNumber" id="field_vatRegNumber" ng-required="vm.isTaxNumberRequired()"
+                               ng-pattern="vm.taxNumberPattern" ng-disabled="vm.isTaxNumberDisabled()" ng-model="vm.invoice.vatRegNumber" ng-maxlength="64" />
+                        <div ng-show="editForm.vatRegNumber.$invalid">
+                            <p class="error-block" ng-show="editForm.vatRegNumber.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                            <p class="error-block" ng-show="editForm.vatRegNumber.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                This field cannot be longer than 64 characters.
+                            </p>
+                            <p class="error-block" ng-show="editForm.vatRegNumber.$error.pattern"
+                               data-translate="entity.validation.pattern" data-translate-values="{ pattern: '12345678-1-12' }">
+                                Ez a mező csak adószám formátumot tartalmazhat pl.: 12345678-1-12
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.city" for="field_city">City</label>
+                        <input type="text" class="form-control" name="city" id="field_city" autocomplete="off"
+                               ng-model="vm.invoice.city" required ng-maxlength="64" />
+                        <div ng-show="editForm.city.$invalid">
+                            <p class="error-block" ng-show="editForm.city.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                            <p class="error-block" ng-show="editForm.city.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                                This field cannot be longer than 64 characters.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.zipCode" for="field_zipCode">ZipCode</label>
+                        <input type="text" class="form-control" name="zipCode" id="field_zipCode" autocomplete="off"
+                               ng-model="vm.invoice.zipCode" required ng-maxlength="64" />
+                        <div ng-show="editForm.zipCode.$invalid">
+                            <p class="error-block" ng-show="editForm.zipCode.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                            <p class="error-block" ng-show="editForm.zipCode.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                                This field cannot be longer than 64 characters.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.street" for="field_street">Street</label>
+                        <input type="text" class="form-control" name="street" id="field_street" autocomplete="off"
+                               ng-model="vm.invoice.street" required ng-maxlength="128" />
+                        <div ng-show="editForm.street.$invalid">
+                            <p class="error-block" ng-show="editForm.street.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                            <p class="error-block" ng-show="editForm.street.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="128">
+                                This field cannot be longer than 128 characters.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.country" for="field_country">Country</label>
+                        <ui-select ng-model="vm.invoice.country" name="country" id="field_country" theme="bootstrap">
+                            <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="country.code as country in (vm.countries | filter: $select.search) track by country.code">
+                                <div ng-bind-html="country.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                        <div ng-show="editForm.country.$invalid">
+                            <p class="error-block" ng-show="editForm.country.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
+                <div class="ibox-title float-e-margins">
+                    <strong>{{'pcsApp.invoice.home.invoiceSetupDateLabel' | translate}}</strong>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.startDate" for="field_startDate">Start Date</label>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.invoice.startDate" is-open="vm.datePickerOpenStatus.startDate"
+                                   required/>
+                        </div>
+                        <div ng-show="editForm.startDate.$invalid">
+                            <p class="error-block"
+                               ng-show="editForm.startDate.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.endDate" for="field_endDate">End Date</label>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{dateformat}}"
+                                   ng-model="vm.invoice.endDate" is-open="vm.datePickerOpenStatus.endDate" date-less-than={{vm.invoice.startDate}} required/>
+                        </div>
+                        <div ng-show="editForm.endDate.$invalid">
+                            <p class="error-block"
+                               ng-show="editForm.endDate.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                            <p class="error-block" ng-show="editForm.endDate.$error.dateLessThan" translate="pcsApp.invoice.message.endDateLessThanStartDate">
+                                End date must be later than Start date.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.dateOfFulfilment" for="field_dateOfFulfilment">End Date</label>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dateOfFulfilment')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            <input id="field_dateOfFulfilment" type="text" class="form-control" name="dateOfFulfilment" uib-datepicker-popup="{{dateformat}}"
+                                   ng-model="vm.invoice.dateOfFulfilment" is-open="vm.datePickerOpenStatus.dateOfFulfilment" required/>
+                        </div>
+                        <div ng-show="editForm.dateOfFulfilment.$invalid">
+                            <p class="error-block"
+                               ng-show="editForm.dateOfFulfilment.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                            <p class="error-block" ng-show="editForm.dateOfFulfilment.$error.dateLessThan" translate="pcsApp.invoice.message.dateOfFulfilmentLessThanStartDate">
+                                Date of fullfilment must be later than Start date.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.paymentDeadline" for="field_paymentDeadline">Start Date</label>
+                        <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="vm.openCalendar('paymentDeadline')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                            <input id="field_paymentDeadline" type="text" class="form-control" name="paymentDeadline" uib-datepicker-popup="{{dateformat}}" ng-model="vm.invoice.paymentDeadline" is-open="vm.datePickerOpenStatus.paymentDeadline"
+                                   required/>
+                        </div>
+                        <div ng-show="editForm.paymentDeadline.$invalid">
+                            <p class="error-block"
+                               ng-show="editForm.paymentDeadline.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label data-translate="pcsApp.invoice.bankAccount" for="field_bankAccount">Bank account</label>
+                        <ui-select ng-model="vm.invoice.bankAccount" name="bankAccount" id="field_bankAccount" theme="bootstrap" required>
+                            <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="bankAccount in (bankAccounts | filter: $select.search) track by bankAccount.id">
+                                <div ng-bind-html="bankAccount.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                        <div ng-show="editForm.bankAccount.$invalid">
+                            <p class="error-block"
+                               ng-show="editForm.bankAccount.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
+                <div class="ibox-title float-e-margins">
+                    <strong>{{'pcsApp.invoice.home.paymentMethodLabel' | translate}}</strong>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <div><label><input ng-model="vm.invoice.billingMethod" value="TRANSFER" id="paymentTransfer" ng-click="vm.changeBillingMethod()" name="billingMethod" type="radio"> Transfer</label></div>
+                    <div><label><input ng-model="vm.invoice.billingMethod" value="CASH" id="paymentCash" ng-click="vm.changeBillingMethod()" name="billingMethod" type="radio"> Cash</label></div>
+                    <div><label><input ng-model="vm.invoice.billingMethod" value="CARD" id="paymentCreditCard" ng-click="vm.changeBillingMethod()" name="billingMethod" type="radio"> Credit card</label></div>
+                </div>
+            </div>
+
+            <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
+                <div class="ibox-title float-e-margins">
+                    <strong>{{'pcsApp.optionalText.optionalText' | translate}}:</strong>
+
+                    <div class="input-group m-b">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit" ui-sref="misc-invoice.optional-text-new">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </span>
+                        <ui-select ng-model="vm.selectedOptionalText" ng-change="vm.setOptionalTextMessage($select.selected.optionalText)" name="optionalTextSelector" id="field_optionalTextSelector" theme="bootstrap">
+                            <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                <span ng-bind="$select.selected.name"></span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="optionalText in (vm.optionalTexts | filter: $select.search) track by optionalText.id">
+                                <div ng-bind-html="optionalText.name | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <div class="text-center">
+                        <textarea class="form-control" name="optionalText" id="field_optionalText" rows="5" autocomplete="off" ng-model="vm.invoice.optionalText">
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
+                <div class="ibox-title float-e-margins">
+                    <button type="button" ng-click="vm.showConfirmationPanel()" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="pcsApp.invoice.sendInvoiceByMail">Send invoice by mail</span>
+                    </button>
+                    <button type="button" ng-click="vm.printInvoice()" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+                        <span class="glyphicon glyphicon-print"></span>&nbsp;<span data-translate="pcsApp.invoice.printInvoice">Print invoice</span>
+                    </button>
+                    <button type="button" class="btn btn-info" ng-click="vm.clear()" ui-sref="misc-invoice-item">
+                        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back">Back</span>
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="vm.clear()" ui-sref="misc-invoice" ui-sref-opts="{reload: true, notify: true}">
+                        <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+                    </button>
+                </div>
+            </div>
+            </form>
+
+            <form name="confirmationForm" role="form" novalidate ng-submit="vm.sendAndPrintInvoice()" show-validation>
+                <div class="ibox" ng-show="vm.isShowConfirmationPanel">
+                    <div class="ibox-title float-e-margins">
+                        <strong>{{'pcsApp.miscInvoice.confirmation.email' | translate}}:</strong>
+                        <div class="input-group m-b">
+                            <input class="form-control" name="invoiceEmail" ng-minlength="5" ng-maxlength="255" ng-model="vm.invoiceEmail" autocomplete="off" type="email" required>
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn btn-primary"><span data-translate="entity.action.send">Send</span></button>
+                                <button type="button" ng-click="vm.isShowConfirmationPanel = false;" class="btn btn-default"><span data-translate="entity.action.cancel">Cancel</span></button>
+                            </span>
+                        </div>
+                        <div ng-show="confirmationForm.confirmationEmail.$invalid">
+                            <p class="error-block"
+                               ng-show="confirmationForm.invoiceEmail.$error.required" data-translate="entity.validation.required">
+                                This field is required.
+                            </p>
+                            <p class="error-block"
+                               ng-show="confirmationForm.invoiceEmail.$error.email" data-translate="global.messages.validate.email.invalid">
+                                Your e-mail is invalid.
+                            </p>
+                            <p class="error-block"
+                               ng-show="confirmationForm.invoiceEmail.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="5">
+                                This field is required to be at least 5 characters.
+                            </p>
+                            <p class="error-block"
+                               ng-show="confirmationForm.invoiceEmail.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                                This field cannot be longer than 255 characters.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

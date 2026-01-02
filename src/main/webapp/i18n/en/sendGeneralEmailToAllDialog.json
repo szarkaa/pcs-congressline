@@ -1,0 +1,14 @@
+{
+    "pcsApp": {
+        "sendGeneralEmailToAllDialog" : {
+            "home": {
+                "title": "Sending email to all",
+                "createLabel": "Sending email to all"
+            },
+            "created": "{{ param }} email successfully sent to the selected registrations",
+            "topic": "Topic",
+            "emailBody": "Email body",
+            "email": "Email"
+        }
+    }
+}

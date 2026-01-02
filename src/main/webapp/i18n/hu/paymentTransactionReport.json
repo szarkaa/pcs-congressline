@@ -1,0 +1,33 @@
+{
+    "pcsApp": {
+        "paymentTransactionReport" : {
+            "home": {
+                "title": "Payment Transaction Report",
+                "refundTitle": "Confirm KH refund operation"
+            },
+            "congressName": "Congress name",
+            "programNumber": "Program number",
+            "lastName": "Family name",
+            "firstName": "First name",
+            "orderNumber": "Order No",
+            "fromDate": "Date from",
+            "toDate": "Date to",
+            "regId": "Reg Id",
+            "name": "Name",
+            "amount": "Amount",
+            "refund": "Refund amount",
+            "currency": "Currency",
+            "paymentTrxDate": "Payment trx date",
+            "transactionId": "Transaction Id",
+            "showPaymentRefundTransactionDialog" : {
+                "title": "Refund transactions of a payment transaction",
+                "paymentTrxDate": "Refund date",
+                "paymentTrxResultCode": "Result code",
+                "paymentTrxResultMessage": "Result message",
+                "paymentTrxStatus": "Payment status",
+                "amount": "Amount",
+                "currency": "Currency"
+            }
+        }
+    }
+}

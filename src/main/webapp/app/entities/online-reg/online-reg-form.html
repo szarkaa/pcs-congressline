@@ -1,0 +1,1168 @@
+    <jhi-alert xmlns:https="http://www.w3.org/1999/xhtml"></jhi-alert>
+<form name="editForm" role="form" novalidate show-validation>
+<div class="wrapper wrapper-content p-xl gray-bg">
+    <div class="container animated fadeInRight">
+        <div class="row">
+            <div class="col-md-12">
+                <img class="online-reg-header-image" ng-src="{{'/api/registration/online/header/' + vm.congress.uuid }}" onerror="this.style.display='none'">
+            </div>
+        </div>
+
+        <div class="row" ng-if="vm.isSubmitSuccess">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h2 data-translate="pcsApp.onlineReg.home.mainTitle">Online registration</h2>
+                    </div>
+                    <div class="widget navy-bg">
+                        <p data-translate="pcsApp.onlineReg.message.submitOnlineSuccess">Successful submission!</p>
+                    </div>
+                    <div class="widget yellow-bg">
+                        <p data-translate="pcsApp.onlineReg.message.submitOnlineSpamWarning">Email sent successfully Check spam folder if not received!</p>
+                    </div>
+                    <button ng-if="vm.congress.website" type="submit" class="btn btn-success" ng-click="vm.openCongressWebsite()"><strong data-translate="pcsApp.onlineReg.congressWebsiteButton">Vissza a rendezvény weboldalára</strong></button>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="!vm.isSubmitSuccess" class="row">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h2 data-translate="pcsApp.onlineReg.home.mainTitle">Online registration</h2>
+                    </div>
+                    <div class="ibox-content text-center p-md browser-check">
+                        <div ng-bind-html="vm.getValueByLanguage('browserRemark')"></div>
+                        <ul>
+                            <li><a target="_blank" class="ff" href="https://www.mozilla.org/en-US/firefox/all/">firefox</a> Firefox</li>
+                            <li><a target="_blank" class="ch" href="https://www.google.com/intl/hu/chrome/browser/">chrome</a> Chrome</li>
+                            <li><a target="_blank" class="sf" href="https://support.apple.com/downloads/safari">safari</a> Safari</li>
+                            <li><a target="_blank" class="edge" href="https://www.microsoft.com/en-us/edge">edge</a> Edge</li>
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Personal data -->
+        <div ng-if="!vm.isSubmitSuccess" class="row">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h3 data-translate="pcsApp.onlineReg.home.personalData">Personal data</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-group row" ng-if="vm.config.titleVisible || vm.config.lastNameVisible || vm.config.firstNameVisible">
+                            <div class="col-md-2" ng-if="vm.config.titleVisible">
+                                <label class="control-label" ng-class="{'required-field': vm.config.titleRequired}" data-translate="pcsApp.onlineReg.title" for="field_title">Title</label>
+                                <input ng-if="!vm.config.titleSelectable" type="text" class="form-control online-form-control" name="title" id="field_title" autocomplete="off"
+                                       ng-model="vm.registration.title" ng-required="vm.config.titleRequired" ng-maxlength="16" />
+                                <select ng-if="vm.config.titleSelectable" class="form-control" name="title" id="field_title"
+                                        ng-model="vm.registration.title" ng-required="vm.config.titleRequired" >
+                                    <option value="" data-translate="pcsApp.onlineReg.form.please.select">Please select</option>
+                                    <option ng-repeat="opt in vm.getTitleSelectableValues() track by opt" value="{{opt}}">{{opt}}</option>
+                                </select>
+                                <div ng-show="editForm.title.$invalid">
+                                    <p class="error-block" ng-show="editForm.title.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.title.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="16">
+                                        This field cannot be longer than 16 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-{{ vm.config.titleVisible ? '5' : '6' }}" ng-if="vm.config.lastNameVisible">
+                                <label class="control-label" ng-class="{'required-field': vm.config.lastNameRequired}" data-translate="pcsApp.onlineReg.lastName" for="field_lastName">Family name</label>
+                                <input type="text" class="form-control online-form-control" name="lastName" id="field_lastName" autocomplete="off"
+                                       ng-model="vm.registration.lastName" ng-required="vm.config.lastNameRequired" ng-maxlength="64" />
+                                <div ng-show="editForm.lastName.$invalid">
+                                    <p class="error-block" ng-show="editForm.lastName.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.lastName.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-{{ vm.config.titleVisible ? '5' : '6' }}" ng-if="vm.config.firstNameVisible">
+                                <label class="control-label" ng-class="{'required-field': vm.config.firstNameRequired}" data-translate="pcsApp.onlineReg.firstName" for="field_firstName">First name</label>
+                                <input type="text" class="form-control online-form-control" name="firstName" id="field_firstName" autocomplete="off"
+                                       ng-model="vm.registration.firstName" ng-required="vm.config.firstNameRequired" ng-maxlength="64" />
+                                <div ng-show="editForm.firstName.$invalid">
+                                    <p class="error-block" ng-show="editForm.firstName.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.firstName.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.config.workplaceVisible">
+                            <label class="control-label" ng-class="{'required-field': vm.config.workplaceRequired}" data-translate="pcsApp.onlineReg.workplace" for="field_workplace">Workplace</label>
+                            <input ng-if="!vm.hasWorkplaceSelectableValues()" type="text" class="form-control online-form-control" name="workplace" id="field_workplace" autocomplete="off"
+                                   ng-model="vm.registration.workplace" ng-required="vm.config.workplaceRequired" ng-maxlength="255" />
+                            <select ng-if="vm.hasWorkplaceSelectableValues()" class="form-control" name="workplace" id="field_workplace"
+                                    ng-model="vm.registration.workplace" ng-required="vm.config.workplaceRequired" >
+                                <option value="" data-translate="pcsApp.onlineReg.form.please.select">Please select</option>
+                                <option ng-repeat="opt in vm.getWorkplaceSelectableValues() track by opt" value="{{opt}}">{{opt}}</option>
+                            </select>
+                            <div ng-show="editForm.workplace.$invalid">
+                                <p class="error-block" ng-show="editForm.workplace.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block" ng-show="editForm.workplace.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="255">
+                                    This field cannot be longer than 255 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group" ng-if="vm.config.departmentVisible">
+                            <label class="control-label" ng-class="{'required-field': vm.config.departmentRequired}" data-translate="pcsApp.onlineReg.department" for="field_department">Department</label>
+                            <input type="text" class="form-control online-form-control" name="department" id="field_department" autocomplete="off"
+                                   ng-model="vm.registration.department" ng-required="vm.config.departmentRequired" ng-maxlength="128" />
+                            <div ng-show="editForm.department.$invalid">
+                                <p class="error-block" ng-show="editForm.department.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block" ng-show="editForm.department.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="128">
+                                    This field cannot be longer than 128 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" ng-if="vm.config.zipCodeVisible || vm.config.cityVisible || vm.config.countryVisible">
+                            <div class="col-md-4" ng-if="vm.config.zipCodeVisible">
+                                <label class="control-label" ng-class="{'required-field': vm.config.zipCodeRequired}" data-translate="pcsApp.onlineReg.zipCode" for="field_zipCode">Zipcode</label>
+                                <input type="text" class="form-control online-form-control" name="zipCode" id="field_zipCode" autocomplete="off"
+                                       ng-model="vm.registration.zipCode" ng-required="vm.config.zipCodeRequired" ng-maxlength="32" />
+                                <div ng-show="editForm.zipCode.$invalid">
+                                    <p class="error-block" ng-show="editForm.zipCode.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.zipCode.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="32">
+                                        This field cannot be longer than 32 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-if="vm.config.cityVisible">
+                                <label class="control-label" ng-class="{'required-field': vm.config.cityRequired}" data-translate="pcsApp.onlineReg.city" for="field_city">city</label>
+                                <input type="text" class="form-control online-form-control" name="city" id="field_city" autocomplete="off"
+                                       ng-model="vm.registration.city" ng-required="vm.config.cityRequired" ng-maxlength="64" />
+                                <div ng-show="editForm.city.$invalid">
+                                    <p class="error-block" ng-show="editForm.city.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.city.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4" ng-if="vm.config.countryVisible">
+                                <label class="control-label" ng-class="{'required-field': vm.config.countryRequired}" data-translate="pcsApp.onlineReg.country" for="field_country">Country</label>
+                                <ui-select name="country" id="field_country" theme="bootstrap" ng-model="vm.registration.country" ng-required="vm.config.countryRequired">
+                                    <ui-select-match placeholder="{{ 'pcsApp.onlineReg.form.please.select' | translate }}">
+                                        <span ng-bind="$select.selected.name"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="country in (vm.countries | filter: $select.search) track by country.id">
+                                        <div ng-bind-html="country.name | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <div ng-show="editForm.country.$invalid">
+                                    <p class="error-block" ng-show="editForm.country.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.country.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.config.streetVisible">
+                            <label class="control-label" ng-class="{'required-field': vm.config.streetRequired}" data-translate="pcsApp.onlineReg.street" for="field_street">Street</label>
+                            <input type="text" class="form-control online-form-control" name="street" id="field_street" autocomplete="off"
+                                   ng-model="vm.registration.street" ng-required="vm.config.streetRequired" ng-maxlength="255" />
+                            <div ng-show="editForm.street.$invalid">
+                                <p class="error-block" ng-show="editForm.street.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block" ng-show="editForm.street.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="255">
+                                    This field cannot be longer than 255 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row" ng-if="vm.config.phoneVisible || vm.config.emailVisible" >
+                            <div class="col-md-6" ng-if="vm.config.phoneVisible">
+                                <label class="control-label" ng-class="{'required-field': vm.config.phoneRequired}" data-translate="pcsApp.onlineReg.phone" for="field_phone">Phone</label>
+                                <input type="text" class="form-control online-form-control" name="phone" id="field_phone" autocomplete="off"
+                                       ng-model="vm.registration.phone" ng-required="vm.config.phoneRequired" ng-maxlength="64" placeholder="+36-30-1234567"/>
+                                <div ng-show="editForm.phone.$invalid">
+                                    <p class="error-block" ng-show="editForm.phone.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.phone.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-if="vm.config.emailVisible">
+                                <label class="control-label" ng-class="{'required-field': vm.config.emailRequired}" data-translate="pcsApp.onlineReg.email" for="field_email">Email</label>
+                                <input type="email" class="form-control online-form-control" name="email" id="field_email" autocomplete="off"
+                                       ng-model="vm.registration.email" ng-required="vm.config.emailRequired" ng-maxlength="64" />
+                                <div ng-show="editForm.email.$invalid">
+                                    <p class="error-block" ng-show="editForm.email.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.email.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.email.$error.email" data-translate="pcsApp.onlineReg.form.validation.email.invalid">
+                                        Your e-mail is invalid.
+                                    </p>
+                                </div>
+                                <div ng-show="!vm.isEmailIdentical()">
+                                    <p class="error-block" data-translate="pcsApp.onlineReg.form.validation.email.confirmation.failed">
+                                        Email and Email confirmation are different.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-3" ng-if="vm.config.emailVisible">
+                                <label class="control-label" ng-class="{'required-field': vm.config.emailRequired}" data-translate="pcsApp.onlineReg.email2" for="field_email2">Email again</label>
+                                <input type="email" class="form-control online-form-control" name="email2" id="field_email2" autocomplete="off"
+                                       ng-model="vm.registration.email2" ng-required="vm.config.emailRequired" ng-maxlength="64" />
+                                <div ng-show="editForm.email2.$invalid">
+                                    <p class="error-block" ng-show="editForm.email2.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.email2.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.email2.$error.email" data-translate="pcsApp.onlineReg.form.validation.email.invalid">
+                                        Your e-mail is invalid.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.config.positionVisible">
+                            <label class="control-label" ng-class="{'required-field': vm.config.positionRequired}" for="field_position">{{vm.getValueByLanguage('positionLabel')}}</label>
+                            <input ng-if="!vm.hasPositionSelectableValues()" type="text" class="form-control online-form-control" name="position" id="field_position" autocomplete="off"
+                                   ng-model="vm.registration.position" ng-required="vm.config.positionRequired" ng-maxlength="64" />
+                            <select ng-if="vm.hasPositionSelectableValues()" class="form-control" name="position" id="field_position"
+                                    ng-model="vm.registration.position" ng-required="vm.config.positionRequired" >
+                                <option value="" data-translate="pcsApp.onlineReg.form.please.select">Please select</option>
+                                <option ng-repeat="opt in vm.getPositionSelectableValues() track by opt" value="{{opt}}">{{opt}}</option>
+                            </select>
+                            <div ng-show="editForm.position.$invalid">
+                                <p class="error-block" ng-show="editForm.position.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block" ng-show="editForm.position.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.config.otherDataVisible">
+                            <label class="control-label" ng-class="{'required-field': vm.config.otherDataRequired}" for="field_otherData">{{vm.getValueByLanguage('otherDataLabel')}}</label>
+                            <input ng-if="!vm.hasOtherDataSelectableValues()" type="text" class="form-control online-form-control" name="otherData" id="field_otherData" autocomplete="off"
+                                   ng-model="vm.registration.otherData" ng-required="vm.config.otherDataRequired" ng-maxlength="255" />
+                            <select ng-if="vm.hasOtherDataSelectableValues()" class="form-control" name="otherData" id="field_otherData"
+                                    ng-model="vm.registration.otherData" ng-required="vm.config.otherDataRequired" >
+                                <option value="" data-translate="pcsApp.onlineReg.form.please.select">Please select</option>
+                                <option ng-repeat="opt in vm.getOtherDataSelectableValues() track by opt" value="{{opt}}">{{opt}}</option>
+                            </select>
+
+                            <div ng-show="editForm.otherData.$invalid">
+                                <p class="error-block" ng-show="editForm.otherData.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block" ng-show="editForm.otherData.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="255">
+                                    This field cannot be longer than 255 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div ng-if="vm.getValueByLanguage('personalDataRemark')">
+                            <div ng-bind-html="vm.getValueByLanguage('personalDataRemark')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Reg types -->
+        <div class="row" ng-if="!vm.isSubmitSuccess && vm.registrationTypes.length">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h3 data-translate="pcsApp.onlineReg.home.registration">Registration</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <div ng-if="(vm.registrationTypes | filter: {onlineType: 'NORMAL'}).length">
+                            <div class="well b-r-xs required-message-block" ng-if="!vm.registration.regType" data-translate="pcsApp.onlineReg.message.regTypeRequired">Please select a registration below</div>
+                            <table class="table chargeable-item">
+                                <thead>
+                                <tr>
+                                    <th></th>
+                                    <th data-translate="pcsApp.onlineReg.type">Type</th>
+                                    <th>{{ vm.getValueByLanguage('regTypeFirstFeeLabel') }}</th>
+                                    <th>{{ vm.getValueByLanguage('regTypeSecondFeeLabel') }}</th>
+                                    <th>{{ vm.getValueByLanguage('regTypeThirdFeeLabel') }}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="rt in vm.registrationTypes | filter: {onlineType: 'NORMAL'} track by rt.id">
+                                    <td>
+                                        <div class="radio radio-success">
+                                            <input type="radio" required ng-click="vm.setRegTypeRadioButtonValue($event)" name="normal-reg-type" ng-checked="vm.isRegTypeRadioButtonChecked(rt.id)" value="{{rt.id}}"/>
+                                            <label style="cursor: default"></label>
+                                        </div>
+                                    </td>
+                                    <td>{{rt.name}}</td>
+                                    <td>{{rt.firstRegFee | number }} {{rt.firstRegFee ? rt.currency : ''}}</td>
+                                    <td>{{rt.secondRegFee | number}} {{rt.secondRegFee ? rt.currency : ''}}</td>
+                                    <td>{{rt.thirdRegFee | number}} {{rt.thirdRegFee ? rt.currency : ''}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div ng-if="(vm.registrationTypes | filter: {onlineType: 'EXTRA'}).length">
+                            <h4 ng-show="vm.getValueByLanguage('regTypeExtraTitle')">{{ vm.getValueByLanguage('regTypeExtraTitle') }}</h4>
+                            <h4 ng-hide="vm.getValueByLanguage('regTypeExtraTitle')" data-translate="pcsApp.onlineReg.home.extraRegistration">Extra Registration(s)</h4>
+                            <table class="table chargeable-item">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th data-translate="pcsApp.onlineReg.type">Type</th>
+                                        <th>{{ vm.getValueByLanguage('regTypeFirstFeeLabel') }}</th>
+                                        <th>{{ vm.hasExtraSecondRegFeeValue() ? vm.getValueByLanguage('regTypeSecondFeeLabel') : '&nbsp;' }}</th>
+                                        <th>{{ vm.getValueByLanguage('regTypeThirdFeeLabel') }}</th>
+                                    </tr>
+                                    </thead>
+                                <tbody>
+                                    <tr ng-repeat-start="rt in vm.registrationTypes | filter: {onlineType: 'EXTRA'} track by rt.id" ng-init="rtId = rt.id" ng-class="{'table-row-color-odd': $index % 2 == 0}" >
+                                        <td>
+                                            <div class="checkbox checkbox-success">
+                                                <input type="checkbox" ng-model="vm.registration.extraRegTypes[rt.id + '']" name="reg-type-{{rt.id}}"  ng-click="vm.selectExtraRegType(rt)"
+                                                       ng-true-value="[]" ng-false-value="null" />
+                                                <label style="cursor: default"></label>
+                                            </div>
+                                        </td>
+                                        <td>{{rt.name}}</td>
+                                        <td>{{rt.firstRegFee | number}} {{rt.firstRegFee ? rt.currency : ''}}</td>
+                                        <td>{{rt.secondRegFee | number}} {{rt.secondRegFee ? rt.currency : ''}}</td>
+                                        <td>{{rt.thirdRegFee | number}} {{rt.thirdRegFee ? rt.currency : ''}}</td>
+                                    </tr>
+                                    <tr ng-show="vm.isRegTypeSelected(rt)" ng-class="{'table-row-color-odd': $index % 2 == 0}">
+                                        <td colspan="12" style="padding-top: 0;">
+                                            <table class="table m-b-none datatable-with-operations" ng-class="{'table-row-color-odd': $index % 2 == 0}">
+                                                <thead>
+                                                <tr>
+                                                    <th colspan="3" class="font-noraml font-italic" data-translate="pcsApp.onlineReg.accPeopleTitle" data-translate-values="{name: '{{rt.name}}' }">{{rt.name}}</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr ng-repeat="accPeople in vm.registration.extraRegTypes[rt.id + ''] track by $index">
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <label class="control-label font-noraml font-italic required-field" data-translate="pcsApp.onlineReg.lastName" for="field_accPeopleLastName{{$index}}">Family name</label>
+                                                            <input type="text" class="form-control online-form-control" name="accPeopleLastName{{$index}}" id="field_accPeopleLastName{{$index}}" autocomplete="off"
+                                                                   ng-model="vm.registration.extraRegTypes[rt.id + ''][$index].lastName" ng-required="vm.isRegTypeSelected(rt)" ng-maxlength="64" />
+                                                            <div ng-show="editForm.accPeopleLastName{{$index}}.$invalid">
+                                                                <p class="error-block" ng-show="editForm.accPeopleLastName{{$index}}.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                                                    This field is required.
+                                                                </p>
+                                                                <p class="error-block" ng-show="editForm.accPeopleLastName{{$index}}.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                                                    This field cannot be longer than 64 characters.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <label class="control-label font-noraml font-italic required-field" data-translate="pcsApp.onlineReg.firstName" for="field_accPeopleFirstName{{$index}}">First name</label>
+                                                            <input type="text" class="form-control online-form-control" name="accPeopleFirstName{{$index}}" id="field_accPeopleFirstName{{$index}}" autocomplete="off"
+                                                                   ng-model="vm.registration.extraRegTypes[rt.id + ''][$index].firstName" ng-required="vm.isRegTypeSelected(rt)" ng-maxlength="64" />
+                                                            <div ng-show="editForm.accPeopleFirstName{{$index}}.$invalid">
+                                                                <p class="error-block" ng-show="editForm.accPeopleFirstName{{$index}}.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                                                    This field is required.
+                                                                </p>
+                                                                <p class="error-block" ng-show="editForm.accPeopleFirstName{{$index}}.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                                                    This field cannot be longer than 64 characters.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="vertical-align: middle;">
+                                                        <button ng-click="vm.addAccPeople(rtId)" ng-if="$first" class="btn btn-info" type="button" tooltip-placement="top" uib-tooltip="Add">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                        <button ng-click="vm.removeAccPeople(rtId, $index)" ng-if="!$first" class="btn btn-danger" type="button" tooltip-placement="top" uib-tooltip="Delete">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    <tr ng-repeat-end=""></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-if="vm.getValueByLanguage('regTypeRemark')">
+                            <div ng-bind-html="vm.getValueByLanguage('regTypeRemark')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Hotel booking -->
+        <div class="row" ng-if="!vm.isSubmitSuccess && vm.hasAnyAvailableRoom()">
+            <div class="col-md-12">
+                <div class="ibox">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h3 data-translate="pcsApp.onlineReg.home.hotelBooking">Hotel booking</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table chargeable-item">
+                            <thead>
+                                <tr>
+                                    <th data-translate="pcsApp.onlineReg.hotel">Hotel</th>
+                                    <th data-translate="pcsApp.onlineReg.single">Single</th>
+                                    <th data-translate="pcsApp.onlineReg.double">Double</th>
+                                </tr>
+                            </thead>
+                            <tbody ng-repeat="h in vm.hotelRooms" ng-init="hotel = h" ng-class="{'table-row-color-odd': $index % 2 == 0}">
+                                <tr ng-repeat="room in hotel.rooms">
+                                    <td ng-if="$index == 0" rowspan="{{ hotel.rowSpan }}">
+                                        <strong>{{hotel.name}}</strong><br/>
+                                        <small ng-if="!vm.isLangHu">{{hotel.street ? hotel.street : ''}}{{hotel.city ? ', ' + hotel.city : ''}}{{hotel.zipCode ? ', ' + hotel.zipCode : ''}}</small>
+                                        <small ng-if="vm.isLangHu">{{hotel.zipCode ? hotel.zipCode : ''}}{{hotel.city ? ' ' + hotel.city : ''}}{{hotel.street ? ', ' + hotel.street : ''}}</small>
+                                    </td>
+                                    <td>
+                                        <div ng-if="room.single" class="radio radio-success">
+                                            <input type="radio" name="selected-room" id="selected-room-{{room.single.id}}" ng-click="vm.registration.departureDate = null; vm.setRoomRadioButtonValue($event)" ng-checked="vm.isRoomRadioButtonChecked(room.single.id)" value="{{room.single.id}}">
+                                            <label for="selected-room-{{room.single.id}}">{{room.single.price | number}} {{room.single.currency}} {{room.single.name}}</label>
+                                            <button tooltip-placement="top" uib-tooltip="Room external link" style="display: inline-block;" class="btn btn-xs btn-info m-t-n-xs" ng-if="room.single.onlineExternalLink"
+                                                    ng-click="vm.openRoomExternalLink(room.single)">
+                                                <i class="fa fa-external-link"></i>
+                                            </button>
+                                            <a href="mailto: {{ room.single.onlineExternalEmail }}" ng-if="room.single.onlineExternalEmail" tooltip-placement="top" uib-tooltip="Send email to the hotel: {{room.single.onlineExternalEmail}}" style="display: inline-block;"
+                                                    class="btn btn-xs btn-info m-t-n-xs">
+                                                <i class="fa fa-mail-forward"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div ng-if="room.double" class="radio radio-success">
+                                            <input type="radio" name="selected-room" id="selected-room-{{room.double.id}}" ng-click="vm.registration.departureDate = null; vm.setRoomRadioButtonValue($event)" ng-checked="vm.isRoomRadioButtonChecked(room.double.id)" value="{{room.double.id}}">
+                                            <label for="selected-room-{{room.double.id}}">{{room.double.price | number}} {{room.double.currency}} {{room.double.name}}</label>
+                                            <button tooltip-placement="top" uib-tooltip="Room external link" class="btn btn-xs btn-info m-t-n-xs" ng-if="room.double.onlineExternalLink"
+                                                    ng-click="vm.openRoomExternalLink(room.double)">
+                                                <i class="fa fa-external-link"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="form-group row">
+                            <div class="col-lg-5">
+                                <label class="control-label" ng-class="{'required-field': vm.isHotelRoomDatesRequired()}" data-translate="pcsApp.onlineReg.arrivalDate" for="field_arrivalDate">Arrival date</label>
+                                <select class="form-control online-form-control" name="arrivalDate" ng-model="vm.registration.arrivalDate" ng-change="vm.registration.departureDate = null; vm.calculateNights();"
+                                        ng-options="item.value as item.label for item in vm.getArrivalDates()" id="field_arrivalDate" ng-required="vm.isHotelRoomDatesRequired()">
+                                </select>
+                                <div ng-show="editForm.arrivalDate.$invalid">
+                                    <p class="error-block" ng-show="editForm.arrivalDate.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block"
+                                       ng-show="editForm.arrivalDate.$error.quantity" translate="pcsApp.onlineReg.error.noMoreRoomAvailable">
+                                        Between the arrival and departure date, on one, or more night there is no available room of the selected roomtype.
+                                    </p>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-5">
+                                <label class="control-label" ng-class="{'required-field': vm.isHotelRoomDatesRequired()}" data-translate="pcsApp.onlineReg.departureDate" for="field_departureDate">Departure date</label>
+                                <select online-room-quantity-validation hotel-rooms="vm.hotelRooms" room-id="vm.registration.room" arrival-date="vm.registration.arrivalDate"
+                                        class="form-control online-form-control" name="departureDate" ng-model="vm.registration.departureDate" ng-change="vm.calculateNights()"
+                                        ng-options="item.value as item.label for item in vm.getDepartureDates()" id="field_departureDate" ng-required="vm.isHotelRoomDatesRequired()">
+                                </select>
+                                <div ng-show="editForm.departureDate.$invalid">
+                                    <p class="error-block" ng-show="editForm.departureDate.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block"
+                                       ng-show="editForm.departureDate.$error.quantity" translate="pcsApp.onlineReg.error.noMoreRoomAvailable">
+                                        Between the arrival and departure date, on one, or more night there is no available room of the selected roomtype.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <label class="control-label" data-translate="pcsApp.onlineReg.night" >Night</label>
+                                <p class="form-control-static">{{vm.nights}}</p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.roommate" for="field_roommate">Roommate</label>
+                            <input type="text" class="form-control online-form-control" name="roommate" id="field_roommate" autocomplete="off"
+                                   ng-model="vm.registration.roommate" ng-maxlength="64" />
+                            <div ng-show="editForm.roommate.$invalid">
+                                <p class="error-block" ng-show="editForm.roommate.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block" ng-show="editForm.roommate.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.roomRemark" for="field_roomRemark">Remark</label>
+                            <textarea class="form-control online-form-control" name="roomRemark" id="field_roomRemark" rows="1" ng-maxlength="255" autocomplete="off" ng-model="vm.registration.roomRemark">
+                            </textarea>
+                            <div ng-show="editForm.roomRemark.$invalid">
+                                <p class="error-block" ng-show="editForm.roomRemark.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block" ng-show="editForm.roomRemark.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="255">
+                                    This field cannot be longer than 155 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div ng-if="vm.getValueByLanguage('roomRemark')">
+                            <div ng-bind-html="vm.getValueByLanguage('roomRemark')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Optional services -->
+        <div class="row" ng-if="!vm.isSubmitSuccess && vm.optionalServices.length">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h3 data-translate="pcsApp.onlineReg.home.optionalService">Optional services</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <div ng-if="(vm.optionalServices | filter: {onlineType: 'NORMAL'}).length">
+                            <!--<h4 data-translate="pcsApp.onlineReg.home.socialEvents">Social Events</h4>-->
+                            <table class="table table-striped chargeable-item">
+                                <thead>
+                                <tr>
+                                    <th data-translate="pcsApp.onlineReg.osName">Name</th>
+                                    <th data-translate="pcsApp.onlineReg.osPricePerPerson">Price/Person</th>
+                                    <th data-translate="pcsApp.onlineReg.osPax">Pax</th>
+                                    <th data-translate="pcsApp.onlineReg.osAmount">Amount</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="os in vm.optionalServices | filter: {onlineType: 'NORMAL'} track by os.id">
+                                    <td>
+                                        <strong>{{os.name}}</strong> <small>{{os.startDate | date: 'longDate'}}</small>
+                                    </td>
+                                    <td>
+                                        {{os.price | number}} {{os.currency}}
+                                    </td>
+                                    <td>
+                                        <select class="form-control online-form-control" ng-model="vm.registration.optionalServices[os.id + '']" name="os-normal-person-{{os.id}}" id="os-normal-person-{{os.id}}">
+                                            <option value="">--</option>
+                                            <option value="1">1</option>
+                                            <option value="2" ng-if="os.available >= 2">2</option>
+                                            <option value="3" ng-if="os.available >= 3">3</option>
+                                            <option value="4" ng-if="os.available >= 4">4</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        {{vm.calculateOSPrice(os)}}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-if="(vm.optionalServices | filter: {onlineType: 'EXTRA'}).length">
+                            <h4 ng-show="vm.getValueByLanguage('optionalServiceExtraTitle')">{{ vm.getValueByLanguage('optionalServiceExtraTitle') }}</h4>
+                            <h4 ng-hide="vm.getValueByLanguage('optionalServiceExtraTitle')" data-translate="pcsApp.onlineReg.home.miscellaneous">Miscellaneous</h4>
+                            <table class="table table-striped chargeable-item">
+                                <thead>
+                                <tr>
+                                    <th data-translate="pcsApp.onlineReg.osName">Name</th>
+                                    <th data-translate="pcsApp.onlineReg.osPricePerPerson">Price/Person</th>
+                                    <th data-translate="pcsApp.onlineReg.osPax">Pax</th>
+                                    <th data-translate="pcsApp.onlineReg.osAmount">Amount</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="os in vm.optionalServices | filter: {onlineType: 'EXTRA'} track by os.id">
+                                    <td>
+                                        {{os.name}} <small>{{os.startDate | date:'longDate'}}</small>
+                                    </td>
+                                    <td>
+                                        {{os.price}} {{os.currency}}
+                                    </td>
+                                    <td>
+                                        <select class="form-control online-form-control" ng-model="vm.registration.optionalServices[os.id + '']" name="os-extra-person-{{os.id}}" id="os-extra-person-{{os.id}}">
+                                            <option value="">--</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        {{vm.calculateOSPrice(os)}}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-if="vm.getValueByLanguage('optionalServiceRemark')">
+                            <div ng-bind-html="vm.getValueByLanguage('optionalServiceRemark')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Custom questions -->
+        <div class="row" ng-if="!vm.isSubmitSuccess && vm.customQuestions.length">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h3 data-translate="pcsApp.onlineReg.home.customQuestions">Custom questions</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <div>
+                            <table class="table table-striped chargeable-item">
+                                <tbody>
+                                <tr ng-repeat="question in vm.customQuestions track by question.id">
+                                    <td>
+                                        <div class="form-group">
+                                            <label class="control-label" for="field_custom_question{{question.id}}" ng-class="{'required-field': question.required}">{{question.question}}</label>
+                                            <textarea ng-if="!question.questionAnswers.length" class="form-control online-form-control" ng-required="question.required" name="custom_question{{question.id}}" id="field_custom_question{{question.id}}"
+                                                      rows="1" ng-maxlength="1000" autocomplete="off" ng-model="vm.registration.customAnswers[question.id + '']">
+                                            </textarea>
+                                            <select ng-if="question.questionAnswers.length" style="width: 100%" class="form-control online-form-control" ng-required="question.required" name="custom_question{{question.id}}" id="field_custom_question{{question.id}}"
+                                                    ng-model="vm.registration.customAnswers[question.id + '']">
+                                                <option value="" data-translate="pcsApp.onlineReg.form.please.select">Please select</option>
+                                                <option ng-repeat="opt in question.questionAnswers track by opt" value="{{opt}}">{{opt}}</option>
+                                            </select>
+                                            <div ng-show="editForm.custom_question{{question.id}}.$invalid">
+                                                <p class="error-block" ng-show="editForm.custom_question{{question.id}}.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                                    This field is required.
+                                                </p>
+                                                <p class="error-block" ng-show="editForm.custom_question{{question.id}}.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="1000">
+                                                    This field cannot be longer than 1000 characters.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Discount codes -->
+        <div class="row" ng-if="!vm.isSubmitSuccess && vm.config.discountAvailable">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h3 data-translate="pcsApp.onlineReg.home.discountCodes">Discount codes</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <div>
+                            <table class="table table-striped chargeable-item">
+                                <tbody>
+                                <tr>
+                                    <td style="width: 20%">
+                                        <strong data-translate="pcsApp.onlineReg.discountCode">Discount code</strong>
+                                    </td>
+                                    <td style="width: 140px">
+                                        <input type="text" class="form-control online-form-control" name="discountCode" id="field_discountCode" autocomplete="off"
+                                               ng-model="vm.discountCodeText" ng-keyup="vm.checkDiscountCode()" />
+                                    </td>
+                                    <td>
+                                        <span class="text-info" ng-if="vm.registration.discountCode" data-translate="pcsApp.onlineReg.message.discountCodeMessage" data-translate-values="{ discountPercentage: '{{ vm.registration.discountPercentage }}'}"></span>
+                                        <span class="text-warning" ng-if="!vm.registration.discountCode">No valid code provided yet</span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Payment -->
+        <div ng-if="!vm.isSubmitSuccess && !vm.config.noPaymentRequired" class="row">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h3 data-translate="pcsApp.onlineReg.home.payment">Payment</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table table-striped chargeable-item">
+                            <thead>
+                            <tr>
+                                <th data-translate="pcsApp.onlineReg.paymentType">Type</th>
+                                <th ng-if="vm.registration.discountPercentage" data-translate="pcsApp.onlineReg.paymentAmount">Amount</th>
+                                <th ng-if="vm.registration.discountPercentage" data-translate="pcsApp.onlineReg.discountAmount">Discount</th>
+                                <th data-translate="pcsApp.onlineReg.totalAmount">Amount</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-if="vm.calculateRTTotal()">
+                                <td data-translate="pcsApp.onlineReg.rtSubTotal">Registration subtotal</td>
+                                <td ng-if="vm.registration.discountPercentage">{{vm.displayRTSubTotal()}}</td>
+                                <td ng-if="vm.registration.discountPercentage">{{vm.displayRTSubTotalDiscount()}}</td>
+                                <td>{{vm.displayRTTotal()}}</td>
+                            </tr>
+                            <tr ng-if="vm.calculateHRTotal()">
+                                <td data-translate="pcsApp.onlineReg.hrSubTotal">Accomodation subtotal</td>
+                                <td ng-if="vm.registration.discountPercentage">{{vm.displayHRSubTotal()}}</td>
+                                <td ng-if="vm.registration.discountPercentage">{{vm.displayHRSubTotalDiscount()}}</td>
+                                <td>{{vm.displayHRTotal()}}</td>
+                            </tr>
+                            <tr ng-if="vm.calculateOSTotal()">
+                                <td data-translate="pcsApp.onlineReg.osSubTotal">Programmes subtotal</td>
+                                <td ng-if="vm.registration.discountPercentage">{{vm.displayOSSubTotal()}}</td>
+                                <td ng-if="vm.registration.discountPercentage">{{vm.displayOSSubTotalDiscount()}}</td>
+                                <td>{{vm.displayOSTotal()}}</td>
+                            </tr>
+                            <tr>
+                                <td data-translate="pcsApp.onlineReg.grandTotal" class="font-bold">TOTAL PAYABLE</td>
+                                <td ng-if="vm.registration.discountPercentage">{{vm.displayGrandTotal()}}</td>
+                                <td ng-if="vm.registration.discountPercentage">{{vm.displayGrandTotalDiscount()}}</td>
+                                <td class="font-bold">{{vm.displayGrandTotalWithDiscount()}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Method of payment -->
+        <div ng-if="!vm.isSubmitSuccess && !vm.config.noPaymentRequired && (vm.config.bankTransferVisible || vm.config.checkVisible || vm.config.creditCardVisible)" class="row">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h3 data-translate="pcsApp.onlineReg.home.paymentMethod">Method of payment</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="well b-r-xs required-message-block" ng-if="!vm.registration.paymentMethod" data-translate="pcsApp.onlineReg.message.paymentMethodRequired">Please select a payment method below</div>
+                        <div class="form-group row"><label class="col-sm-2 control-label" data-translate="pcsApp.onlineReg.paymentMethod">Method of payment</label>
+                            <div class="col-sm-10">
+                                <div ng-if="vm.config.bankTransferVisible" class="radio radio-success radio-inline">
+                                        <input type="radio" value="TRANSFER" ng-model="vm.registration.paymentMethod" required ng-change="vm.resetPaymentMethodState()"
+                                               name="paymentMethod" id="paymentMethod1">
+                                    <label for="paymentMethod1" data-translate="pcsApp.onlineReg.bankTransfer">Bank Transfer</label>
+                                </div>
+                                <div ng-if="vm.config.checkVisible" class="radio radio-success radio-inline">
+                                        <input type="radio" value="CHECK" ng-model="vm.registration.paymentMethod" required ng-change="vm.resetPaymentMethodState()"
+                                               name="paymentMethod" id="paymentMethod2">
+                                    <label for="paymentMethod2" data-translate="pcsApp.onlineReg.check">Check</label>
+                                </div>
+                                <div ng-if="vm.config.creditCardVisible" class="radio radio-success radio-inline">
+                                    <input type="radio" value="CARD" ng-model="vm.registration.paymentMethod" required ng-change="vm.resetPaymentMethodState()"
+                                           name="paymentMethod" id="paymentMethod3">
+                                    <label for="paymentMethod3" data-translate="pcsApp.onlineReg.creditCard">Credit card</label>
+                                    <img ng-show="vm.registration.cardType != 'AMEX' && vm.isLangHu" class="p-w-xs" src="/content/images/kh_label_hu.png">
+                                    <img ng-show="vm.registration.cardType != 'AMEX' && !vm.isLangHu" class="p-w-xs" src="/content/images/kh_label_en.png">
+                                </div>
+                            </div>
+                        </div>
+                        <!--<hr class="hr-line-dashed">-->
+                        <div ng-show="vm.registration.paymentMethod == 'TRANSFER'" class="ibox float-e-margins border-left-right border-top-bottom">
+                            <div class="ibox-title bg-muted">
+                                <h3 data-translate="pcsApp.onlineReg.bankTransfer">Bank Transfer</h3>
+                            </div>
+                            <div class="ibox-content">
+                                <div ng-if="vm.getValueByLanguage('bankTransferInfo')">
+                                    <div ng-bind-html="vm.getValueByLanguage('bankTransferInfo')"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-show="vm.registration.paymentMethod == 'CHECK'" class="ibox float-e-margins border-left-right border-top-bottom">
+                            <div class="ibox-title bg-muted">
+                                <h3 data-translate="pcsApp.onlineReg.check">Check</h3>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="form-group">
+                                    <label class="control-label required-field" data-translate="pcsApp.onlineReg.checkName" for="field_checkName">Check Name</label>
+                                    <input type="text" class="form-control online-form-control" name="checkName" id="field_checkName" autocomplete="off"
+                                           ng-model="vm.registration.checkName" ng-required="vm.isCheckDataRequired()" ng-maxlength="64" />
+                                    <div ng-show="editForm.checkName.$invalid">
+                                        <p class="error-block" ng-show="editForm.checkName.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                            This field is required.
+                                        </p>
+                                        <p class="error-block" ng-show="editForm.checkName.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                            This field cannot be longer than 64 characters.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label required-field" data-translate="pcsApp.onlineReg.checkAddress" for="field_checkAddress">Check Address</label>
+                                    <input type="text" class="form-control online-form-control" name="checkAddress" id="field_checkAddress" autocomplete="off"
+                                           ng-model="vm.registration.checkAddress" ng-required="vm.isCheckDataRequired()" ng-maxlength="255" />
+                                    <div ng-show="editForm.checkAddress.$invalid">
+                                        <p class="error-block" ng-show="editForm.checkAddress.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                            This field is required.
+                                        </p>
+                                        <p class="error-block" ng-show="editForm.checkAddress.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="255">
+                                            This field cannot be longer than 255 characters.
+                                        </p>
+                                    </div>
+                                    <p class="form-control-static font-bold">Kérem a csekk postázását címemre!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-show="vm.registration.paymentMethod == 'CARD'" class="ibox float-e-margins border-left-right border-top-bottom">
+                            <div class="ibox-title bg-muted">
+                                <h3 data-translate="pcsApp.onlineReg.creditCard">Credit card</h3>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="well bg-payment-info font-bold m-b-md b-r-xs">
+                                    <p ng-show="vm.registration.cardType != 'AMEX'" data-translate="pcsApp.onlineReg.message.creditCardInfo">
+                                    </p>
+                                    <a ng-href="https://www.congressline.hu/wp-content/uploads/{{ vm.getCustomerInformationFilename() }}" data-translate="pcsApp.onlineReg.customerInfo" target="_blank">Customer Information</a>
+                                    <a ng-href="https://www.congressline.hu/{{ vm.getPrivacyPolicyFilename() }}" style="padding-left: 20px" data-translate="pcsApp.onlineReg.privacyPolicy" target="_blank">Privacy Policy</a>
+
+                                </div>
+
+                                <div class="well b-r-xs required-message-block" ng-if="!vm.registration.cardType && vm.registration.paymentMethod == 'CARD'" data-translate="pcsApp.onlineReg.message.cardTypeRequired">Please select your card type below</div>
+                                <div class="form-group row">
+                                    <div class="col-sm-1" ng-show="vm.registration.cardType == 'EC_MC' || vm.registration.cardType == 'VISA'">
+                                        <img src="/content/images/kh_logo.jpg">
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div class="col-sm-8 p-h-md">
+                                            <label class="p-w-xs control-label" data-translate="pcsApp.onlineReg.form.please.charge.prefix" data-translate-values="{ amount: '{{ vm.displayGrandTotalWithDiscount() }}' }">Please charge {{ vm.displayGrandTotalWithDiscount() }} to my</label>
+                                            <div class="radio radio-success radio-inline">
+                                                <input type="radio" value="VISA" ng-model="vm.registration.cardType" name="cardType" id="cardType1">
+                                                <label for="cardType1">VISA</label>
+                                            </div>
+                                            <div class="radio radio-success radio-inline">
+                                                <input type="radio" value="EC_MC" ng-model="vm.registration.cardType" name="cardType" id="cardType2">
+                                                <label for="cardType2">EC/MC</label>
+                                            </div>
+                                            <div class="radio radio-success radio-inline">
+                                                <input type="radio" value="AMEX" ng-model="vm.registration.cardType" name="cardType" id="cardType3">
+                                                <label for="cardType3">AMEX</label>
+                                            </div>
+                                            <label class="p-w-xs control-label" data-translate="pcsApp.onlineReg.form.please.charge.suffix" >card</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div ng-show="vm.isCardDataRequired()" >
+                                    <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label class="control-label" ng-class="{'required-field': vm.isCardDataRequired()}" data-translate="pcsApp.onlineReg.cardHolderName" for="field_cardHolderName">Name of Cardholder</label>
+                                        <input type="text" class="form-control online-form-control" ng-model="vm.registration.cardHolderName" name="cardHolderName" id="field_cardHolderName" autocomplete="off"
+                                               ng-model="vm.registration.cardHolderName" ng-required="vm.isCardDataRequired()" ng-maxlength="64" />
+                                        <div ng-show="editForm.cardHolderName.$invalid">
+                                            <p class="error-block" ng-show="editForm.cardHolderName.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                                This field is required.
+                                            </p>
+                                            <p class="error-block" ng-show="editForm.cardHolderName.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                                This field cannot be longer than 64 characters.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="control-label" ng-class="{'required-field': vm.isCardDataRequired()}" data-translate="pcsApp.onlineReg.cardHolderAddress" for="field_cardHolderAddress">Billing address of the Cardholder</label>
+                                        <input type="text" class="form-control online-form-control" name="cardHolderAddress" id="field_cardHolderAddress" autocomplete="off"
+                                               ng-model="vm.registration.cardHolderAddress" ng-required="vm.isCardDataRequired()" ng-maxlength="64" />
+                                        <div ng-show="editForm.cardHolderAddress.$invalid">
+                                            <p class="error-block" ng-show="editForm.cardHolderAddress.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                                This field is required.
+                                            </p>
+                                            <p class="error-block" ng-show="editForm.cardHolderAddress.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                                This field cannot be longer than 64 characters.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-md-6">
+                                        <label class="control-label" ng-class="{'required-field': vm.isCardDataRequired()}" data-translate="pcsApp.onlineReg.cardNumber" for="field_cardNumber">Card number</label>
+                                        <input type="text" class="form-control online-form-control" name="cardNumber" id="field_cardNumber" autocomplete="off"
+                                               ng-model="vm.registration.cardNumber" ng-required="vm.isCardDataRequired()" ng-minlength="15" ng-maxlength="15" />
+                                        <div ng-show="editForm.cardNumber.$invalid">
+                                            <p class="error-block" ng-show="editForm.cardNumber.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                                This field is required.
+                                            </p>
+                                            <p class="error-block" ng-show="editForm.cardNumber.$error.minlength" data-translate="pcsApp.onlineReg.form.validation.amexcard.length" translate-value-max="15">
+                                                This field cannot be shorter than 15 characters.
+                                            </p>
+                                            <p class="error-block" ng-show="editForm.cardNumber.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.amexcard.length" translate-value-max="15">
+                                                This field cannot be longer than 15 characters.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="control-label" ng-class="{'required-field': vm.isCardDataRequired()}" data-translate="pcsApp.onlineReg.cardExpiryMonth" for="field_cardExpiryMonth">Expiry Month</label>
+                                        <input type="text" class="form-control online-form-control" name="cardExpiryMonth" id="field_cardExpiryMonth" autocomplete="off"
+                                               ng-model="vm.registration.cardExpiryMonth" ng-required="vm.isCardDataRequired()" ng-maxlength="2" ng-pattern="/^01|02|03|04|05|06|07|08|09|10|11|12$/"/>
+                                        <div ng-show="editForm.cardExpiryMonth.$invalid">
+                                            <p class="error-block" ng-show="editForm.cardExpiryMonth.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                                This field is required.
+                                            </p>
+                                            <p class="error-block" ng-show="editForm.cardExpiryMonth.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="2">
+                                                This field cannot be longer than 2 characters.
+                                            </p>
+                                            <p class="error-block" ng-show="editForm.cardExpiryMonth.$error.pattern" data-translate="pcsApp.onlineReg.form.validation.cardMonthPattern" data-translate-values="{ pattern: '01-12' }">
+                                                Ez a mező csak számokat tartalmazhat pl.: 01-12
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="control-label" ng-class="{'required-field': vm.isCardDataRequired()}" data-translate="pcsApp.onlineReg.cardExpiryYear" for="field_cardExpiryYear">Expiry Year</label>
+                                        <input type="text" class="form-control online-form-control" name="cardExpiryYear" id="field_cardExpiryYear" autocomplete="off"
+                                               ng-model="vm.registration.cardExpiryYear" ng-required="vm.isCardDataRequired()" ng-maxlength="2" />
+                                        <div ng-show="editForm.cardExpiryYear.$invalid">
+                                            <p class="error-block" ng-show="editForm.cardExpiryYear.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                                This field is required.
+                                            </p>
+                                            <p class="error-block" ng-show="editForm.cardExpiryYear.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="2">
+                                                This field cannot be longer than 2 characters.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Invoice / Receipt / Billing -->
+        <div ng-if="!vm.isSubmitSuccess && !vm.config.noPaymentRequired && vm.config.paymentSupplier !== 'STRIPE'" class="row">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h3 data-translate="pcsApp.onlineReg.home.billing">Invoice / Receipt / Billing</h3>
+                    </div>
+                    <div class="ibox-content">
+                        <div class="form-group row">
+                            <div class="col-md-8">
+                                <label class="control-label required-field" data-translate="pcsApp.onlineReg.invoiceName" for="field_invoiceName">Name for invoice</label>
+                                <input type="text" class="form-control online-form-control" name="invoiceName" id="field_invoiceName" autocomplete="off"
+                                       ng-model="vm.registration.invoiceName" required ng-maxlength="128" />
+                                <div ng-show="editForm.invoiceName.$invalid">
+                                    <p class="error-block" ng-show="editForm.invoiceName.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.invoiceName.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="128">
+                                        This field cannot be longer than 128 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label" data-translate="pcsApp.onlineReg.invoiceTaxNumber" for="field_invoiceTaxNumber">invoiceTaxNumber</label>
+                                <input type="text" class="form-control online-form-control" name="invoiceTaxNumber" id="field_invoiceTaxNumber" autocomplete="off"
+                                       ng-model="vm.registration.invoiceTaxNumber" ng-maxlength="64" />
+                                <div ng-show="editForm.invoiceTaxNumber.$invalid">
+                                    <p class="error-block" ng-show="editForm.invoiceTaxNumber.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.invoiceTaxNumber.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" name="copyInvoiceData" ng-click="vm.copyInvoiceInfo()" ng-model="vm.invoiceInfoCopied"/>
+                                <label style="cursor: default" class="control-label" data-translate="pcsApp.onlineReg.copyInvoiceInfo">Copy invoice info from personal data</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label class="control-label required-field" data-translate="pcsApp.onlineReg.country" for="field_invoiceCountry">Country</label>
+                                <ui-select name="invoiceCountry" id="field_invoiceCountry" theme="bootstrap" ng-model="vm.registration.invoiceCountry" required>
+                                    <ui-select-match placeholder="{{ 'pcsApp.onlineReg.form.please.select' | translate }}">
+                                        <span ng-bind="$select.selected.name"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="country in (vm.countries | filter: $select.search) track by country.id">
+                                        <div ng-bind-html="country.name | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <div ng-show="editForm.invoiceCountry.$invalid">
+                                    <p class="error-block" ng-show="editForm.invoiceCountry.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.invoiceCountry.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label required-field" data-translate="pcsApp.onlineReg.zipCode" for="field_invoiceZipCode">Invoice zipcode</label>
+                                <input type="text" class="form-control online-form-control" name="invoiceZipCode" id="field_invoiceZipCode" autocomplete="off" required
+                                       ng-model="vm.registration.invoiceZipCode" ng-maxlength="64" />
+                                <div ng-show="editForm.invoiceZipCode.$invalid">
+                                    <p class="error-block" ng-show="editForm.invoiceZipCode.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.invoiceZipCode.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="control-label required-field" data-translate="pcsApp.onlineReg.city" for="field_invoiceCity">Invoice city</label>
+                                <input type="text" class="form-control online-form-control" name="invoiceCity" id="field_invoiceCity" autocomplete="off" required
+                                       ng-model="vm.registration.invoiceCity" ng-maxlength="64" />
+                                <div ng-show="editForm.invoiceCity.$invalid">
+                                    <p class="error-block" ng-show="editForm.invoiceCity.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.invoiceCity.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label required-field" data-translate="pcsApp.onlineReg.invoiceAddress" for="field_invoiceAddress">Billing address for invoice</label>
+                            <input type="text" class="form-control online-form-control" name="invoiceAddress" id="field_invoiceAddress" autocomplete="off"
+                                   ng-model="vm.registration.invoiceAddress" required ng-maxlength="255" />
+                            <div ng-show="editForm.invoiceAddress.$invalid">
+                                <p class="error-block" ng-show="editForm.invoiceAddress.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block" ng-show="editForm.invoiceAddress.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="255">
+                                    This field cannot be longer than 255 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div class="col-md-12">
+                                <label class="control-label" data-translate="pcsApp.onlineReg.invoiceReferenceNumber" for="field_invoiceReferenceNumber">Reference name or number for the invoice</label>
+                                <input type="text" class="form-control online-form-control" name="invoiceReferenceNumber" id="field_invoiceReferenceNumber" autocomplete="off"
+                                       ng-model="vm.registration.invoiceReferenceNumber" ng-maxlength="64" />
+                                <div ng-show="editForm.invoiceReferenceNumber.$invalid">
+                                    <p class="error-block" ng-show="editForm.invoiceReferenceNumber.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.invoiceReferenceNumber.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="well m-t-md b-r-xs" ng-if="vm.getValueByLanguage('billingRemark')">
+                            <div ng-bind-html="vm.getValueByLanguage('billingRemark')"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!-- Conditions and granting -->
+        <div ng-if="!vm.isSubmitSuccess" class="row">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h3 data-translate="pcsApp.onlineReg.home.conditions">Conditions and granting</h3>
+                    </div>
+                    <div class="ibox-content">
+
+                        <div ng-if="!vm.registration.termsAndConditions || !vm.registration.gdpr" data-translate="pcsApp.onlineReg.form.validation.all.required" class="well m-t-sm b-r-xs required-message-block">
+                            All fields are mandatory!
+                        </div>
+
+                        <table class="table table-striped chargeable-item">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <div ng-bind-html="vm.getValueByLanguage('termsAndConditionsRemark')"></div>
+                                </td>
+                                <td>
+                                    <div class="checkbox checkbox-success">
+                                        <input type="checkbox" name="termsAndConditions" ng-model="vm.registration.termsAndConditions" required ng-value="true"/>
+                                        <label style="cursor: default"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div ng-bind-html="vm.getValueByLanguage('gdprRemark')"></div>
+                                </td>
+                                <td>
+                                    <div class="checkbox checkbox-success">
+                                        <input type="checkbox" name="gdpr" ng-model="vm.registration.gdpr" required ng-value="true"/>
+                                        <label style="cursor: default"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-if="vm.getValueByLanguage('marketingRemark')">
+                                <td>
+                                    <div ng-bind-html="vm.getValueByLanguage('marketingRemark')"></div>
+                                </td>
+                                <td>
+                                    <div class="checkbox checkbox-success">
+                                        <input type="checkbox" name="newsletter" ng-model="vm.registration.newsletter" ng-value="true" />
+                                        <label style="cursor: default"></label>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div ng-if="vm.getValueByLanguage('conditionsAndGrantingRemark')" class="well m-t-md b-r-xs">
+                            <div ng-bind-html="vm.getValueByLanguage('conditionsAndGrantingRemark')"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="vm.selectedRoomOutOfStock" class="row">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <p data-translate="pcsApp.onlineReg.error.selectedRoomNotAvailable">Selected room has been out of stock</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="!vm.isSubmitSuccess" class="row">
+            <div class="col-md-12">
+                <div class="ibox">
+                    <div class="ibox-content p-sm">
+                        <div class="row col-sm-offset-2">
+                            <button class="btn btn-white" ng-click="vm.clear()" type="button" data-translate="pcsApp.onlineReg.reset">Reset</button>
+                            <button class="btn btn-primary" ng-click="vm.submit()" ng-disabled="!vm.isEmailIdentical() || editForm.$invalid || vm.isSending" type="button" data-translate="pcsApp.onlineReg.submit">Submit registration</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="online-reg-footer" data-translate="pcsApp.onlineReg.footer">
+            Congressline Kft. • 1065 Budapest, Révay köz 2. • Tel: (+36-1) 429-0146, (+36-1) 312-1582 • Web: <a href="http://www.congressline.hu" target="_blank">www.congressline.hu</a>
+        </div>
+    </div>
+</div>
+</form>

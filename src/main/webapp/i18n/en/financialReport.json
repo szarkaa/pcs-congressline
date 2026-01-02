@@ -1,0 +1,31 @@
+{
+    "pcsApp": {
+        "financialReport" : {
+            "home": {
+                "title": "Financial Report"
+            },
+            "regId": "Reg Id",
+            "name": "Name",
+            "country": "Country",
+            "city": "City",
+            "regTypes": "Reg types",
+            "workingPlace": "Working place",
+            "payingGroupName": "Paying group",
+            "phone": "Phone",
+            "email": "Email",
+            "personCost": "P cost",
+            "personPaid": "P paid",
+            "personToPay": "P to pay",
+            "groupCost": "G cost",
+            "groupPaid": "G paid",
+            "groupToPay": "G to pay",
+            "totalCost": "T cost",
+            "totalPaid": "T paid",
+            "totalToPay": "T to pay",
+            "currency": "Currency",
+            "remark": "Remark",
+            "sendFinancialNoticeToAll": "Send financial notice to all",
+            "created": "Financial notice successfully sent to {{ param }} registration(s)"
+        }
+    }
+}

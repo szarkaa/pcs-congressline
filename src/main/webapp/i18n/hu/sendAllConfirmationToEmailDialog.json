@@ -1,0 +1,14 @@
+{
+    "pcsApp": {
+        "sendAllConfirmationToEmailDialog" : {
+            "home": {
+                "title": "Sending selected confirmations to email",
+                "createLabel": "Sending selected confirmations to email"
+            },
+            "created": "{{ param }} confirmations successfully attached and sent",
+            "language": "Language",
+            "optionalText": "Optional text",
+            "email": "Email"
+        }
+    }
+}

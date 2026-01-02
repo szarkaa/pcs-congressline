@@ -1,0 +1,25 @@
+{
+    "pcsApp": {
+        "accPeople" : {
+            "home": {
+                "title": "Acc People of Registration Type: {{ regType }} for registration id: {{ regId }}",
+                "createLabel": "Create a new Acc People",
+                "createOrEditLabel": "Create or edit a Acc People",
+                "search": "Search for Acc People"
+            },
+            "created": "A new Acc People is created with identifier {{ param }}",
+            "updated": "A Acc People is updated with identifier {{ param }}",
+            "deleted": "A Acc People is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Acc People {{ id }}?"
+            },
+            "detail": {
+                "title": "Acc People"
+            },
+            "title": "Title",
+            "lastName": "Family name",
+            "firstName": "First name",
+            "registrationRegistrationType": "Registration Type"
+        }
+    }
+}

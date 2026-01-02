@@ -1,0 +1,28 @@
+{
+    "pcsApp": {
+        "groupDiscountItem" : {
+            "home": {
+                "title": "Group financial administration",
+                "createLabel": "Group financial selection",
+                "createOrEditLabel": "Group financial selection",
+                "search": "Search for Group Item"
+            },
+            "created": "A new Group Item is created with identifier {{ param }}",
+            "updated": "A Group Item is updated with identifier {{ param }}",
+            "deleted": "A Group Item is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Group Item {{ id }}?"
+            },
+            "chargeableItemId": "Chargeable item Id",
+            "regId": "Reg Id",
+            "lastName": "Family name",
+            "firstName": "First name",
+            "chargeableItemType": "Item type",
+            "payingGroupItemName": "Paying group item",
+            "amount": "Amount",
+            "dateOfPayment": "Date of payment",
+            "invoiceNumber": "Invoice number",
+            "payingGroup": "Paying group"
+        }
+    }
+}

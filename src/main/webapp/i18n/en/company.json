@@ -1,0 +1,37 @@
+{
+    "pcsApp": {
+        "company" : {
+            "button": {
+              "save": "Save"
+            },
+            "message": {
+              "success": "Company profile settings has been saved!",
+                "error": "<strong>An error has occurred!</strong> Settings could not be saved!"
+            },
+            "home": {
+                "title": "Settings of the Company profile"
+            },
+            "name": "Name",
+            "name2": "Name2",
+            "countryCode": "Country code",
+            "zipCode": "Zip code",
+            "city": "City",
+            "streetName": "Street",
+            "publicPlaceCategory": "Public place category",
+            "number": "Number",
+            "building": "Building",
+            "staircase": "Staircase",
+            "floor": "Floor",
+            "door": "Door",
+            "address2": "Address2",
+            "taxNumber": "Tax number",
+            "euTaxNumber": "EU Tax number",
+            "phone": "Phone",
+            "fax": "Fax",
+            "licenceNumber": "Licence number",
+            "invoiceNumberPrefix": "Invoice number prefix",
+            "proFormaInvoiceNumber": "Proforma Invoice number",
+            "updated": "Company profile settings has been saved!"
+        }
+    }
+}

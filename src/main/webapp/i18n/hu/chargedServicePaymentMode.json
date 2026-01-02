@@ -1,0 +1,11 @@
+{
+    "pcsApp": {
+        "ChargedServicePaymentMode" : {
+            "null": "",
+            "CARD": "Card",
+            "CHECK": "Check",
+            "CASH": "Cash",
+            "BANK_TRANSFER": "Bank transfer"
+        }
+    }
+}

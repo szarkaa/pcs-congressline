@@ -1,0 +1,21 @@
+{
+    "pcsApp": {
+        "optionalText" : {
+            "home": {
+                "title": "Optional texts",
+                "createLabel": "Create a new Optional text",
+                "createOrEditLabel": "Create or edit an Optional text",
+                "search": "Search for Optional text"
+            },
+            "created": "A new Optional text is created with identifier {{ param }}",
+            "updated": "A Optional text is updated with identifier {{ param }}",
+            "deleted": "A Optional text is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Optional text {{ id }}?"
+            },
+            "name": "Name",
+            "optionalText": "Optional text",
+            "congress": "Congress"
+        }
+    }
+}

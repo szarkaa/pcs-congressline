@@ -1,0 +1,238 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myOptionalServiceLabel" data-translate="pcsApp.optionalService.home.createOrEditLabel">Create or edit a Optional Service</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.code" for="field_code">Code</label>
+            <input type="text" class="form-control" name="code" id="field_code" autocomplete="off"
+                    ng-model="vm.optionalService.code"
+                    required />
+            <div ng-show="editForm.code.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.code.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name" autocomplete="off"
+                    ng-model="vm.optionalService.name"
+                    required ng-minlength="5" ng-maxlength="100" />
+            <div ng-show="editForm.name.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.name.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="5">
+                    This field is required to be at least 5 characters.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.startDate" for="field_startDate">Start Date</label>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                <input id="field_startDate" type="text" class="form-control" name="startDate" autocomplete="off" required
+                       uib-datepicker-popup="{{dateformat}}" ng-model="vm.optionalService.startDate" is-open="vm.datePickerOpenStatus.startDate" />
+            </div>
+            <div ng-show="editForm.startDate.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.startDate.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.endDate" for="field_endDate">End Date</label>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                <input id="field_endDate" type="text" class="form-control" name="endDate" autocomplete="off" date-less-than={{vm.optionalService.startDate}}
+                       uib-datepicker-popup="{{dateformat}}" ng-model="vm.optionalService.endDate" is-open="vm.datePickerOpenStatus.endDate" required />
+            </div>
+            <div ng-show="editForm.endDate.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.endDate.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block" ng-show="editForm.endDate.$error.dateLessThan" translate="pcsApp.optionalService.message.endDateLessThanStartDate">
+                    End date must be later than Start date.
+                </p>
+            </div>
+    </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.price" for="field_price">Price</label>
+            <input type="number" class="form-control" name="price" id="field_price" autocomplete="off"
+                    ng-model="vm.optionalService.price" required min="-1000000" max="1000000" />
+            <div ng-show="editForm.price.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.price.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.price.$error.min" data-translate="entity.validation.min" translate-value-min="-1000000">
+                    This field should be more than -1000000.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.price.$error.max" data-translate="entity.validation.min" translate-value-max="1000000">
+                    This field should be more than 1000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.price.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.maxPerson" for="field_maxPerson">Max Person</label>
+            <input type="number" class="form-control" name="maxPerson" id="field_maxPerson" autocomplete="off"
+                    ng-model="vm.optionalService.maxPerson" optional-service-max-person-validation reserved="vm.optionalService.reserved"
+                    required min="0" />
+            <div ng-show="editForm.maxPerson.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.maxPerson.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.maxPerson.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.maxPerson.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.maxPerson.$error.maxPerson" translate="pcsApp.optionalService.error.maxPersonExceededByReserved">
+                    Quantity can not be smaller than the already reserved number of optional service.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.reserved" for="field_reserved">Reserved</label>
+            <input type="number" class="form-control" name="reserved" id="field_reserved" disabled
+                    ng-model="vm.optionalService.reserved"/>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.optionalService.currency" for="field_currency">Currency</label>
+            <ui-select ng-model="vm.optionalService.currency" name="currency" id="field_currency" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.currency"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="currency in (vm.currencies | filter: $select.search) track by currency.id">
+                    <div ng-bind-html="currency.currency | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.currency.$invalid">
+                <p class="error-block" ng-show="editForm.currency.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.optionalService.vatInfo" for="field_vatInfo">Vat info</label>
+            <ui-select ng-model="vm.optionalService.vatInfo" name="vatInfo" id="field_vatInfo" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="vatInfo in (vm.vatInfos | filter: $select.search) track by vatInfo.id">
+                    <div ng-bind-html="vatInfo.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.vatInfo.$invalid">
+                <p class="error-block" ng-show="editForm.vatInfo.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.onlineLabel" for="field_onlineLabel">Online label</label>
+            <input type="text" class="form-control" name="onlineLabel" id="field_onlineLabel" autocomplete="off"
+                   ng-model="vm.optionalService.onlineLabel" ng-maxlength="200" />
+            <div ng-show="editForm.onlineLabel.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.onlineLabel.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                    This field cannot be longer than 200 characters.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.onlineOrder" for="field_onlineOrder">Online order</label>
+            <input type="number" class="form-control" name="onlineOrder" id="field_onlineOrder" autocomplete="off"
+                   ng-model="vm.optionalService.onlineOrder" ng-required="vm.optionalService.onlineVisibility == 'VISIBLE'" min="0" max="100" />
+            <div ng-show="editForm.onlineOrder.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.onlineOrder.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.onlineOrder.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.onlineOrder.$error.max" data-translate="entity.validation.max" translate-value-max="100">
+                    This field cannot be more than 100.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.onlineOrder.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.onlineVisibility" for="onlineVisibility">Online visibility</label>
+            <select class="form-control" name="onlineVisibility" ng-model="vm.optionalService.onlineVisibility" id="onlineVisibility" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="VISIBLE" data-translate="pcsApp.OnlineVisibility.VISIBLE">VISIBLE</option>
+                <option value="NOT_VISIBLE" data-translate="pcsApp.OnlineVisibility.NOT_VISIBLE">NOT_VISIBLE</option>
+            </select>
+            <div ng-show="editForm.onlineVisibility.$invalid">
+                <p class="error-block" ng-show="editForm.onlineVisibility.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.optionalService.onlineType" for="onlineType">Online type</label>
+            <select class="form-control" name="onlineType" ng-model="vm.optionalService.onlineType" id="onlineType" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="NORMAL" data-translate="pcsApp.OnlineType.NORMAL">NORMAL</option>
+                <option value="EXTRA" data-translate="pcsApp.OnlineType.EXTRA">EXTRA</option>
+            </select>
+            <div ng-show="editForm.onlineType.$invalid">
+                <p class="error-block" ng-show="editForm.onlineType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -230,4 +230,25 @@
                                  referencedColumnNames="event_id"
                                  referencedTableName="jhi_persistent_audit_event"/>
     </changeSet>
+
+    <changeSet id="2025-12-13-create-jhi_user_data_load" author="aszarka">
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/data/users.csv"
+                  separator=";"
+                  tableName="jhi_user">
+            <column name="activated" type="boolean"/>
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <dropDefaultValue tableName="jhi_user" columnName="created_date" columnDataType="datetime"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/data/authorities.csv"
+                  separator=";"
+                  tableName="jhi_authority"/>
+
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/data/users_authorities.csv"
+                  separator=";"
+                  tableName="jhi_user_authority"/>
+        </changeSet>
 </databaseChangeLog>

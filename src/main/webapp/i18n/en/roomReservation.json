@@ -1,0 +1,35 @@
+{
+    "pcsApp": {
+        "roomReservation" : {
+            "home": {
+                "title": "Room reservations",
+                "createLabel": "Create a new Room reservation",
+                "createSharedLabel": "Create a new Shared Room reservation",
+                "createOrEditLabel": "Create or edit a Room reservation",
+                "search": "Search for Room reservation"
+            },
+            "created": "A new Room reservation is created with identifier {{ param }}",
+            "updated": "A Room reservation is updated with identifier {{ param }}",
+            "deleted": "A Room reservation is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Room reservation {{ id }}?"
+            },
+            "detail": {
+                "title": "Room reservation"
+            },
+            "shared": "Shared",
+            "arrivalDate": "Arrival",
+            "departureDate": "Departure",
+            "room": "Room type",
+            "hotel": "Hotel",
+            "price": "Price",
+            "payingGroupItem": "Group",
+            "comment": "Comment",
+            "roomMates": "Roommates",
+            "id": "Res #",
+            "message": {
+                "departureDateLessThanArrivalDate": "Departure date must be later than Arrival date."
+            }
+        }
+    }
+}

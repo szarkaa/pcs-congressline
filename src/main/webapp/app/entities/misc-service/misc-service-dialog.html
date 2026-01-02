@@ -1,0 +1,122 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myMiscServiceLabel" data-translate="pcsApp.miscService.home.createOrEditLabel">Create or edit a Misc Service</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscService.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name" autocomplete="off"
+                    ng-model="vm.miscService.name"
+                    required ng-maxlength="100" />
+            <div ng-show="editForm.name.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscService.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description" autocomplete="off"
+                    ng-model="vm.miscService.description"
+                    ng-maxlength="500" />
+            <div ng-show="editForm.description.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.description.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="500">
+                    This field cannot be longer than 500 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscService.measure" for="field_measure">Measure</label>
+            <input type="text" class="form-control" name="measure" id="field_measure" autocomplete="off"
+                    ng-model="vm.miscService.measure"
+                    required ng-maxlength="20" />
+            <div ng-show="editForm.measure.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.measure.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.measure.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="20">
+                    This field cannot be longer than 20 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.miscService.price" for="field_price">Price</label>
+            <input type="number" class="form-control" name="price" id="field_price" autocomplete="off"
+                    ng-model="vm.miscService.price"
+                    required min="-99000000" max="99000000" />
+            <div ng-show="editForm.price.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.price.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.price.$error.min" data-translate="entity.validation.min" translate-value-min="-99000000">
+                    This field should be more than -99000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.price.$error.max" data-translate="entity.validation.max" translate-value-max="99000000">
+                    This field cannot be more than 99000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.price.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.miscService.currency" for="field_currency">Currency</label>
+            <ui-select ng-model="vm.miscService.currency" name="currency" id="field_currency" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.currency"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="currency in (vm.currencies | filter: $select.search) track by currency.id">
+                    <div ng-bind-html="currency.currency | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.currency.$invalid">
+                <p class="error-block" ng-show="editForm.currency.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.miscService.vatInfo" for="field_vatInfo">Vat info</label>
+            <ui-select ng-model="vm.miscService.vatInfo" name="vatInfo" id="field_vatInfo" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="vatInfo in (vm.vatInfos | filter: $select.search) track by vatInfo.id">
+                    <div ng-bind-html="vatInfo.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.vatInfo.$invalid">
+                <p class="error-block" ng-show="editForm.vatInfo.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

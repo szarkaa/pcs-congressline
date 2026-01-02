@@ -1,0 +1,21 @@
+{
+    "pcsApp": {
+        "regFeeDetails" : {
+            "home": {
+                "title": "Reg fee payment details"
+            },
+            "code": "Code",
+            "name": "Name",
+            "firstCount": "Early count",
+            "secondCount": "Medium count",
+            "thirdCount": "Late count",
+            "firstFee": "Early price",
+            "secondFee": "Medium price",
+            "thirdFee": "Late price",
+            "total": "Total",
+            "paidByPerson": "Paid by person",
+            "paidByGroup": "Paid by group",
+            "currency": "Currency"
+        }
+    }
+}

@@ -1,0 +1,60 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 translate="pcsApp.workplace.home.title">Workplaces</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ui-sref="{{ (vm.isPartner ? 'partner' : 'workplace') + '.new' }}">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <table datatable="ng" id="workplace-datatable" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.workplace.name">Name</span></th>
+                            <th><span translate="pcsApp.workplace.vatRegNumber">Vat Reg Number</span></th>
+                            <th><span translate="pcsApp.workplace.country">Country</span></th>
+                            <th><span translate="pcsApp.workplace.zipCode">Zip code</span></th>
+                            <th><span translate="pcsApp.workplace.city">City</span></th>
+                            <th><span translate="pcsApp.workplace.street">Street</span></th>
+                            <th><span translate="pcsApp.workplace.phone">Phone</span></th>
+                            <th><span translate="pcsApp.workplace.email">Email</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="workplace in vm.workplaces track by workplace.id">
+                            <td>{{workplace.name}}</td>
+                            <td>{{workplace.vatRegNumber}}</td>
+                            <td>{{workplace.country.name}}</td>
+                            <td>{{workplace.zipCode}}</td>
+                            <td>{{workplace.city}}</td>
+                            <td>{{workplace.street}}</td>
+                            <td>{{workplace.phone}}</td>
+                            <td>{{workplace.email}}</td>
+                            <td>
+                                <button class="btn btn-info" type="submit"
+                                        ui-sref="{{ (vm.isPartner ? 'partner' : 'workplace') + '.edit({id:workplace.id})' }}"><i class="fa fa-pencil-square-o"></i></button>
+                                <button class="btn btn-success" type="submit" ng-show="!vm.isPartner"
+                                        ui-sref="workplace.merge({id:workplace.id})"><i class="fa fa-random"></i></button>
+                                <button class="btn btn-danger" type="submit"
+                                        ui-sref="{{ (vm.isPartner ? 'partner' : 'workplace') + '.delete({id:workplace.id})' }}"><i class="fa fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

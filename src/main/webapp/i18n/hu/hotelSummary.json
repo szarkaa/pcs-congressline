@@ -1,0 +1,14 @@
+{
+    "pcsApp": {
+        "hotelSummary" : {
+            "home": {
+                "title": "Hotel summary report",
+                "createLabel": "Hotel selection",
+                "createOrEditLabel": "Hotel selection"
+            },
+            "reservationDate": "Reservation date",
+            "total": "Total",
+            "hotel": "Hotel"
+        }
+    }
+}

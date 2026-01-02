@@ -1,0 +1,12 @@
+{
+    "pcsApp": {
+        "onlineRegCustomAnswerReport" : {
+            "home": {
+                "title": "Online reg custom answer report",
+                "detail": "Custom answers report details"
+            },
+            "regId": "Reg Id",
+            "name": "Name"
+        }
+    }
+}

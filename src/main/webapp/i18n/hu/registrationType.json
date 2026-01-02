@@ -1,0 +1,39 @@
+{
+    "pcsApp": {
+        "registrationType" : {
+            "home": {
+                "title": "Registration types",
+                "createLabel": "Create a new Registration type",
+                "createOrEditLabel": "Create or edit a Registration type",
+                "search": "Search for Registration type"
+            },
+            "created": "A new Registration type is created with identifier {{ param }}",
+            "updated": "A Registration type is updated with identifier {{ param }}",
+            "deleted": "A Registration type is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Registration type {{ id }}?"
+            },
+            "detail": {
+                "title": "Registration type"
+            },
+            "messages": {
+                "secondDeadlineLessThanFirstDeadline": "Second deadline must be later than First deadline."
+            },
+            "code": "Code",
+            "name": "Name",
+            "firstRegFee": "First reg fee",
+            "firstDeadline": "First deadline",
+            "secondRegFee": "Second reg fee",
+            "secondDeadline": "Second deadline",
+            "thirdRegFee": "Third reg fee",
+            "registrationType": "Registration type",
+            "onlineVisibility": "Online visibility",
+            "onlineType": "Online type",
+            "onlineLabel": "Online label",
+            "onlineOrder": "Online order",
+            "currency": "Currency",
+            "vatInfo": "Vat info",
+            "congress": "Congress"
+        }
+    }
+}

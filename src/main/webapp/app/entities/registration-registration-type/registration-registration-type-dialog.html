@@ -1,0 +1,87 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myRegistrationRegistrationTypeLabel" data-translate="pcsApp.registrationRegistrationType.home.createOrEditLabel">Create or edit a Registration Registration Type</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label translate="pcsApp.registrationRegistrationType.registrationType" for="field_registrationType">Registration type</label>
+            <ui-select ng-model="vm.registrationRegistrationType.registrationType" name="registrationType" id="field_registrationType" theme="bootstrap"
+                       ng-change="vm.setRegFeeAndCurrency()" ng-disabled="vm.registrationRegistrationType.id" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="registrationType in (vm.registrationTypes | filterChargeableItemsByCurrency: {searchText: $select.search, registrationCurrency: vm.registrationCurrency }) track by registrationType.id">
+                    <div ng-bind-html="registrationType.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.registrationType.$invalid">
+                <p class="error-block" ng-show="editForm.registrationType.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationRegistrationType.regFee" for="field_regFee">Reg Fee</label>
+            <input type="number" class="form-control" name="regFee" id="field_regFee" disabled autocomplete="off"
+                    ng-model="vm.registrationRegistrationType.regFee"
+                    required />
+            <div ng-show="editForm.regFee.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.regFee.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.regFee.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.registrationRegistrationType.currency" for="field_currency">Currency</label>
+            <input type="text" class="form-control" name="currency" id="field_currency" disabled autocomplete="off"
+                    ng-model="vm.registrationRegistrationType.currency" required ng-maxlength="3" />
+            <div ng-show="editForm.currency.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.currency.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.currency.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="3">
+                    This field cannot be longer than 3 characters.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-show="vm.registrationRegistrationType.registrationType.registrationType == 'ACCOMPANYING_FEE'">
+            <label class="control-label" data-translate="pcsApp.registrationRegistrationType.accPeople" for="field_accPeople">Acc People</label>
+            <input type="number" class="form-control" name="accPeople" id="field_accPeople" autocomplete="off"
+                   ng-required="vm.registrationRegistrationType.registrationType.registrationType == 'ACCOMPANYING_FEE'" ng-disabled="vm.registrationRegistrationType.id"
+                    ng-model="vm.registrationRegistrationType.accPeople" />
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.registrationRegistrationType.payingGroupItem" for="field_payingGroupItem">Discount</label>
+            <ui-select ng-model="vm.registrationRegistrationType.payingGroupItem" name="payingGroupItem" id="field_payingGroupItem" theme="bootstrap">
+                <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.payingGroup.name + '/' + $select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="payingGroupItem in (vm.payingGroupItems | filter: { payingGroup: { currency: { currency: vm.registrationRegistrationType.registrationType.currency.currency }}} | filter: $select.search) track by payingGroupItem.id">
+                    <div ng-bind-html="payingGroupItem.payingGroup.name + '/' + payingGroupItem.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

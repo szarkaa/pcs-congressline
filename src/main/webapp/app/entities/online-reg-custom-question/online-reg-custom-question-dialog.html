@@ -1,0 +1,133 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myOnlineRegCustomQuestionLabel" data-translate="pcsApp.onlineRegCustomQuestion.home.createOrEditLabel">Create or edit a question</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.onlineRegCustomQuestion.question" for="field_question">Question</label>
+            <input type="text" class="form-control" name="question" id="field_question" autocomplete="off"
+                    ng-model="vm.onlineRegCustomQuestion.question" required ng-minlength="5" ng-maxlength="1000" />
+            <div ng-show="editForm.question.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.question.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.question.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="5">
+                    This field is required to be at least 5 characters.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.question.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="1000">
+                    This field cannot be longer than 32 characters.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.onlineRegCustomQuestion.questionOrder" for="field_questionOrder">Question order</label>
+            <input type="number" class="form-control" name="questionOrder" id="field_questionOrder" autocomplete="off"
+                   ng-model="vm.onlineRegCustomQuestion.questionOrder" required min="0" max="100" />
+            <div ng-show="editForm.questionOrder.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.questionOrder.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.questionOrder.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.questionOrder.$error.max" data-translate="entity.validation.max" translate-value-max="100">
+                    This field cannot be more than 100.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.questionOrder.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.onlineRegCustomQuestion.required" for="field_required">Required</label>
+            <div class="checkbox" style="margin-top: 0px; margin-bottom: 0px;">
+                <input type="checkbox" ng-model="vm.onlineRegCustomQuestion.required" id="field_required" name="required" />
+                <label style="cursor: default"></label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.onlineRegCustomQuestion.currency" for="field_currency">Currency</label>
+            <ui-select ng-model="vm.onlineRegCustomQuestion.currency" name="currency" id="field_currency" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.currency"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="currency in (vm.currencies | filter: $select.search) track by currency.id">
+                    <div ng-bind-html="currency.currency | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.currency.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.currency.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.onlineRegCustomQuestion.onlineVisibility" for="onlineVisibility">Online visibility</label>
+            <select class="form-control" name="onlineVisibility" ng-model="vm.onlineRegCustomQuestion.onlineVisibility" id="onlineVisibility" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="VISIBLE" data-translate="pcsApp.OnlineVisibility.VISIBLE">VISIBLE</option>
+                <option value="NOT_VISIBLE" data-translate="pcsApp.OnlineVisibility.NOT_VISIBLE">NOT_VISIBLE</option>
+            </select>
+            <div ng-show="editForm.onlineVisibility.$invalid">
+                <p class="error-block" ng-show="editForm.onlineVisibility.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <table id="position-selectable-hu-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                <thead>
+                <tr>
+                    <th><span>Selectable values</span></th>
+                    <th>
+                        <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegCustomQuestion.questionAnswers, 0)">
+                            <i class="fa fa-plus"></i>
+                        </button>
+
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="answer in vm.onlineRegCustomQuestion.questionAnswers track by $index">
+                    <td editable-text-value-cell editable-text-list="vm.onlineRegCustomQuestion.questionAnswers" editable-text-idx="{{$index}}"></td>
+                    <td>
+                        <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegCustomQuestion.questionAnswers, $index + 1)">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button class="btn btn-danger btn-xs" type="button"
+                                ng-click="vm.deleteFromSelectableValues(vm.onlineRegCustomQuestion.questionAnswers, $index)">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,87 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myRateLabel" data-translate="pcsApp.rate.home.createOrEditLabel">Create or edit a Rate</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label translate="pcsApp.rate.currency" for="field_currency">Currency</label>
+            <div class="input-group m-b">
+                <span class="input-group-addon">1</span>
+                <ui-select ng-model="vm.rate.currency" name="currency" id="field_currency" theme="bootstrap" required>
+                    <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                        <span ng-bind="$select.selected.currency"></span>
+                    </ui-select-match>
+                    <ui-select-choices repeat="currency in (vm.currencies | filter: { currency: '!HUF' } | filter: $select.search) track by currency.id">
+                        <div ng-bind-html="currency.currency | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div ng-show="editForm.currency.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.currency.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+        <!--<label class="control-label" data-translate="pcsApp.rate.rate" for="field_rate">Rate</label>-->
+        <label class="control-label" data-translate="pcsApp.rate.equalsTo" for="field_rate">equals to</label>
+        <div class="input-group m-b">
+            <span class="input-group-addon">HUF</span>
+            <input type="number" class="form-control" name="rate" id="field_rate" autocomplete="off"
+                   ng-model="vm.rate.rate"
+                   required min="0" max="10000" />
+        </div>
+        <div ng-show="editForm.rate.$invalid">
+            <p class="error-block"
+                ng-show="editForm.rate.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+            <p class="error-block"
+                ng-show="editForm.rate.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                This field should be more than 0.
+            </p>
+            <p class="error-block"
+                ng-show="editForm.rate.$error.max" data-translate="entity.validation.max" translate-value-max="10000">
+                This field cannot be more than 10000.
+            </p>
+            <p class="error-block"
+                ng-show="editForm.rate.$error.number" data-translate="entity.validation.number">
+                This field should be a number.
+            </p>
+        </div>
+        </div>
+
+        <div class="form-group">
+        <label class="control-label" data-translate="pcsApp.rate.valid" for="field_valid">Valid</label>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar('valid')"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                <input id="field_valid" type="text" class="form-control" name="valid" uib-datepicker-popup="{{dateformat}}"
+                      autocomplete="off" ng-model="vm.rate.valid" is-open="vm.datePickerOpenStatus.valid" required/>
+            </div>
+        <div ng-show="editForm.valid.$invalid">
+            <p class="error-block"
+                ng-show="editForm.valid.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

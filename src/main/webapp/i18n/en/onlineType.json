@@ -1,0 +1,9 @@
+{
+    "pcsApp": {
+        "OnlineType" : {
+            "null": "",
+            "NORMAL": "Normal",
+            "EXTRA": "Extra"
+        }
+    }
+}

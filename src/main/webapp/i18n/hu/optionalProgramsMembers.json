@@ -1,0 +1,17 @@
+{
+    "pcsApp": {
+        "optionalProgramsMembers" : {
+            "home": {
+                "title": "Optional service report"
+            },
+            "program": "Program",
+            "name": "Name",
+            "start": "Start",
+            "end": "End",
+            "price": "Price",
+            "currency": "Currency",
+            "applicantsNumber": "Applicants no.",
+            "maxCapacity": "Max.capacity"
+        }
+    }
+}

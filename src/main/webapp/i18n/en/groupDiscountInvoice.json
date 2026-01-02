@@ -1,0 +1,64 @@
+{
+    "pcsApp": {
+        "groupDiscountInvoice" : {
+            "home": {
+                "title": "Group Invoices",
+                "createLabel": "Create a new Group Invoice",
+                "setPaymentDateLabel": "Setting payment date",
+                "setupLabel": "Print setup of creating group invoice for {{name}}",
+                "billingInfoLabel": "Customer billing info",
+                "invoiceSetupDateLabel": "Invoice setup changeable data",
+                "paymentMethodLabel": "Payment method",
+                "stornoLabel": "Confirm storno operation",
+                "search": "Search for Group Invoice"
+            },
+            "created": "A new Group Invoice is created with identifier {{ param }}",
+            "updated": "A Group Invoice is updated with identifier {{ param }}",
+            "deleted": "A Group Invoice is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Group Invoice {{ id }}?"
+            },
+            "detail": {
+                "title": "Group Invoice"
+            },
+            "invoiceNumber": "Invoice Number",
+            "stornoInvoiceNumber": "Storno Invoice Number",
+            "taxNumber": "Tax number",
+            "language": "Language",
+            "navVatCategory": "NAV vat category",
+            "name": "Name",
+            "city": "City",
+            "zipCode": "Zip Code",
+            "street": "Street",
+            "country": "Country",
+            "optionalText": "Optional Text",
+            "startDate": "Start Date of Congress",
+            "endDate": "End Date of Congress",
+            "dateOfFulfilment": "Date of fulfilment",
+            "paymentDeadline": "Payment Deadline",
+            "billingMethod": "Billing Method",
+            "bankName": "Bank Name",
+            "bankAccount": "Bank Account",
+            "swiftCode": "Swift Code",
+            "printLocale": "Print Locale",
+            "storno": "Storno",
+            "stornired": "Stornired",
+            "createdDate": "Created date",
+            "printInvoice": "Print invoice",
+            "sendInvoiceByMail": "Send invoice by mail",
+            "createInvoice": "Create invoice",
+            "totalDue": "Total payable",
+            "dateOfGroupPayment": "Date Of Group Payment",
+            "payingGroup": "Paying Group",
+            "message": {
+                "endDateLessThanStartDate": "End date must be later than Start date.",
+                "dateOfFulfilmentLessThanStartDate": "Date of fulfilment must be later than Start date.",
+                "emailResent": "Invoice has been successfully resent."
+            },
+            "confirmation": {
+                "email": "Email",
+                "storno": "Are you sure you want to storno this invoice: {{ invoiceNumber }}?"
+            }
+        }
+    }
+}

@@ -1,0 +1,197 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myRoomLabel" data-translate="pcsApp.room.home.createOrEditLabel" data-translate-values="{ name: vm.congressHotel.hotel.name }">Create or edit a room for {{ vm.congressHotel.hotel.name }}</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.room.roomType" for="field_roomType">Room Type</label>
+            <input type="text" class="form-control" name="roomType" id="field_roomType" autocomplete="off"
+                    ng-model="vm.room.roomType"
+                    required ng-maxlength="32" />
+            <div ng-show="editForm.roomType.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.roomType.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.roomType.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="32">
+                    This field cannot be longer than 32 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.room.bed" for="field_bed">Bed</label>
+            <input type="number" class="form-control" name="bed" id="field_bed" autocomplete="off"
+                    ng-model="vm.room.bed"
+                    required min="0" max="100" />
+            <div ng-show="editForm.bed.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.bed.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.bed.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.bed.$error.max" data-translate="entity.validation.max" translate-value-max="100">
+                    This field cannot be more than 100.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.bed.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.room.quantity" for="field_quantity">Quantity</label>
+            <input type="number" class="form-control" name="quantity" id="field_quantity" autocomplete="off" ng-model="vm.room.quantity"
+                   room-quantity-validation reserved="vm.getMaxReservedRoomNumber()" required min="0" max="1000" />
+            <div ng-show="editForm.quantity.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.quantity.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.quantity.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.quantity.$error.max" data-translate="entity.validation.max" translate-value-max="1000">
+                    This field cannot be more than 1000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.quantity.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.quantity.$error.quantity" translate="pcsApp.room.error.quantityExceededByReserved">
+                    Quantity can not be smaller than the already reserved number of rooms.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.room.price" for="field_price">Price</label>
+            <input type="number" class="form-control" name="price" id="field_price" autocomplete="off"
+                    ng-model="vm.room.price" required min="-1000000" max="1000000" />
+            <div ng-show="editForm.price.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.price.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.price.$error.min" data-translate="entity.validation.min" translate-value-min="-1000000">
+                    This field should be more than -1000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.price.$error.max" data-translate="entity.validation.max" translate-value-max="1000000">
+                    This field cannot be more than 1000000.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.price.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.room.currency" for="field_currency">Currency</label>
+            <ui-select ng-model="vm.room.currency" name="currency" id="field_currency" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.currency"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="currency in (vm.currencies | filter: $select.search) track by currency.id">
+                    <div ng-bind-html="currency.currency | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.currency.$invalid">
+                <p class="error-block" ng-show="editForm.currency.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.room.vatInfo" for="field_vatInfo">Vat info</label>
+            <ui-select ng-model="vm.room.vatInfo" name="vatInfo" id="field_vatInfo" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="vatInfo in (vm.vatInfos | filter: $select.search) track by vatInfo.id">
+                    <div ng-bind-html="vatInfo.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.vatInfo.$invalid">
+                <p class="error-block" ng-show="editForm.vatInfo.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.room.onlineLabel" for="field_onlineLabel">Online label</label>
+            <input type="text" class="form-control" name="onlineLabel" id="field_onlineLabel" autocomplete="off"
+                   ng-model="vm.room.onlineLabel" ng-maxlength="200" />
+            <div ng-show="editForm.onlineLabel.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.onlineLabel.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                    This field cannot be longer than 200 characters.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.room.onlineExternalLink" for="field_onlineExternalLink">Online external link</label>
+            <input type="text" class="form-control" name="onlineExternalLink" id="field_onlineExternalLink" autocomplete="off"
+                   ng-model="vm.room.onlineExternalLink" ng-maxlength="255" />
+            <div ng-show="editForm.onlineExternalLink.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.onlineExternalLink.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                    This field cannot be longer than 255 characters.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.room.onlineExternalEmail" for="field_onlineExternalEmail">Online external email</label>
+            <input type="email" class="form-control" name="onlineExternalEmail" id="field_onlineExternalEmail" autocomplete="off"
+                   ng-model="vm.room.onlineExternalEmail" ng-maxlength="64" />
+            <div ng-show="editForm.onlineExternalEmail.$invalid">
+                <p class="error-block" ng-show="editForm.onlineExternalEmail.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                    This field cannot be longer than 64 characters.
+                </p>
+                <p class="error-block" ng-show="editForm.onlineExternalEmail.$error.email" data-translate="global.messages.validate.email.invalid">
+                    Your e-mail is invalid.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.room.onlineVisibility" for="onlineVisibility">Online visibility</label>
+            <select class="form-control" name="onlineVisibility" ng-model="vm.room.onlineVisibility" id="onlineVisibility" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="VISIBLE" data-translate="pcsApp.OnlineVisibility.VISIBLE">VISIBLE</option>
+                <option value="NOT_VISIBLE" data-translate="pcsApp.OnlineVisibility.NOT_VISIBLE">NOT_VISIBLE</option>
+            </select>
+            <div ng-show="editForm.onlineVisibility.$invalid">
+                <p class="error-block" ng-show="editForm.onlineVisibility.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

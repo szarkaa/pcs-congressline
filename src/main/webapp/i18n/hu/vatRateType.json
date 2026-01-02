@@ -1,0 +1,14 @@
+{
+    "pcsApp": {
+        "VatRateType" : {
+            "null": "",
+            "REGULAR": "REGULAR",
+            "NAM": "NAM",
+            "ATK": "ATK",
+            "EUFAD37": "EUFAD37",
+            "EUE": "EUE",
+            "HO": "HO",
+            "TAM": "TAM"
+        }
+    }
+}

@@ -1,8 +1,6 @@
 package hu.congressline.pcs.security;
 
-import hu.congressline.pcs.domain.User;
-import hu.congressline.pcs.repository.UserRepository;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,15 +13,19 @@ import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import hu.congressline.pcs.domain.User;
+import hu.congressline.pcs.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Authenticate a user from the database.
  */
 @Slf4j
+@RequiredArgsConstructor
 @Component("userDetailsService")
 public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional

@@ -1,0 +1,20 @@
+{
+    "pcsApp": {
+        "onlineRegDiscountCode" : {
+            "home": {
+                "title": "Online reg discount codes for {{ congressName }}",
+                "createLabel": "Create a new Online reg code",
+                "createOrEditLabel": "Create or edit a Online reg discount code"
+            },
+            "created": "A new Online reg discount code is created with identifier {{ param }}",
+            "updated": "A Online reg discount code is updated with identifier {{ param }}",
+            "deleted": "A Online reg discount code is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Online reg discount code {{ id }}?"
+            },
+            "code": "Code",
+            "discountType": "Discount type",
+            "discountPercentage": "Discount percentage"
+        }
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "pcsApp": {
+        "workplace" : {
+            "home": {
+                "title": "Workplaces",
+                "mergeTitle": "Merging workplaces into {{ workplaceName }}",
+                "createLabel": "Create a new Workplace",
+                "createOrEditLabel": "Create or edit a Workplace",
+                "search": "Search for Workplace"
+            },
+            "created": "A new Workplace is created with identifier {{ param }}",
+            "updated": "A Workplace is updated with identifier {{ param }}",
+            "merged": "The selected workplaces are merged into workplace id: {{ param }}",
+            "deleted": "A Workplace is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Workplace {{ id }}?"
+            },
+            "merge": {
+                "question": "Are you sure you want to merge the selected workplaces into this workplace: {{ name }}?"
+            },
+            "detail": {
+                "title": "Workplace"
+            },
+            "name": "Name",
+            "vatRegNumber": "Vat Reg Number",
+            "department": "Department",
+            "zipCode": "Zip code",
+            "city": "City",
+            "street": "Street",
+            "phone": "Phone",
+            "fax": "Fax",
+            "email": "Email",
+            "country": "Country"
+        }
+    }
+}

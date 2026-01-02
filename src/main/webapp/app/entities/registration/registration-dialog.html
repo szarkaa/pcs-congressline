@@ -1,0 +1,283 @@
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <h2 translate="pcsApp.registration.home.createOrEditLabel">Create or edit a Registration</h2>
+                </div>
+                <div class="ibox-content">
+
+                    <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+                        <jhi-alert-error></jhi-alert-error>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.regId" for="field_regId">Reg Id</label>
+                            <input type="number" class="form-control" name="regId" id="field_regId" disabled ng-model="vm.registration.regId" />
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.title" for="field_title">Title</label>
+                            <input type="text" class="form-control" name="title" id="field_title" autocomplete="off"
+                                   ng-model="vm.registration.title" ng-maxlength="16" />
+                            <div ng-show="editForm.title.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.title.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="16">
+                                    This field cannot be longer than 16 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.lastName" for="field_lastName">Last name</label>
+                            <input type="text" class="form-control" name="lastName" id="field_lastName" autocomplete="off"
+                                   ng-model="vm.registration.lastName" required ng-maxlength="64" />
+                            <div ng-show="editForm.lastName.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.lastName.$error.required" translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.lastName.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.firstName" for="field_firstName">First name</label>
+                            <input type="text" class="form-control" name="firstName" id="field_firstName" ng-blur="vm.setShortName()"
+                                   ng-model="vm.registration.firstName" autocomplete="off" required ng-maxlength="64" />
+                            <div ng-show="editForm.firstName.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.firstName.$error.required" translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block"
+                                   ng-show="editForm.firstName.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.shortName" for="field_shortName">Short name</label>
+                            <input type="text" class="form-control" name="shortName" id="field_shortName" autocomplete="off"
+                                   ng-model="vm.registration.shortName" ng-maxlength="16" />
+                            <div ng-show="editForm.shortName.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.shortName.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="16">
+                                    This field cannot be longer than 16 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.position" for="field_position">Position</label>
+                            <input type="text" class="form-control" name="position" id="field_position" autocomplete="off"
+                                   ng-model="vm.registration.position"
+                                   ng-maxlength="64" />
+                            <div ng-show="editForm.position.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.position.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.otherData" for="field_otherData">Other data</label>
+                            <input type="text" class="form-control" name="otherData" id="field_otherData" autocomplete="off"
+                                   ng-model="vm.registration.otherData" ng-maxlength="255" />
+                            <div ng-show="editForm.otherData.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.otherData.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="255">
+                                    This field cannot be longer than 255 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label translate="pcsApp.registration.workplace" for="field_workplace">workplace</label>
+                            <div class="input-group">
+                                <select class="form-control" id="field_workplace" name="workplace" ng-model="vm.registration.workplace" ng-options="workplace as workplace.name for workplace in vm.workplaces | orderBy: 'name' track by workplace.id">
+                                    <option value="" translate="global.form.please.select">Please select!</option>
+                                </select>
+                                <span class="input-group-btn"> <button type="button" ng-click="vm.copyWorkplace()" class="btn btn-info">Copy</button></span>
+                                <span class="input-group-btn"> <button type="button" ui-sref=".workplace-new" class="btn btn-primary">New workplace</button></span>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.department" for="field_department">Department</label>
+                            <input type="text" class="form-control" name="department" id="field_department" autocomplete="off"
+                                   ng-model="vm.registration.department" ng-maxlength="128" />
+                            <div ng-show="editForm.department.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.department.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="128">
+                                    This field cannot be longer than 128 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label translate="pcsApp.registration.country" for="field_country">Country</label>
+                            <!--<div class="input-group">-->
+                                <select class="form-control" id="field_country" name="country" ng-model="vm.registration.country" ng-options="country as country.name for country in vm.countries | orderBy: 'name' track by country.id">
+                                    <option value="" translate="global.form.please.select">Please select!</option>
+                                </select>
+                                <!--<span class="input-group-btn"> <button type="button" ui-sref=".country-new" class="btn btn-primary">New country</button></span>-->
+                            <!--</div>-->
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.zipCode" for="field_zipCode">Zip code</label>
+                            <input type="text" class="form-control" name="zipCode" id="field_zipCode" autocomplete="off"
+                                   ng-model="vm.registration.zipCode" ng-maxlength="32" />
+                            <div ng-show="editForm.zipCode.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.zipCode.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="32">
+                                    This field cannot be longer than 32 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.city" for="field_city">City</label>
+                            <input type="text" class="form-control" name="city" id="field_city" autocomplete="off"
+                                   ng-model="vm.registration.city" ng-maxlength="64" />
+                            <div ng-show="editForm.city.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.city.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.street" for="field_street">Street</label>
+                            <input type="text" class="form-control" name="street" id="field_street" autocomplete="off"
+                                   ng-model="vm.registration.street" ng-maxlength="255" />
+                            <div ng-show="editForm.street.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.street.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="255">
+                                    This field cannot be longer than 255 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.phone" for="field_phone">Phone</label>
+                            <input type="text" class="form-control" name="phone" id="field_phone" autocomplete="off"
+                                   ng-model="vm.registration.phone" ng-maxlength="64" />
+                            <div ng-show="editForm.phone.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.phone.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.email" for="field_email">Email</label>
+                            <input type="email" class="form-control" name="email" id="field_email" autocomplete="off"
+                                   ng-model="vm.registration.email" ng-maxlength="64" />
+                            <div ng-show="editForm.email.$invalid">
+                                <p class="error-block" ng-show="editForm.email.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                                <p class="error-block" ng-show="editForm.email.$error.email" data-translate="global.messages.validate.email.invalid">
+                                    Your e-mail is invalid.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.fax" for="field_fax">Fax</label>
+                            <input type="text" class="form-control" name="fax" id="field_fax" autocomplete="off"
+                                   ng-model="vm.registration.fax" ng-maxlength="64" />
+                            <div ng-show="editForm.fax.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.fax.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" data-translate="pcsApp.registration.dateOfApp" for="field_dateOfApp">Date of app</label>
+                            <div class="input-group">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="vm.openCalendar('dateOfApp')"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                                <input id="field_dateOfApp" type="text" class="form-control" name="dateOfApp" uib-datepicker-popup="{{dateformat}}"
+                                       ng-disabled="vm.registration.regId && (vm.registrationRegistrationTypes.length || vm.roomReservations.length || vm.orderedOptionalServices.length || vm.chargedServices.length)" ng-model="vm.registration.dateOfApp" is-open="vm.datePickerOpenStatus.dateOfApp" required/>
+                            </div>
+                            <div ng-show="editForm.dateOfApp.$invalid">
+                                <p class="error-block"
+                                   ng-show="editForm.dateOfApp.$error.required" data-translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                        <label class="control-label" translate="pcsApp.registration.invoiceName" for="field_invoiceName">Invoice name</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="invoiceName" id="field_invoiceName" autocomplete="off"
+                                       ng-model="vm.registration.invoiceName" ng-maxlength="128" />
+                                <span class="input-group-btn"> <button type="button" ng-click="vm.copyInvoiceDataFromReg()" class="btn btn-info">Copy from reg</button></span>
+                                <span class="input-group-btn"> <button type="button" ng-click="vm.copyInvoiceDataFromWorkplace()" class="btn btn-success">Copy from workplace</button></span>
+                            </div>
+                            <div ng-show="editForm.invoiceName.$invalid">
+                                <p class="error-block" ng-show="editForm.invoiceName.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="128">
+                                    This field cannot be longer than 128 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label translate="pcsApp.registration.invoiceCountry" for="field_invoiceCountry">Invoice country</label>
+                            <select class="form-control" id="field_invoiceCountry" name="invoiceCountry" ng-model="vm.registration.invoiceCountry" ng-options="country as country.name for country in vm.countries | orderBy: 'name' track by country.id">
+                                <option value="" translate="global.form.please.select">Please select!</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.invoiceZipCode" for="field_invoiceZipCode">Invoice Zip code</label>
+                            <input type="text" class="form-control" name="invoiceZipCode" id="field_invoiceZipCode" autocomplete="off"
+                                   ng-model="vm.registration.invoiceZipCode" ng-maxlength="32" />
+                            <div ng-show="editForm.invoiceZipCode.$invalid">
+                                <p class="error-block" ng-show="editForm.invoiceZipCode.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="32">
+                                    This field cannot be longer than 32 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.invoiceCity" for="field_invoiceCity">Invoice city</label>
+                            <input type="text" class="form-control" name="invoiceCity" id="field_invoiceCity" autocomplete="off"
+                                   ng-model="vm.registration.invoiceCity" ng-maxlength="64" />
+                            <div ng-show="editForm.invoiceCity.$invalid">
+                                <p class="error-block" ng-show="editForm.invoiceCity.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.invoiceAddress" for="field_invoiceAddress">Invoice street</label>
+                            <input type="text" class="form-control" name="invoiceAddress" id="field_invoiceAddress" autocomplete="off"
+                                   ng-model="vm.registration.invoiceAddress" ng-maxlength="255" />
+                            <div ng-show="editForm.invoiceAddress.$invalid">
+                                <p class="error-block" ng-show="editForm.invoiceAddress.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="255">
+                                    This field cannot be longer than 255 characters.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label" translate="pcsApp.registration.invoiceTaxNumber" for="field_invoiceTaxNumber">Invoice tax number</label>
+                            <input type="text" class="form-control" name="invoiceTaxNumber" id="field_invoiceTaxNumber" autocomplete="off"
+                                   ng-model="vm.registration.invoiceTaxNumber" ng-maxlength="64" />
+                            <div ng-show="editForm.invoiceTaxNumber.$invalid">
+                                <p class="error-block" ng-show="editForm.invoiceTaxNumber.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                    This field cannot be longer than 64 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+                                <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                            </button>
+                            <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

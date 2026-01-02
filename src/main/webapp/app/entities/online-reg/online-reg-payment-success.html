@@ -1,0 +1,34 @@
+<jhi-alert></jhi-alert>
+<style>
+    .stretch-background {
+        height: 100% !important;
+    }
+</style>
+<div class="wrapper wrapper-content p-xl gray-bg stretch-background">
+    <div class="container animated fadeInRight">
+        <div class="row">
+            <div class="col-md-12">
+                <img class="online-reg-header-image" ng-src="{{'/api/registration/online/header/' + vm.paymentResult.congressUuid }}" onerror="this.style.display='none'">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title" ng-style="vm.headerStyle()">
+                        <h2 data-translate="pcsApp.onlineReg.home.paymentSuccessTitle">Payment was successful!</h2>
+                    </div>
+                    <div class="ibox-content">
+                        <h3 class="text-info" data-translate="pcsApp.onlineReg.message.paymentSuccess"></h3>
+                        <p data-translate="pcsApp.onlineReg.message.paymentSuccessInfo" data-translate-values="{ amount: '{{ vm.paymentResult.amount }}', currency: '{{ vm.paymentResult.currency }}'}">Az ön hitelkártyáján HUF 1000 összeg került terhelésre.<br>
+                            A tételes elszámolást a konferencia szervezője által, e-mailen küldött részletes visszaigazolás fogja tartalmazni.</p>
+                        <p data-translate="pcsApp.onlineReg.message.submitOnlineSpamWarning">Email sent successfully Check spam folder if not received!</p>
+                        <a href="https://{{ vm.paymentResult.website }}" data-translate="pcsApp.onlineReg.congressWebsiteButton" >Vissza a rendezvény weboldalára</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="online-reg-footer" data-translate="pcsApp.onlineReg.footer">
+            Congressline Kft. • 1065 Budapest, Révay köz 2. • Tel: (+36-1) 429-0146, (+36-1) 312-1582 Fax: (+36-1) 429-0147 • Web: <a href="http://www.congressline.hu" target="_blank">www.congressline.hu</a>
+        </div>
+    </div>
+</div>

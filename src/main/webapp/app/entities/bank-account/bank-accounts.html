@@ -1,0 +1,52 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 translate="pcsApp.bankAccount.home.title">Bank accounts</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<jhi-alert></jhi-alert>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox">
+                <div class="ibox-title float-e-margins">
+                    <button class="btn btn-primary" type="submit" ui-sref="bank-account.new">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                    <!--<div ibox-tools></div>-->
+                </div>
+                <div class="ibox-content">
+                    <table datatable="ng" id="bankaccount-table" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped table-bordered table-hover datatable-with-operations">
+                        <thead>
+                        <tr>
+                            <th><span translate="pcsApp.bankAccount.name">Name</span></th>
+                            <th><span translate="pcsApp.bankAccount.bankName">Bank name</span></th>
+                            <th><span translate="pcsApp.bankAccount.currency">Currency</span></th>
+                            <th><span translate="pcsApp.bankAccount.bankAccount">Bank account</span></th>
+                            <th><span translate="pcsApp.bankAccount.swiftCode">Swift code</span></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="bankAccount in vm.bankAccounts track by bankAccount.id">
+                            <td>{{bankAccount.name}}</td>
+                            <td>{{bankAccount.bankName}}</td>
+                            <td>{{bankAccount.currency.currency}}</td>
+                            <td>{{bankAccount.bankAccount}}</td>
+                            <td>{{bankAccount.swiftCode}}</td>
+                            <td>
+                                <button class="btn btn-info" type="submit"
+                                        ui-sref="bank-account.edit({id:bankAccount.id})"><i class="fa fa-pencil-square-o"></i></button>
+                                <button class="btn btn-danger" type="submit"
+                                        ui-sref="bank-account.delete({id:bankAccount.id})"><i class="fa fa-trash-o"></i></button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

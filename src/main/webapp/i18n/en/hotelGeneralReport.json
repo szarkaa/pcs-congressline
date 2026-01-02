@@ -1,0 +1,23 @@
+{
+    "pcsApp": {
+        "hotelGeneralReport" : {
+            "home": {
+                "title": "Hotel General Report"
+            },
+            "regId": "Reg Id",
+            "name": "Name",
+            "country": "Country",
+            "city": "City",
+            "regTypes": "Reg types",
+            "payingGroupName": "Paying group",
+            "phone": "Phone",
+            "email": "Email",
+            "hotelName": "Hotel",
+            "roomType": "Room type",
+            "arrivalDate": "Arrival date",
+            "departureDate": "Departure date",
+            "roomMates": "Room mates"
+
+        }
+    }
+}

@@ -1,0 +1,448 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2 translate="pcsApp.company.home.title" >Settings of the Company profil</h2>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins" ng-show="false">
+                <div class="form-group alert alert-success">
+                    <span translate="pcsApp.company.message.success"><strong>Company profile settings has been saved!</strong></span>
+                </div>
+            </div>
+
+            <div class="ibox float-e-margins" ng-show="vm.error">
+                <div class="form-group alert alert-danger">
+                    <span translate="pcsApp.company.message.error"><strong>An error has occurred!</strong> Settings could not be saved!</span>
+                </div>
+            </div>
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form name="editForm" role="form" novalidate ng-submit="vm.save()" class="form-horizontal" show-validation>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.name" for="field_name">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name" id="field_name" autocomplete="off"
+                                       ng-model="vm.company.name" required ng-minlength="5" ng-maxlength="255" />
+                                <div ng-show="editForm.name.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.name.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.name.$error.minlength" translate="entity.validation.minlength" translate-value-min="5">
+                                        This field is required to be at least 5 characters.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.name.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.name2" for="field_name2">Name2</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="name2" id="field_name2" autocomplete="off"
+                                       ng-model="vm.company.name2"
+                                       ng-maxlength="255" />
+                                <div ng-show="editForm.name2.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.name2.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.countryCode" for="field_countryCode">Country code</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="countryCode" id="field_countryCode" autocomplete="off"
+                                       ng-model="vm.company.countryCode" required ng-maxlength="2" />
+                                <div ng-show="editForm.countryCode.$invalid">
+                                    <span class="help-block m-b-none" ng-show="editForm.countryCode.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.countryCode.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="2">
+                                        This field cannot be longer than 2 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.zipCode" for="field_zipCode">Zip code</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="zipCode" id="field_zipCode" autocomplete="off"
+                                       ng-model="vm.company.zipCode" required ng-maxlength="10" />
+                                <div ng-show="editForm.zipCode.$invalid">
+                                    <span class="help-block m-b-none" ng-show="editForm.zipCode.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.zipCode.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="10">
+                                        This field cannot be longer than 10 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.city" for="field_city">City</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="city" id="field_city" autocomplete="off"
+                                       ng-model="vm.company.city" required ng-maxlength="100" />
+                                <div ng-show="editForm.city.$invalid">
+                                    <span class="help-block m-b-none" ng-show="editForm.city.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.city.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.streetName" for="field_streetName">Street</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="streetName" id="field_streetName" autocomplete="off"
+                                       ng-model="vm.company.streetName" required ng-maxlength="250" />
+                                <div ng-show="editForm.streetName.$invalid">
+                                    <span class="help-block m-b-none" ng-show="editForm.streetName.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.streetName.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="250">
+                                        This field cannot be longer than 250 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.publicPlaceCategory" for="field_publicPlaceCategory">Public place category</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="publicPlaceCategory" id="field_publicPlaceCategory" autocomplete="off"
+                                       ng-model="vm.company.publicPlaceCategory" required ng-maxlength="100" />
+                                <div ng-show="editForm.publicPlaceCategory.$invalid">
+                                    <span class="help-block m-b-none" ng-show="editForm.publicPlaceCategory.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.publicPlaceCategory.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="100">
+                                        This field cannot be longer than 100 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.number" for="field_number">Number</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="number" id="field_number" autocomplete="off"
+                                       ng-model="vm.company.number" required ng-maxlength="10" />
+                                <div ng-show="editForm.number.$invalid">
+                                    <span class="help-block m-b-none" ng-show="editForm.number.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.number.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="10">
+                                        This field cannot be longer than 10 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.building" for="field_building">Building</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="building" id="field_building" autocomplete="off"
+                                       ng-model="vm.company.building" ng-maxlength="10" />
+                                <div ng-show="editForm.building.$invalid">
+                                    <span class="help-block m-b-none" ng-show="editForm.building.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.building.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="10">
+                                        This field cannot be longer than 10 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.staircase" for="field_staircase">Staircase</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="staircase" id="field_staircase" autocomplete="off"
+                                       ng-model="vm.company.staircase" ng-maxlength="10" />
+                                <div ng-show="editForm.staircase.$invalid">
+                                    <span class="help-block m-b-none" ng-show="editForm.staircase.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.staircase.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="10">
+                                        This field cannot be longer than 10 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.floor" for="field_floor">Floor</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="floor" id="field_floor" autocomplete="off"
+                                       ng-model="vm.company.floor" ng-maxlength="10" />
+                                <div ng-show="editForm.floor.$invalid">
+                                    <span class="help-block m-b-none" ng-show="editForm.floor.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.floor.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="10">
+                                        This field cannot be longer than 10 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.door" for="field_door">Door</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="door" id="field_door" autocomplete="off"
+                                       ng-model="vm.company.door" ng-maxlength="10" />
+                                <div ng-show="editForm.door.$invalid">
+                                    <span class="help-block m-b-none" ng-show="editForm.door.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.door.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="10">
+                                        This field cannot be longer than 10 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.address2" for="field_address2">Address2</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="address2" id="field_address2" autocomplete="off"
+                                       ng-model="vm.company.address2"
+                                       ng-maxlength="255" />
+                                <div ng-show="editForm.address2.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.address2.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="255">
+                                        This field cannot be longer than 255 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.taxNumber" for="field_taxNumber">TaxNumber</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="taxNumber" id="field_taxNumber" autocomplete="off"
+                                       ng-model="vm.company.taxNumber" ng-pattern="/^[0-9]{8}[-][0-5]{1}[-][0-9]{2}$/" required ng-maxlength="64" />
+                                <div ng-show="editForm.taxNumber.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.taxNumber.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.taxNumber.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </span>
+                                    <p class="error-block" ng-show="editForm.taxNumber.$error.pattern"
+                                       data-translate="entity.validation.pattern" data-translate-values="{ pattern: '12345678-2-42' }">
+                                        Ez a mező csak számokat tartalmazhat pl.: 36703125678
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.euTaxNumber" for="field_euTaxNumber">EuTaxNumber</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="euTaxNumber" id="field_euTaxNumber" autocomplete="off"
+                                       ng-model="vm.company.euTaxNumber"
+                                       ng-maxlength="64" />
+                                <div ng-show="editForm.euTaxNumber.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.euTaxNumber.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.phone" for="field_phone">Phone</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="phone" id="field_phone" autocomplete="off" required
+                                       ng-model="vm.company.phone"
+                                       ng-maxlength="64" />
+                                <div ng-show="editForm.phone.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.phone.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.phone.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.fax" for="field_fax">Fax</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="fax" id="field_fax" autocomplete="off"
+                                       ng-model="vm.company.fax"
+                                       ng-maxlength="64" />
+                                <div ng-show="editForm.fax.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.fax.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.licenceNumber" for="field_licenceNumber">LicenceNumber</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="licenceNumber" id="field_licenceNumber" autocomplete="off" required
+                                       ng-model="vm.company.licenceNumber"/>
+                                <div ng-show="editForm.licenceNumber.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.licenceNumber.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.invoiceNumberPrefix" for="field_invoiceNumberPrefix">InvoiceNumberPrefix</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="invoiceNumberPrefix" id="field_invoiceNumberPrefix" autocomplete="off"
+                                       ng-model="vm.company.invoiceNumberPrefix"
+                                       required ng-maxlength="64" />
+                                <div ng-show="editForm.invoiceNumberPrefix.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.invoiceNumberPrefix.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.invoiceNumberPrefix.$error.maxlength" translate="entity.validation.maxlength" translate-value-max="64">
+                                        This field cannot be longer than 64 characters.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.invoiceNumber" for="field_invoiceNumber">InvoiceNumber</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="invoiceNumber" disabled="disabled" id="field_invoiceNumber" autocomplete="off"
+                                       ng-model="vm.company.invoiceNumber"
+                                       required />
+                                <div ng-show="editForm.invoiceNumber.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.invoiceNumber.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.invoiceNumber.$error.number" translate="entity.validation.number">
+                                        This field should be a number.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" translate="pcsApp.company.proFormaInvoiceNumber" for="field_proFormaInvoiceNumber">Proforma InvoiceNumber</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="proFormaInvoiceNumber" disabled="disabled" id="field_proFormaInvoiceNumber" autocomplete="off"
+                                       ng-model="vm.company.proFormaInvoiceNumber"
+                                       required />
+                                <div ng-show="editForm.proFormaInvoiceNumber.$invalid">
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.proFormaInvoiceNumber.$error.required" translate="entity.validation.required">
+                                        This field is required.
+                                    </span>
+                                    <span class="help-block m-b-none"
+                                          ng-show="editForm.proFormaInvoiceNumber.$error.number" translate="entity.validation.number">
+                                        This field should be a number.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4 col-sm-offset-2">
+                                <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                                    <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,248 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myCongressLabel" data-translate="pcsApp.congress.home.createOrEditLabel">Create or edit a Congress</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.congress.meetingCode" for="field_meetingCode">Meeting Code</label>
+            <input type="text" class="form-control" name="meetingCode" id="field_meetingCode" autocomplete="off"
+                    ng-model="vm.congress.meetingCode" required ng-minlength="3" ng-maxlength="15" />
+            <div ng-show="editForm.meetingCode.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.meetingCode.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.meetingCode.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="3">
+                    This field is required to be at least 3 characters.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.meetingCode.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="15">
+                    This field cannot be longer than 15 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.congress.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name" autocomplete="off"
+                    ng-model="vm.congress.name"
+                    required ng-maxlength="100" />
+            <div ng-show="editForm.name.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.name.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="100">
+                    This field cannot be longer than 100 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.congress.startDate" for="field_startDate">Start Date</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('startDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <input id="field_startDate" type="text" class="form-control" name="startDate" uib-datepicker-popup="{{dateformat}}" ng-model="vm.congress.startDate" is-open="vm.datePickerOpenStatus.startDate"
+                          ng-change="vm.setCongressEndDate()" required/>
+                </div>
+            <div ng-show="editForm.startDate.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.startDate.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.congress.endDate" for="field_endDate">End Date</label>
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('endDate')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                    <input id="field_endDate" type="text" class="form-control" name="endDate" uib-datepicker-popup="{{dateformat}}"
+                           ng-model="vm.congress.endDate" is-open="vm.datePickerOpenStatus.endDate" date-less-than={{vm.congress.startDate}}
+                           required/>
+                </div>
+            <div ng-show="editForm.endDate.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.endDate.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block" ng-show="editForm.endDate.$error.dateLessThan" translate="pcsApp.congress.message.endDateLessThanStartDate">
+                    End date must be later than Start date.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.congress.contactPerson" for="field_contactPerson">Contact Person</label>
+            <input type="text" class="form-control" name="contactPerson" id="field_contactPerson" autocomplete="off"
+                    ng-model="vm.congress.contactPerson" ng-maxlength="128" required/>
+            <div ng-show="editForm.contactPerson.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.contactPerson.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.contactPerson.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="128">
+                    This field cannot be longer than 128 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.congress.contactEmail" for="field_contactEmail">Contact Email</label>
+            <input type="email" class="form-control" name="contactEmail" id="field_contactEmail" autocomplete="off"
+                    ng-model="vm.congress.contactEmail" ng-maxlength="64" required />
+            <div ng-show="editForm.contactEmail.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.contactEmail.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.contactEmail.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                    This field cannot be longer than 64 characters.
+                </p>
+                <p class="error-block"
+                   ng-show="editForm.contactEmail.$error.email" data-translate="global.messages.validate.email.invalid">
+                    Your e-mail is invalid.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.congress.programNumber" for="field_programNumber">Program Number</label>
+            <input type="text" class="form-control" name="programNumber" id="field_programNumber" autocomplete="off" required
+                    ng-model="vm.congress.programNumber"
+                    ng-maxlength="64" />
+            <div ng-show="editForm.programNumber.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.programNumber.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="error-block"
+                    ng-show="editForm.programNumber.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                    This field cannot be longer than 64 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.congress.website" for="field_website">Website</label>
+            <input type="text" class="form-control" name="website" id="field_website" autocomplete="off"
+                   ng-model="vm.congress.website" ng-maxlength="1000" />
+            <div ng-show="editForm.website.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.website.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="1000">
+                    This field cannot be longer than 1000 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.congress.additionalBillingTextHu" for="field_additionalBillingTextHu">Additional Billing Text Hu</label>
+            <input type="text" class="form-control" name="additionalBillingTextHu" id="field_additionalBillingTextHu" autocomplete="off"
+                    ng-model="vm.congress.additionalBillingTextHu"
+                    ng-maxlength="1000" />
+            <div ng-show="editForm.additionalBillingTextHu.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.additionalBillingTextHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="1000">
+                    This field cannot be longer than 1000 characters.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.congress.additionalBillingTextEn" for="field_additionalBillingTextEn">Additional Billing Text En</label>
+            <input type="text" class="form-control" name="additionalBillingTextEn" id="field_additionalBillingTextEn" autocomplete="off"
+                    ng-model="vm.congress.additionalBillingTextEn"
+                    ng-maxlength="1000" />
+            <div ng-show="editForm.additionalBillingTextEn.$invalid">
+                <p class="error-block"
+                    ng-show="editForm.additionalBillingTextEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="1000">
+                    This field cannot be longer than 1000 characters.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label translate="pcsApp.congress.defaultCountry" for="field_defaultCountry">Default Country</label>
+            <ui-select ng-model="vm.congress.defaultCountry" name="defaultCountry" id="field_defaultCountry" theme="bootstrap">
+                <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="country in (vm.countries | filter: $select.search) track by country.id">
+                    <div ng-bind-html="country.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="form-group">
+            <label translate="pcsApp.congress.currencies" for="field_currencies">Currencies</label>
+            <ui-select multiple ng-model="vm.congress.currencies" class="form-control" id="field_currencies" name="currencies" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">{{$item.currency}}</ui-select-match>
+                <ui-select-choices repeat="currency in vm.currencies | filter: $select.search">
+                    <div ng-bind-html="currency.currency | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.currencies.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.currencies.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label translate="pcsApp.congress.onlineRegCurrencies" for="field_onlineRegCurrencies">Currencies for online reg</label>
+            <ui-select multiple ng-model="vm.congress.onlineRegCurrencies" class="form-control" id="field_onlineRegCurrencies" name="onlineRegCurrencies" theme="bootstrap">
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">{{$item.currency}}</ui-select-match>
+                <ui-select-choices repeat="currency in vm.congress.currencies | filter: $select.search">
+                    <div ng-bind-html="currency.currency | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="form-group" ng-repeat="currency in vm.congress.currencies">
+            <label data-translate="pcsApp.congress.bankAccounts" data-translate-values="{currency: '{{currency.currency}}'}"
+                   for="field_bankAccount_{{currency.currency}}">Bank accounts for {{currency.currency}}</label>
+            <ui-select ng-model="vm.bankAccountByCurrency[currency.currency]" name="bankAccount_{{currency.currency}}" id="field_bankAccount_{{currency.currency}}" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="bankAccount in (vm.bankaccounts | filter: currency.currency | filter: $select.search) track by bankAccount.id">
+                    <div ng-bind-html="bankAccount.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <div ng-show="editForm.bankAccount_{{currency.currency}}.$invalid">
+                <p class="error-block"
+                   ng-show="editForm.bankAccount_{{currency.currency}}.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group" ng-if="!vm.congress.id">
+            <label translate="pcsApp.congress.congressFromCopyWp" for="field_defaultCountry">Default Country</label>
+            <ui-select ng-model="vm.congressFromCopyWp" name="congressFromCopyWp" id="field_congressFromCopyWp" theme="bootstrap">
+                <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="congress in (vm.congresses | filter: $select.search) track by congress.id">
+                    <div ng-bind-html="congress.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="form-group" ng-if="vm.congress.id">
+            <label translate="pcsApp.congress.archive" for="field_archive">Archive</label>
+            <div class="checkbox" style="margin-top: 0px; margin-bottom: 0px;">
+            <input type="checkbox" ng-model="vm.congress.archive" id="field_archive" name="archive" />
+            <label style="cursor: default"></label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

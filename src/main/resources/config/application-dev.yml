@@ -15,9 +15,9 @@
 
 logging:
   level:
-    ROOT: DEBUG
+    ROOT: INFO
     tech.jhipster: DEBUG
-    org.hibernate.SQL: DEBUG
+    org.springframework.security.web: TRACE
     hu.congressline.pcs: DEBUG
 
 spring:

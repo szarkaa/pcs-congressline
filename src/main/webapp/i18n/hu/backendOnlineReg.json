@@ -1,0 +1,31 @@
+{
+    "pcsApp": {
+        "backendOnlineReg" : {
+            "home": {
+                "title": "Online registrations",
+                "createOrEditLabel": "Accept an online registration",
+                "search": "Search for online registration"
+            },
+            "created": "A new Online registration is created with identifier {{ param }}",
+            "updated": "{{ param }} selected Online registration is accepted successfully",
+            "deletedAll": "{{ param }} selected Online registration is deleted successfully",
+            "deleted": "An Online registration is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Online registration {{ id }}?"
+            },
+            "deleteAll": {
+                "question": "Are you sure you want to delete all the selected online registrations?"
+            },
+            "accept": {
+                "question": "Accepting this online registration means you will no longer be able to download the online registration pdf.<br>Are you sure you want to accept this online registration?"
+            },
+            "acceptAll": {
+                "question": "Accepting the selected online registrations means you will no longer be able to download the corresponding online registration pdfs.<br>Are you sure you want to accept all the selected online registrations?"
+            },
+            "error": {
+            },
+            "message" : {
+            }
+        }
+    }
+}

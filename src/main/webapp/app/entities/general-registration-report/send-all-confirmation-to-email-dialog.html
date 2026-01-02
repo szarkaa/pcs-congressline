@@ -1,0 +1,50 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.send()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myLabel" data-translate="pcsApp.sendAllConfirmationToEmailDialog.home.createLabel">Sending selected confirmations to email</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.sendAllConfirmationToEmailDialog.email" for="field_email">Email</label>
+            <input type="email" class="form-control" name="email" id="field_email" autocomplete="off" required
+                   ng-model="vm.confirmationSettings.sendAllEmail" ng-maxlength="64" />
+            <div ng-show="editForm.email.$invalid">
+                <p class="error-block" ng-show="editForm.email.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
+                    This field cannot be longer than 64 characters.
+                </p>
+                <p class="error-block" ng-show="editForm.email.$error.email" data-translate="global.messages.validate.email.invalid">
+                    Your e-mail is invalid.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.sendAllConfirmationToEmailDialog.language">Language</label>
+            <div><label><input ng-model="vm.confirmationSettings.language" value="hu" id="languageHu" name="language" type="radio"> Hungarian</label></div>
+            <div><label><input ng-model="vm.confirmationSettings.language" value="en" id="languageEn" name="language" type="radio"> English</label></div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.sendAllConfirmationToEmailDialog.optionalText" for="field_optionalTextSelector">Optional text</label>
+            <ui-select ng-model="vm.selectedOptionalText" ng-change="vm.setOptionalTextMessage($select.selected.optionalText)" name="optionalTextSelector" id="field_optionalTextSelector" theme="bootstrap">
+                <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="optionalText in (vm.optionalTexts | filter: $select.search) track by optionalText.id">
+                    <div ng-bind-html="optionalText.name | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+            <textarea class="form-control m-t-sm" name="optionalText" id="field_optionalText" rows="10" autocomplete="off" ng-model="vm.confirmationSettings.optionalText"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.send">Send</span>
+        </button>
+    </div>
+</form>

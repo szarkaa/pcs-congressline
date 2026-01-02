@@ -1,0 +1,27 @@
+{
+    "pcsApp": {
+        "groupDiscountPayment" : {
+            "home": {
+                "title": "Group Payments",
+                "createLabel": "Create a new Group Payment",
+                "createOrEditLabel": "Create or edit a Group Payment",
+                "search": "Search for Group Payment"
+            },
+            "created": "A new Group Payment is created with identifier {{ param }}",
+            "updated": "A Group Payment is updated with identifier {{ param }}",
+            "deleted": "A Group Payment is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Group Payment {{ id }}?"
+            },
+            "detail": {
+                "title": "Group Payment"
+            },
+            "payingGroup": "Paying Group",
+            "paymentType": "Payment Type",
+            "dateOfPayment": "Date Of Payment",
+            "amount": "Amount",
+            "currency": "Currency",
+            "congress": "Congress"
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "pcsApp": {
+        "registrationRegistrationType" : {
+            "home": {
+                "title": "Registration types",
+                "createLabel": "Create a new Registration type",
+                "createOrEditLabel": "Create or edit a Registration type",
+                "search": "Search for Registration type"
+            },
+            "created": "A new Registration type is created with identifier {{ param }}",
+            "updated": "A Registration type is updated with identifier {{ param }}",
+            "deleted": "A Registration type is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Registration type {{ id }}?"
+            },
+            "detail": {
+                "title": "Registration type"
+            },
+            "regFee": "Price",
+            "currency": "Currency",
+            "createdDate": "Created date",
+            "dateOfGroupPayment": "Date Of group payment",
+            "accPeople": "Acc. people",
+            "registrationType": "Registration type",
+            "payingGroupItem": "Group",
+            "registration": "Registration"
+        }
+    }
+}
