@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,24 +57,18 @@ public class SecurityConfiguration {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder);
-        return provider;
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
         final String apiPattern = "/api/**";
         http
             .cors(withDefaults())
+            .csrf(AbstractHttpConfigurer::disable)
+/*
             .csrf(csrf ->
                 csrf
                     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                     .csrfTokenRequestHandler(new SpaCsrfTokenRequestHandler())
             )
+*/
             //.addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
             .addFilterAfter(new SpaWebFilter(), BasicAuthenticationFilter.class)
             .headers(headers ->
@@ -91,7 +86,7 @@ public class SecurityConfiguration {
                 // prettier-ignore
                 authz
                     .requestMatchers(mvc.pattern("/index.html"), mvc.pattern("/*.js"), mvc.pattern("/*.txt"), mvc.pattern("/*.json"), mvc.pattern("/*.map"),
-                            mvc.pattern("/*.css")).permitAll()
+                        mvc.pattern("/*.css")).permitAll()
                     .requestMatchers(mvc.pattern("/*.ico"), mvc.pattern("/*.png"), mvc.pattern("/*.svg"), mvc.pattern("/*.webapp")).permitAll()
                     .requestMatchers(mvc.pattern("/app/**")).permitAll()
                     .requestMatchers(mvc.pattern("/bower_components/**")).permitAll()

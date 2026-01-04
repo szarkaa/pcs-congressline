@@ -17,6 +17,7 @@
     <include file="/config/liquibase/changelog/2025-12-13-create-bank_account.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-company.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-congress.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-jhi_user_congress.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-optional_text.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-congress_bank_account.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-congress_currencies.xml" relativeToChangelogFile="false"/>
