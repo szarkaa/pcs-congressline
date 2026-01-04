@@ -56,7 +56,7 @@ public class CongressResource {
         } else if (congressRepository.findOneByMeetingCode(congress.getMeetingCode()).isPresent()) {
             return ResponseEntity
                 .badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, MEETINGCODEEXISTS, MEETING_CODE_ALREADY_EXISTS))
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, MEETING_CODE_EXISTS, MEETING_CODE_ALREADY_EXISTS))
                 .body(null);
         }
 
