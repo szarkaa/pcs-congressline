@@ -1,7 +1,5 @@
 package hu.congressline.pcs.web.rest;
 
-import hu.congressline.pcs.service.util.DefaultProfileUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import hu.congressline.pcs.service.util.DefaultProfileUtil;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -41,10 +43,11 @@ public class ProfileInfoResource {
         return null;
     }
 
-    static class ProfileInfoResponse {
+    @Getter
+    private static class ProfileInfoResponse {
 
-        public String[] activeProfiles;
-        public String ribbonEnv;
+        private final String[] activeProfiles;
+        private final String ribbonEnv;
 
         ProfileInfoResponse(String[] activeProfiles, String ribbonEnv) {
             this.activeProfiles = activeProfiles;

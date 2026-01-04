@@ -1,6 +1,5 @@
 package hu.congressline.pcs.web.rest;
 
-import hu.congressline.pcs.service.WorkplaceService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +23,7 @@ import hu.congressline.pcs.domain.Currency;
 import hu.congressline.pcs.domain.OnlineRegConfig;
 import hu.congressline.pcs.repository.CongressRepository;
 import hu.congressline.pcs.service.CongressService;
+import hu.congressline.pcs.service.WorkplaceService;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.CongressMigrateWorkplaceVM;
 import hu.congressline.pcs.web.rest.vm.CongressVM;
@@ -36,10 +36,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 @RestController
 public class CongressResource {
+    private static final String ENTITY_NAME = "congress";
+    private static final String MEETING_CODE_EXISTS = "meetingcodeexists";
+    private static final String MEETING_CODE_ALREADY_EXISTS = "Meeting code already exists";
 
     private final CongressRepository congressRepository;
     private final CongressService congressService;
-    private final WorkplaceService  workplaceService;
+    private final WorkplaceService workplaceService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/congresses")
@@ -48,21 +51,20 @@ public class CongressResource {
         if (congress.getId() != null) {
             return ResponseEntity
                 .badRequest()
-                .headers(HeaderUtil.createFailureAlert("congress", "idexists", "A new congress cannot already have an ID"))
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new congress cannot already have an ID"))
                 .body(null);
         } else if (congressRepository.findOneByMeetingCode(congress.getMeetingCode()).isPresent()) {
             return ResponseEntity
                 .badRequest()
-                .headers(HeaderUtil.createFailureAlert("congress", "meetingcodeexists", "Meeting code already exists"))
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, MEETINGCODEEXISTS, MEETING_CODE_ALREADY_EXISTS))
                 .body(null);
         }
 
         final Congress result = congressService.persist(congress);
         return ResponseEntity.created(new URI("/api/congresses/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert("congress", result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/congresses/migrate-workplaces")
@@ -82,14 +84,14 @@ public class CongressResource {
         }
 
         Optional<Congress> existingCongress = congressRepository.findOneByMeetingCode(congress.getMeetingCode());
-        if (existingCongress.isPresent() && (!existingCongress.get().getId().equals(congress.getId()))) {
+        if (existingCongress.isPresent() && !existingCongress.get().getId().equals(congress.getId())) {
             return ResponseEntity.badRequest()
-                    .headers(HeaderUtil.createFailureAlert("congress", "meetingcodeexists", "Meeting code already exists"))
+                    .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, MEETING_CODE_EXISTS, MEETING_CODE_ALREADY_EXISTS))
                     .body(null);
         }
         Congress result = congressRepository.save(congress);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("congress", congress.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, congress.getId().toString()))
             .body(result);
     }
 
@@ -154,11 +156,10 @@ public class CongressResource {
         log.debug("REST request to delete Congress : {}", id);
         try {
             congressService.delete(id);
-            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("congress", id.toString())).build();
-        }
-        catch (DataIntegrityViolationException e) {
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        } catch (DataIntegrityViolationException e) {
             log.debug("Constraint violation exception during delete operation.", e);
-            return ResponseEntity.badRequest().headers(HeaderUtil.createDeleteConstraintViolationAlert("congress", e)).body(null);
+            return ResponseEntity.badRequest().headers(HeaderUtil.createDeleteConstraintViolationAlert(ENTITY_NAME, e)).body(null);
         }
     }
 }

@@ -45,7 +45,6 @@ import hu.congressline.pcs.domain.enumeration.PaymentSupplier;
 import hu.congressline.pcs.repository.AccPeopleOnlineRepository;
 import hu.congressline.pcs.repository.AccPeopleRepository;
 import hu.congressline.pcs.repository.CongressRepository;
-import hu.congressline.pcs.repository.OnlineRegConfigRepository;
 import hu.congressline.pcs.repository.OnlineRegCustomQuestionRepository;
 import hu.congressline.pcs.repository.OnlineRegDiscountCodeRepository;
 import hu.congressline.pcs.repository.OnlineRegistrationCustomAnswerRepository;

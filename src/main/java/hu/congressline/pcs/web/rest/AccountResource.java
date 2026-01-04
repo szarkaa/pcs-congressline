@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,6 +41,7 @@ import tech.jhipster.config.JHipsterProperties;
 @RequestMapping("/api")
 @RestController
 public class AccountResource {
+    private static final String INCORRECT_PASSWORD = "Incorrect password";
 
     private final UserRepository userRepository;
     private final UserService userService;
@@ -46,16 +49,8 @@ public class AccountResource {
     //private MailService mailService;
     private final JHipsterProperties properties;
 
-    /**
-     * POST  /register : register the user.
-     *
-     * @param managedUserVM the managed user View Model
-     * @param request the HTTP request
-     * @return the ResponseEntity with status 201 (Created) if the user is registered or 400 (Bad Request) if the login or e-mail is already in use
-     */
-    @RequestMapping(value = "/register",
-                    method = RequestMethod.POST,
-                    produces={MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
+    @SuppressWarnings("MissingJavadocMethod")
+    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
     public ResponseEntity<?> registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM, HttpServletRequest request) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
@@ -67,68 +62,49 @@ public class AccountResource {
                 .map(user -> new ResponseEntity<>("e-mail address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                 .orElseGet(() -> {
                     User user = userService.createUser(managedUserVM.getLogin(), managedUserVM.getPassword(),
-                    managedUserVM.getFirstName(), managedUserVM.getLastName(), managedUserVM.getEmail().toLowerCase(),
-                    managedUserVM.getLangKey());
-                    String baseUrl = request.getScheme() + // "http"
-                    "://" +                                // "://"
-                    request.getServerName() +              // "myhost"
-                    ":" +                                  // ":"
-                    request.getServerPort() +              // "80"
-                    request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+                        managedUserVM.getFirstName(), managedUserVM.getLastName(), managedUserVM.getEmail().toLowerCase(),
+                        managedUserVM.getLangKey());
+                    String baseUrl = request.getScheme() // "http"
+                        + "://"                          // "://"
+                        + request.getServerName()        // "myhost"
+                        + ":"                            // ":"
+                        + request.getServerPort()        // "80"
+                        + request.getContextPath();      // "/myContextPath" or "" if deployed in root context
 
                     //mailService.sendActivationEmail(user, baseUrl);
                     return new ResponseEntity<>(HttpStatus.CREATED);
                 })
-        );
+            );
     }
 
-    /**
-     * GET  /activate : activate the registered user.
-     *
-     * @param key the activation key
-     * @return the ResponseEntity with status 200 (OK) and the activated user in body, or status 500 (Internal Server Error) if the user couldn't be activated
-     */
-    @RequestMapping(value = "/activate", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> activateAccount(@RequestParam(value = "key") String key) {
+    @SuppressWarnings("MissingJavadocMethod")
+    @GetMapping("/activate")
+    public ResponseEntity<String> activateAccount(@RequestParam("key") String key) {
         return userService.activateRegistration(key)
             .map(user -> new ResponseEntity<String>(HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    /**
-     * GET  /authenticate : check if the user is authenticated, and return its login.
-     *
-     * @param request the HTTP request
-     * @return the login if the user is authenticated
-     */
-    @RequestMapping(value = "/authenticate", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @SuppressWarnings("MissingJavadocMethod")
+    @GetMapping("/authenticate")
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");
         return request.getRemoteUser();
     }
 
-    /**
-     * GET  /account : get the current user.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the current user in body, or status 500 (Internal Server Error) if the user couldn't be returned
-     */
-    @RequestMapping(value = "/account", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @SuppressWarnings("MissingJavadocMethod")
+    @GetMapping("/account")
     public ResponseEntity<UserDTO> getAccount() {
         return Optional.ofNullable(userService.getUserWithAuthorities())
             .map(user -> new ResponseEntity<>(new UserDTO(user), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    /**
-     * POST  /account : update the current user information.
-     *
-     * @param userDTO the current user information
-     * @return the ResponseEntity with status 200 (OK), or status 400 (Bad Request) or 500 (Internal Server Error) if the user couldn't be updated
-     */
-    @RequestMapping(value = "/account", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @SuppressWarnings("MissingJavadocMethod")
+    @PostMapping("/account")
     public ResponseEntity<String> saveAccount(@Valid @RequestBody UserDTO userDTO) {
         Optional<User> existingUser = userRepository.findOneByEmail(userDTO.getEmail());
-        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
+        if (existingUser.isPresent() && !existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin())) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("user-management", "emailexists",
                 "Email already in use")).body(null);
         }
@@ -147,28 +123,18 @@ public class AccountResource {
             .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    /**
-     * POST  /account/change_password : changes the current user's password
-     *
-     * @param password the new password
-     * @return the ResponseEntity with status 200 (OK), or status 400 (Bad Request) if the new password is not strong enough
-     */
+    @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping(value = "/account/change_password", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<?> changePassword(@RequestBody String password) {
         if (!checkPasswordLength(password)) {
-            return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(INCORRECT_PASSWORD, HttpStatus.BAD_REQUEST);
         }
         userService.changePassword(password);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    /**
-     * GET  /account/sessions : get the current open sessions.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the current open sessions in body,
-     *  or status 500 (Internal Server Error) if the current open sessions couldn't be retrieved
-     */
-    @RequestMapping(value = "/account/sessions", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @SuppressWarnings("MissingJavadocMethod")
+    @GetMapping("/account/sessions")
     public ResponseEntity<List<PersistentToken>> getCurrentSessions() {
         return SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin)
@@ -178,23 +144,8 @@ public class AccountResource {
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-    /**
-     * DELETE  /account/sessions?series={series} : invalidate an existing session.
-     *
-     * - You can only delete your own sessions, not any other user's session
-     * - If you delete one of your existing sessions, and that you are currently logged in on that session, you will
-     *   still be able to use that session, until you quit your browser: it does not work in real time (there is
-     *   no API for that), it only removes the "remember me" cookie
-     * - This is also true if you invalidate your current session: you will still be able to use it until you close
-     *   your browser or that the session times out. But automatic login (the "remember me" cookie) will not work
-     *   anymore.
-     *   There is an API to invalidate the current session, but there is no API to check which session uses which
-     *   cookie.
-     *
-     * @param series the series of an existing session
-     * @throws UnsupportedEncodingException if the series couldnt be URL decoded
-     */
-    @DeleteMapping(value = "/account/sessions/{series}")
+    @SuppressWarnings("MissingJavadocMethod")
+    @DeleteMapping("/account/sessions/{series}")
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
         String decodedSeries = URLDecoder.decode(series, "UTF-8");
         SecurityUtils.getCurrentUserLogin()
@@ -203,13 +154,7 @@ public class AccountResource {
                 .findAny()).ifPresent(persistentTokenRepository::delete);
     }
 
-    /**
-     * POST   /account/reset_password/init : Send an e-mail to reset the password of the user
-     *
-     * @param mail the mail of the user
-     * @param request the HTTP request
-     * @return the ResponseEntity with status 200 (OK) if the e-mail was sent, or status 400 (Bad Request) if the e-mail address is not registered
-     */
+    @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping(value = "/account/reset_password/init", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<?> requestPasswordReset(@RequestBody String mail, HttpServletRequest request) {
         return userService.requestPasswordReset(mail)
@@ -220,26 +165,18 @@ public class AccountResource {
             }).orElse(new ResponseEntity<>("e-mail address not registered", HttpStatus.BAD_REQUEST));
     }
 
-    /**
-     * POST   /account/reset_password/finish : Finish to reset the password of the user
-     *
-     * @param keyAndPassword the generated key and the new password
-     * @return the ResponseEntity with status 200 (OK) if the password has been reset,
-     * or status 400 (Bad Request) or 500 (Internal Server Error) if the password could not be reset
-     */
+    @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping(value = "/account/reset_password/finish", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
         if (!checkPasswordLength(keyAndPassword.getNewPassword())) {
-            return new ResponseEntity<>("Incorrect password", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(INCORRECT_PASSWORD, HttpStatus.BAD_REQUEST);
         }
         return userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey())
-              .map(user -> new ResponseEntity<String>(HttpStatus.OK))
-              .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+            .map(user -> new ResponseEntity<String>(HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     private boolean checkPasswordLength(String password) {
-        return (!StringUtils.isEmpty(password) &&
-            password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH &&
-            password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH);
+        return !StringUtils.isEmpty(password) && password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH && password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH;
     }
 }

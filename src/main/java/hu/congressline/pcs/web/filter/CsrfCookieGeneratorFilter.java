@@ -25,8 +25,7 @@ public class CsrfCookieGeneratorFilter extends OncePerRequestFilter {
         String actualToken = request.getHeader("X-CSRF-TOKEN");
         if (actualToken == null || !actualToken.equals(csrfToken.getToken())) {
             // Session cookie that will be used by AngularJS
-            String pCookieName = "CSRF-TOKEN";
-            Cookie cookie = new Cookie(pCookieName, csrfToken.getToken());
+            Cookie cookie = new Cookie("CSRF-TOKEN", csrfToken.getToken());
             cookie.setMaxAge(-1);
             cookie.setHttpOnly(false);
             cookie.setPath("/");

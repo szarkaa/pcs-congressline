@@ -1,6 +1,5 @@
 package hu.congressline.pcs.security;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,11 +14,9 @@ import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.User;
 import hu.congressline.pcs.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Authenticate a user from the database.
- */
 @Slf4j
 @RequiredArgsConstructor
 @Component("userDetailsService")
@@ -41,7 +38,6 @@ public class UserDetailsService implements org.springframework.security.core.use
                     .map(authority -> new SimpleGrantedAuthority(authority.getName()))
                 .collect(Collectors.toList());
             return new org.springframework.security.core.userdetails.User(lowercaseLogin, user.getPassword(), grantedAuthorities);
-        }).orElseThrow(() -> new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the " +
-        "database"));
+        }).orElseThrow(() -> new UsernameNotFoundException("User" + " " + lowercaseLogin + " was not found in the database"));
     }
 }

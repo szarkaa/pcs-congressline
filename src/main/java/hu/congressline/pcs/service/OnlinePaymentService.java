@@ -7,10 +7,6 @@ import com.stripe.model.checkout.Session;
 import com.stripe.net.RequestOptions;
 import com.stripe.param.checkout.SessionCreateParams;
 
-import hu.congressline.pcs.domain.PaymentTransaction;
-import hu.congressline.pcs.domain.enumeration.PaymentSupplier;
-import hu.congressline.pcs.repository.PaymentTransactionRepository;
-import hu.congressline.pcs.service.dto.kh.PaymentStatus;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -35,8 +31,10 @@ import hu.congressline.pcs.config.ApplicationProperties;
 import hu.congressline.pcs.domain.Company;
 import hu.congressline.pcs.domain.OnlineRegConfig;
 import hu.congressline.pcs.domain.OnlineRegistration;
+import hu.congressline.pcs.domain.PaymentTransaction;
 import hu.congressline.pcs.domain.enumeration.Currency;
-import hu.congressline.pcs.repository.OnlineRegConfigRepository;
+import hu.congressline.pcs.domain.enumeration.PaymentSupplier;
+import hu.congressline.pcs.repository.PaymentTransactionRepository;
 import hu.congressline.pcs.service.dto.kh.EchoRequest;
 import hu.congressline.pcs.service.dto.kh.EchoResult;
 import hu.congressline.pcs.service.dto.kh.PaymentCartItem;
@@ -49,6 +47,7 @@ import hu.congressline.pcs.service.dto.kh.PaymentRefundRequest;
 import hu.congressline.pcs.service.dto.kh.PaymentRefundResult;
 import hu.congressline.pcs.service.dto.kh.PaymentReverseRequest;
 import hu.congressline.pcs.service.dto.kh.PaymentReverseResult;
+import hu.congressline.pcs.service.dto.kh.PaymentStatus;
 import hu.congressline.pcs.service.dto.kh.PaymentStatusRequest;
 import hu.congressline.pcs.service.dto.kh.PaymentStatusResult;
 import hu.congressline.pcs.service.util.DateUtil;
@@ -112,8 +111,8 @@ public class OnlinePaymentService {
                 }
             }
         });
-
     }
+
     @SuppressWarnings("MissingJavadocMethod")
     public String makeStripePaymentCheckout(OnlineRegistration onlineReg) {
         String retVal = null;

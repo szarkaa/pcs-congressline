@@ -1,7 +1,6 @@
 package hu.congressline.pcs.web.rest.vm;
 
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
