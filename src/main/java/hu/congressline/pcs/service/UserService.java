@@ -1,16 +1,24 @@
 package hu.congressline.pcs.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.Authority;
 import hu.congressline.pcs.domain.Congress;
@@ -41,6 +49,28 @@ public class UserService {
     private final AuthorityRepository authorityRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public Page<User> findAllEagerly(Pageable pageable) {
+        Page<Long> idPage = userRepository.findAllIds(pageable);
+
+        if (idPage.isEmpty()) {
+            return new PageImpl<>(List.of(), pageable, idPage.getTotalElements());
+        }
+
+        List<User> users = userRepository.findAllEagerlyByIdIn(idPage.getContent());
+
+        // Preserve page order (IN (...) does not guarantee ordering)
+        Map<Long, User> byId = users.stream().collect(Collectors.toMap(User::getId, Function.identity()));
+
+        List<User> ordered = idPage.getContent().stream()
+            .map(byId::get)
+            .filter(Objects::nonNull)
+            .toList();
+
+        return new PageImpl<>(ordered, pageable, idPage.getTotalElements());
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
         return userRepository.findOneByActivationKey(key)
@@ -58,7 +88,7 @@ public class UserService {
     public Optional<User> completePasswordReset(String newPassword, String key) {
         log.debug("Reset user password for reset key {}", key);
         return userRepository.findOneByResetKey(key).filter(user -> {
-            ZonedDateTime oneDayAgo = ZonedDateTime.now().minusHours(24);
+            Instant oneDayAgo = Instant.now().minusSeconds(24 * 60 * 60);
             return user.getResetDate().isAfter(oneDayAgo);
         }).map(user -> {
             user.setPassword(passwordEncoder.encode(newPassword));
@@ -75,7 +105,7 @@ public class UserService {
             .filter(User::isActivated)
             .map(user -> {
                 user.setResetKey(RandomUtil.generateResetKey());
-                user.setResetDate(ZonedDateTime.now());
+                user.setResetDate(Instant.now());
                 userRepository.save(user);
                 return user;
             });
@@ -135,7 +165,7 @@ public class UserService {
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
-        user.setResetDate(ZonedDateTime.now());
+        user.setResetDate(Instant.now());
         user.setActivated(true);
         userRepository.save(user);
         log.debug("Created Information for User: {}", user);

@@ -4,7 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import hu.congressline.pcs.domain.OnlineRegConfig;
 
+import java.util.Optional;
+
 public interface OnlineRegConfigRepository extends JpaRepository<OnlineRegConfig, Long> {
 
-    OnlineRegConfig findOneByCongressId(Long id);
+    Optional<OnlineRegConfig> findOneByCongressId(Long id);
+
+    void deleteAllByCongressId(Long id);
 }

@@ -17,7 +17,6 @@ logging:
   level:
     ROOT: INFO
     tech.jhipster: DEBUG
-    org.springframework.security.web: TRACE
     hu.congressline.pcs: DEBUG
 
 spring:

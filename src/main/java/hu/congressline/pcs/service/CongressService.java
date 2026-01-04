@@ -54,14 +54,13 @@ public class CongressService {
     @Transactional(readOnly = true)
     public Congress getEagerById(Long id) {
         log.debug("Request to get Congress eagerly: {}", id);
-        return congressRepository.findOneWithEagerRelationships(id).orElseThrow(() -> new IllegalArgumentException("Congress eager not found with id: " + id));
+        return congressRepository.findOneEagerlyById(id).orElseThrow(() -> new IllegalArgumentException("Congress eager not found with id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long id) {
-        final OnlineRegConfig config = onlineRegConfigRepository.findOneByCongressId(id);
         onlineRegCustomQuestionRepository.deleteAllByCongressId(id);
-        onlineRegConfigRepository.delete(config);
+        onlineRegConfigRepository.deleteAllByCongressId(id);
         congressRepository.deleteById(id);
     }
 
@@ -83,8 +82,13 @@ public class CongressService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    public OnlineRegConfig findConfigByCongressId(Long id) {
+    public Optional<OnlineRegConfig> findConfigByCongressId(Long id) {
         return onlineRegConfigRepository.findOneByCongressId(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public OnlineRegConfig getConfigByCongressId(Long id) {
+        return onlineRegConfigRepository.findOneByCongressId(id).orElseThrow(() -> new IllegalArgumentException("Online reg config not found with id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

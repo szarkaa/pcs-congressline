@@ -1,5 +1,6 @@
 package hu.congressline.pcs.web.rest.vm;
 
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,11 +24,11 @@ public class ManagedUserVM extends UserDTO {
 
     private String createdBy;
 
-    private ZonedDateTime createdDate;
+    private Instant createdDate;
 
     private String lastModifiedBy;
 
-    private ZonedDateTime lastModifiedDate;
+    private Instant lastModifiedDate;
 
     private Set<CongressVM> congresses;
 
@@ -48,7 +49,7 @@ public class ManagedUserVM extends UserDTO {
     @SuppressWarnings("ParameterNumber")
     public ManagedUserVM(Long id, String login, String password, String firstName, String lastName,
                          String email, boolean activated, String langKey, Set<String> authorities,
-                         String createdBy, ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate) {
+                         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate) {
         super(login, firstName, lastName, email, activated, langKey, authorities);
         this.id = id;
         this.createdBy = createdBy;

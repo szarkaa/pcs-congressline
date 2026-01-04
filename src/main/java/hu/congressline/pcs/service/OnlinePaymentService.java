@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URI;
@@ -73,8 +72,8 @@ public class OnlinePaymentService {
     private final ApplicationProperties properties;
     private final PaymentTransactionRepository paymentTransactionRepository;
     private final CompanyService companyService;
+    private final CongressService congressService;
     private final OnlineRegService onlineRegService;
-    private final OnlineRegConfigRepository onlineRegConfigRepository;
     private final PaymentCryptoService paymentCryptoService;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -83,7 +82,7 @@ public class OnlinePaymentService {
         List<OnlineRegistration> onlineRegList = onlineRegService.findAllByPaymentTrxStatus();
         log.debug("checkPendingPaymentResults: found {} pending online registrations", onlineRegList.size());
         onlineRegList.forEach(onlineReg -> {
-            final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(onlineReg.getCongress().getId());
+            final OnlineRegConfig onlineRegConfig = congressService.getConfigByCongressId(onlineReg.getCongress().getId());
             if (PaymentSupplier.KH.equals(onlineRegConfig.getPaymentSupplier())) {
                 String currency = onlineReg.getCurrency();
                 final PaymentStatusResult statusResult = sendPaymentStatusRequest(onlineReg.getPaymentTrxId(), currency);
@@ -98,7 +97,7 @@ public class OnlinePaymentService {
 
         log.debug("checkPendingPaymentResults: found {} pending payment transactions", paymentTransactionList.size());
         paymentTransactionList.forEach(paymentTransaction -> {
-            final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(paymentTransaction.getCongress().getId());
+            final OnlineRegConfig onlineRegConfig = congressService.getConfigByCongressId(paymentTransaction.getCongress().getId());
             if (PaymentSupplier.KH.equals(onlineRegConfig.getPaymentSupplier())) {
                 String currency = paymentTransaction.getCurrency();
                 final PaymentStatusResult statusResult = sendPaymentStatusRequest(paymentTransaction.getTransactionId(), currency);
@@ -118,7 +117,7 @@ public class OnlinePaymentService {
     @SuppressWarnings("MissingJavadocMethod")
     public String makeStripePaymentCheckout(OnlineRegistration onlineReg) {
         String retVal = null;
-        final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(onlineReg.getCongress().getId());
+        final OnlineRegConfig onlineRegConfig = congressService.getConfigByCongressId(onlineReg.getCongress().getId());
         if (onlineRegConfig != null) {
             final BigDecimal totalAmount = onlineRegService.getTotalAmountOfOnlineReg(onlineReg);
             try {
@@ -341,12 +340,7 @@ public class OnlinePaymentService {
     }
 
     private String encodeUrl(String value) {
-        try {
-            return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            log.error("Unsupported URL encoding problem", e);
-        }
-        return null;
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 
     private void sendEchoRequest(Currency currency) throws Exception {

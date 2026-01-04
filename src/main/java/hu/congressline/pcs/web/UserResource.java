@@ -151,7 +151,7 @@ public class UserResource {
     @GetMapping(value = "/users")
     public ResponseEntity<List<ManagedUserVM>> getAllUsers(Pageable pageable)
         throws URISyntaxException {
-        Page<User> page = userRepository.findAllEagerly(pageable);
+        Page<User> page = userService.findAllEagerly(pageable);
         List<ManagedUserVM> managedUserVMs = page.getContent().stream()
             .map(ManagedUserVM::new)
             .collect(Collectors.toList());

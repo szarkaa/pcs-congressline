@@ -91,9 +91,9 @@ public class OnlineRegService {
 
     private final CongressRepository congressRepository;
     private final RegistrationService registrationService;
-    private final OnlineRegConfigRepository onlineRegConfigRepository;
     private final RegistrationTypeRepository rtRepository;
     private final RoomService roomService;
+    private final CongressService congressService;
     private final OptionalServiceRepository osRepository;
     private final OnlineRegCustomQuestionRepository onlineRegCustomQuestionRepository;
     private final OrderedOptionalServiceRepository oosRepository;
@@ -145,7 +145,7 @@ public class OnlineRegService {
         if (congress == null) {
             return null;
         }
-        final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(congress.getId());
+        final OnlineRegConfig onlineRegConfig = congressService.getConfigByCongressId(congress.getId());
         CongressDTO dto = new CongressDTO(congress);
         final OnlineRegConfigDTO onlineRegConfigDTO = new OnlineRegConfigDTO(onlineRegConfig);
         onlineRegConfigDTO.setDiscountAvailable(discountCodeRepository.countAllByCongressId(congress.getId()) > 0);
@@ -157,7 +157,7 @@ public class OnlineRegService {
     public PaymentResultDTO getPaymentResultByTrxId(String trxId) {
         OnlineRegistration onlineReg = onlineRegistrationRepository.findOneByPaymentTrxId(trxId)
                 .orElseThrow(() -> new IllegalArgumentException(ONLINE_REGISTRATION_NOT_FOUND + trxId));
-        final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(onlineReg.getCongress().getId());
+        final OnlineRegConfig onlineRegConfig = congressService.getConfigByCongressId(onlineReg.getCongress().getId());
         PaymentResultDTO dto = new PaymentResultDTO();
         dto.setCongressName(onlineReg.getCongress().getName());
         dto.setCongressUuid(onlineReg.getCongress().getUuid());
@@ -213,7 +213,7 @@ public class OnlineRegService {
         if (congress == null) {
             return null;
         }
-        return onlineRegConfigRepository.findOneByCongressId(congress.getId());
+        return congressService.getConfigByCongressId(congress.getId());
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -283,7 +283,7 @@ public class OnlineRegService {
     @SuppressWarnings({"MissingJavadocMethod", "MethodLength"})
     public OnlineRegistration save(OnlineRegistrationVM vm) {
         final Congress congress = congressRepository.findOneByUuid(vm.getUuid()).orElseThrow(() -> new IllegalStateException("Unidentified congress uuid:" + vm.getUuid()));
-        final OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(congress.getId());
+        final OnlineRegConfig onlineRegConfig = congressService.getConfigByCongressId(congress.getId());
         OnlineRegistration or = new OnlineRegistration();
         or.setCurrency(vm.getCurrency().toUpperCase());
         or.setTitle(vm.getTitle());

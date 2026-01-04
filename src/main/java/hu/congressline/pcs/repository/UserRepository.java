@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 import hu.congressline.pcs.domain.User;
+import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -25,9 +26,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findOneById(Long userId);
 
-    @Query(value = "select distinct user from User user left join fetch user.authorities left join fetch user.congresses",
-        countQuery = "select count(user) from User user")
-    Page<User> findAllEagerly(Pageable pageable);
+    @Query(value = "select user.id from User user", countQuery = "select count(user) from User user")
+    Page<Long> findAllIds(Pageable pageable);
+
+    @Query("select distinct user from User user left join fetch user.authorities left join fetch user.congresses where user.id in :ids")
+    List<User> findAllEagerlyByIdIn(@Param("ids") List<Long> ids);
 
     @Override
     void delete(User user);

@@ -16,7 +16,7 @@ public interface CongressRepository extends JpaRepository<Congress, Long> {
 
     @Query("select congress from Congress congress left join fetch congress.currencies left join fetch congress.onlineRegCurrencies "
             + "left join fetch congress.bankAccounts where congress.id =:id")
-    Optional<Congress> findOneWithEagerRelationships(@Param("id") Long id);
+    Optional<Congress> findOneEagerlyById(@Param("id") Long id);
 
     Optional<Congress> findOneByMeetingCode(String meetingCode);
 
