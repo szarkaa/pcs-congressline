@@ -29,7 +29,7 @@ import lombok.Data;
 public abstract class ChargeableItem implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "date_of_group_payment")

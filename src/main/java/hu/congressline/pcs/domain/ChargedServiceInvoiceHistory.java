@@ -17,7 +17,7 @@ import lombok.Data;
 @Table(name = "charged_service_invoice_history")
 public class ChargedServiceInvoiceHistory implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
