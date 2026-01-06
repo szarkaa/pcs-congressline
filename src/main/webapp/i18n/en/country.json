@@ -2,16 +2,16 @@
     "pcsApp": {
         "country" : {
             "home": {
-                "title": "Countrys",
-                "createLabel": "Create a new Country",
-                "createOrEditLabel": "Create or edit a Country",
-                "search": "Search for Country"
+                "title": "Countries",
+                "createLabel": "Create a new country",
+                "createOrEditLabel": "Create or edit a country",
+                "search": "Search for country"
             },
-            "created": "A new Country is created with identifier {{ param }}",
-            "updated": "A Country is updated with identifier {{ param }}",
-            "deleted": "A Country is deleted with identifier {{ param }}",
+            "created": "A new country has been created successfully",
+            "updated": "A country has been updated successfully",
+            "deleted": "A country has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Country {{ id }}?"
+                "question": "Are you sure you want to delete country {{ code }}?"
             },
             "code": "Code",
             "name": "Name"

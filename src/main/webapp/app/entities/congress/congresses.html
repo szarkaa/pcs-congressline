@@ -21,7 +21,7 @@
                     <table datatable="ng" id="congress-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover datatable-with-operations">
                         <thead>
                         <tr>
-                            <th><span translate="global.field.id">ID</span></th>
+<!--                            <th><span translate="global.field.id">ID</span></th>-->
                             <th><span translate="pcsApp.congress.meetingCode">MeetingCode</span></th>
                             <th><span translate="pcsApp.congress.name">Name</span></th>
                             <th><span translate="pcsApp.congress.startDate">StartDate</span></th>
@@ -35,7 +35,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="congress in vm.congresses track by congress.id">
-                            <td>{{congress.id}}</td>
+<!--                            <td>{{congress.id}}</td>-->
                             <td>{{congress.meetingCode}}</td>
                             <td>{{congress.name}} {{ congress.migratedFromCongressCode != null ? ' (migrated from: ' + congress.migratedFromCongressCode + ')' : ''}}</td>
                             <td>{{congress.startDate | date:'mediumDate'}}</td>

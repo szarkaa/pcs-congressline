@@ -3,15 +3,15 @@
         "congress" : {
             "home": {
                 "title": "Congresses",
-                "createLabel": "Create a new Congress",
-                "createOrEditLabel": "Create or edit a Congress",
-                "search": "Search for Congress"
+                "createLabel": "Create a new congress",
+                "createOrEditLabel": "Create or edit a congress",
+                "search": "Search for congress"
             },
-            "created": "A new Congress is created with identifier {{ param }}",
-            "updated": "A Congress is updated with identifier {{ param }}",
-            "deleted": "A Congress is deleted with identifier {{ param }}",
+            "created": "A new congress has been created successfully meeting code: {{ param }}",
+            "updated": "A congress has been updated successfully meeting code: {{ param }}",
+            "deleted": "A congress has been deleted successfully meeting code: {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Congress {{ id }}?"
+                "question": "Are you sure you want to delete congress {{ meetingCode }}?"
             },
             "detail": {
                 "title": "Congress"

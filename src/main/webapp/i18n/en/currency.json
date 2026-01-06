@@ -2,16 +2,16 @@
     "pcsApp": {
         "currency" : {
             "home": {
-                "title": "Currencys",
-                "createLabel": "Create a new Currency",
-                "createOrEditLabel": "Create or edit a Currency",
-                "search": "Search for Currency"
+                "title": "Currencies",
+                "createLabel": "Create a new currency",
+                "createOrEditLabel": "Create or edit a currency",
+                "search": "Search for currency"
             },
-            "created": "A new Currency is created with identifier {{ param }}",
-            "updated": "A Currency is updated with identifier {{ param }}",
-            "deleted": "A Currency is deleted with identifier {{ param }}",
+            "created": "A new currency has been created successfully",
+            "updated": "A currency has been updated successfully",
+            "deleted": "A currency has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Currency {{ id }}?"
+                "question": "Are you sure you want to delete currency {{ currency }}?"
             },
             "detail": {
                 "title": "Currency"

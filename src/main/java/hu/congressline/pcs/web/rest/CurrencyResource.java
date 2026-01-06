@@ -45,7 +45,7 @@ public class CurrencyResource {
                 .body(null);
         } else if (currencyRepository.findCurrencyByCurrency(currency.getCurrency()).isPresent()) {
             return ResponseEntity.badRequest()
-                    .headers(HeaderUtil.createFailureAlert("userManagement", "currencyexists", "Currency already exists"))
+                    .headers(HeaderUtil.createFailureAlert("currency", "currencyexists", "Currency already exists"))
                     .body(null);
         }
 
@@ -68,7 +68,7 @@ public class CurrencyResource {
         final Optional<Currency> existingCurrency = currencyRepository.findOneByCurrencyIgnoreCaseAndIdNot(currency.getCurrency(), currency.getId());
         if (existingCurrency.isPresent() && (existingCurrency.get().getCurrency().equals(currency.getCurrency()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert("country", "countrycodeexists", "Country code already exist!"))
+                .createFailureAlert("currency", "currencyexists", "Currency  already exist!"))
                 .body(null);
         } else {
             Currency result = currencyRepository.save(currency);

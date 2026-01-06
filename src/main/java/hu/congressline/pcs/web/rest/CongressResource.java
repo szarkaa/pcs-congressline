@@ -62,7 +62,7 @@ public class CongressResource {
 
         final Congress result = congressService.persist(congress);
         return ResponseEntity.created(new URI("/api/congresses/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getMeetingCode()))
             .body(result);
     }
 
@@ -90,8 +90,7 @@ public class CongressResource {
                     .body(null);
         }
         Congress result = congressRepository.save(congress);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, congress.getId().toString()))
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, congress.getMeetingCode()))
             .body(result);
     }
 
@@ -155,8 +154,9 @@ public class CongressResource {
     public ResponseEntity<Void> deleteCongress(@PathVariable Long id) {
         log.debug("REST request to delete Congress : {}", id);
         try {
+            final String meetingCode = congressService.getById(id).getMeetingCode();
             congressService.delete(id);
-            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+            return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, meetingCode)).build();
         } catch (DataIntegrityViolationException e) {
             log.debug("Constraint violation exception during delete operation.", e);
             return ResponseEntity.badRequest().headers(HeaderUtil.createDeleteConstraintViolationAlert(ENTITY_NAME, e)).body(null);
