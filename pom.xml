@@ -398,6 +398,13 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-resources-plugin</artifactId>
+                    <configuration>
+                        <useDefaultDelimiters>false</useDefaultDelimiters>
+                        <delimiters>
+                            <delimiter>#</delimiter>
+                        </delimiters>
+                    </configuration>
+<!--
                     <executions>
                         <execution>
                             <id>default-resources</id>
@@ -432,6 +439,7 @@
                             </configuration>
                         </execution>
                     </executions>
+-->
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
