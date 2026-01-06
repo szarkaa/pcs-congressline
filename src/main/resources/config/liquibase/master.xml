@@ -21,6 +21,7 @@
     <include file="/config/liquibase/changelog/2025-12-13-create-optional_text.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-congress_bank_account.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-congress_currencies.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-congress_online_reg_currencies.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-workplace.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-vat_info.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-rate.xml" relativeToChangelogFile="false"/>

@@ -30,6 +30,7 @@
             "fax": "Fax",
             "licenceNumber": "Licence number",
             "invoiceNumberPrefix": "Invoice number prefix",
+            "invoiceNumber": "Invoice number",
             "proFormaInvoiceNumber": "Proforma Invoice number",
             "updated": "Company profile settings has been saved!"
         }

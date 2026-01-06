@@ -1,4 +1,4 @@
-package hu.congressline.pcs.web;
+package hu.congressline.pcs.web.rest;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
