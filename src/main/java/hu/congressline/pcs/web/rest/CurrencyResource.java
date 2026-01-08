@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 public class CurrencyResource {
     private static final String ENTITY_NAME = "currency";
+    private static final String CURRENCY_EXISTS = "currencyexists";
 
     private final CurrencyRepository currencyRepository;
 
@@ -45,7 +46,7 @@ public class CurrencyResource {
                 .body(null);
         } else if (currencyRepository.findCurrencyByCurrency(currency.getCurrency()).isPresent()) {
             return ResponseEntity.badRequest()
-                    .headers(HeaderUtil.createFailureAlert("currency", "currencyexists", "Currency already exists"))
+                    .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, CURRENCY_EXISTS, "Currency already exists"))
                     .body(null);
         }
 
@@ -68,7 +69,7 @@ public class CurrencyResource {
         final Optional<Currency> existingCurrency = currencyRepository.findOneByCurrencyIgnoreCaseAndIdNot(currency.getCurrency(), currency.getId());
         if (existingCurrency.isPresent() && (existingCurrency.get().getCurrency().equals(currency.getCurrency()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert("currency", "currencyexists", "Currency  already exist!"))
+                .createFailureAlert(ENTITY_NAME, CURRENCY_EXISTS, "Currency  already exist!"))
                 .body(null);
         } else {
             Currency result = currencyRepository.save(currency);

@@ -2,7 +2,7 @@
     "pcsApp": {
         "miscInvoiceItem" : {
             "home": {
-                "title": "Misc Invoice Items",
+                "title": "Misc invoice items",
                 "createLabel": "Create a new Misc Invoice Item",
                 "createOrEditLabel": "Add misc service item",
                 "search": "Search for Misc Invoice Item"

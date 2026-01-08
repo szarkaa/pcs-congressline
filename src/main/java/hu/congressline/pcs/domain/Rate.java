@@ -13,7 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -30,7 +30,7 @@ public class Rate implements Serializable {
     private Long id;
 
     @NotNull
-    @DecimalMax("0")
+    @DecimalMin("0")
     @Column(name = "rate", precision = 10, scale = 2, nullable = false)
     private BigDecimal rate;
 

@@ -3,15 +3,15 @@
         "hotel" : {
             "home": {
                 "title": "Hotels",
-                "createLabel": "Create a new Hotel",
-                "createOrEditLabel": "Create or edit a Hotel",
-                "search": "Search for Hotel"
+                "createLabel": "Create a new hotel",
+                "createOrEditLabel": "Create or edit a hotel",
+                "search": "Search for hotel"
             },
-            "created": "A new Hotel is created with identifier {{ param }}",
-            "updated": "A Hotel is updated with identifier {{ param }}",
-            "deleted": "A Hotel is deleted with identifier {{ param }}",
+            "created": "A new hotel has been created with successfully",
+            "updated": "A hotel has been updated successfully",
+            "deleted": "A hotel has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Hotel {{ id }}?"
+                "question": "Are you sure you want to delete {{ name }}?"
             },
             "detail": {
                 "title": "Hotel"

@@ -8,12 +8,12 @@
                 "createOrEditLabel": "Create or edit a Workplace",
                 "search": "Search for Workplace"
             },
-            "created": "A new Workplace is created with identifier {{ param }}",
-            "updated": "A Workplace is updated with identifier {{ param }}",
+            "created": "A new workplace has been created successfully",
+            "updated": "A workplace has been updated successfully",
             "merged": "The selected workplaces are merged into workplace id: {{ param }}",
-            "deleted": "A Workplace is deleted with identifier {{ param }}",
+            "deleted": "A workplace has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Workplace {{ id }}?"
+                "question": "Are you sure you want to delete {{ name }}?"
             },
             "merge": {
                 "question": "Are you sure you want to merge the selected workplaces into this workplace: {{ name }}?"

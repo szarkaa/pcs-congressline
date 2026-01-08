@@ -13,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -44,7 +45,7 @@ public class MiscService implements Serializable {
     private String measure;
 
     @NotNull
-    @DecimalMax("-99000000")
+    @DecimalMin("-99000000")
     @DecimalMax("99000000")
     @Column(name = "price", precision = 10, scale = 2, nullable = false)
     private BigDecimal price;

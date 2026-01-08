@@ -2,7 +2,7 @@
     "pcsApp": {
         "invoiceReport" : {
             "home": {
-                "title": "Invoice Report",
+                "title": "Invoice report",
                 "search": "Search for Invoices"
             },
             "sendToNavConfirmDialog": {

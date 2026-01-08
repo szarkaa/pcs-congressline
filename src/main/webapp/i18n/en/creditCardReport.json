@@ -2,7 +2,7 @@
     "pcsApp": {
         "creditCardReport" : {
             "home": {
-                "title": "Credit Card Report",
+                "title": "Credit card report",
                 "search": "Search for Credit Card Payments"
             },
             "congressName": "Congress name",

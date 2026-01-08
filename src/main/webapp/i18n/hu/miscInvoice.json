@@ -2,21 +2,21 @@
     "pcsApp": {
         "miscInvoice" : {
             "home": {
-                "title": "Misc Invoices",
-                "createLabel": "Create a new Misc Invoice",
+                "title": "Misc invoices",
+                "createLabel": "Create a new misc invoice",
                 "setPaymentDateLabel": "Setting payment date",
-                "createOrEditLabel": "Create or edit a Misc Invoice",
-                "search": "Search for Misc Invoice",
+                "createOrEditLabel": "Create or edit a misc invoice",
+                "search": "Search for misc invoice",
                 "stornoLabel": "Confirm storno operation"
             },
-            "created": "A new Misc Invoice is created with identifier {{ param }}",
-            "updated": "A Misc Invoice is updated with identifier {{ param }}",
-            "deleted": "A Misc Invoice is deleted with identifier {{ param }}",
+            "created": "A new misc invoice has been created successfully",
+            "updated": "A misc invoice has been updated successfully",
+            "deleted": "A misc invoice has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Misc Invoice {{ id }}?"
+                "question": "Are you sure you want to delete the selected misc invoice?"
             },
             "detail": {
-                "title": "Misc Invoice"
+                "title": "Misc invoice"
             },
             "invoiceType": "Invoice type",
             "invoiceNumber": "Invoice number",

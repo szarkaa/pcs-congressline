@@ -3,15 +3,15 @@
         "optionalText" : {
             "home": {
                 "title": "Optional texts",
-                "createLabel": "Create a new Optional text",
-                "createOrEditLabel": "Create or edit an Optional text",
-                "search": "Search for Optional text"
+                "createLabel": "Create a new optional text",
+                "createOrEditLabel": "Create or edit an optional text",
+                "search": "Search for optional text"
             },
-            "created": "A new Optional text is created with identifier {{ param }}",
-            "updated": "A Optional text is updated with identifier {{ param }}",
-            "deleted": "A Optional text is deleted with identifier {{ param }}",
+            "created": "A new optional text has been created successfully",
+            "updated": "An optional text has been updated successfully",
+            "deleted": "An optional text has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Optional text {{ id }}?"
+                "question": "Are you sure you want to delete the selected optional text?"
             },
             "name": "Name",
             "optionalText": "Optional text",

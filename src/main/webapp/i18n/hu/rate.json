@@ -2,19 +2,19 @@
     "pcsApp": {
         "rate" : {
             "home": {
-                "title": "Currency Rates",
-                "createLabel": "Create a new Rate",
-                "createOrEditLabel": "Create or edit a Rate",
-                "search": "Search for Rate"
+                "title": "Currency rates",
+                "createLabel": "Create a new rate",
+                "createOrEditLabel": "Create or edit a rate",
+                "search": "Search for rate"
             },
-            "created": "A new Rate is created with identifier {{ param }}",
-            "updated": "A Rate is updated with identifier {{ param }}",
-            "deleted": "A Rate is deleted with identifier {{ param }}",
+            "created": "A new rate has been created successfully",
+            "updated": "A rate has been updated successfully",
+            "deleted": "A rate has been deleted successfully",
             "delete": {
                 "question": "Are you sure you want to delete the selected rate?"
             },
             "detail": {
-                "title": "Currency Rate"
+                "title": "Currency rate"
             },
             "rate": "Rate",
             "equalsTo": "equals to",

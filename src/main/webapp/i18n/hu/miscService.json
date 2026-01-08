@@ -2,19 +2,19 @@
     "pcsApp": {
         "miscService" : {
             "home": {
-                "title": "Misc Services",
-                "createLabel": "Create a new Misc Service",
-                "createOrEditLabel": "Create or edit a Misc Service",
+                "title": "Misc services",
+                "createLabel": "Create a new misc service",
+                "createOrEditLabel": "Create or edit a misc service",
                 "search": "Search for MiscService"
             },
-            "created": "A new Misc Service is created with identifier {{ param }}",
-            "updated": "A Misc Service is updated with identifier {{ param }}",
-            "deleted": "A Misc Service is deleted with identifier {{ param }}",
+            "created": "A new misc service has been created successfully",
+            "updated": "A misc service has been updated successfully",
+            "deleted": "A misc service has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Misc Service {{ id }}?"
+                "question": "Are you sure you want to delete misc service {{ name }}?"
             },
             "detail": {
-                "title": "Misc Service"
+                "title": "Misc service"
             },
             "name": "Name",
             "description": "Description",

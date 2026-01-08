@@ -6,12 +6,12 @@
                 "createOrEditLabel": "Accept an online registration",
                 "search": "Search for online registration"
             },
-            "created": "A new Online registration is created with identifier {{ param }}",
-            "updated": "{{ param }} selected Online registration is accepted successfully",
-            "deletedAll": "{{ param }} selected Online registration is deleted successfully",
-            "deleted": "An Online registration is deleted with identifier {{ param }}",
+            "created": "A new online registration is created with identifier {{ param }}",
+            "updated": "{{ param }} selected online registration is accepted successfully",
+            "deletedAll": "{{ param }} selected online registration is deleted successfully",
+            "deleted": "An online registration is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Online registration {{ id }}?"
+                "question": "Are you sure you want to delete online registration {{ id }}?"
             },
             "deleteAll": {
                 "question": "Are you sure you want to delete all the selected online registrations?"

@@ -2,20 +2,20 @@
     "pcsApp": {
         "vatInfo" : {
             "home": {
-                "title": "VAT Infos",
-                "titleCustom": "VAT Infos for congress ",
-                "createLabel": "Create a new VAT Info",
-                "createOrEditLabel": "Create or edit a VAT Info",
-                "search": "Search for VAT Info"
+                "title": "VAT infos",
+                "titleCustom": "VAT infos for congress ",
+                "createLabel": "Create a new VAT info",
+                "createOrEditLabel": "Create or edit a VAT info",
+                "search": "Search for VAT info"
             },
-            "created": "A new VAT Info is created with identifier {{ param }}",
-            "updated": "A VAT Info is updated with identifier {{ param }}",
-            "deleted": "A VAT Info is deleted with identifier {{ param }}",
+            "created": "A new VAT info has been created successfully",
+            "updated": "A VAT info has been updated successfully",
+            "deleted": "A VAT info has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete VAT Info {{ id }}?"
+                "question": "Are you sure you want to delete VAT info {{ name }}?"
             },
             "detail": {
-                "title": "VAT Info"
+                "title": "VAT info"
             },
             "name": "Name",
             "vatRateType": "Vat rate type",

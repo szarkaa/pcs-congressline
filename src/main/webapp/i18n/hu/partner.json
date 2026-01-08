@@ -3,15 +3,15 @@
         "workplace" : {
             "home": {
                 "title": "Partners",
-                "createLabel": "Create a new Partner",
-                "createOrEditLabel": "Create or edit a Partner",
-                "search": "Search for Partner"
+                "createLabel": "Create a new partner",
+                "createOrEditLabel": "Create or edit a partner",
+                "search": "Search for partner"
             },
-            "created": "A new Partner is created with identifier {{ param }}",
-            "updated": "A Partner is updated with identifier {{ param }}",
-            "deleted": "A Partner is deleted with identifier {{ param }}",
+            "created": "A new partner has been created successfully",
+            "updated": "A partner has been updated successfully",
+            "deleted": "A partner has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Partner {{ id }}?"
+                "question": "Are you sure you want to delete {{ name }}?"
             },
             "detail": {
                 "title": "Partner"
