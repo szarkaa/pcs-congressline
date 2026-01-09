@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import hu.congressline.pcs.domain.ChargeableItemInvoiceHistory;
 import hu.congressline.pcs.domain.GroupDiscountInvoiceHistory;
@@ -60,9 +61,16 @@ public class RegistrationRegistrationTypeService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public RegistrationRegistrationType findOne(Long id) {
+    public Optional<RegistrationRegistrationType> findById(Long id) {
+        log.debug("Request to find RegistrationRegistrationType : {}", id);
+        return rrtRepository.findById(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public RegistrationRegistrationType getById(Long id) {
         log.debug("Request to get RegistrationRegistrationType : {}", id);
-        return rrtRepository.findById(id).orElse(null);
+        return rrtRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("RegistrationRegistrationType not found with id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
