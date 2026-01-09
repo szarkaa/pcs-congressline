@@ -3,15 +3,15 @@
         "optionalService" : {
             "home": {
                 "title": "Optional services",
-                "createLabel": "Create a new Optional service",
-                "createOrEditLabel": "Create or edit a Optional service",
-                "search": "Search for Optional service"
+                "createLabel": "Create a new optional service",
+                "createOrEditLabel": "Create or edit an optional service",
+                "search": "Search for optional service"
             },
-            "created": "A new OptionalService is created with identifier {{ param }}",
-            "updated": "A OptionalService is updated with identifier {{ param }}",
-            "deleted": "A OptionalService is deleted with identifier {{ param }}",
+            "created": "An new optional service has been created successfully",
+            "updated": "An optional service has been updated successfully",
+            "deleted": "An optional service has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Optional service {{ id }}?"
+                "question": "Are you sure you want to delete optional service {{ code }}?"
             },
             "error": {
                 "maxPersonExceededByReserved": "Max person can not be smaller than the already reserved number of optional service."

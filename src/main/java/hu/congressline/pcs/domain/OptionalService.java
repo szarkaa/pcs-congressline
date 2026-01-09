@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -52,7 +53,7 @@ public class OptionalService implements Serializable {
     private LocalDate endDate;
 
     @NotNull
-    @DecimalMax("-1000000")
+    @DecimalMin("-1000000")
     @DecimalMax("1000000")
     @Column(name = "price", precision = 10, scale = 2, nullable = false)
     private BigDecimal price;
