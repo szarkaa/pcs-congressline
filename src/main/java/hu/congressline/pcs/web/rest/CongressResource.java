@@ -46,7 +46,7 @@ public class CongressResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/congresses")
-    public ResponseEntity<Congress> createCongress(@Valid @RequestBody Congress congress) throws URISyntaxException {
+    public ResponseEntity<Congress> create(@Valid @RequestBody Congress congress) throws URISyntaxException {
         log.debug("REST request to save Congress : {}", congress);
         if (congress.getId() != null) {
             return ResponseEntity
@@ -68,7 +68,7 @@ public class CongressResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/congresses/migrate-workplaces")
-    public ResponseEntity<Void> migrateCongressWorkplaces(@Valid @RequestBody CongressMigrateWorkplaceVM cmw) throws URISyntaxException {
+    public ResponseEntity<Void> migrateWorkplaces(@Valid @RequestBody CongressMigrateWorkplaceVM cmw) throws URISyntaxException {
         log.debug("REST request to migrate Congress workplaces from: {} to: {}", cmw.getFrom(), cmw.getTo());
         Congress from = congressService.getById(cmw.getFrom());
         workplaceService.migrate(cmw.getFrom(), cmw.getTo());
@@ -77,10 +77,10 @@ public class CongressResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/congresses")
-    public ResponseEntity<Congress> updateCongress(@Valid @RequestBody Congress congress) throws URISyntaxException {
+    public ResponseEntity<Congress> update(@Valid @RequestBody Congress congress) throws URISyntaxException {
         log.debug("REST request to update Congress : {}", congress);
         if (congress.getId() == null) {
-            return createCongress(congress);
+            return create(congress);
         }
 
         Optional<Congress> existingCongress = congressRepository.findOneByMeetingCode(congress.getMeetingCode());
@@ -106,21 +106,21 @@ public class CongressResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congresses")
-    public List<Congress> getAllCongresses() {
+    public List<Congress> getAll() {
         log.debug("REST request to get all Congresses");
         return congressRepository.findAllWithEagerRelationships();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/stripped-congresses")
-    public List<CongressVM> getAllStripedCongresses() {
+    public List<CongressVM> getAllStriped() {
         log.debug("REST request to get all stripped Congresses");
         return congressService.findAllCongresses();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congresses/{id}")
-    public ResponseEntity<Congress> getCongress(@PathVariable Long id) {
+    public ResponseEntity<Congress> getById(@PathVariable Long id) {
         log.debug("REST request to get Congress : {}", id);
         return congressRepository.findOneEagerlyById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -151,7 +151,7 @@ public class CongressResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/congresses/{id}")
-    public ResponseEntity<Void> deleteCongress(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete Congress : {}", id);
         try {
             final String meetingCode = congressService.getById(id).getMeetingCode();

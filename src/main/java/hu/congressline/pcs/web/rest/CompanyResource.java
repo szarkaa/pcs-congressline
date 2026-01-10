@@ -27,7 +27,7 @@ public class CompanyResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/company")
-    public ResponseEntity<Company> updateCompany(@Valid @RequestBody Company company) throws URISyntaxException {
+    public ResponseEntity<Company> update(@Valid @RequestBody Company company) throws URISyntaxException {
         log.debug("REST request to update Company : {}", company);
         final Company oldCompany = companyService.getCompanyProfile();
         company.setInvoiceNumber(oldCompany.getInvoiceNumber());
@@ -40,7 +40,7 @@ public class CompanyResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/company")
-    public ResponseEntity<Company> getTheCompanyProfile() {
+    public ResponseEntity<Company> getCompanyProfile() {
         log.debug("REST request to get the Company profile");
         return new ResponseEntity<>(companyService.getCompanyProfile(), HttpStatus.OK);
     }

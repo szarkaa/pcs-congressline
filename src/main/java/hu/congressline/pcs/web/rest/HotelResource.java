@@ -38,7 +38,7 @@ public class HotelResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/hotels")
-    public ResponseEntity<Hotel> createHotel(@Valid @RequestBody Hotel hotel) throws URISyntaxException {
+    public ResponseEntity<Hotel> create(@Valid @RequestBody Hotel hotel) throws URISyntaxException {
         log.debug("REST request to save Hotel : {}", hotel);
         if (hotel.getId() != null) {
             return ResponseEntity.badRequest()
@@ -58,10 +58,10 @@ public class HotelResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/hotels")
-    public ResponseEntity<Hotel> updateHotel(@Valid @RequestBody Hotel hotel) throws URISyntaxException {
+    public ResponseEntity<Hotel> update(@Valid @RequestBody Hotel hotel) throws URISyntaxException {
         log.debug("REST request to update Hotel : {}", hotel);
         if (hotel.getId() == null) {
-            return createHotel(hotel);
+            return create(hotel);
         }
 
         final Optional<Hotel> existingHotel = hotelRepository.findOneByCode(hotel.getCode());
@@ -79,14 +79,14 @@ public class HotelResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/hotels")
-    public List<Hotel> getAllHotels() {
+    public List<Hotel> getAll() {
         log.debug("REST request to get all Hotels");
         return hotelRepository.findAll();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/hotels/{id}")
-    public ResponseEntity<Hotel> getHotel(@PathVariable Long id) {
+    public ResponseEntity<Hotel> getById(@PathVariable Long id) {
         log.debug("REST request to get Hotel : {}", id);
         return hotelRepository.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -95,7 +95,7 @@ public class HotelResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/hotels/{id}")
-    public ResponseEntity<Void> deleteHotel(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete Hotel : {}", id);
         try {
             hotelRepository.deleteById(id);

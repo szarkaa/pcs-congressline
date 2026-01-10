@@ -51,7 +51,7 @@ public class UserResource {
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/users")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<?> createUser(@RequestBody ManagedUserVM managedUserVM, HttpServletRequest request) throws URISyntaxException {
+    public ResponseEntity<?> create(@RequestBody ManagedUserVM managedUserVM, HttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserVM);
 
         //Lowercase the user login before comparing with database
@@ -81,7 +81,7 @@ public class UserResource {
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/users")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<ManagedUserVM> updateUser(@RequestBody ManagedUserVM managedUserVM) {
+    public ResponseEntity<ManagedUserVM> update(@RequestBody ManagedUserVM managedUserVM) {
         log.debug("REST request to update User : {}", managedUserVM);
         Optional<User> existingUser = userRepository.findOneByEmail(managedUserVM.getEmail());
         if (existingUser.isPresent() && !existingUser.get().getId().equals(managedUserVM.getId())) {
@@ -104,7 +104,7 @@ public class UserResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/users")
-    public ResponseEntity<List<ManagedUserVM>> getAllUsers(Pageable pageable)
+    public ResponseEntity<List<ManagedUserVM>> getAll(Pageable pageable)
         throws URISyntaxException {
         Page<User> page = userService.findAllEagerly(pageable);
         List<ManagedUserVM> managedUserVMs = page.getContent().stream()
@@ -116,7 +116,7 @@ public class UserResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
-    public ResponseEntity<ManagedUserVM> getUser(@PathVariable String login) {
+    public ResponseEntity<ManagedUserVM> getByLogin(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
         return userService.getUserWithAuthoritiesByLogin(login)
                 .map(ManagedUserVM::new)
@@ -127,7 +127,7 @@ public class UserResource {
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<Void> deleteUser(@PathVariable String login) {
+    public ResponseEntity<Void> delete(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         try {
             userService.deleteUser(login);

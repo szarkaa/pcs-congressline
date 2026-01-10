@@ -36,7 +36,7 @@ public class RateResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/rates")
-    public ResponseEntity<Rate> createRate(@Valid @RequestBody Rate rate) throws URISyntaxException {
+    public ResponseEntity<Rate> create(@Valid @RequestBody Rate rate) throws URISyntaxException {
         log.debug("REST request to save Rate : {}", rate);
         if (rate.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new rate cannot already have an ID")).body(null);
@@ -54,11 +54,12 @@ public class RateResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/rates")
-    public ResponseEntity<Rate> updateRate(@Valid @RequestBody Rate rate) throws URISyntaxException {
+    public ResponseEntity<Rate> update(@Valid @RequestBody Rate rate) throws URISyntaxException {
         log.debug("REST request to update Rate : {}", rate);
         if (rate.getId() == null) {
-            return createRate(rate);
+            return create(rate);
         }
+
         Rate result = rateRepository.save(rate);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, rate.getId().toString()))
@@ -67,14 +68,14 @@ public class RateResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/rates")
-    public List<Rate> getAllRates() {
+    public List<Rate> getAll() {
         log.debug("REST request to get all Rates");
         return rateRepository.findAll();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/rates/{id}")
-    public ResponseEntity<Rate> getRate(@PathVariable Long id) {
+    public ResponseEntity<Rate> getById(@PathVariable Long id) {
         log.debug("REST request to get Rate : {}", id);
         return rateRepository.findById(id)
             .map(result -> new ResponseEntity<>(
@@ -85,7 +86,7 @@ public class RateResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/rates/current/{currency}")
-    public ResponseEntity<Rate> getCurrentRate(@PathVariable String currency) {
+    public ResponseEntity<Rate> getByCurrency(@PathVariable String currency) {
         log.debug("REST request to get Rate for currency: {}", currency);
         List<Rate> rates = rateRepository.getRates(currency);
         Rate rate = rates.stream().findFirst().orElse(null);
@@ -98,7 +99,7 @@ public class RateResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/rates/{validDate}/{currency}")
-    public ResponseEntity<Rate> getRateForDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate validDate, @PathVariable String currency) {
+    public ResponseEntity<Rate> getByDateAndCurrency(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate validDate, @PathVariable String currency) {
         log.debug("REST request to get Rate for currency for valid date: {}", currency);
         Optional<Rate> rate = rateRepository.findOneByCurrencyCurrencyAndValid(currency, validDate);
 
@@ -111,8 +112,7 @@ public class RateResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/rates/{id}")
-
-    public ResponseEntity<Void> deleteRate(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete Rate : {}", id);
         try {
             rateRepository.deleteById(id);

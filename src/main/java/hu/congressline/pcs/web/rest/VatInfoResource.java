@@ -35,7 +35,7 @@ public class VatInfoResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/vat-infos")
-    public ResponseEntity<VatInfo> createVatInfo(@Valid @RequestBody VatInfo vatInfo) throws URISyntaxException {
+    public ResponseEntity<VatInfo> create(@Valid @RequestBody VatInfo vatInfo) throws URISyntaxException {
         log.debug("REST request to save VatInfo : {}", vatInfo);
         if (vatInfo.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
@@ -49,10 +49,10 @@ public class VatInfoResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/vat-infos")
-    public ResponseEntity<VatInfo> updateVatInfo(@Valid @RequestBody VatInfo vatInfo) throws URISyntaxException {
+    public ResponseEntity<VatInfo> update(@Valid @RequestBody VatInfo vatInfo) throws URISyntaxException {
         log.debug("REST request to update VatInfo : {}", vatInfo);
         if (vatInfo.getId() == null) {
-            return createVatInfo(vatInfo);
+            return create(vatInfo);
         }
         VatInfo result = vatInfoService.save(vatInfo);
         return ResponseEntity.ok()
@@ -62,14 +62,14 @@ public class VatInfoResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/vat-infos")
-    public List<VatInfo> getAllVatInfos() {
+    public List<VatInfo> getAll() {
         log.debug("REST request to get all VatInfos");
         return vatInfoService.findAll();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/vat-infos/{id}")
-    public ResponseEntity<VatInfo> getVatInfo(@PathVariable Long id) {
+    public ResponseEntity<VatInfo> getById(@PathVariable Long id) {
         log.debug("REST request to get VatInfo : {}", id);
         return vatInfoService.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -78,28 +78,28 @@ public class VatInfoResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/vat-infos/congress/{id}")
-    public List<VatInfo> getAllVatInfosByCongressId(@PathVariable Long id) {
+    public List<VatInfo> getAllByCongressId(@PathVariable Long id) {
         log.debug("REST request to get all VatInfos by congress id");
         return vatInfoService.findAllByCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/vat-infos/all/congress/{id}")
-    public List<VatInfo> getAllVatInfosForCongressId(@PathVariable Long id) {
+    public List<VatInfo> getAllForCongressId(@PathVariable Long id) {
         log.debug("REST request to get all VatInfos for null congress and congress id");
         return vatInfoService.findAllForCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/vat-infos/all/congress/{id}/item-type/{itemType}")
-    public List<VatInfo> getAllVatInfosForCongressIdAndItemType(@PathVariable Long id, @PathVariable ChargeableItemType itemType) {
+    public List<VatInfo> getAllForCongressIdAndItemType(@PathVariable Long id, @PathVariable ChargeableItemType itemType) {
         log.debug("REST request to get all VatInfos for null congress and congress id and item type");
         return vatInfoService.findAllForCongressIdAndItemType(id, itemType);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/vat-infos/{id}")
-    public ResponseEntity<Void> deleteVatInfo(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete VatInfo : {}", id);
         try {
             vatInfoService.delete(id);

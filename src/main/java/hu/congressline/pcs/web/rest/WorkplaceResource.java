@@ -35,13 +35,14 @@ public class WorkplaceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/workplaces")
-    public ResponseEntity<Workplace> createWorkplace(@Valid @RequestBody Workplace workplace) throws URISyntaxException {
+    public ResponseEntity<Workplace> create(@Valid @RequestBody Workplace workplace) throws URISyntaxException {
         log.debug("REST request to save Workplace : {}", workplace);
         if (workplace.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
                 .createFailureAlert(ENTITY_NAME, "idexists", "A new workplace cannot already have an ID"))
                 .body(null);
         }
+
         Workplace result = workplaceService.save(workplace);
         return ResponseEntity.created(new URI("/api/workplaces/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -50,10 +51,10 @@ public class WorkplaceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/workplaces")
-    public ResponseEntity<Workplace> updateWorkplace(@Valid @RequestBody Workplace workplace) throws URISyntaxException {
+    public ResponseEntity<Workplace> update(@Valid @RequestBody Workplace workplace) throws URISyntaxException {
         log.debug("REST request to update Workplace : {}", workplace);
         if (workplace.getId() == null) {
-            return createWorkplace(workplace);
+            return create(workplace);
         }
         Workplace result = workplaceService.save(workplace);
         return ResponseEntity.ok()
@@ -62,18 +63,20 @@ public class WorkplaceResource {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/workplaces/congress/{id}")
-    public List<Workplace> getAllWorkplaces(@PathVariable Long id) {
-        log.debug("REST request to get all Workplaces by congress id: {}", id);
-        return workplaceService.findByCongressId(id);
+    @GetMapping("/workplaces/congress/{congressId}")
+    public List<Workplace> getAllOnlyByCongressId(@PathVariable Long congressId) {
+        log.debug("REST request to get all Workplaces by congress id: {}", congressId);
+        return workplaceService.findByCongressId(congressId);
     }
 
+    /*
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/workplaces")
-    public List<Workplace> getAllWorkplacesByCongressId() {
+    public List<Workplace> getAll() {
         log.debug("REST request to get all Workplaces");
         return workplaceService.findAll();
     }
+    */
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/workplaces/all/congress/{id}")
@@ -84,7 +87,7 @@ public class WorkplaceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/workplaces/{id}")
-    public ResponseEntity<Workplace> getWorkplace(@PathVariable Long id) {
+    public ResponseEntity<Workplace> getById(@PathVariable Long id) {
         log.debug("REST request to get Workplace : {}", id);
         return workplaceService.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -93,7 +96,7 @@ public class WorkplaceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/workplaces/{id}")
-    public ResponseEntity<Void> deleteWorkplace(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete Workplace : {}", id);
         try {
             workplaceService.delete(id);
@@ -106,7 +109,7 @@ public class WorkplaceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/workplaces/merge")
-    public ResponseEntity<Void> mergeWorkplaces(@Valid @RequestBody WorkplaceMergeDTO workplaceMergeDTO) {
+    public ResponseEntity<Void> merge(@Valid @RequestBody WorkplaceMergeDTO workplaceMergeDTO) {
         log.debug("REST request to merge Workplace id : {}", workplaceMergeDTO.getWorkplaceId());
         workplaceService.merge(workplaceMergeDTO.getWorkplaceId(), workplaceMergeDTO.getMergingWorkplaceIdList());
         return ResponseEntity.ok().headers(HeaderUtil.createAlert("pcsApp.workplace.merged", workplaceMergeDTO.getWorkplaceId().toString())).build();

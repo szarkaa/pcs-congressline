@@ -34,7 +34,7 @@ public class OptionalTextResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/optional-texts")
-    public ResponseEntity<OptionalText> createOptionalText(@Valid @RequestBody OptionalText optionalText) throws URISyntaxException {
+    public ResponseEntity<OptionalText> create(@Valid @RequestBody OptionalText optionalText) throws URISyntaxException {
         log.debug("REST request to save OptionalText : {}", optionalText);
         if (optionalText.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
@@ -49,34 +49,37 @@ public class OptionalTextResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/optional-texts")
-    public ResponseEntity<OptionalText> updateOptionalText(@Valid @RequestBody OptionalText optionalText) throws URISyntaxException {
+    public ResponseEntity<OptionalText> update(@Valid @RequestBody OptionalText optionalText) throws URISyntaxException {
         log.debug("REST request to update OptionalText : {}", optionalText);
         if (optionalText.getId() == null) {
-            return createOptionalText(optionalText);
+            return create(optionalText);
         }
+
         OptionalText result = optionalTextRepository.save(optionalText);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, optionalText.getId().toString()))
             .body(result);
     }
 
+    /*
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-texts")
     public List<OptionalText> getAllOptionalTexts() {
         log.debug("REST request to get all OptionalTexts");
         return optionalTextRepository.findAll();
     }
+    */
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-texts/congress/{id}")
-    public List<OptionalText> getAllOptionalTextsByCongress(@PathVariable Long id) {
+    public List<OptionalText> getAllByCongressId(@PathVariable Long id) {
         log.debug("REST request to get all OptionalTexts by congress id: {}", id);
         return optionalTextRepository.findAllByCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-texts/{id}")
-    public ResponseEntity<OptionalText> getOptionalText(@PathVariable Long id) {
+    public ResponseEntity<OptionalText> getById(@PathVariable Long id) {
         log.debug("REST request to get OptionalText : {}", id);
         return optionalTextRepository.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -85,7 +88,7 @@ public class OptionalTextResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/optional-texts/{id}")
-    public ResponseEntity<Void> deleteOptionalText(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete OptionalText : {}", id);
         try {
             optionalTextRepository.deleteById(id);

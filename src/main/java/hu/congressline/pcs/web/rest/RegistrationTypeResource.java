@@ -37,7 +37,7 @@ public class RegistrationTypeResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/registration-types")
-    public ResponseEntity<RegistrationType> createRegistrationType(@Valid @RequestBody RegistrationType registrationType) throws URISyntaxException {
+    public ResponseEntity<RegistrationType> create(@Valid @RequestBody RegistrationType registrationType) throws URISyntaxException {
         log.debug("REST request to save RegistrationType : {}", registrationType);
         if (registrationType.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
@@ -57,16 +57,17 @@ public class RegistrationTypeResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/registration-types")
-    public ResponseEntity<RegistrationType> updateRegistrationType(@Valid @RequestBody RegistrationType registrationType) throws URISyntaxException {
+    public ResponseEntity<RegistrationType> update(@Valid @RequestBody RegistrationType registrationType) throws URISyntaxException {
         log.debug("REST request to update RegistrationType : {}", registrationType);
         if (registrationType.getId() == null) {
-            return createRegistrationType(registrationType);
+            return create(registrationType);
         }
+
         final Optional<RegistrationType> existingRegType = service.findOneByCode(registrationType.getCode(), registrationType.getCongress().getId());
         if (existingRegType.isPresent() && !existingRegType.get().getId().equals(registrationType.getId())) {
             return ResponseEntity.badRequest()
-                    .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, REGTYPE_CODE_EXISTS, REGTYPE_CODE_EXISTS_MSG))
-                    .body(null);
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, REGTYPE_CODE_EXISTS, REGTYPE_CODE_EXISTS_MSG))
+                .body(null);
         }
 
         RegistrationType result = service.save(registrationType);
@@ -77,14 +78,14 @@ public class RegistrationTypeResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registration-types/congress/{id}")
-    public List<RegistrationType> getAllRegistrationTypesByCongressId(@PathVariable Long id) {
+    public List<RegistrationType> getAllByCongressId(@PathVariable Long id) {
         log.debug("REST request to get all RegistrationTypes by congress id: {}", id);
         return service.findByCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registration-types/{id}")
-    public ResponseEntity<RegistrationType> getRegistrationType(@PathVariable Long id) {
+    public ResponseEntity<RegistrationType> getById(@PathVariable Long id) {
         log.debug("REST request to get RegistrationType : {}", id);
         return service.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -93,7 +94,7 @@ public class RegistrationTypeResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/registration-types/{id}")
-    public ResponseEntity<Void> deleteRegistrationType(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete RegistrationType : {}", id);
         try {
             service.delete(id);

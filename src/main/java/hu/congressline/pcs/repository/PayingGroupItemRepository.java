@@ -14,4 +14,6 @@ public interface PayingGroupItemRepository extends JpaRepository<PayingGroupItem
     List<PayingGroupItem> findAllByPayingGroupId(Long id);
 
     void deleteAllByPayingGroupId(Long id);
+
+    PayingGroupItem findByid(Long id);
 }

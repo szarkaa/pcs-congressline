@@ -40,7 +40,7 @@ public class OrderedOptionalServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/ordered-optional-services")
-    public ResponseEntity<OrderedOptionalService> createOrderedOptionalService(@Valid @RequestBody OrderedOptionalService orderedOptionalService) throws URISyntaxException {
+    public ResponseEntity<OrderedOptionalService> create(@Valid @RequestBody OrderedOptionalService orderedOptionalService) throws URISyntaxException {
         log.debug("REST request to save OrderedOptionalService : {}", orderedOptionalService);
         if (orderedOptionalService.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
@@ -55,11 +55,12 @@ public class OrderedOptionalServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/ordered-optional-services")
-    public ResponseEntity<OrderedOptionalService> updateOrderedOptionalService(@Valid @RequestBody OrderedOptionalService orderedOptionalService) throws URISyntaxException {
+    public ResponseEntity<OrderedOptionalService> update(@Valid @RequestBody OrderedOptionalService orderedOptionalService) throws URISyntaxException {
         log.debug("REST request to update OrderedOptionalService : {}", orderedOptionalService);
         if (orderedOptionalService.getId() == null) {
-            return createOrderedOptionalService(orderedOptionalService);
+            return create(orderedOptionalService);
         }
+
         OrderedOptionalService result = service.save(orderedOptionalService);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, orderedOptionalService.getId().toString()))
@@ -68,14 +69,14 @@ public class OrderedOptionalServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/{id}/ordered-optional-services")
-    public List<OrderedOptionalService> getAllOrderedOptionalServicesByRegistrationId(@PathVariable Long id) {
+    public List<OrderedOptionalService> getAllByRegistrationId(@PathVariable Long id) {
         log.debug("REST request to get all OrderedOptionalServices by registration id: {}", id);
         return service.findAllByRegistrationId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/{id}/ordered-optional-service-vms")
-    public List<OrderedOptionalServiceVM> getAllOrderedOptionalServiceVMsByRegistrationId(@PathVariable Long id) {
+    public List<OrderedOptionalServiceVM> getAllVMsByRegistrationId(@PathVariable Long id) {
         log.debug("REST request to get all OrderedOptionalServiceVMs by registration id: {}", id);
         return service.findAllByRegistrationId(id).stream().map(oos -> {
             OrderedOptionalServiceVM vm = new OrderedOptionalServiceVM(oos);
@@ -86,7 +87,7 @@ public class OrderedOptionalServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/ordered-optional-services/{id}")
-    public ResponseEntity<OrderedOptionalService> getOrderedOptionalService(@PathVariable Long id) {
+    public ResponseEntity<OrderedOptionalService> getById(@PathVariable Long id) {
         log.debug("REST request to get OrderedOptionalService : {}", id);
         return service.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -95,7 +96,7 @@ public class OrderedOptionalServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/ordered-optional-services/{id}")
-    public ResponseEntity<Void> deleteOrderedOptionalService(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete OrderedOptionalService : {}", id);
         try {
             service.delete(id);

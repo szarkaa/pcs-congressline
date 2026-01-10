@@ -37,7 +37,7 @@ public class OptionalServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/optional-services")
-    public ResponseEntity<OptionalService> createOptionalService(@Valid @RequestBody OptionalService optionalService) throws URISyntaxException {
+    public ResponseEntity<OptionalService> create(@Valid @RequestBody OptionalService optionalService) throws URISyntaxException {
         log.debug("REST request to save OptionalService : {}", optionalService);
         if (optionalService.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
@@ -57,10 +57,10 @@ public class OptionalServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/optional-services")
-    public ResponseEntity<OptionalService> updateOptionalService(@Valid @RequestBody OptionalService optionalService) throws URISyntaxException {
+    public ResponseEntity<OptionalService> update(@Valid @RequestBody OptionalService optionalService) throws URISyntaxException {
         log.debug("REST request to update OptionalService : {}", optionalService);
         if (optionalService.getId() == null) {
-            return createOptionalService(optionalService);
+            return create(optionalService);
         }
         final Optional<OptionalService> existingRegType = repository.findOneByCodeAndCongressId(optionalService.getCode(), optionalService.getCongress().getId());
         if (existingRegType.isPresent() && !existingRegType.get().getId().equals(optionalService.getId())) {
@@ -75,24 +75,25 @@ public class OptionalServiceResource {
             .body(result);
     }
 
+    /*
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-services")
-    public List<OptionalService> getAllOptionalServices() {
+    public List<OptionalService> getAll() {
         log.debug("REST request to get all OptionalServices");
-        List<OptionalService> optionalServices = repository.findAll();
-        return optionalServices;
+        return repository.findAll();
     }
+    */
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-services/congress/{id}")
-    public List<OptionalService> getAllOptionalServicesByCongressId(@PathVariable Long id) {
+    public List<OptionalService> getAllByCongressId(@PathVariable Long id) {
         log.debug("REST request to get all OptionalServices by congress id: {}", id);
         return repository.findByCongressIdOrderByName(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-services/{id}")
-    public ResponseEntity<OptionalService> getOptionalService(@PathVariable Long id) {
+    public ResponseEntity<OptionalService> getById(@PathVariable Long id) {
         log.debug("REST request to get OptionalService : {}", id);
         return repository.findById(id)
             .map(result -> new ResponseEntity<>(
@@ -103,7 +104,7 @@ public class OptionalServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/optional-services/{id}")
-    public ResponseEntity<Void> deleteOptionalService(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete OptionalService : {}", id);
         try {
             repository.deleteById(id);

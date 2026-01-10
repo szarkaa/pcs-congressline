@@ -34,7 +34,7 @@ public class MiscServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/misc-services")
-    public ResponseEntity<MiscService> createMiscService(@Valid @RequestBody MiscService miscService) throws URISyntaxException {
+    public ResponseEntity<MiscService> create(@Valid @RequestBody MiscService miscService) throws URISyntaxException {
         log.debug("REST request to save MiscService : {}", miscService);
         if (miscService.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
@@ -48,10 +48,10 @@ public class MiscServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/misc-services")
-    public ResponseEntity<MiscService> updateMiscService(@Valid @RequestBody MiscService miscService) throws URISyntaxException {
+    public ResponseEntity<MiscService> update(@Valid @RequestBody MiscService miscService) throws URISyntaxException {
         log.debug("REST request to update MiscService : {}", miscService);
         if (miscService.getId() == null) {
-            return createMiscService(miscService);
+            return create(miscService);
         }
         MiscService result = miscServiceRepository.save(miscService);
         return ResponseEntity.ok()
@@ -59,24 +59,25 @@ public class MiscServiceResource {
             .body(result);
     }
 
+    /*
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/misc-services")
     public List<MiscService> getAllMiscServices() {
         log.debug("REST request to get all MiscServices");
-        List<MiscService> miscServices = miscServiceRepository.findAll();
-        return miscServices;
+        return miscServiceRepository.findAll();
     }
+    */
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/misc-services/congress/{id}")
-    public List<MiscService> getAllMiscServicesByCongressId(@PathVariable Long id) {
+    public List<MiscService> getAllByCongressId(@PathVariable Long id) {
         log.debug("REST request to get all MiscServices by congress id: {}", id);
         return miscServiceRepository.findByCongressIdOrderByName(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/misc-services/{id}")
-    public ResponseEntity<MiscService> getMiscService(@PathVariable Long id) {
+    public ResponseEntity<MiscService> getById(@PathVariable Long id) {
         log.debug("REST request to get MiscService : {}", id);
         return miscServiceRepository.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -85,7 +86,7 @@ public class MiscServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/misc-services/{id}")
-    public ResponseEntity<Void> deleteMiscService(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete MiscService : {}", id);
         try {
             miscServiceRepository.deleteById(id);

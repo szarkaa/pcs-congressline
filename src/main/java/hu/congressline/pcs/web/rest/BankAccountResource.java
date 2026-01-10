@@ -37,7 +37,7 @@ public class BankAccountResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/bank-accounts")
-    public ResponseEntity<BankAccount> createBankAccount(@Valid @RequestBody BankAccount bankAccount) throws URISyntaxException {
+    public ResponseEntity<BankAccount> create(@Valid @RequestBody BankAccount bankAccount) throws URISyntaxException {
         log.debug("REST request to save BankAccount : {}", bankAccount);
         if (bankAccount.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new bankAccount cannot already have an ID")).body(null);
@@ -50,10 +50,10 @@ public class BankAccountResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/bank-accounts")
-    public ResponseEntity<BankAccount> updateBankAccount(@Valid @RequestBody BankAccount bankAccount) throws URISyntaxException {
+    public ResponseEntity<BankAccount> update(@Valid @RequestBody BankAccount bankAccount) throws URISyntaxException {
         log.debug("REST request to update BankAccount : {}", bankAccount);
         if (bankAccount.getId() == null) {
-            return createBankAccount(bankAccount);
+            return create(bankAccount);
         }
         BankAccount result = bankAccountRepository.save(bankAccount);
         return ResponseEntity.ok()
@@ -70,14 +70,14 @@ public class BankAccountResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/{congressId}/{currency}/bank-accounts")
-    public Set<BankAccount> getAllBankAccountsByRegistrationId(@PathVariable Long congressId, @PathVariable String currency) {
+    public Set<BankAccount> getAllByRegistrationId(@PathVariable Long congressId, @PathVariable String currency) {
         log.debug("REST request to get all BankAccounts by congress id: {}, and currency: {}", congressId, currency);
         return registrationService.findBankAccountsByCongressAndCurrency(congressId, currency);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/bank-accounts/{id}")
-    public ResponseEntity<BankAccount> getBankAccount(@PathVariable Long id) {
+    public ResponseEntity<BankAccount> getById(@PathVariable Long id) {
         log.debug("REST request to get BankAccount : {}", id);
         return bankAccountRepository.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -86,7 +86,7 @@ public class BankAccountResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/bank-accounts/{id}")
-    public ResponseEntity<Void> deleteBankAccount(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete BankAccount : {}", id);
         try {
             bankAccountRepository.deleteById(id);

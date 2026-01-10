@@ -36,7 +36,7 @@ public class CurrencyResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/currencies")
-    public ResponseEntity<Currency> createCurrency(@Valid @RequestBody Currency currency) throws URISyntaxException {
+    public ResponseEntity<Currency> create(@Valid @RequestBody Currency currency) throws URISyntaxException {
         log.debug("REST request to save Currency : {}", currency);
         currency.setCurrency(currency.getCurrency().toUpperCase());
 
@@ -58,12 +58,12 @@ public class CurrencyResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/currencies")
-    public ResponseEntity<Currency> updateCurrency(@Valid @RequestBody Currency currency) throws URISyntaxException {
+    public ResponseEntity<Currency> update(@Valid @RequestBody Currency currency) throws URISyntaxException {
         log.debug("REST request to update Currency : {}", currency);
         currency.setCurrency(currency.getCurrency().toUpperCase());
 
         if (currency.getId() == null) {
-            return createCurrency(currency);
+            return create(currency);
         }
 
         final Optional<Currency> existingCurrency = currencyRepository.findOneByCurrencyIgnoreCaseAndIdNot(currency.getCurrency(), currency.getId());
@@ -81,14 +81,14 @@ public class CurrencyResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/currencies")
-    public List<Currency> getAllCurrencies() {
+    public List<Currency> getAll() {
         log.debug("REST request to get all Currencies");
         return currencyRepository.findAll();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/currencies/{id}")
-    public ResponseEntity<Currency> getCurrency(@PathVariable Long id) {
+    public ResponseEntity<Currency> getById(@PathVariable Long id) {
         log.debug("REST request to get Currency : {}", id);
         return currencyRepository.findById(id)
             .map(result -> new ResponseEntity<>(
@@ -99,7 +99,7 @@ public class CurrencyResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/currencies/{id}")
-    public ResponseEntity<Void> deleteCurrency(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete Currency : {}", id);
         try {
             currencyRepository.deleteById(id);

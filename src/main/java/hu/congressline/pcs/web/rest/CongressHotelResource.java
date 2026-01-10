@@ -34,7 +34,7 @@ public class CongressHotelResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/congress-hotels")
-    public ResponseEntity<CongressHotel> createCongressHotel(@RequestBody CongressHotel congressHotel) throws URISyntaxException {
+    public ResponseEntity<CongressHotel> create(@RequestBody CongressHotel congressHotel) throws URISyntaxException {
         log.debug("REST request to save CongressHotel : {}", congressHotel);
         if (congressHotel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
@@ -52,10 +52,10 @@ public class CongressHotelResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/congress-hotels")
-    public ResponseEntity<CongressHotel> updateCongressHotel(@RequestBody CongressHotel congressHotel) throws URISyntaxException {
+    public ResponseEntity<CongressHotel> update(@RequestBody CongressHotel congressHotel) throws URISyntaxException {
         log.debug("REST request to update CongressHotel : {}", congressHotel);
         if (congressHotel.getId() == null) {
-            return createCongressHotel(congressHotel);
+            return create(congressHotel);
         }
         CongressHotel result = congressHotelRepository.save(congressHotel);
         return ResponseEntity.ok()
@@ -63,24 +63,25 @@ public class CongressHotelResource {
             .body(result);
     }
 
+    /*
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congress-hotels")
     public List<CongressHotel> getAllCongressHotels() {
         log.debug("REST request to get all CongressHotels");
-        List<CongressHotel> congressHotels = congressHotelRepository.findAll();
-        return congressHotels;
+        return congressHotelRepository.findAll();
     }
+    */
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congress-hotels/congress/{id}")
-    public List<CongressHotel> getAllCongressHotelsByCongressId(@PathVariable Long id) {
+    public List<CongressHotel> getAllByCongressId(@PathVariable Long id) {
         log.debug("REST request to get all CongressHotels by congress id: {}", id);
         return congressHotelRepository.findByCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congress-hotels/{id}")
-    public ResponseEntity<CongressHotel> getCongressHotel(@PathVariable Long id) {
+    public ResponseEntity<CongressHotel> getById(@PathVariable Long id) {
         log.debug("REST request to get CongressHotel : {}", id);
         return congressHotelRepository.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
@@ -89,7 +90,7 @@ public class CongressHotelResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/congress-hotels/{id}")
-    public ResponseEntity<Void> deleteCongressHotel(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete CongressHotel : {}", id);
         try {
             CongressHotel congressHotel = congressHotelRepository.findById(id)

@@ -48,7 +48,7 @@ public class RoomResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/rooms")
-    public ResponseEntity<Room> createRoom(@Valid @RequestBody Room room) throws URISyntaxException {
+    public ResponseEntity<Room> create(@Valid @RequestBody Room room) throws URISyntaxException {
         log.debug("REST request to save Room : {}", room);
         final CongressHotel congressHotel = congressHotelRepository.findById(room.getCongressHotel().getId())
             .orElseThrow(() -> new IllegalArgumentException(CONGRESS_HOTEL_NOT_FOUND + room.getCongressHotel().getId()));
@@ -71,13 +71,13 @@ public class RoomResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/rooms")
-    public ResponseEntity<Room> updateRoom(@Valid @RequestBody Room room) throws URISyntaxException {
+    public ResponseEntity<Room> update(@Valid @RequestBody Room room) throws URISyntaxException {
         log.debug("REST request to update Room : {}", room);
         final CongressHotel congressHotel = congressHotelRepository.findById(room.getCongressHotel().getId())
             .orElseThrow(() -> new IllegalArgumentException(CONGRESS_HOTEL_NOT_FOUND + room.getCongressHotel().getId()));
 
         if (room.getId() == null) {
-            return createRoom(room);
+            return create(room);
         } else if (roomRepository.findOneByRoomTypeAndCongressHotelIdAndIdNot(room.getRoomType(), congressHotel.getId(), room.getId()).isPresent()) {
             return ResponseEntity.badRequest()
                     .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, ROOM_TYPE_EXISTS, ROOM_TYPE_EXISTS_MSG))
@@ -90,16 +90,18 @@ public class RoomResource {
             .body(result);
     }
 
+    /*
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/rooms")
-    public List<RoomDTO> getAllRooms() {
+    public List<RoomDTO> getAll() {
         log.debug("REST request to get all Rooms");
         return roomRepository.findAll().stream().map(RoomDTO::new).collect(Collectors.toList());
     }
+    */
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congress-hotel/{id}/rooms")
-    public List<RoomDTO> getAllRoomsByCongressHotelId(@PathVariable Long id) {
+    public List<RoomDTO> getAllByCongressHotelId(@PathVariable Long id) {
         log.debug("REST request to get all Rooms by congressHotel id: {}", id);
         final List<Room> roomList = roomRepository.findAllByCongressHotelId(id);
         final List<RoomDTO> roomDTOList = roomList.stream().map(RoomDTO::new).collect(Collectors.toList());
@@ -114,7 +116,7 @@ public class RoomResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congress/{id}/rooms")
-    public List<RoomDTO> getAllRoomsByCongressId(@PathVariable Long id) {
+    public List<RoomDTO> getAllByCongressId(@PathVariable Long id) {
         log.debug("REST request to get all Rooms by congress id: {}", id);
         final List<Room> roomList = roomRepository.findAllByCongressHotelCongressId(id);
         final List<RoomDTO> roomDTOList = roomList.stream().map(RoomDTO::new).collect(Collectors.toList());
@@ -128,7 +130,7 @@ public class RoomResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/rooms/{id}")
-    public ResponseEntity<RoomDTO> getRoom(@PathVariable Long id) {
+    public ResponseEntity<RoomDTO> getById(@PathVariable Long id) {
         log.debug("REST request to get Room : {}", id);
         return roomRepository.findById(id)
             .map(r -> {
@@ -143,7 +145,7 @@ public class RoomResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/rooms/{id}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long id) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.debug("REST request to delete Room : {}", id);
         try {
             roomService.delete(id);

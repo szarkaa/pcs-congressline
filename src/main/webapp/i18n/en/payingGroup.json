@@ -2,16 +2,16 @@
     "pcsApp": {
         "payingGroup" : {
             "home": {
-                "title": "Paying groups",
-                "createLabel": "Create a new Paying group",
-                "createOrEditLabel": "Create or edit a Paying group",
-                "search": "Search for Paying group"
+                "title": "Group registrations",
+                "createLabel": "Create a new group registration",
+                "createOrEditLabel": "Create or edit a group registration",
+                "search": "Search for group registration"
             },
-            "created": "A new PayingGroup is created with identifier {{ param }}",
-            "updated": "A PayingGroup is updated with identifier {{ param }}",
-            "deleted": "A PayingGroup is deleted with identifier {{ param }}",
+            "created": "A new group registration has been created successfully",
+            "updated": "A group registration has been updated successfully",
+            "deleted": "A group registration has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Paying group {{ id }}?"
+                "question": "Are you sure you want to delete group registration {{ name }}?"
             },
             "detail": {
                 "title": "Paying group"
