@@ -4,15 +4,15 @@
             "home": {
                 "title": "Rooms",
                 "listTitle": "Rooms for {{ hotelName }}",
-                "createLabel": "Create a new Room",
+                "createLabel": "Create a new room",
                 "createOrEditLabel": "Create or edit a room for {{ name }}",
-                "search": "Search for Room"
+                "search": "Search for room"
             },
-            "created": "A new Room is created with identifier {{ param }}",
-            "updated": "A Room is updated with identifier {{ param }}",
-            "deleted": "A Room is deleted with identifier {{ param }}",
+            "created": "A new room has been created successfully",
+            "updated": "A room has been updated successfully",
+            "deleted": "A room has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Room {{ id }}?"
+                "question": "Are you sure you want to delete room {{ roomType }}?"
             },
             "detail": {
                 "title": "Room"

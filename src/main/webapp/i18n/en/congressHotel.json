@@ -2,16 +2,16 @@
     "pcsApp": {
         "congressHotel" : {
             "home": {
-                "title": "Selected Hotels",
-                "createLabel": "Create a new Selected Hotel",
-                "createOrEditLabel": "Create or edit a Selected Hotel",
-                "search": "Search for Selected Hotel"
+                "title": "Selected hotels",
+                "createLabel": "Create a new selected hotel",
+                "createOrEditLabel": "Create or edit a selected hotel",
+                "search": "Search for selected hotel"
             },
             "created": "A hotel is selected to the congress with hotel code: {{ param }}",
-            "updated": "A Selected Hotel is updated with identifier {{ param }}",
+            "updated": "A selected hotel is updated with hotel code {{ param }}",
             "deleted": "A hotel is deselected from the congress with hotel code: {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete a Selected Hotel {{ id }}?"
+                "question": "Are you sure you want to delete a selected Hotel {{ id }}?"
             },
             "selectHotel": {
                 "title": "Hotel Selection"
