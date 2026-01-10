@@ -3,15 +3,15 @@
         "registrationRegistrationType" : {
             "home": {
                 "title": "Registration types",
-                "createLabel": "Create a new Registration type",
-                "createOrEditLabel": "Create or edit a Registration type",
-                "search": "Search for Registration type"
+                "createLabel": "Create a new registration type",
+                "createOrEditLabel": "Create or edit a registration type",
+                "search": "Search for registration type"
             },
-            "created": "A new Registration type is created with identifier {{ param }}",
-            "updated": "A Registration type is updated with identifier {{ param }}",
-            "deleted": "A Registration type is deleted with identifier {{ param }}",
+            "created": "A new registration type has been added successfully",
+            "updated": "A registration type has been updated successfully",
+            "deleted": "A registration type has been removed successfully",
             "delete": {
-                "question": "Are you sure you want to delete Registration type {{ id }}?"
+                "question": "Are you sure you want to remove registration type {{ name }}?"
             },
             "detail": {
                 "title": "Registration type"

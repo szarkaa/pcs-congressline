@@ -53,6 +53,7 @@
     <include file="/config/liquibase/changelog/2025-12-13-create-misc_invoice_item.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-chargeable_item_invoice_history.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-charged_service_invoice_history.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2025-12-13-create-group_discount_invoice_history.xml" relativeToChangelogFile="false"/>
 
     <include file="/config/liquibase/changelog/2025-12-13-create-payment_transaction.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2025-12-13-create-payment_refund_transaction.xml" relativeToChangelogFile="false"/>

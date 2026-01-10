@@ -166,7 +166,7 @@
                         <tbody>
                         <tr ng-repeat="rrt in vm.registrationRegistrationTypes track by rrt.id">
                             <td>{{rrt.registrationTypeName}}</td>
-                            <td>{{rrt.chargeableItemPrice + ' ' + rrt.chargeableItemCurrency}}</td>
+                            <td>{{rrt.regFee + ' ' + rrt.currency}}</td>
                             <td>{{ vm.displayRRTAccPeople(rrt) }}</td>
                             <td>{{rrt.payingGroupName}}</td>
                             <td>
@@ -259,8 +259,8 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="oos in vm.orderedOptionalServices track by oos.id">
-                            <td>{{oos.chargeableItemName}}</td>
-                            <td>{{oos.chargeableItemPrice + ' ' + oos.chargeableItemCurrency}}</td>
+                            <td>{{oos.optionalServiceName}}</td>
+                            <td>{{oos.price + ' ' + oos.currency}}</td>
                             <td>{{oos.participant}}</td>
                             <td>{{oos.payingGroupName}}</td>
                             <td>

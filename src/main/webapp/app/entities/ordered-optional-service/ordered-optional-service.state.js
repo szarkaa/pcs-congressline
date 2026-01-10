@@ -49,7 +49,7 @@
                                     createdDate: null,
                                     id: null,
                                     registration: {id: registration.id},
-                                    '@class': 'hu.pcs.domain.OrderedOptionalService'
+                                    '@class': 'hu.congressline.pcs.domain.OrderedOptionalService'
                                 };
                             },
                             registrationCurrency: function () {

@@ -52,7 +52,7 @@
                                 payingGroupItemId: null,
                                 id: null,
                                 registrationId: registration.id,
-                                '@class': 'hu.pcs.domain.RoomReservation'
+                                '@class': 'hu.congressline.pcs.domain.RoomReservation'
                             };
                         },
                         registrationCurrency: function () {

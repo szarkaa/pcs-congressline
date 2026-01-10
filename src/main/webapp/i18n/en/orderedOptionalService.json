@@ -3,15 +3,15 @@
         "orderedOptionalService" : {
             "home": {
                 "title": "Optional services",
-                "createLabel": "Create a new Optional service",
-                "createOrEditLabel": "Create or edit a Optional service",
-                "search": "Search for Optional service"
+                "createLabel": "Order a new optional service",
+                "createOrEditLabel": "Order or edit an optional service",
+                "search": "Search for optional service"
             },
-            "created": "A new Optional service is created with identifier {{ param }}",
-            "updated": "A Optional service is updated with identifier {{ param }}",
-            "deleted": "A Optional service is deleted with identifier {{ param }}",
+            "created": "A new optional service has been ordered successfully",
+            "updated": "An ordered optional service has been updated successfully",
+            "deleted": "An ordered optional service has been removed successfully",
             "delete": {
-                "question": "Are you sure you want to delete Optional service {{ id }}?"
+                "question": "Are you sure you want to remove optional service {{ name }}?"
             },
             "detail": {
                 "title": "Optional service"

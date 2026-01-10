@@ -36,7 +36,7 @@
             if (vm.chargedService.paymentType == 'HOTEL') {
                 vm.chargedService.chargeableItem = {
                     id: vm.chargedService.chargeableItem.id,
-                    '@class': 'hu.pcs.domain.RoomReservationRegistration'
+                    '@class': 'hu.congressline..pcs.domain.RoomReservationRegistration'
                 };
             }
 

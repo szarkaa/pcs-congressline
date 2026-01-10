@@ -52,7 +52,7 @@
                                     accPeople: null,
                                     id: null,
                                     registration: registration,
-                                    '@class': 'hu.pcs.domain.RegistrationRegistrationType'
+                                    '@class': 'hu.congressline.pcs.domain.RegistrationRegistrationType'
                                 };
                             },
                             registrationCurrency: function () {

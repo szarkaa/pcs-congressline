@@ -4,15 +4,15 @@
             "home": {
                 "title": "Registrations",
                 "uploadTitle": "Registration upload",
-                "createLabel": "Create a new Registration",
-                "createOrEditLabel": "Create or edit a Registration",
-                "search": "Search for Registration"
+                "createLabel": "Create a new registration",
+                "createOrEditLabel": "Create or edit a registration",
+                "search": "Search for registration"
             },
-            "created": "A new Registration is created with reg id: {{ param }}",
-            "updated": "A Registration is updated with reg id: {{ param }}",
-            "deleted": "A Registration is deleted with reg id: {{ param }}",
+            "created": "A new registration has been created with reg id: {{ param }}",
+            "updated": "A registration has been updated with reg id: {{ param }}",
+            "deleted": "A registration has been deleted with reg id: {{ param }}",
             "delete": {
-                "question": "Are you sure you want to delete Registration {{ id }}?"
+                "question": "Are you sure you want to delete registration {{ regId }}?"
             },
             "detail": {
                 "title": "Registration"

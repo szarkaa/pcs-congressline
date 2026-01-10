@@ -3,16 +3,16 @@
         "roomReservation" : {
             "home": {
                 "title": "Room reservations",
-                "createLabel": "Create a new Room reservation",
-                "createSharedLabel": "Create a new Shared Room reservation",
-                "createOrEditLabel": "Create or edit a Room reservation",
-                "search": "Search for Room reservation"
+                "createLabel": "Create a new room reservation",
+                "createSharedLabel": "Create a new shared room reservation",
+                "createOrEditLabel": "Create or edit a room reservation",
+                "search": "Search for room reservation"
             },
-            "created": "A new Room reservation is created with identifier {{ param }}",
-            "updated": "A Room reservation is updated with identifier {{ param }}",
-            "deleted": "A Room reservation is deleted with identifier {{ param }}",
+            "created": "A new room reservation has been created successfully",
+            "updated": "A room reservation has been updated successfully",
+            "deleted": "A room reservation has been removed successfully",
             "delete": {
-                "question": "Are you sure you want to delete Room reservation {{ id }}?"
+                "question": "Are you sure you want to remove room reservation #{{ id }}?"
             },
             "detail": {
                 "title": "Room reservation"
