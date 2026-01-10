@@ -5,9 +5,9 @@
         .module('pcsApp')
         .controller('PayingGroupItemDialogController', PayingGroupItemDialogController);
 
-    PayingGroupItemDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'PayingGroupItem', 'PayingGroup'];
+    PayingGroupItemDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'PayingGroupItem'];
 
-    function PayingGroupItemDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, PayingGroupItem, PayingGroup) {
+    function PayingGroupItemDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, PayingGroupItem) {
         var vm = this;
 
         vm.payingGroupItem = entity;
@@ -18,7 +18,6 @@
         vm.clearOtherFields = clearOtherFields;
         vm.isHotelDateDiscountVisible = isHotelDateDiscountVisible;
         vm.isFieldRequired = isFieldRequired;
-        vm.payinggroups = PayingGroup.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(0)>input').focus();

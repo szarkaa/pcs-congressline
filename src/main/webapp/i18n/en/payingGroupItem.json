@@ -2,19 +2,19 @@
     "pcsApp": {
         "payingGroupItem" : {
             "home": {
-                "title": "Paying group items for Group {{ groupName }}",
-                "createLabel": "Create a new Paying group item",
-                "createOrEditLabel": "Create or edit a Paying group item",
-                "search": "Search for Paying group item"
+                "title": "Group registration items for {{ groupName }}",
+                "createLabel": "Create a new group registration item",
+                "createOrEditLabel": "Create or edit a group registration item",
+                "search": "Search for group registration item"
             },
-            "created": "A new Paying group item is created with identifier {{ param }}",
-            "updated": "A Paying group item is updated with identifier {{ param }}",
-            "deleted": "A Paying group item is deleted with identifier {{ param }}",
+            "created": "A new group registration item has been created successfully",
+            "updated": "A group registration item has been updated successfully",
+            "deleted": "A group registration item has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Paying group item {{ id }}?"
+                "question": "Are you sure you want to delete group registration item {{ name }}?"
             },
             "detail": {
-                "title": "Paying group item"
+                "title": "Group registration item"
             },
             "name": "Name",
             "amountPercentage": "Amount as percentage",
