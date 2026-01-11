@@ -8,8 +8,8 @@
                 "search": "Search for optional service"
             },
             "created": "A new optional service has been ordered successfully",
-            "updated": "An ordered optional service has been updated successfully",
-            "deleted": "An ordered optional service has been removed successfully",
+            "updated": "An optional service has been updated successfully",
+            "deleted": "An optional service has been removed successfully",
             "delete": {
                 "question": "Are you sure you want to remove optional service {{ name }}?"
             },

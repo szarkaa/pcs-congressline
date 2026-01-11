@@ -16,8 +16,8 @@ public class OrderedOptionalServiceVM {
     private Integer participant;
     private Long registrationId;
     private Long payingGroupItemId;
-    private BigDecimal price;
-    private String currency;
+    private BigDecimal chargeableItemPrice;
+    private String chargeableItemCurrency;
     private Integer chargeableItemVAT;
     private String chargeableItemSZJ;
     private String payingGroupName;
@@ -30,8 +30,8 @@ public class OrderedOptionalServiceVM {
         this.participant = oos.getParticipant();
         this.registrationId = oos.getRegistration().getId();
         this.payingGroupItemId = oos.getPayingGroupItem() != null ? oos.getPayingGroupItem().getId() : null;
-        this.price = oos.getChargeableItemPrice();
-        this.currency = oos.getOptionalService().getCurrency().getCurrency();
+        this.chargeableItemPrice = oos.getChargeableItemPrice();
+        this.chargeableItemCurrency = oos.getOptionalService().getCurrency().getCurrency();
         this.chargeableItemVAT = oos.getOptionalService().getVatInfo().getVat();
         this.chargeableItemSZJ = oos.getOptionalService().getVatInfo().getSzj();
         this.payingGroupName = oos.getPayingGroupItem() != null ? oos.getPayingGroupItem().getPayingGroup().getName() + "/" + oos.getPayingGroupItem().getName() : null;

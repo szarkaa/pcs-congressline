@@ -18,7 +18,8 @@ public class RegistrationRegistrationTypeVM {
     private Long payingGroupItemId;
     private BigDecimal regFee;
     private Integer accPeople;
-    private String currency;
+    private BigDecimal chargeableItemPrice;
+    private String chargeableItemCurrency;
     private Integer chargeableItemVAT;
     private String chargeableItemSZJ;
     private String payingGroupName;
@@ -31,9 +32,9 @@ public class RegistrationRegistrationTypeVM {
         this.registrationTypeType = rrt.getRegistrationType().getRegistrationType().toString();
         this.registrationId = rrt.getRegistration().getId();
         this.payingGroupItemId = rrt.getPayingGroupItem() != null ? rrt.getPayingGroupItem().getId() : null;
-        this.regFee = rrt.getRegFee();
+        this.chargeableItemPrice = rrt.getRegFee();
         this.accPeople = rrt.getAccPeople();
-        this.currency = rrt.getCurrency();
+        this.chargeableItemCurrency = rrt.getCurrency();
         this.chargeableItemVAT = rrt.getRegistrationType().getVatInfo().getVat();
         this.chargeableItemSZJ = rrt.getRegistrationType().getVatInfo().getSzj();
         this.payingGroupName = rrt.getPayingGroupItem() != null ? rrt.getPayingGroupItem().getPayingGroup().getName() + "/" + rrt.getPayingGroupItem().getName() : null;

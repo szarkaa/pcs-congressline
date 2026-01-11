@@ -3,6 +3,7 @@ package hu.congressline.pcs.domain;
 import java.io.Serial;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
@@ -10,7 +11,9 @@ import hu.congressline.pcs.domain.enumeration.RegistrationTypeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -45,6 +48,9 @@ public class RegistrationRegistrationType extends ChargeableItem {
 
     @ManyToOne
     private Registration registration;
+
+    @OneToMany(mappedBy = "registrationRegistrationType", fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<AccPeople> accPeoples;
 
     @Override
     public String getChargeableItemName() {

@@ -3,15 +3,15 @@
         "chargedService" : {
             "home": {
                 "title": "Payment type - Service Type",
-                "createLabel": "Create a new Payment",
-                "createOrEditLabel": "Create or edit a Payment",
-                "search": "Search for Payment"
+                "createLabel": "Create a new payment",
+                "createOrEditLabel": "Create or edit a payment",
+                "search": "Search for payment"
             },
-            "created": "A new Payment is created with identifier {{ param }}",
-            "updated": "A Payment is updated with identifier {{ param }}",
-            "deleted": "A Payment is deleted with identifier {{ param }}",
+            "created": "A new payment has been created successfully",
+            "updated": "A payment has been updated successfully",
+            "deleted": "A payment has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Payment {{ id }}?"
+                "question": "Are you sure you want to delete the selected payment?"
             },
             "detail": {
                 "title": "Payment"
