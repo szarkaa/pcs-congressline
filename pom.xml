@@ -53,6 +53,7 @@
         <mapstruct.version>1.6.3</mapstruct.version>
         <poi.ooxml.version>5.4.1</poi.ooxml.version>
         <openpdf.version>2.0.5</openpdf.version>
+        <zxing.version>3.5.3</zxing.version>
         <stripe.version>31.0.0</stripe.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
         <maven-clean-plugin.version>3.4.1</maven-clean-plugin.version>
@@ -241,6 +242,16 @@
             <groupId>com.github.librepdf</groupId>
             <artifactId>openpdf</artifactId>
             <version>${openpdf.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${zxing.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>${zxing.version}</version>
         </dependency>
         <dependency>
             <groupId>com.stripe</groupId>

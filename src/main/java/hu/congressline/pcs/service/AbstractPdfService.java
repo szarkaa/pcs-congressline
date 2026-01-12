@@ -7,7 +7,6 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 
 import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,16 +26,17 @@ import hu.congressline.pcs.service.pdf.PdfContext;
 import hu.congressline.pcs.service.util.PcsNumberFormatter;
 import jakarta.annotation.PostConstruct;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
+@RequiredArgsConstructor
 public abstract class AbstractPdfService {
 
-    protected InvoiceItemRepository invoiceItemRepository;
-    protected InvoiceChargeRepository invoiceChargeRepository;
-    protected DiscountService discountService;
-    protected MessageSource messageSource;
+    protected final InvoiceItemRepository invoiceItemRepository;
+    protected final InvoiceChargeRepository invoiceChargeRepository;
+    protected final DiscountService discountService;
+    protected final MessageSource messageSource;
     protected PcsNumberFormatter formatter;
 
     @PostConstruct
@@ -44,8 +44,9 @@ public abstract class AbstractPdfService {
         this.formatter = new PcsNumberFormatter();
     }
 
+    @SafeVarargs
     @SuppressWarnings("MissingJavadocMethod")
-    public BigDecimal sumPricesWithDiscounts(List<Long> ignoredChargeableItemIdList, List<? extends ChargeableItem>... lists) {
+    public final BigDecimal sumPricesWithDiscounts(List<Long> ignoredChargeableItemIdList, List<? extends ChargeableItem>... lists) {
         BigDecimal retVal = BigDecimal.ZERO;
         for (List<? extends ChargeableItem> list : lists) {
             for (ChargeableItem item : list) {

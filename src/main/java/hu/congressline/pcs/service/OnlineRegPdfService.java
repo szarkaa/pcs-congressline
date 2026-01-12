@@ -12,6 +12,7 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfReader;
 import com.lowagie.text.pdf.PdfWriter;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
@@ -21,7 +22,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import hu.congressline.pcs.config.ApplicationProperties;
@@ -32,6 +32,8 @@ import hu.congressline.pcs.domain.OnlineRegistrationRegistrationType;
 import hu.congressline.pcs.domain.enumeration.Currency;
 import hu.congressline.pcs.domain.enumeration.RegistrationTypeType;
 import hu.congressline.pcs.repository.AccPeopleOnlineRepository;
+import hu.congressline.pcs.repository.InvoiceChargeRepository;
+import hu.congressline.pcs.repository.InvoiceItemRepository;
 import hu.congressline.pcs.repository.OnlineRegistrationOptionalServiceRepository;
 import hu.congressline.pcs.repository.OnlineRegistrationRegistrationTypeRepository;
 import hu.congressline.pcs.service.dto.kh.PaymentStatus;
@@ -39,11 +41,9 @@ import hu.congressline.pcs.service.pdf.OnlineRegHeaderFooter;
 import hu.congressline.pcs.service.pdf.OnlineRegPdfContext;
 import hu.congressline.pcs.service.pdf.PcsPdfFont;
 import hu.congressline.pcs.service.pdf.PdfContext;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class OnlineRegPdfService extends AbstractPdfService {
     private static final String MESSAGE_SOURCE_PREFIX = "online.reg.pdf.";
@@ -53,6 +53,19 @@ public class OnlineRegPdfService extends AbstractPdfService {
     private final AccPeopleOnlineRepository accPeopleOnlineRepository;
     private final OnlineRegService onlineRegService;
     private final ApplicationProperties properties;
+
+    @SuppressWarnings("ParameterNumber")
+    public OnlineRegPdfService(InvoiceItemRepository invoiceItemRepository, InvoiceChargeRepository invoiceChargeRepository, DiscountService discountService,
+                               OnlineRegistrationOptionalServiceRepository orosRepository, OnlineRegistrationRegistrationTypeRepository orrtRepository,
+                               AccPeopleOnlineRepository accPeopleOnlineRepository, OnlineRegService onlineRegService, ApplicationProperties properties,
+                               MessageSource messageSource) {
+        super(invoiceItemRepository, invoiceChargeRepository, discountService, messageSource);
+        this.orosRepository = orosRepository;
+        this.orrtRepository = orrtRepository;
+        this.accPeopleOnlineRepository = accPeopleOnlineRepository;
+        this.onlineRegService = onlineRegService;
+        this.properties = properties;
+    }
 
     @SuppressWarnings("MissingJavadocMethod")
     public byte[] getPdf(OnlineRegistration onlineReg) {
@@ -177,7 +190,7 @@ public class OnlineRegPdfService extends AbstractPdfService {
 
         List<OnlineRegistrationRegistrationType> orrtList = orrtRepository.findAllByRegistration(onlineReg);
         final List<OnlineRegistrationRegistrationType> orrtAccompaningList = orrtList.stream()
-                .filter(orrt -> orrt.getRegistrationType().getRegistrationType().equals(RegistrationTypeType.ACCOMPANYING_FEE)).collect(Collectors.toList());
+                .filter(orrt -> orrt.getRegistrationType().getRegistrationType().equals(RegistrationTypeType.ACCOMPANYING_FEE)).toList();
         IntStream.range(0, orrtAccompaningList.size()).forEach(idxOrrt -> {
             final OnlineRegistrationRegistrationType orrt = orrtAccompaningList.get(idxOrrt);
             StringBuilder sb = new StringBuilder();
@@ -187,7 +200,7 @@ public class OnlineRegPdfService extends AbstractPdfService {
                 sb.append(idxAcc > 0 ? ", " : "").append(accPeopleOnline.getLastName()).append(" ").append(accPeopleOnline.getFirstName());
             });
 
-            if (sb.length() > 0) {
+            if (!sb.isEmpty()) {
                 sb.insert(0, " (");
                 sb.append(")");
             }
@@ -195,7 +208,7 @@ public class OnlineRegPdfService extends AbstractPdfService {
         });
 
         final List<OnlineRegistrationRegistrationType> orrtExtraRegList = orrtList.stream()
-                .filter(orrt -> orrt.getRegistrationType().getRegistrationType().equals(RegistrationTypeType.REGISTRATION_FEE)).collect(Collectors.toList());
+                .filter(orrt -> orrt.getRegistrationType().getRegistrationType().equals(RegistrationTypeType.REGISTRATION_FEE)).toList();
         IntStream.range(0, orrtExtraRegList.size()).forEach(idxOrrt -> {
             final OnlineRegistrationRegistrationType orrt = orrtExtraRegList.get(idxOrrt);
             addRow(idxOrrt > 0 ? null : "extraRegistration", orrt.getRegistrationType().getName(), locale, table);

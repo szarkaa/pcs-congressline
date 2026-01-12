@@ -11,6 +11,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -26,24 +27,32 @@ import hu.congressline.pcs.domain.InvoiceItem;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.domain.enumeration.InvoiceType;
 import hu.congressline.pcs.domain.enumeration.VatRateType;
+import hu.congressline.pcs.repository.InvoiceChargeRepository;
+import hu.congressline.pcs.repository.InvoiceItemRepository;
 import hu.congressline.pcs.service.pdf.InvoiceHeaderFooter;
 import hu.congressline.pcs.service.pdf.MiscInvoicePdfContext;
 import hu.congressline.pcs.service.pdf.PcsPdfFont;
 import hu.congressline.pcs.service.pdf.PdfContext;
 import hu.congressline.pcs.service.util.ServiceUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static hu.congressline.pcs.domain.enumeration.Currency.HUF;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class MiscInvoicePdfService extends AbstractPdfService {
 
     private final CompanyService companyService;
     private final CurrencyService currencyService;
     private final MiscInvoiceService miscInvoiceService;
+
+    public MiscInvoicePdfService(InvoiceItemRepository invoiceItemRepository, InvoiceChargeRepository invoiceChargeRepository, DiscountService discountService,
+                                 CompanyService companyService, CurrencyService currencyService, MiscInvoiceService miscInvoiceService, MessageSource messageSource) {
+        super(invoiceItemRepository, invoiceChargeRepository, discountService, messageSource);
+        this.companyService = companyService;
+        this.currencyService = currencyService;
+        this.miscInvoiceService = miscInvoiceService;
+    }
 
     public MiscInvoicePdfContext createInvoicePdfContext(InvoiceCongress invoiceCongress) {
         return new MiscInvoicePdfContext(invoiceCongress, miscInvoiceService.findItems(invoiceCongress.getId()));
@@ -190,7 +199,7 @@ public class MiscInvoicePdfService extends AbstractPdfService {
         for (String key : invoiceItemMap.keySet()) {
             //table header row
             final String openParenthesis = " (";
-            String itemKeyHeader = getMessage("miscInvoice.pdf.miscItemFees", locale) + (key.length() > 0 ? openParenthesis + key + ")" : "");
+            String itemKeyHeader = getMessage("miscInvoice.pdf.miscItemFees", locale) + (!key.isEmpty() ? openParenthesis + key + ")" : "");
             cell1 = createCell(createParagraph(itemKeyHeader, PcsPdfFont.P_SMALL_BOLD));
             cell1.setColspan(7);
             addTableCell(table, cell1);

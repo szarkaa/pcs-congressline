@@ -11,6 +11,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -31,25 +32,34 @@ import hu.congressline.pcs.domain.Rate;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.domain.enumeration.Language;
 import hu.congressline.pcs.domain.enumeration.VatRateType;
+import hu.congressline.pcs.repository.InvoiceChargeRepository;
+import hu.congressline.pcs.repository.InvoiceItemRepository;
 import hu.congressline.pcs.repository.RateRepository;
 import hu.congressline.pcs.service.pdf.InvoiceHeaderFooter;
 import hu.congressline.pcs.service.pdf.InvoicePdfContext;
 import hu.congressline.pcs.service.pdf.PcsPdfFont;
 import hu.congressline.pcs.service.pdf.PdfContext;
 import hu.congressline.pcs.service.util.ServiceUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static hu.congressline.pcs.domain.enumeration.Currency.HUF;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class InvoicePdfService extends AbstractPdfService {
     private static final String MESSAGE_KEY_PREFIX = "invoice.pdf.invoice";
+
     private final CompanyService companyService;
     private final CurrencyService currencyService;
     private final RateRepository rateRepository;
+
+    public InvoicePdfService(InvoiceItemRepository invoiceItemRepository, InvoiceChargeRepository invoiceChargeRepository, DiscountService discountService,
+                             CompanyService companyService, CurrencyService currencyService, RateRepository rateRepository, MessageSource messageSource) {
+        super(invoiceItemRepository, invoiceChargeRepository, discountService, messageSource);
+        this.companyService = companyService;
+        this.currencyService = currencyService;
+        this.rateRepository = rateRepository;
+    }
 
     @SuppressWarnings("MissingJavadocMethod")
     public InvoicePdfContext createInvoicePdfContext(InvoiceRegistration invoiceRegistration) {
@@ -206,7 +216,7 @@ public class InvoicePdfService extends AbstractPdfService {
                 .filter(key -> containsNonPrePayedItem(registrationTypes.get(key)))
                 .forEach(key -> {
                     //new row
-                    String itemKeyHeader = getMessage("invoice.pdf.registrationFee", locale) + (key.length() > 0 ? openParenthesis + key + ")" : "");
+                    String itemKeyHeader = getMessage("invoice.pdf.registrationFee", locale) + (!key.isEmpty() ? openParenthesis + key + ")" : "");
                     PdfPCell cell = createCell(createParagraph(itemKeyHeader, PcsPdfFont.P_SMALL_BOLD));
                     cell.setColspan(7);
                     addTableCell(itemDetailsTable, cell);
@@ -236,7 +246,7 @@ public class InvoicePdfService extends AbstractPdfService {
                 .filter(key -> containsNonPrePayedItem(roomReservations.get(key)))
                 .forEach(key -> {
                     //new row
-                    String itemKeyHeader = getMessage("invoice.pdf.accomodation", locale) + (key.length() > 0 ? openParenthesis + key + ")" : "");
+                    String itemKeyHeader = getMessage("invoice.pdf.accomodation", locale) + (!key.isEmpty() ? openParenthesis + key + ")" : "");
                     PdfPCell cell = createCell(createParagraph(itemKeyHeader, PcsPdfFont.P_SMALL_BOLD));
                     cell.setColspan(7);
                     addTableCell(itemDetailsTable, cell);
@@ -267,7 +277,7 @@ public class InvoicePdfService extends AbstractPdfService {
                 .filter(key -> containsNonPrePayedItem(optionalServices.get(key)))
                 .forEach(key -> {
                     //new row
-                    String itemKeyHeader = getMessage("invoice.pdf.programs", locale) + (key.length() > 0 ? openParenthesis + key + ")" : "");
+                    String itemKeyHeader = getMessage("invoice.pdf.programs", locale) + (!key.isEmpty() ? openParenthesis + key + ")" : "");
                     PdfPCell cell = createCell(createParagraph(itemKeyHeader, PcsPdfFont.P_SMALL_BOLD));
                     cell.setColspan(7);
                     addTableCell(itemDetailsTable, cell);
@@ -292,7 +302,7 @@ public class InvoicePdfService extends AbstractPdfService {
         preface.add(itemDetailsTable);
 
         // charged services
-        if (pdfContext.getInvoiceChargeList().size() > 0) {
+        if (!pdfContext.getInvoiceChargeList().isEmpty()) {
             PdfPTable invoiceChargeTable = createTable(2, 100, new float[]{2, 1});
             invoiceChargeTable.setSpacingBefore(10);
 

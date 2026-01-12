@@ -11,6 +11,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -26,23 +27,30 @@ import hu.congressline.pcs.domain.InvoicePayingGroup;
 import hu.congressline.pcs.domain.PayingGroup;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.domain.enumeration.VatRateType;
+import hu.congressline.pcs.repository.InvoiceChargeRepository;
+import hu.congressline.pcs.repository.InvoiceItemRepository;
 import hu.congressline.pcs.service.pdf.GroupDiscountInvoicePdfContext;
 import hu.congressline.pcs.service.pdf.InvoiceHeaderFooter;
 import hu.congressline.pcs.service.pdf.PcsPdfFont;
 import hu.congressline.pcs.service.pdf.PdfContext;
 import hu.congressline.pcs.service.util.ServiceUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static hu.congressline.pcs.domain.enumeration.Currency.HUF;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class GroupDiscountInvoicePdfService extends AbstractPdfService {
 
     private final CompanyService companyService;
     private final CurrencyService currencyService;
+
+    public GroupDiscountInvoicePdfService(InvoiceItemRepository invoiceItemRepository, InvoiceChargeRepository invoiceChargeRepository, DiscountService discountService,
+                                          CompanyService companyService, CurrencyService currencyService, MessageSource messageSource) {
+        super(invoiceItemRepository, invoiceChargeRepository, discountService, messageSource);
+        this.companyService = companyService;
+        this.currencyService = currencyService;
+    }
 
     @SuppressWarnings("MissingJavadocMethod")
     public GroupDiscountInvoicePdfContext createInvoicePdfContext(InvoicePayingGroup invoicePayingGroup) {
