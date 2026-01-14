@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.ChargeableItem;
 import hu.congressline.pcs.domain.GroupDiscountInvoiceHistory;
@@ -225,13 +224,6 @@ public class GroupDiscountInvoiceService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public List<Invoice> findAll() {
-        log.debug("Request to get all GroupDiscountInvoices");
-        return invoicePayingGroupRepository.findAll().stream().map(InvoicePayingGroup::getInvoice).collect(Collectors.toList());
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    @Transactional(readOnly = true)
     public InvoicePayingGroup findOne(Long id) {
         log.debug("Request to get InvoicePayingGroup : {}", id);
         return invoicePayingGroupRepository.findById(id).orElse(null);
@@ -277,7 +269,7 @@ public class GroupDiscountInvoiceService {
         InvoicePayingGroup result = invoicePayingGroupRepository.save(ipg);
 
         final List<GroupDiscountInvoiceHistory> discountInvoiceHistories = groupDiscountInvoiceHistoryRepository.findAllByInvoice(ipg.getInvoice());
-        final List<ChargeableItem> chargeableItems = discountInvoiceHistories.stream().map(GroupDiscountInvoiceHistory::getChargeableItem).collect(Collectors.toList());
+        final List<ChargeableItem> chargeableItems = discountInvoiceHistories.stream().map(GroupDiscountInvoiceHistory::getChargeableItem).toList();
         chargeableItems.forEach(item -> {
             item.setDateOfGroupPayment(groupSetPaymentDateDTO.getPaymentDate());
             if (ChargeableItemType.REGISTRATION.equals(item.getChargeableItemType())) {

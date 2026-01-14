@@ -106,7 +106,9 @@ public class LoggingAspect {
         try {
             Object result = joinPoint.proceed();
             if (log.isDebugEnabled()) {
-                log.debug("Exit: {}() with result = {}", joinPoint.getSignature().getName(), result);
+                if (!(result instanceof byte[])) {
+                    log.debug("Exit: {}() with result = {}", joinPoint.getSignature().getName(), result);
+                }
             }
             return result;
         } catch (IllegalArgumentException e) {

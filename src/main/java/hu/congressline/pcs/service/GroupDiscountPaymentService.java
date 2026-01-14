@@ -26,13 +26,6 @@ public class GroupDiscountPaymentService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @Transactional(readOnly = true)
-    public List<GroupDiscountPayment> findAll() {
-        log.debug("Request to get all GroupDiscountPayments");
-        return groupDiscountPaymentRepository.findAll();
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
     public List<GroupDiscountPayment> findByCongressId(Long id) {
         log.debug("Request to get all GroupDiscountPayment by congress id: {}", id);
         return groupDiscountPaymentRepository.findByCongressIdOrderByDateOfPaymentDesc(id);

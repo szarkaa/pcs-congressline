@@ -58,6 +58,13 @@ public class CongressService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public Congress getByMeetingCode(String meetingCode) {
+        log.debug("Request to get Congress by meeting code: {}", meetingCode);
+        return congressRepository.findOneByMeetingCode(meetingCode).orElseThrow(() -> new IllegalArgumentException("Congress not found with meeting code: " + meetingCode));
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long id) {
         onlineRegCustomQuestionRepository.deleteAllByCongressId(id);
         onlineRegConfigRepository.deleteAllByCongressId(id);

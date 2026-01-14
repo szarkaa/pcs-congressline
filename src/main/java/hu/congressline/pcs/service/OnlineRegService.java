@@ -139,6 +139,20 @@ public class OnlineRegService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
+    public List<OnlineRegistration> findAllByIds(List<Long> onlineRegIds) {
+        log.debug("Request to find all OnlineRegistration by ids {}", onlineRegIds);
+        return repository.findByIdInOrderByDateOfAppDesc(onlineRegIds);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public List<OnlineRegistration> findAllByCongressId(Long congressId) {
+        log.debug("Request to find all OnlineRegistration by congress id {}", congressId);
+        return repository.findByCongressIdOrderByDateOfAppDesc(congressId);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
     public CongressDTO findCongressForOnline(String uuid) {
         Congress congress = congressRepository.findOneByUuid(uuid).orElse(null);
         if (congress == null) {
@@ -489,7 +503,7 @@ public class OnlineRegService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    public OnlineRegistrationVM get(OnlineRegistration onlineReg) {
+    public OnlineRegistrationVM createVM(OnlineRegistration onlineReg) {
         OnlineRegistrationVM vm = new OnlineRegistrationVM();
         vm.setId(onlineReg.getId());
         vm.setTitle(onlineReg.getTitle());
@@ -684,7 +698,7 @@ public class OnlineRegService {
     @SuppressWarnings("MissingJavadocMethod")
     public void acceptAll(OnlineRegFilterVM onlineRegFilter) {
         onlineRegFilter.getOnlineRegIdList().forEach(id -> {
-            accept(get(getById(id)));
+            accept(createVM(getById(id)));
         });
     }
 

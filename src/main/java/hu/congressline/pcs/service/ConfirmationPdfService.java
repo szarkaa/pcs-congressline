@@ -89,10 +89,10 @@ public class ConfirmationPdfService extends AbstractPdfService {
     }
 
     @SuppressWarnings({"MissingJavadocMethod", "IllegalCatch"})
-    public Image createQrImage(String text, int sizePx) {
-        BufferedImage qr = null;
+    private Image createQrImage(String text) {
+        BufferedImage qr;
         try {
-            qr = createQrBufferedImage(text, sizePx, sizePx);
+            qr = createQrBufferedImage(text);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(qr, "PNG", baos);
             return Image.getInstance(baos.toByteArray());
@@ -101,9 +101,9 @@ public class ConfirmationPdfService extends AbstractPdfService {
         }
     }
 
-    private BufferedImage createQrBufferedImage(String text, int width, int height) throws WriterException {
+    private BufferedImage createQrBufferedImage(String text) throws WriterException {
         QRCodeWriter writer = new QRCodeWriter();
-        BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, width, height);
+        BitMatrix matrix = writer.encode(text, BarcodeFormat.QR_CODE, 100, 100);
         return MatrixToImageWriter.toBufferedImage(matrix);
     }
 
@@ -227,7 +227,7 @@ public class ConfirmationPdfService extends AbstractPdfService {
         p.add(new Chunk(getStaticMessage("registrationNumber", locale) + " " + registration.getRegId().toString(), PcsPdfFont.P_SMALL_BOLD));
         PdfPCell cell1 = new PdfPCell(p);
 
-        Image codeQrImage = createQrImage("REG-" + new DecimalFormat("00000").format(registration.getId()), 100);
+        Image codeQrImage = createQrImage("REG-" + new DecimalFormat("00000").format(registration.getId()));
         //codeQrImage.scaleAbsolute(100, 100);
         PdfPCell cell2 = new PdfPCell(codeQrImage);
 
