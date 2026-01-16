@@ -23,7 +23,7 @@ import hu.congressline.pcs.domain.enumeration.InvoiceType;
 import hu.congressline.pcs.service.CongressService;
 import hu.congressline.pcs.service.MiscInvoicePdfService;
 import hu.congressline.pcs.service.MiscInvoiceService;
-import hu.congressline.pcs.service.NavOnlineService;
+import hu.congressline.pcs.service.NavService;
 import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.MiscInvoiceVM;
@@ -41,7 +41,7 @@ public class MiscInvoiceResource {
     private final MiscInvoicePdfService pdfService;
     private final CongressService congressService;
     //private final MailService mailService;
-    private final NavOnlineService navOnlineService;
+    private final NavService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/misc-invoices")

@@ -1602,7 +1602,7 @@
 					<xs:element name="requestStatus" type="RequestStatusType" minOccurs="0">
 						<xs:annotation>
 							<xs:documentation xml:lang="hu">A kérés feldolgozási státusza</xs:documentation>
-                            <xs:documentation xml:lang="en">Processing status of the request</xs:documentation>
+							<xs:documentation xml:lang="en">Processing status of the request</xs:documentation>
 						</xs:annotation>
 					</xs:element>
 				</xs:sequence>

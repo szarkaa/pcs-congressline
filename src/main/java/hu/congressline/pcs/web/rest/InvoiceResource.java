@@ -31,7 +31,7 @@ import hu.congressline.pcs.service.InvoicePdfService;
 import hu.congressline.pcs.service.InvoiceService;
 import hu.congressline.pcs.service.MiscInvoicePdfService;
 import hu.congressline.pcs.service.MiscInvoiceService;
-import hu.congressline.pcs.service.NavOnlineService;
+import hu.congressline.pcs.service.NavService;
 import hu.congressline.pcs.service.RegistrationService;
 import hu.congressline.pcs.service.dto.InvoiceDTO;
 import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
@@ -63,7 +63,7 @@ public class InvoiceResource {
     private final GroupDiscountInvoicePdfService groupDiscountInvoicePdfService;
     private final MiscInvoiceService miscInvoiceService;
     private final MiscInvoicePdfService miscInvoicePdfService;
-    private final NavOnlineService navOnlineService;
+    private final NavService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/invoices")
