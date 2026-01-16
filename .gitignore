@@ -140,3 +140,4 @@ sign/live/test/pcs_khbank_test_private_key.pem
 sign/live/test/pcs_khbank_test_private_key.der
 sign/live/test/pcs_khbank_test_public_modulus.txt
 /package-lock.json
+/src/main/resources/config/application-local.yml

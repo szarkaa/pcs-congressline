@@ -1,0 +1,17 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+<head>
+    <title th:text="#{email.reset.title}">Confirmation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}"/>
+</head>
+<body>
+    <p th:text="#{confirmation.pdf.email.greeting(${title ?: ''}, ${name1 ?: ''}, ${name2 ?: ''})}">Tisztelt</p>
+    <p th:text="#{confirmation.pdf.email.content(${contentType})}">Mellékelten küldjük a visszaigazoló levelet.</p>
+    <p>
+        <span th:text="#{confirmation.pdf.email.regards}">Tisztelettel,</span>
+        <br/>
+        <em th:text="#{confirmation.pdf.email.signature}">CongressLine Kft.</em>
+    </p>
+</body>
+</html>

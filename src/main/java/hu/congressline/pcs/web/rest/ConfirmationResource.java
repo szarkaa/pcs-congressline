@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.service.ConfirmationPdfService;
 import hu.congressline.pcs.service.CongressService;
 import hu.congressline.pcs.service.FinancialReportService;
 import hu.congressline.pcs.service.GeneralRegistrationReportService;
+import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.service.dto.FinancialReportDTO;
 import hu.congressline.pcs.service.dto.GeneralRegistrationReportDTO;
 import hu.congressline.pcs.service.dto.SendAllConfirmationPdfToEmailDTO;
@@ -40,7 +42,7 @@ public class ConfirmationResource {
     private final ConfirmationPdfService service;
     private final GeneralRegistrationReportService reportService;
     private final FinancialReportService financialReportService;
-    //private final MailService mailService;
+    private final MailService mailService;
     private final CongressService congressService;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -65,9 +67,8 @@ public class ConfirmationResource {
         byte[] pdfBytes = service.generatePdf(context);
         String fileName = createConfirmationFilename(context);
         Congress congress = congressService.getById(vm.getCongressId());
-        /*mailService.sendConfirmationPdfEmail(new Locale(vm.getLanguage()), congress.getContactEmail(),
-                vm.getCustomConfirmationEmail(), congress.getContactEmail(), fileName,
-                context.getConfirmationTitleType(), context.getRegistration(), pdfBytes);*/
+        mailService.sendConfirmationPdfEmail(congress.getContactEmail(), vm.getCustomConfirmationEmail(), congress.getContactEmail(), fileName,
+                context.getConfirmationTitleType(), Locale.forLanguageTag(vm.getLanguage()), context.getRegistration(), pdfBytes);
         return ResponseEntity
             .ok()
             .headers(createHttpHeader(fileName))
@@ -93,8 +94,8 @@ public class ConfirmationResource {
             pdfVM.setIgnoredChargedServiceIdList(new ArrayList<>());
             ConfirmationPdfContext context = service.createContext(pdfVM);
             byte[] pdfBytes = service.generatePdf(context);
-            //mailService.sendConfirmationPdfEmail(new Locale(pdfVM.getLanguage()), congress.getContactEmail(), pdfVM.getCustomConfirmationEmail(), congress.getContactEmail(),
-            //createConfirmationFilename(context), context.getConfirmationTitleType(), context.getRegistration(), pdfBytes);
+            mailService.sendConfirmationPdfEmail(congress.getContactEmail(), pdfVM.getCustomConfirmationEmail(), congress.getContactEmail(),
+                createConfirmationFilename(context), context.getConfirmationTitleType(), Locale.forLanguageTag(vm.getLanguage()), context.getRegistration(), pdfBytes);
         });
 
         return ResponseEntity.ok()
@@ -122,8 +123,8 @@ public class ConfirmationResource {
             pdfVM.setIgnoredChargedServiceIdList(new ArrayList<>());
             ConfirmationPdfContext context = service.createContext(pdfVM);
             byte[] pdfBytes = service.generatePdf(context);
-            //mailService.sendConfirmationPdfEmail(new Locale(pdfVM.getLanguage()), congress.getContactEmail(), pdfVM.getCustomConfirmationEmail(), null,
-            //createConfirmationFilename(context), context.getConfirmationTitleType(), context.getRegistration(), pdfBytes);
+            mailService.sendConfirmationPdfEmail(congress.getContactEmail(), pdfVM.getCustomConfirmationEmail(), null,
+                createConfirmationFilename(context), context.getConfirmationTitleType(), Locale.forLanguageTag(pdfVM.getLanguage()), context.getRegistration(), pdfBytes);
         });
 
         return ResponseEntity.ok()
@@ -132,7 +133,7 @@ public class ConfirmationResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/send-all-to-email")
-    public ResponseEntity<Void> sendAllConfirmationToEmail(@RequestBody SendAllConfirmationVM vm) throws URISyntaxException {
+    public ResponseEntity<Void> sendAllConfirmationToEmail(@RequestBody SendAllConfirmationVM vm) {
         log.debug("REST request to send all confirmation to email: {}", vm.getSendAllEmail());
         final Congress congress = congressService.getById(Long.valueOf(vm.getCongressId()));
 
