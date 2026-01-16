@@ -295,16 +295,6 @@
             <version>${jaxb.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-            <version>${zxing.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>javase</artifactId>
-            <version>${zxing.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
         </dependency>
@@ -575,7 +565,7 @@
                     <executions>
                         <execution>
                             <id>checkstyle-check</id>
-                            <phase>validate</phase>
+                            <phase>process-resources</phase>
                             <goals>
                                 <goal>check</goal>
                             </goals>
@@ -631,28 +621,29 @@
                     <version>0.15.3</version>
                     <executions>
                         <execution>
+                            <phase>generate-sources</phase>
                             <goals>
                                 <goal>generate</goal>
                             </goals>
-                            <configuration>
-                                <strict>false</strict>
-                                <catalog>src/main/resources/xsd/catalog.xml</catalog>
-                                <schemaDirectory>src/main/resources/xsd</schemaDirectory>
-                                <schemaIncludes>
-                                    <include>*.xsd</include>
-                                </schemaIncludes>
-                                <schemaExcludes>
-                                    <exclude>*.xml</exclude>
-                                </schemaExcludes>
-                            </configuration>
                         </execution>
                     </executions>
+                    <configuration>
+                        <strict>false</strict>
+                        <catalog>${basedir}/src/main/resources/xsd/catalog.xml</catalog>
+                        <schemaDirectory>${basedir}/src/main/resources/xsd</schemaDirectory>
+                        <schemaIncludes>
+                            <include>**/*.xsd</include>
+                        </schemaIncludes>
+                        <schemaExcludes>
+                            <exclude>*.xml</exclude>
+                        </schemaExcludes>
+                    </configuration>
                     <dependencies>
                         <dependency>
                             <groupId>org.glassfish.jaxb</groupId>
                             <artifactId>jaxb-runtime</artifactId>
                             <version>2.3.3</version>
-<!--                            <version>${maven.jaxb2.version}</version>-->
+                            <!--<version>${maven.jaxb2.version}</version>-->
                         </dependency>
                     </dependencies>
                 </plugin>

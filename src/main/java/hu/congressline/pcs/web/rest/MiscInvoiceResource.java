@@ -19,9 +19,11 @@ import java.util.Optional;
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.Invoice;
 import hu.congressline.pcs.domain.InvoiceCongress;
+import hu.congressline.pcs.domain.enumeration.InvoiceType;
 import hu.congressline.pcs.service.CongressService;
 import hu.congressline.pcs.service.MiscInvoicePdfService;
 import hu.congressline.pcs.service.MiscInvoiceService;
+import hu.congressline.pcs.service.NavOnlineService;
 import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.MiscInvoiceVM;
@@ -39,16 +41,16 @@ public class MiscInvoiceResource {
     private final MiscInvoicePdfService pdfService;
     private final CongressService congressService;
     //private final MailService mailService;
-    //private final NavOnlineService navOnlineService;
+    private final NavOnlineService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/misc-invoices")
     public ResponseEntity<InvoiceCongress> create(@Valid @RequestBody MiscInvoiceVM miscInvoiceVM) throws URISyntaxException {
         log.debug("REST request to save MiscInvoice : {}", miscInvoiceVM);
         InvoiceCongress result = miscInvoiceService.save(miscInvoiceVM);
-        //if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
-        //navOnlineService.postInvoiceToNav(result.getInvoice().getId());
-        //}
+        if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
+            navOnlineService.postInvoiceToNav(result.getInvoice().getId());
+        }
         return ResponseEntity.created(new URI("/api/misc-invoices/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("miscInvoice", result.getId().toString()))
             .body(result);
@@ -62,9 +64,9 @@ public class MiscInvoiceResource {
         Congress congress = congressService.getById(miscInvoiceVM.getCongress().getId());
         miscInvoiceVM.setCongress(congress);
         InvoiceCongress result = miscInvoiceService.save(miscInvoiceVM);
-        //if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
-        //navOnlineService.postInvoiceToNav(result.getInvoice().getId());
-        //}
+        if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
+            navOnlineService.postInvoiceToNav(result.getInvoice().getId());
+        }
         byte[] pdfBytes = pdfService.generatePdf(pdfService.createInvoicePdfContext(result));
         //mailService.sendMiscInvoicePdfEmail(new Locale(miscInvoiceVM.getLanguage()),
         //congress.getContactEmail(), miscInvoiceVM.getCustomInvoiceEmail(), result.getInvoice(), pdfBytes);
@@ -121,9 +123,9 @@ public class MiscInvoiceResource {
     public ResponseEntity<InvoiceCongress> stornoInvoice(@PathVariable Long id) {
         log.debug("REST request to storno Invoice : {}", id);
         InvoiceCongress invoice = miscInvoiceService.stornoInvoice(id);
-        //if (invoice != null && !InvoiceType.PRO_FORMA.equals(invoice.getInvoice().getInvoiceType())) {
-        //navOnlineService.postInvoiceToNav(invoice.getId());
-        //}
+        if (invoice != null && !InvoiceType.PRO_FORMA.equals(invoice.getInvoice().getInvoiceType())) {
+            navOnlineService.postInvoiceToNav(invoice.getId());
+        }
 
         return Optional.ofNullable(invoice)
                 .map(result -> new ResponseEntity<>(result, HttpStatus.OK))

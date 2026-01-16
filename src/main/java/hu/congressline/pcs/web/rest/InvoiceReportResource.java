@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.Invoice;
 import hu.congressline.pcs.service.InvoiceReportService;
+import hu.congressline.pcs.service.NavOnlineService;
 import hu.congressline.pcs.service.dto.InvoiceReportDTO;
 import hu.congressline.pcs.service.dto.online.InvoiceNavValidationDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
@@ -38,7 +39,7 @@ public class InvoiceReportResource {
     private static final String CONTENT_DISPOSITION = "Content-Disposition";
     private static final String XLSX_SUFFIX = ".xlsx";
     private final InvoiceReportService service;
-    //private final NavOnlineService navOnlineService;
+    private final NavOnlineService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/invoice-report")
@@ -138,7 +139,7 @@ public class InvoiceReportResource {
     @GetMapping("/invoice-report/send-to-nav/{id}")
     public ResponseEntity<Void> sendInvoiceToNav(@PathVariable Long id) throws URISyntaxException {
         log.debug("REST request to send invoice i: {} to NAV", id);
-        final Invoice invoice = null; //navOnlineService.postInvoiceToNav(id);
+        final Invoice invoice = navOnlineService.postInvoiceToNav(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityCreationAlert("invoiceReport", invoice.getInvoiceNumber())).build();
     }
 

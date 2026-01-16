@@ -30,6 +30,7 @@ import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.RegistrationRegistrationType;
 import hu.congressline.pcs.domain.RoomReservationRegistration;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
+import hu.congressline.pcs.domain.enumeration.InvoiceNavStatus;
 import hu.congressline.pcs.domain.enumeration.InvoiceType;
 import hu.congressline.pcs.domain.enumeration.Language;
 import hu.congressline.pcs.repository.ChargeableItemInvoiceHistoryRepository;
@@ -264,6 +265,42 @@ public class InvoiceService {
         return itemMap;
     }
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public void delete(Long id) {
+        log.debug("Request to delete Invoice : {}", id);
+        invoiceRepository.deleteById(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional
+    public InvoiceDTO setPaymentDate(SetPaymentDateDTO setPaymentDateDTO) {
+        InvoiceRegistration ir = getInvoiceRegistrationByInvoiceId(setPaymentDateDTO.getId());
+        if (ir == null) {
+            return null;
+        }
+        ir.setDateOfPayment(setPaymentDateDTO.getPaymentDate());
+        InvoiceRegistration result = invoiceRegistrationRepository.save(ir);
+
+        final List<ChargeableItemInvoiceHistory> invoiceHistories = chargeableItemInvoiceHistoryRepository.findAllByInvoice(ir.getInvoice());
+        final List<ChargeableItem> chargeableItems = invoiceHistories.stream().map(ChargeableItemInvoiceHistory::getChargeableItem).collect(Collectors.toList());
+        chargeableItems.forEach(item -> {
+            item.setDateOfGroupPayment(setPaymentDateDTO.getPaymentDate());
+            if (ChargeableItemType.REGISTRATION.equals(item.getChargeableItemType())) {
+                rrtRepository.save((RegistrationRegistrationType) item);
+            } else if (ChargeableItemType.HOTEL.equals(item.getChargeableItemType())) {
+                rrrRepository.save((RoomReservationRegistration) item);
+            } else if (ChargeableItemType.OPTIONAL_SERVICE.equals(item.getChargeableItemType())) {
+                oosRepository.save((OrderedOptionalService) item);
+            }
+        });
+        return new InvoiceDTO(result);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public List<Invoice> findAllByNavStatus(List<InvoiceNavStatus> statuses) {
+        return invoiceRepository.findAllByNavStatusIn(statuses);
+    }
+
     private void saveInvoiceItemDetails(Invoice invoice, List<Long> ignoredChargeableItemIdList, List<? extends ChargeableItem> chargeableItems) {
         for (ChargeableItem item : chargeableItems) {
             if (!ignoredChargeableItemIdList.contains(item.getId())) {
@@ -405,36 +442,4 @@ public class InvoiceService {
         chargedServiceinvoiceHistory.setChargedService(service);
         chargedServiceInvoiceHistoryRepository.save(chargedServiceinvoiceHistory);
     }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    public void delete(Long id) {
-        log.debug("Request to delete Invoice : {}", id);
-        invoiceRepository.deleteById(id);
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    @Transactional
-    public InvoiceDTO setPaymentDate(SetPaymentDateDTO setPaymentDateDTO) {
-        InvoiceRegistration ir = getInvoiceRegistrationByInvoiceId(setPaymentDateDTO.getId());
-        if (ir == null) {
-            return null;
-        }
-        ir.setDateOfPayment(setPaymentDateDTO.getPaymentDate());
-        InvoiceRegistration result = invoiceRegistrationRepository.save(ir);
-
-        final List<ChargeableItemInvoiceHistory> invoiceHistories = chargeableItemInvoiceHistoryRepository.findAllByInvoice(ir.getInvoice());
-        final List<ChargeableItem> chargeableItems = invoiceHistories.stream().map(ChargeableItemInvoiceHistory::getChargeableItem).collect(Collectors.toList());
-        chargeableItems.forEach(item -> {
-            item.setDateOfGroupPayment(setPaymentDateDTO.getPaymentDate());
-            if (ChargeableItemType.REGISTRATION.equals(item.getChargeableItemType())) {
-                rrtRepository.save((RegistrationRegistrationType) item);
-            } else if (ChargeableItemType.HOTEL.equals(item.getChargeableItemType())) {
-                rrrRepository.save((RoomReservationRegistration) item);
-            } else if (ChargeableItemType.OPTIONAL_SERVICE.equals(item.getChargeableItemType())) {
-                oosRepository.save((OrderedOptionalService) item);
-            }
-        });
-        return new InvoiceDTO(result);
-    }
-
 }

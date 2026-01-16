@@ -25,4 +25,5 @@ public interface PaymentTransactionRepository extends JpaRepository<PaymentTrans
     Optional<PaymentTransaction> findOneByTransactionId(String transactionId);
 
     List<PaymentTransaction> findByPaymentTrxStatus(String statusCode);
+
 }

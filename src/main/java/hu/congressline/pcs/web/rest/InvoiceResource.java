@@ -24,12 +24,14 @@ import hu.congressline.pcs.domain.InvoicePayingGroup;
 import hu.congressline.pcs.domain.InvoiceRegistration;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.enumeration.Currency;
+import hu.congressline.pcs.domain.enumeration.InvoiceType;
 import hu.congressline.pcs.service.GroupDiscountInvoicePdfService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceService;
 import hu.congressline.pcs.service.InvoicePdfService;
 import hu.congressline.pcs.service.InvoiceService;
 import hu.congressline.pcs.service.MiscInvoicePdfService;
 import hu.congressline.pcs.service.MiscInvoiceService;
+import hu.congressline.pcs.service.NavOnlineService;
 import hu.congressline.pcs.service.RegistrationService;
 import hu.congressline.pcs.service.dto.InvoiceDTO;
 import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
@@ -61,16 +63,16 @@ public class InvoiceResource {
     private final GroupDiscountInvoicePdfService groupDiscountInvoicePdfService;
     private final MiscInvoiceService miscInvoiceService;
     private final MiscInvoicePdfService miscInvoicePdfService;
-    //private final NavOnlineService navOnlineService;
+    private final NavOnlineService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/invoices")
     public ResponseEntity<Invoice> create(@Valid @RequestBody InvoiceVM invoiceVM) throws URISyntaxException {
         log.debug("REST request to save Invoice : {}", invoiceVM);
         InvoiceRegistration result = invoiceService.save(invoiceVM);
-        //if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
-        //navOnlineService.postInvoiceToNav(result.getInvoice().getId());
-        //}
+        if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
+            navOnlineService.postInvoiceToNav(result.getInvoice().getId());
+        }
         return ResponseEntity.created(new URI(URI + result.getInvoice().getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getInvoice().getId().toString()))
             .body(result.getInvoice());
@@ -81,9 +83,9 @@ public class InvoiceResource {
     public ResponseEntity<Invoice> createAndSendEmail(@Valid @RequestBody InvoiceVM invoiceVM) throws URISyntaxException {
         log.debug("REST request to save Invoice and send it via mail: {}", invoiceVM);
         InvoiceRegistration result = invoiceService.save(invoiceVM);
-        //if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
-        //navOnlineService.postInvoiceToNav(result.getInvoice().getId());
-        //}
+        if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
+            navOnlineService.postInvoiceToNav(result.getInvoice().getId());
+        }
         final InvoicePdfContext invoicePdfContext = invoicePdfService.createInvoicePdfContext(result);
         byte[] pdfBytes = invoicePdfService.generatePdf(invoicePdfContext);
         Registration registration = registrationService.getById(invoiceVM.getRegistrationId());
@@ -207,9 +209,9 @@ public class InvoiceResource {
     public ResponseEntity<Invoice> stornoInvoice(@PathVariable Long id) {
         log.debug("REST request to storno Invoice : {}", id);
         Invoice invoice = invoiceService.stornoInvoice(id);
-        //if (invoice != null && !InvoiceType.PRO_FORMA.equals(invoice.getInvoiceType())) {
-        //navOnlineService.postInvoiceToNav(invoice.getId());
-        //}
+        if (invoice != null && !InvoiceType.PRO_FORMA.equals(invoice.getInvoiceType())) {
+            navOnlineService.postInvoiceToNav(invoice.getId());
+        }
 
         return Optional.ofNullable(invoice).map(result -> new ResponseEntity<>(result, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

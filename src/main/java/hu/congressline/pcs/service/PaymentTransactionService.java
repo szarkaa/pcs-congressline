@@ -125,6 +125,20 @@ public class PaymentTransactionService extends XlsReportService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
+    public Optional<PaymentTransaction> findByTransactionId(String trxId) {
+        log.debug("Request to find PaymentTransaction by trx id: {}", trxId);
+        return repository.findOneByTransactionId(trxId);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public PaymentTransaction getByTransactionId(String trxId) {
+        log.debug("Request to get PaymentTransaction by trx id: {}", trxId);
+        return repository.findOneByTransactionId(trxId).orElseThrow(() -> new IllegalArgumentException("PaymentTransaction not found with trx id: " + trxId));
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
     public byte[] downloadReportXls(List<PaymentTransactionReportDTO> dtos) throws IOException {
         final XSSFWorkbook workbook = new XSSFWorkbook();
         Map<String, Integer> columns = new LinkedHashMap<>();

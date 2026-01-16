@@ -4,24 +4,23 @@ import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import hu.congressline.pcs.service.NavOnlineService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @DisallowConcurrentExecution
 public class NavStatusJob implements Job {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(NavStatusJob.class);
-
-    //private NavOnlineService navOnlineService;
+    private final NavOnlineService navOnlineService;
 
     @Override
     @Transactional
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        //navOnlineService.checkPendingInvoiceNavStatus();
-        LOGGER.debug("NAV status checker job done!");
+        navOnlineService.checkPendingInvoiceNavStatus();
+        log.debug("NAV status checker job done!");
     }
 }

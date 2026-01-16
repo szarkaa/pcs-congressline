@@ -20,9 +20,11 @@ import java.util.Optional;
 
 import hu.congressline.pcs.domain.Invoice;
 import hu.congressline.pcs.domain.InvoicePayingGroup;
+import hu.congressline.pcs.domain.enumeration.InvoiceType;
 import hu.congressline.pcs.service.GroupDiscountInvoicePdfService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceXlsService;
+import hu.congressline.pcs.service.NavOnlineService;
 import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.GroupDiscountInvoiceVM;
@@ -42,16 +44,16 @@ public class GroupDiscountInvoiceResource {
     private final GroupDiscountInvoiceXlsService groupDiscountInvoiceXlsService;
     private final GroupDiscountInvoicePdfService invoicePdfService;
     //private final MailService mailService;
-    //private final NavOnlineService navOnlineService;
+    private final NavOnlineService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/group-discount-invoices")
     public ResponseEntity<InvoicePayingGroup> createGroupDiscountInvoice(@Valid @RequestBody GroupDiscountInvoiceVM invoiceVM) throws URISyntaxException {
         log.debug("REST request to save Invoice : {}", invoiceVM);
         InvoicePayingGroup result = invoiceService.save(invoiceVM);
-        //if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
-        //navOnlineService.postInvoiceToNav(result.getInvoice().getId());
-        //}
+        if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
+            navOnlineService.postInvoiceToNav(result.getInvoice().getId());
+        }
         return ResponseEntity.created(new URI(URI + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -62,9 +64,9 @@ public class GroupDiscountInvoiceResource {
     public ResponseEntity<InvoicePayingGroup> createInvoiceAndSendEmail(@Valid @RequestBody GroupDiscountInvoiceVM invoiceVM) throws URISyntaxException {
         log.debug("REST request to save GroupDiscountInvoice and send it via mail: {}", invoiceVM);
         InvoicePayingGroup result = invoiceService.save(invoiceVM);
-        //if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
-        //navOnlineService.postInvoiceToNav(result.getInvoice().getId());
-        //}
+        if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
+            navOnlineService.postInvoiceToNav(result.getInvoice().getId());
+        }
         String from = result.getPayingGroup().getCongress().getContactEmail();
         byte[] pdfBytes = invoicePdfService.generatePdf(invoicePdfService.createInvoicePdfContext(result));
         //mailService.sendGroupDiscountInvoicePdfEmail(new Locale(invoiceVM.getLanguage()), from, invoiceVM.getCustomInvoiceEmail(), invoiceVM.getPayingGroup(), pdfBytes);
@@ -133,9 +135,9 @@ public class GroupDiscountInvoiceResource {
     public ResponseEntity<Invoice> stornoInvoice(@PathVariable Long id) {
         log.debug("REST request to storno GroupDiscountInvoice : {}", id);
         Invoice invoice = invoiceService.stornoInvoice(id);
-        //if (invoice != null && !InvoiceType.PRO_FORMA.equals(invoice.getInvoiceType())) {
-        //navOnlineService.postInvoiceToNav(invoice.getId());
-        //}
+        if (invoice != null && !InvoiceType.PRO_FORMA.equals(invoice.getInvoiceType())) {
+            navOnlineService.postInvoiceToNav(invoice.getId());
+        }
 
         return Optional.ofNullable(invoice)
                 .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
