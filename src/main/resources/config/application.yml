@@ -144,23 +144,12 @@ spring:
 #    host: smtp.gmail.com
 #    port: 587
 #    username: pcs.congressline@gmail.com
-#    password: SanyiaLo
+#    password:
 #    protocol: smtp
 #    properties.mail.smtp:
 #      auth: true
 #      starttls.enable: true
 #      ssl.trust: smtp.gmail.com
-  mail:
-    host: mail.r-logic.eu
-    port: 587
-    username:
-    password:
-    protocol: smtp
-    tls: true
-    properties.mail.smtp:
-      auth: true
-      starttls.enable: true
-      ssl.trust: mail.r-logic.eu
   messages:
     basename: i18n/messages
   main:
