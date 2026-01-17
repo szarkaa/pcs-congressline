@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +26,7 @@ import hu.congressline.pcs.domain.User;
 import hu.congressline.pcs.repository.PersistentTokenRepository;
 import hu.congressline.pcs.repository.UserRepository;
 import hu.congressline.pcs.security.SecurityUtils;
+import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.service.UserService;
 import hu.congressline.pcs.service.dto.UserDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
@@ -46,7 +48,7 @@ public class AccountResource {
     private final UserRepository userRepository;
     private final UserService userService;
     private final PersistentTokenRepository persistentTokenRepository;
-    //private MailService mailService;
+    private final MailService mailService;
     private final JHipsterProperties properties;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -147,7 +149,7 @@ public class AccountResource {
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/account/sessions/{series}")
     public void invalidateSession(@PathVariable String series) throws UnsupportedEncodingException {
-        String decodedSeries = URLDecoder.decode(series, "UTF-8");
+        String decodedSeries = URLDecoder.decode(series, StandardCharsets.UTF_8);
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin).flatMap(u -> persistentTokenRepository.findByUser(u).stream()
                 .filter(persistentToken -> StringUtils.equals(persistentToken.getSeries(), decodedSeries))
@@ -155,22 +157,22 @@ public class AccountResource {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @RequestMapping(value = "/account/reset_password/init", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/account/reset-password/init", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<?> requestPasswordReset(@RequestBody String mail, HttpServletRequest request) {
         return userService.requestPasswordReset(mail)
             .map(user -> {
-                //String baseUrl = (properties.getMail().getMailLinkSecured() ? "https" : "http") + "://" + request.getServerName() + request.getContextPath();
-                //mailService.sendPasswordResetMail(user, baseUrl);
+                mailService.sendPasswordResetMail(user);
                 return new ResponseEntity<>("e-mail was sent", HttpStatus.OK);
             }).orElse(new ResponseEntity<>("e-mail address not registered", HttpStatus.BAD_REQUEST));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @RequestMapping(value = "/account/reset_password/finish", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/account/reset-password/finish", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> finishPasswordReset(@RequestBody KeyAndPasswordVM keyAndPassword) {
         if (!checkPasswordLength(keyAndPassword.getNewPassword())) {
             return new ResponseEntity<>(INCORRECT_PASSWORD, HttpStatus.BAD_REQUEST);
         }
+
         return userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey())
             .map(user -> new ResponseEntity<String>(HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));

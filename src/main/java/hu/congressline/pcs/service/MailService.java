@@ -12,11 +12,13 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.User;
+import hu.congressline.pcs.service.dto.SendAllConfirmationPdfToEmailDTO;
 import hu.congressline.pcs.web.rest.vm.ConfirmationTitleType;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -74,6 +76,23 @@ public class MailService {
             ? "proFormaInvoice" : "confirmation"), new Object[]{}, locale);
         MailAttachment mailAttachment = MailAttachment.builder().fileName(fileName).fileExtension("pdf").content(pdfBytes).mimeType("application/pdf").build();
         sendEmailFromTemplateSync(from, null, to, ccAddress, subject, "mail/confirmationEmail", locale, contextVariables, mailAttachment);
+    }
+
+    @SuppressWarnings({"MissingJavadocMethod"})
+    @Async
+    public void sendAllConfirmationPdfToEmail(String from, String to, Locale locale, List<SendAllConfirmationPdfToEmailDTO> pdfList) {
+        log.debug("Send all confirmations to e-mail[ to '{}']", to);
+        Map<String, Object> contextVariables = new HashMap<>();
+        contextVariables.put("locale", locale);
+        String subject = messageSource.getMessage("confirmation.all.pdf.email.subject", new Object[]{}, locale);
+        contextVariables.put("confirmationTitle", subject);
+        sendEmailFromTemplateSync(from, null, to, null, subject, "mail/confirmationAllEmail", locale, contextVariables,
+            pdfList.stream().map(dto -> {
+                return MailAttachment.builder()
+                    .fileName("confirmation-reg-id-" + dto.getRegId())
+                    .fileExtension("pdf")
+                    .content(dto.getPdfBytes()).mimeType("application/pdf").build();
+            }).toList().toArray(new MailAttachment[0]));
     }
 
     @SuppressWarnings("MultipleStringLiterals")

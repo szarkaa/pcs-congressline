@@ -92,7 +92,7 @@ jhipster:
       # security key (this key should be unique for your application, and kept secret)
       key: 0580c79729b82d83278a3cc08ab4138c95b38f0fceb222ff72f61d5ce615f33b398f47bc1d08345a3ede3688e1535c6ca2d7
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: http://my-server-url-to-change # Modify according to your server's URL
+    base-url: https://pcs-system.congressline.hu # Modify according to your server's URL
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
