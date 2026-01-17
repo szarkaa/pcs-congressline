@@ -228,7 +228,7 @@ public class OnlineRegResource {
         PaymentStatus status = PaymentStatus.getByCode(paymentStatus);
         String uriSuffix = resultCode == 0 && (PaymentStatus.PAYMENT_WAITING_FOR_SETTLEMENT.equals(status) || PaymentStatus.PAYMENT_SETTLED.equals(status))
             ? "success" : "failure";
-        URI uri = new URI(properties.getSystem().getDomainUrl() + "/#/registration/online/payment/result/" + uriSuffix + "?txid=" + payId);
+        URI uri = new URI(properties.getSystem().getBaseUrl() + "/#/registration/online/payment/result/" + uriSuffix + "?txid=" + payId);
         return ResponseEntity.status(HttpStatus.PERMANENT_REDIRECT).location(uri).build();
     }
 

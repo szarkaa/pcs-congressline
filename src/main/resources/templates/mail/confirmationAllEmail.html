@@ -6,12 +6,12 @@
     <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}"/>
 </head>
 <body>
-    <p th:text="#{confirmation.all.pdf.email.greeting}">Tisztelt</p>
-    <p th:text="#{confirmation.all.pdf.email.content}">Mellékelten küldjük a visszaigazoló levelet.</p>
+    <p th:text="#{confirmation.all.pdf.email.greeting}">Dear</p>
+    <p th:text="#{confirmation.all.pdf.email.content}">Please find the confirmation letter attached.</p>
     <p>
-        <span th:text="#{confirmation.pdf.email.regards}">Tisztelettel,</span>
+        <span th:text="#{confirmation.pdf.email.regards}">Sincerely,</span>
         <br/>
-        <em th:text="#{confirmation.pdf.email.signature}">CongressLine Kft.</em>
+        <em th:text="#{confirmation.pdf.email.signature}">CongressLine Ltd.</em>
     </p>
 </body>
 </html>

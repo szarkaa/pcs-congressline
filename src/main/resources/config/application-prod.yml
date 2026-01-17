@@ -112,9 +112,7 @@ jhipster:
 
 application:
   system:
-    domainUrl: https://pcs-system.congressline.hu
-    currencies: HUF, EUR
-    language: en_US, hu_HU
+      base-url: https://pcs-system.congressline.hu
   nav:
     url: https://api.onlineszamla.nav.gov.hu/invoiceService/v3
     checkingFrequencyInMillis: 60000

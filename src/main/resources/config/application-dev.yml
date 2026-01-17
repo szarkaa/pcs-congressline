@@ -98,9 +98,7 @@ jhipster:
 
 application:
   system:
-    domainUrl: http://localhost:8080
-    currencies: HUF, EUR
-    language: en_US, hu_HU
+    base-url: http://localhost:8080
   nav:
     url: https://api-test.onlineszamla.nav.gov.hu/invoiceService/v3
     checkingFrequencyInMillis: 300000

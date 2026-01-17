@@ -29,9 +29,7 @@ public class ApplicationProperties {
     @Getter
     @Setter
     public static class System {
-        private String domainUrl;
-        private String currencies;
-        private String language;
+        private String baseUrl;
     }
 
     @Getter

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import hu.congressline.pcs.domain.Invoice;
@@ -29,6 +30,7 @@ import hu.congressline.pcs.service.GroupDiscountInvoicePdfService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceService;
 import hu.congressline.pcs.service.InvoicePdfService;
 import hu.congressline.pcs.service.InvoiceService;
+import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.service.MiscInvoicePdfService;
 import hu.congressline.pcs.service.MiscInvoiceService;
 import hu.congressline.pcs.service.NavService;
@@ -56,7 +58,7 @@ public class InvoiceResource {
     private static final String EMAIL_RESENT = "pcsApp.invoice.message.emailResent";
 
     private final InvoiceService invoiceService;
-    //private final MailService mailService;
+    private final MailService mailService;
     private final InvoicePdfService invoicePdfService;
     private final RegistrationService registrationService;
     private final GroupDiscountInvoiceService invoicePayingGroupService;
@@ -89,8 +91,8 @@ public class InvoiceResource {
         final InvoicePdfContext invoicePdfContext = invoicePdfService.createInvoicePdfContext(result);
         byte[] pdfBytes = invoicePdfService.generatePdf(invoicePdfContext);
         Registration registration = registrationService.getById(invoiceVM.getRegistrationId());
-        //mailService.sendInvoicePdfEmail(new Locale(invoiceVM.getLanguage()), result.getRegistration().getCongress().getContactEmail(), invoiceVM.getCustomInvoiceEmail(),
-        // createInvoiceFilename(invoicePdfContext), registration, pdfBytes);
+        mailService.sendInvoicePdfEmail(result.getRegistration().getCongress().getContactEmail(), invoiceVM.getCustomInvoiceEmail(),
+            createInvoiceFilename(invoicePdfContext), Locale.forLanguageTag(invoiceVM.getLanguage()), registration, pdfBytes);
         return ResponseEntity.created(new URI(URI + result.getInvoice().getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getInvoice().getId().toString()))
                 .body(result.getInvoice());
@@ -104,9 +106,8 @@ public class InvoiceResource {
         if (invoiceRegistration != null) {
             final InvoicePdfContext invoicePdfContext = invoicePdfService.createInvoicePdfContext(invoiceRegistration);
             byte[] pdfBytes = invoicePdfService.generatePdf(invoicePdfContext);
-            //mailService.sendInvoicePdfEmail(new Locale(invoiceRegistration.getInvoice().getPrintLocale()),
-            //invoiceRegistration.getRegistration().getCongress().getContactEmail(),
-            //invoiceVM.getEmail(), createInvoiceFilename(invoicePdfContext), invoiceRegistration.getRegistration(), pdfBytes);
+            mailService.sendInvoicePdfEmail(invoiceRegistration.getRegistration().getCongress().getContactEmail(), invoiceVM.getEmail(), createInvoiceFilename(invoicePdfContext),
+                Locale.forLanguageTag(invoiceRegistration.getInvoice().getPrintLocale()), invoiceRegistration.getRegistration(), pdfBytes);
             return ResponseEntity.accepted().headers(HeaderUtil.createAlert(EMAIL_RESENT, null)).build();
         }
 
@@ -114,9 +115,8 @@ public class InvoiceResource {
         if (invoicePayingGroup != null) {
             final GroupDiscountInvoicePdfContext invoicePdfContext = groupDiscountInvoicePdfService.createInvoicePdfContext(invoicePayingGroup);
             byte[] pdfBytes = groupDiscountInvoicePdfService.generatePdf(invoicePdfContext);
-            //mailService.sendGroupDiscountInvoicePdfEmail(new Locale(invoicePayingGroup.getInvoice().getPrintLocale()),
-            //invoicePayingGroup.getPayingGroup().getCongress().getContactEmail(), invoiceVM.getEmail(),
-            //invoicePayingGroup.getPayingGroup(), pdfBytes);
+            mailService.sendGroupDiscountInvoicePdfEmail(invoicePayingGroup.getPayingGroup().getCongress().getContactEmail(), invoiceVM.getEmail(),
+                invoicePayingGroup.getPayingGroup(), Locale.forLanguageTag(invoicePayingGroup.getInvoice().getPrintLocale()), pdfBytes);
             return ResponseEntity.accepted().headers(HeaderUtil.createAlert(EMAIL_RESENT, null)).build();
         }
 
@@ -124,8 +124,8 @@ public class InvoiceResource {
         if (invoiceCongress != null) {
             final MiscInvoicePdfContext invoicePdfContext = miscInvoicePdfService.createInvoicePdfContext(invoiceCongress);
             byte[] pdfBytes = miscInvoicePdfService.generatePdf(invoicePdfContext);
-            //mailService.sendMiscInvoicePdfEmail(new Locale(invoiceCongress.getInvoice().getPrintLocale()),
-            //invoiceCongress.getCongress().getContactEmail(), invoiceVM.getEmail(), invoiceCongress.getInvoice(), pdfBytes);
+            mailService.sendMiscInvoicePdfEmail(invoiceCongress.getCongress().getContactEmail(), invoiceVM.getEmail(), invoiceCongress.getInvoice(),
+                Locale.forLanguageTag(invoiceCongress.getInvoice().getPrintLocale()), pdfBytes);
             return ResponseEntity.accepted().headers(HeaderUtil.createAlert(EMAIL_RESENT, null)).build();
         }
         return ResponseEntity.badRequest().build();

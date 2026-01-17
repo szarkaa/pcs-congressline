@@ -122,8 +122,8 @@ public class OnlinePaymentService {
             try {
                 SessionCreateParams.Builder builder = new SessionCreateParams.Builder()
                     .setLocale("HUF".equalsIgnoreCase(onlineReg.getCurrency()) ? SessionCreateParams.Locale.HU : SessionCreateParams.Locale.EN)
-                    .setSuccessUrl(properties.getSystem().getDomainUrl() + "/#/registration/online/payment/result/success?txid=" + onlineReg.getPaymentTrxId())
-                    .setCancelUrl(properties.getSystem().getDomainUrl() + "/#/registration/online/payment/result/failure?txid=" + onlineReg.getPaymentTrxId())
+                    .setSuccessUrl(properties.getSystem().getBaseUrl() + "/#/registration/online/payment/result/success?txid=" + onlineReg.getPaymentTrxId())
+                    .setCancelUrl(properties.getSystem().getBaseUrl() + "/#/registration/online/payment/result/failure?txid=" + onlineReg.getPaymentTrxId())
                     .addAllPaymentMethodType(Collections.singletonList(SessionCreateParams.PaymentMethodType.CARD))
                     .setCustomerEmail(onlineReg.getEmail())
                     .setMode(SessionCreateParams.Mode.PAYMENT)

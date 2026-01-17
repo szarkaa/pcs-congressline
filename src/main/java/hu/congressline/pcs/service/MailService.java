@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import hu.congressline.pcs.domain.Invoice;
+import hu.congressline.pcs.domain.PayingGroup;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.User;
 import hu.congressline.pcs.service.dto.SendAllConfirmationPdfToEmailDTO;
@@ -93,6 +95,45 @@ public class MailService {
                     .fileExtension("pdf")
                     .content(dto.getPdfBytes()).mimeType("application/pdf").build();
             }).toList().toArray(new MailAttachment[0]));
+    }
+
+    @SuppressWarnings({"MissingJavadocMethod"})
+    @Async
+    public void sendInvoicePdfEmail(String from, String to, String fileName, Locale locale, Registration registration, byte[] pdfBytes) {
+        log.debug("Send invoice e-mail[ to '{}']", to);
+        Map<String, Object> contextVariables = new HashMap<>();
+        contextVariables.put("locale", locale);
+        contextVariables.put("title", registration.getTitle());
+        contextVariables.put("name1", "hu".equals(locale.getLanguage()) ? registration.getLastName() : registration.getFirstName());
+        contextVariables.put("name2", "hu".equals(locale.getLanguage()) ? registration.getFirstName() : registration.getLastName());
+
+        String subject = messageSource.getMessage("invoice.pdf.email.subject", new Object[]{}, locale);
+        MailAttachment mailAttachment = MailAttachment.builder().fileName(fileName).fileExtension("pdf").content(pdfBytes).mimeType("application/pdf").build();
+        sendEmailFromTemplateSync(from, null, to, from, subject, "mail/invoiceEmail", locale, contextVariables, mailAttachment);
+    }
+
+    @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
+    @Async
+    public void sendGroupDiscountInvoicePdfEmail(String from, String to, PayingGroup payingGroup, Locale locale, byte[] pdfBytes) {
+        log.debug("Send group discount invoice e-mail[ to '{}']", to);
+        Map<String, Object> contextVariables = new HashMap<>();
+        contextVariables.put("locale", locale);
+        contextVariables.put("name", payingGroup.getName());
+        String subject = messageSource.getMessage("group.discount.invoice.pdf.email.subject", new Object[]{}, locale);
+        MailAttachment mailAttachment = MailAttachment.builder().fileName("invoice").fileExtension("pdf").content(pdfBytes).mimeType("application/pdf").build();
+        sendEmailFromTemplateSync(from, null, to, from, subject, "mail/groupDiscountInvoiceEmail", locale, contextVariables, mailAttachment);
+    }
+
+    @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
+    @Async
+    public void sendMiscInvoicePdfEmail(String from, String to, Invoice invoice, Locale locale, byte[] pdfBytes) {
+        log.debug("Send misc invoice e-mail[ to '{}']", to);
+        Map<String, Object> contextVariables = new HashMap<>();
+        contextVariables.put("locale", locale);
+        contextVariables.put("name", invoice.getName1());
+        String subject = messageSource.getMessage("misc.invoice.pdf.email.subject", new Object[]{}, locale);
+        MailAttachment mailAttachment = MailAttachment.builder().fileName("invoice").fileExtension("pdf").content(pdfBytes).mimeType("application/pdf").build();
+        sendEmailFromTemplateSync(from, null, to, from, subject, "mail/miscInvoiceEmail", locale, contextVariables, mailAttachment);
     }
 
     @SuppressWarnings("MultipleStringLiterals")
