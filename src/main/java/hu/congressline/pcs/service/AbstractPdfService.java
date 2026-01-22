@@ -5,7 +5,6 @@ import org.openpdf.text.Font;
 import org.openpdf.text.Paragraph;
 import org.openpdf.text.pdf.PdfPCell;
 import org.openpdf.text.pdf.PdfPTable;
-
 import org.springframework.context.MessageSource;
 
 import java.math.BigDecimal;

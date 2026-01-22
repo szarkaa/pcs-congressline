@@ -50,7 +50,7 @@
                                 return {
                                     name: null,
                                     vatRegNumber: null,
-                                    country: CongressSelector.getSelectedCongress().defaultCountry,
+                                    countryId: CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null,
                                     department: null,
                                     zipCode: null,
                                     city: null,
@@ -59,7 +59,7 @@
                                     fax: null,
                                     email: null,
                                     id: null,
-                                    congress: CongressSelector.getSelectedCongress()
+                                    congressId: CongressSelector.getSelectedCongress().id
                                 };
                             }
                         }

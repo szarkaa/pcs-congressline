@@ -4,7 +4,6 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import hu.congressline.pcs.web.rest.vm.OptionalTextVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

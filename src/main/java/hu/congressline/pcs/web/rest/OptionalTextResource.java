@@ -1,8 +1,5 @@
 package hu.congressline.pcs.web.rest;
 
-import hu.congressline.pcs.service.OptionalTextService;
-import hu.congressline.pcs.service.dto.OptionalTextDTO;
-import hu.congressline.pcs.web.rest.vm.OptionalTextVM;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +17,10 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import hu.congressline.pcs.domain.OptionalText;
+import hu.congressline.pcs.service.OptionalTextService;
+import hu.congressline.pcs.service.dto.OptionalTextDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.OptionalTextVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

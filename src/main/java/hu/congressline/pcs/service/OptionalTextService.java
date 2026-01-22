@@ -1,17 +1,17 @@
 package hu.congressline.pcs.service;
 
-import hu.congressline.pcs.domain.Congress;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+
 import hu.congressline.pcs.domain.OptionalText;
 import hu.congressline.pcs.repository.OptionalTextRepository;
 import hu.congressline.pcs.web.rest.vm.OptionalTextVM;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor

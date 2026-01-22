@@ -1,10 +1,9 @@
 package hu.congressline.pcs.service.pdf;
 
+import org.apache.commons.io.IOUtils;
 import org.openpdf.text.DocumentException;
 import org.openpdf.text.Font;
 import org.openpdf.text.pdf.BaseFont;
-
-import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import java.io.IOException;

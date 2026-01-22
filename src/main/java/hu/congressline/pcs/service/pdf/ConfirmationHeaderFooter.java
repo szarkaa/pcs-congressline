@@ -1,5 +1,6 @@
 package hu.congressline.pcs.service.pdf;
 
+import org.apache.commons.io.IOUtils;
 import org.openpdf.text.Document;
 import org.openpdf.text.DocumentException;
 import org.openpdf.text.Element;
@@ -14,8 +15,6 @@ import org.openpdf.text.pdf.PdfPTable;
 import org.openpdf.text.pdf.PdfPageEventHelper;
 import org.openpdf.text.pdf.PdfTemplate;
 import org.openpdf.text.pdf.PdfWriter;
-
-import org.apache.commons.io.IOUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 

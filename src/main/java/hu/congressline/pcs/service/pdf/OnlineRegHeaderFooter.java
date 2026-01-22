@@ -7,7 +7,6 @@ import org.openpdf.text.pdf.PdfContentByte;
 import org.openpdf.text.pdf.PdfPageEventHelper;
 import org.openpdf.text.pdf.PdfTemplate;
 import org.openpdf.text.pdf.PdfWriter;
-
 import org.springframework.context.MessageSource;
 
 import java.util.Locale;

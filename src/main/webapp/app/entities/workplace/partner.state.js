@@ -49,6 +49,7 @@
                             entity: function () {
                                 return {
                                     name: null,
+                                    countryId: null,
                                     vatRegNumber: null,
                                     department: null,
                                     zipCode: null,
@@ -58,7 +59,7 @@
                                     fax: null,
                                     email: null,
                                     id: null,
-                                    congress: null
+                                    congressId: null
                                 };
                             }
                         }
