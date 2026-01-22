@@ -10,7 +10,16 @@
     function PayingGroupItemDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, PayingGroupItem) {
         var vm = this;
 
-        vm.payingGroupItem = entity;
+        vm.payingGroupItem =  {
+            id: entity.id,
+            name: entity.name,
+            amountPercentage: entity.amountPercentage,
+            amountValue: entity.amountValue,
+            hotelDateFrom: entity.hotelDateFrom,
+            hotelDateTo: entity.hotelDateTo,
+            chargeableItemType: entity.chargeableItemType,
+            payingGroupId: entity.payingGroupId
+        };
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;

@@ -17,8 +17,10 @@ import java.util.List;
 
 import hu.congressline.pcs.domain.PayingGroupItem;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
-import hu.congressline.pcs.repository.PayingGroupItemRepository;
+import hu.congressline.pcs.service.PayingGroupItemService;
+import hu.congressline.pcs.service.dto.PayingGroupItemDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.PayingGroupItemVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,66 +32,66 @@ import lombok.extern.slf4j.Slf4j;
 public class PayingGroupItemResource {
     private static final String ENTITY_NAME = "payingGroupItem";
 
-    private final PayingGroupItemRepository payingGroupItemRepository;
+    private final PayingGroupItemService service;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/paying-group-items")
-    public ResponseEntity<PayingGroupItem> create(@Valid @RequestBody PayingGroupItem payingGroupItem) throws URISyntaxException {
-        log.debug("REST request to save PayingGroupItem : {}", payingGroupItem);
-        if (payingGroupItem.getId() != null) {
+    public ResponseEntity<PayingGroupItemDTO> create(@Valid @RequestBody PayingGroupItemVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save paying group item : {}", viewModel);
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest()
-                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new payingGroupItem cannot already have an ID"))
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new paying group item cannot already have an ID"))
                 .body(null);
         }
-        PayingGroupItem result = payingGroupItemRepository.save(payingGroupItem);
+        PayingGroupItem result = service.save(viewModel);
         return ResponseEntity.created(new URI("/api/paying-group-items/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new PayingGroupItemDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/paying-group-items")
-    public ResponseEntity<PayingGroupItem> update(@Valid @RequestBody PayingGroupItem payingGroupItem) throws URISyntaxException {
-        log.debug("REST request to update PayingGroupItem : {}", payingGroupItem);
-        if (payingGroupItem.getId() == null) {
-            return create(payingGroupItem);
+    public ResponseEntity<PayingGroupItemDTO> update(@Valid @RequestBody PayingGroupItemVM viewModel) throws URISyntaxException {
+        log.debug("REST request to update paying group item : {}", viewModel);
+        if (viewModel.getId() == null) {
+            return create(viewModel);
         }
 
-        PayingGroupItem result = payingGroupItemRepository.save(payingGroupItem);
+        PayingGroupItem result = service.save(viewModel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, payingGroupItem.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
+            .body(new PayingGroupItemDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping("/paying-group/{id}/paying-group-items")
-    public List<PayingGroupItem> getAllByPayingGroupId(@PathVariable Long id) {
-        log.debug("REST request to get all PayingGroupItems by payingGroup id: {}", id);
-        return payingGroupItemRepository.findAllByPayingGroupId(id);
+    public List<PayingGroupItemDTO> getAllByPayingGroupId(@PathVariable Long id) {
+        log.debug("REST request to get all paying group items by paying group id: {}", id);
+        return service.findAllByPayingGroupId(id).stream().map(PayingGroupItemDTO::new).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping("/congress/{id}/paying-group/paying-group-items/{itemType}")
-    public List<PayingGroupItem> getAllByCongressId(@PathVariable Long id, @PathVariable ChargeableItemType itemType) {
-        log.debug("REST request to get all PayingGroupItems by congress id: {} and itemType: {}", id, itemType);
-        return payingGroupItemRepository.findAllByChargeableItemTypeAndPayingGroupCongressId(itemType, id);
+    public List<PayingGroupItemDTO> getAllByCongressId(@PathVariable Long id, @PathVariable ChargeableItemType itemType) {
+        log.debug("REST request to get all paying group items by congress id: {} and itemType: {}", id, itemType);
+        return service.findAllByItemTypeAndCongressId(itemType, id).stream().map(PayingGroupItemDTO::new).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping("/paying-group-items/{id}")
-    public ResponseEntity<PayingGroupItem> getById(@PathVariable Long id) {
-        log.debug("REST request to get PayingGroupItem : {}", id);
-        return payingGroupItemRepository.findById(id)
-            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+    public ResponseEntity<PayingGroupItemDTO> getById(@PathVariable Long id) {
+        log.debug("REST request to get paying group item : {}", id);
+        return service.findById(id)
+            .map(result -> new ResponseEntity<>(new PayingGroupItemDTO(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/paying-group-items/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete PayingGroupItem : {}", id);
+        log.debug("REST request to delete paying group item : {}", id);
         try {
-            payingGroupItemRepository.deleteById(id);
+            service.delete(id);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
         } catch (DataIntegrityViolationException e) {
             log.debug("Constraint violation exception during delete operation.", e);

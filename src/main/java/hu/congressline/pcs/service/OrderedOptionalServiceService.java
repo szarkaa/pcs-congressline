@@ -1,12 +1,5 @@
 package hu.congressline.pcs.service;
 
-import hu.congressline.pcs.domain.Registration;
-import hu.congressline.pcs.domain.Workplace;
-import hu.congressline.pcs.repository.PayingGroupItemRepository;
-import hu.congressline.pcs.repository.RegistrationRepository;
-import hu.congressline.pcs.web.rest.vm.OrderedOptionalServiceVM;
-import hu.congressline.pcs.web.rest.vm.WorkplaceVM;
-import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +14,15 @@ import hu.congressline.pcs.domain.ChargeableItemInvoiceHistory;
 import hu.congressline.pcs.domain.GroupDiscountInvoiceHistory;
 import hu.congressline.pcs.domain.OptionalService;
 import hu.congressline.pcs.domain.OrderedOptionalService;
+import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.repository.ChargeableItemInvoiceHistoryRepository;
 import hu.congressline.pcs.repository.GroupDiscountInvoiceHistoryRepository;
 import hu.congressline.pcs.repository.OptionalServiceRepository;
 import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
+import hu.congressline.pcs.repository.PayingGroupItemRepository;
+import hu.congressline.pcs.repository.RegistrationRepository;
+import hu.congressline.pcs.web.rest.vm.OrderedOptionalServiceVM;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

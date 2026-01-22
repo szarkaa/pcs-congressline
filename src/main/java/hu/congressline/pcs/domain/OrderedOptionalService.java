@@ -102,6 +102,6 @@ public class OrderedOptionalService extends ChargeableItem {
 
     public void update(@NonNull OrderedOptionalServiceVM viewModel) {
         this.participant = viewModel.getParticipant();
-        this.createdDate = this.createdDate == null ? LocalDate.now() :  this.createdDate;
+        this.createdDate = this.createdDate == null ? LocalDate.now() : this.createdDate;
     }
 }

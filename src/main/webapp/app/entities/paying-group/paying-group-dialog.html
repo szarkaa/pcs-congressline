@@ -133,11 +133,11 @@
 
         <div class="form-group">
             <label translate="pcsApp.payingGroup.country" for="field_country">Default Country</label>
-            <ui-select ng-model="vm.payingGroup.country" name="country" id="field_country" theme="bootstrap" required>
+            <ui-select ng-model="vm.payingGroup.countryId" name="country" id="field_country" theme="bootstrap" required>
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.name"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="country in (vm.countries | filter: $select.search) track by country.id">
+                <ui-select-choices repeat="country.id as country in (vm.countries | filter: $select.search) track by country.id">
                     <div ng-bind-html="country.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
@@ -151,11 +151,11 @@
 
         <div class="form-group">
             <label translate="pcsApp.payingGroup.currency" for="field_currency">Currency</label>
-            <ui-select ng-model="vm.payingGroup.currency" name="currency" id="field_currency" theme="bootstrap" required>
+            <ui-select ng-model="vm.payingGroup.currencyId" name="currency" id="field_currency" theme="bootstrap" required>
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.currency"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="currency in (vm.currencies | filter: $select.search) track by currency.id">
+                <ui-select-choices repeat="currency.id as currency in (vm.currencies | filter: $select.search) track by currency.id">
                     <div ng-bind-html="currency.currency | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>

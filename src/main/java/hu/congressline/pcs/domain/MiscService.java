@@ -61,6 +61,14 @@ public class MiscService implements Serializable {
     @ManyToOne
     private Congress congress;
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull MiscServiceVM viewModel) {
+        this.name = viewModel.getName();
+        this.description = viewModel.getDescription();
+        this.measure = viewModel.getMeasure();
+        this.price = viewModel.getPrice();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -84,12 +92,5 @@ public class MiscService implements Serializable {
     @Override
     public String toString() {
         return "MiscService{" + "id=" + id + "}";
-    }
-
-    public void update(@NonNull MiscServiceVM viewModel) {
-        this.name = viewModel.getName();
-        this.description = viewModel.getDescription();
-        this.measure = viewModel.getMeasure();
-        this.price = viewModel.getPrice();
     }
 }

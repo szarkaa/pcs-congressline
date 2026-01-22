@@ -1,11 +1,11 @@
 package hu.congressline.pcs.service.dto;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
 import hu.congressline.pcs.domain.OrderedOptionalService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.util.Objects;
 
 @NoArgsConstructor
 @Data

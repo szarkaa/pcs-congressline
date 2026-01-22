@@ -54,14 +54,14 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 name: null,
                                 amountPercentage: null,
                                 amountValue: null,
                                 hotelDateFrom: null,
                                 hotelDateTo: null,
                                 chargeableItemType: null,
-                                id: null,
-                                payingGroup: {id: $stateParams.payingGroupId }
+                                payingGroupId: $stateParams.payingGroupId
                             };
                         }
                     }

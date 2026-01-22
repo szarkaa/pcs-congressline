@@ -1,6 +1,5 @@
 package hu.congressline.pcs.web.rest;
 
-import hu.congressline.pcs.service.dto.OrderedOptionalServiceDTO;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +21,7 @@ import hu.congressline.pcs.domain.OrderedOptionalService;
 import hu.congressline.pcs.service.DiscountService;
 import hu.congressline.pcs.service.OrderedOptionalServiceService;
 import hu.congressline.pcs.service.PriceService;
+import hu.congressline.pcs.service.dto.OrderedOptionalServiceDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.OrderedOptionalServiceVM;
 import jakarta.validation.Valid;

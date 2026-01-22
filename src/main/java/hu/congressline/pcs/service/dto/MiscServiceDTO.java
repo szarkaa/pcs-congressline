@@ -1,13 +1,13 @@
 package hu.congressline.pcs.service.dto;
 
+import java.io.Serial;
+import java.io.Serializable;
+import java.math.BigDecimal;
+
 import hu.congressline.pcs.domain.MiscService;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 import static java.util.Objects.nonNull;
 

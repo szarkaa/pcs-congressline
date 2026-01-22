@@ -47,6 +47,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 name: null,
                                 zipCode: null,
                                 city: null,
@@ -56,8 +57,9 @@
                                 phone: null,
                                 fax: null,
                                 taxNumber: null,
-                                id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                countryId: null,
+                                currencyId: null,
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }
