@@ -10,7 +10,23 @@
     function OptionalServiceDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, OptionalService, Currency, VatInfo, Congress, CongressSelector) {
         var vm = this;
 
-        vm.optionalService = entity;
+        vm.optionalService = {
+            id: entity.id,
+            code: entity.code,
+            name: entity.name,
+            startDate: entity.startDate,
+            endDate: entity.endDate,
+            price: entity.price,
+            maxPerson: entity.maxPerson,
+            reserved: entity.reserved,
+            onlineLabel: entity.onlineLabel,
+            onlineOrder: entity.onlineOrder,
+            onlineVisibility: entity.onlineVisibility,
+            onlineType: entity.onlineType,
+            currencyId: entity.currency ? entity.currency.id : null,
+            vatInfoId: entity.vatInfo ? entity.vatInfo.id : null,
+            congressId: CongressSelector.getSelectedCongress().id
+        };
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;

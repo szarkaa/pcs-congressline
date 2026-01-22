@@ -18,8 +18,10 @@ import java.util.List;
 import java.util.Optional;
 
 import hu.congressline.pcs.domain.OptionalService;
-import hu.congressline.pcs.repository.OptionalServiceRepository;
+import hu.congressline.pcs.service.OptionalServiceService;
+import hu.congressline.pcs.service.dto.OptionalServiceDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.OptionalServiceVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,72 +35,70 @@ public class OptionalServiceResource {
     private static final String OPTIONAL_SERVICE_CODE_EXISTS = "optionalservicecodeexists";
     private static final String OPTIONAL_SERVICE_CODE_EXISTS_MSG = "Optional service code already exists";
 
-    private final OptionalServiceRepository repository;
+    private final OptionalServiceService service;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/optional-services")
-    public ResponseEntity<OptionalService> create(@Valid @RequestBody OptionalService optionalService) throws URISyntaxException {
-        log.debug("REST request to save OptionalService : {}", optionalService);
-        if (optionalService.getId() != null) {
+    public ResponseEntity<OptionalServiceDTO> create(@Valid @RequestBody OptionalServiceVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save optional service : {}", viewModel);
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert(ENTITY_NAME, "idexists", "A new optionalService cannot already have an ID"))
+                .createFailureAlert(ENTITY_NAME, "idexists", "A new optional service cannot already have an ID"))
                 .body(null);
-        } else if (repository.findOneByCodeAndCongressId(optionalService.getCode(), optionalService.getCongress().getId()).isPresent()) {
+        } else if (service.findByCodeAndCongressId(viewModel.getCode(), viewModel.getCongressId()).isPresent()) {
             return ResponseEntity.badRequest()
                     .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, OPTIONAL_SERVICE_CODE_EXISTS, OPTIONAL_SERVICE_CODE_EXISTS_MSG))
                     .body(null);
         }
 
-        OptionalService result = repository.save(optionalService);
+        OptionalService result = service.save(viewModel);
         return ResponseEntity.created(new URI("/api/optional-services/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new OptionalServiceDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/optional-services")
-    public ResponseEntity<OptionalService> update(@Valid @RequestBody OptionalService optionalService) throws URISyntaxException {
-        log.debug("REST request to update OptionalService : {}", optionalService);
-        if (optionalService.getId() == null) {
-            return create(optionalService);
+    public ResponseEntity<OptionalServiceDTO> update(@Valid @RequestBody OptionalServiceVM viewModel) throws URISyntaxException {
+        log.debug("REST request to update optional service : {}", viewModel);
+        if (viewModel.getId() == null) {
+            return create(viewModel);
         }
-        final Optional<OptionalService> existingRegType = repository.findOneByCodeAndCongressId(optionalService.getCode(), optionalService.getCongress().getId());
-        if (existingRegType.isPresent() && !existingRegType.get().getId().equals(optionalService.getId())) {
+        final Optional<OptionalService> existingRegType = service.findByCodeAndCongressId(viewModel.getCode(), viewModel.getCongressId());
+        if (existingRegType.isPresent() && !existingRegType.get().getId().equals(viewModel.getId())) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, OPTIONAL_SERVICE_CODE_EXISTS, OPTIONAL_SERVICE_CODE_EXISTS_MSG))
                 .body(null);
         }
 
-        OptionalService result = repository.save(optionalService);
+        OptionalService result = service.save(viewModel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, optionalService.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
+            .body(new OptionalServiceDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-services/congress/{id}")
-    public List<OptionalService> getAllByCongressId(@PathVariable Long id) {
-        log.debug("REST request to get all OptionalServices by congress id: {}", id);
-        return repository.findByCongressIdOrderByName(id);
+    public List<OptionalServiceDTO> getAllByCongressId(@PathVariable Long id) {
+        log.debug("REST request to get all optional services by congress id: {}", id);
+        return service.findByCongressId(id).stream().map(OptionalServiceDTO::new).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-services/{id}")
-    public ResponseEntity<OptionalService> getById(@PathVariable Long id) {
-        log.debug("REST request to get OptionalService : {}", id);
-        return repository.findById(id)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
+    public ResponseEntity<OptionalServiceDTO> getById(@PathVariable Long id) {
+        log.debug("REST request to get optional service : {}", id);
+        return service.findById(id)
+            .map(result -> new ResponseEntity<>(new OptionalServiceDTO(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/optional-services/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete OptionalService : {}", id);
+        log.debug("REST request to delete optional service : {}", id);
         try {
-            repository.deleteById(id);
+            service.delete(id);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
         } catch (DataIntegrityViolationException e) {
             log.debug("Constraint violation exception during delete operation.", e);

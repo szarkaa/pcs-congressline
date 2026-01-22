@@ -49,6 +49,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 code: null,
                                 name: null,
                                 startDate: new Date(CongressSelector.getSelectedCongress().startDate),
@@ -60,8 +61,9 @@
                                 onlineOrder: null,
                                 onlineVisibility: 'VISIBLE',
                                 onlineType: 'NORMAL',
-                                id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                currencyId: null,
+                                vatInfoId: null,
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }

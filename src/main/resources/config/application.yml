@@ -116,7 +116,7 @@ spring:
       repositories:
         bootstrap-mode: deferred
   jpa:
-    open-in-view: true
+    open-in-view: false
     properties:
       hibernate.jdbc.time_zone: UTC
       hibernate.timezone.default_storage: NORMALIZE

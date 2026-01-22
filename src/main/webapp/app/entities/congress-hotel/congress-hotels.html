@@ -27,8 +27,8 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="congressHotel in vm.congressHotels track by congressHotel.id">
-                            <td>{{congressHotel.hotel.code}}</td>
-                            <td>{{congressHotel.hotel.name}}</td>
+                            <td>{{congressHotel.code}}</td>
+                            <td>{{congressHotel.name}}</td>
                             <td>
                                 <button class="btn btn-primary" type="submit"
                                         ui-sref="room({congressHotelId: congressHotel.id})"><i class="fa fa-sitemap"></i></button>

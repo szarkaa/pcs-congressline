@@ -10,7 +10,24 @@
     function RegistrationTypeDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, RegistrationType, CongressSelector, VatInfo, Congress) {
         var vm = this;
 
-        vm.registrationType = entity;
+        vm.registrationType = {
+            id: entity.id,
+            code: entity.code,
+            name: entity.name,
+            firstRegFee: entity.firstRegFee,
+            firstDeadline: entity.firstDeadline,
+            secondRegFee: entity.secondRegFee,
+            secondDeadline: entity.secondDeadline,
+            thirdRegFee: entity.thirdRegFee,
+            registrationType: entity.registrationType,
+            onlineLabel: entity.onlineLabel,
+            onlineOrder: entity.onlineOrder,
+            onlineVisibility: entity.onlineVisibility,
+            onlineType: entity.onlineType,
+            currencyId: entity.currency ? entity.currency.id : null,
+            vatInfoId: entity.vatInfo ? entity.vatInfo.id : null,
+            congressId: CongressSelector.getSelectedCongress().id
+        };
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;

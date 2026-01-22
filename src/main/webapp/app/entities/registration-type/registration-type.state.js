@@ -50,6 +50,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 code: null,
                                 name: null,
                                 firstRegFee: null,
@@ -62,8 +63,9 @@
                                 onlineOrder: null,
                                 onlineVisibility: 'VISIBLE',
                                 onlineType: 'NORMAL',
-                                id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                currencyId: null,
+                                vatInfoId: null,
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }

@@ -9,6 +9,7 @@ import java.util.Objects;
 import hu.congressline.pcs.domain.enumeration.OnlineType;
 import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
 import hu.congressline.pcs.domain.enumeration.RegistrationTypeType;
+import hu.congressline.pcs.web.rest.vm.RegistrationTypeVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,6 +26,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -102,6 +104,22 @@ public class RegistrationType implements Serializable {
 
     @ManyToOne
     private Congress congress;
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull RegistrationTypeVM viewModel) {
+        this.code = viewModel.getCode();
+        this.name = viewModel.getName();
+        this.firstRegFee = viewModel.getFirstRegFee();
+        this.firstDeadline = viewModel.getFirstDeadline();
+        this.secondRegFee = viewModel.getSecondRegFee();
+        this.secondDeadline = viewModel.getSecondDeadline();
+        this.thirdRegFee = viewModel.getThirdRegFee();
+        this.registrationType = viewModel.getRegistrationType();
+        this.onlineType = viewModel.getOnlineType();
+        this.onlineVisibility = viewModel.getOnlineVisibility();
+        this.onlineLabel = viewModel.getOnlineLabel();
+        this.onlineOrder = viewModel.getOnlineOrder();
+    }
 
     @Override
     public boolean equals(Object o) {

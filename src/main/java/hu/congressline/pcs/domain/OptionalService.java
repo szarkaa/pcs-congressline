@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import hu.congressline.pcs.domain.enumeration.OnlineType;
 import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
+import hu.congressline.pcs.web.rest.vm.OptionalServiceVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,6 +25,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -117,5 +119,20 @@ public class OptionalService implements Serializable {
     @Override
     public String toString() {
         return "OptionalService{" + "id=" + id + "}";
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull OptionalServiceVM viewModel) {
+        this.code = viewModel.getCode();
+        this.name = viewModel.getName();
+        this.startDate = viewModel.getStartDate();
+        this.endDate = viewModel.getEndDate();
+        this.price = viewModel.getPrice();
+        this.maxPerson = viewModel.getMaxPerson();
+        this.reserved = viewModel.getReserved();
+        this.onlineType = viewModel.getOnlineType();
+        this.onlineVisibility = viewModel.getOnlineVisibility();
+        this.onlineLabel = viewModel.getOnlineLabel();
+        this.onlineOrder = viewModel.getOnlineOrder();
     }
 }
