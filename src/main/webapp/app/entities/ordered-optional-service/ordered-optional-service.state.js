@@ -44,12 +44,11 @@
                         resolve: {
                             entity: function () {
                                 return {
-                                    participant: null,
-                                    dateOfGroupPayment: null,
-                                    createdDate: null,
                                     id: null,
-                                    registration: {id: registration.id},
-                                    '@class': 'hu.congressline.pcs.domain.OrderedOptionalService'
+                                    participant: null,
+                                    optionalServiceId: null,
+                                    payingGroupItemId: null,
+                                    registrationId: registration.id
                                 };
                             },
                             registrationCurrency: function () {

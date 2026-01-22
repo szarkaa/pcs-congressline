@@ -10,7 +10,20 @@
     function WorkplaceDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Workplace, Country, Congress) {
         var vm = this;
 
-        vm.workplace = entity;
+        vm.workplace = {
+            id: null,
+            name: entity.name,
+            vatRegNumber: null,
+            countryId: entity.countryId,
+            department: entity.department,
+            zipCode: entity.zipCode,
+            city: entity.city,
+            street: entity.street,
+            phone: entity.phone,
+            fax: entity.fax,
+            email: entity.email,
+            congressId: entity.congressId
+        };
         vm.clear = clear;
         vm.save = save;
         vm.countries = Country.query();

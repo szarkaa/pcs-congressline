@@ -17,8 +17,10 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import hu.congressline.pcs.domain.MiscService;
-import hu.congressline.pcs.repository.MiscServiceRepository;
+import hu.congressline.pcs.service.MiscServiceService;
+import hu.congressline.pcs.service.dto.MiscServiceDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.MiscServiceVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,66 +32,57 @@ import lombok.extern.slf4j.Slf4j;
 public class MiscServiceResource {
     private static final String ENTITY_NAME = "miscService";
 
-    private final MiscServiceRepository miscServiceRepository;
+    private final MiscServiceService service;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/misc-services")
-    public ResponseEntity<MiscService> create(@Valid @RequestBody MiscService miscService) throws URISyntaxException {
-        log.debug("REST request to save MiscService : {}", miscService);
-        if (miscService.getId() != null) {
+    public ResponseEntity<MiscServiceDTO> create(@Valid @RequestBody MiscServiceVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save MiscService : {}", viewModel);
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert(ENTITY_NAME, "idexists", "A new miscService cannot already have an ID")).body(null);
+                .createFailureAlert(ENTITY_NAME, "idexists", "A new misc service cannot already have an ID")).body(null);
         }
-        MiscService result = miscServiceRepository.save(miscService);
+        MiscService result = service.save(viewModel);
         return ResponseEntity.created(new URI("/api/misc-services/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new MiscServiceDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/misc-services")
-    public ResponseEntity<MiscService> update(@Valid @RequestBody MiscService miscService) throws URISyntaxException {
-        log.debug("REST request to update MiscService : {}", miscService);
-        if (miscService.getId() == null) {
-            return create(miscService);
+    public ResponseEntity<MiscServiceDTO> update(@Valid @RequestBody MiscServiceVM viewModel) throws URISyntaxException {
+        log.debug("REST request to update misc service : {}", viewModel);
+        if (viewModel.getId() == null) {
+            return create(viewModel);
         }
-        MiscService result = miscServiceRepository.save(miscService);
+        MiscService result = service.save(viewModel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, miscService.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
+            .body(new MiscServiceDTO(result));
     }
-
-    /*
-    @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/misc-services")
-    public List<MiscService> getAllMiscServices() {
-        log.debug("REST request to get all MiscServices");
-        return miscServiceRepository.findAll();
-    }
-    */
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/misc-services/congress/{id}")
-    public List<MiscService> getAllByCongressId(@PathVariable Long id) {
-        log.debug("REST request to get all MiscServices by congress id: {}", id);
-        return miscServiceRepository.findByCongressIdOrderByName(id);
+    public List<MiscServiceDTO> getAllByCongressId(@PathVariable Long id) {
+        log.debug("REST request to get all misc services by congress id: {}", id);
+        return service.findByCongressId(id).stream().map(MiscServiceDTO::new).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/misc-services/{id}")
-    public ResponseEntity<MiscService> getById(@PathVariable Long id) {
-        log.debug("REST request to get MiscService : {}", id);
-        return miscServiceRepository.findById(id)
-            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+    public ResponseEntity<MiscServiceDTO> getById(@PathVariable Long id) {
+        log.debug("REST request to get misc service : {}", id);
+        return service.findById(id)
+            .map(result -> new ResponseEntity<>(new MiscServiceDTO(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/misc-services/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete MiscService : {}", id);
+        log.debug("REST request to delete misc service : {}", id);
         try {
-            miscServiceRepository.deleteById(id);
+            service.delete(id);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
         } catch (DataIntegrityViolationException e) {
             log.debug("Constraint violation exception during delete operation.", e);

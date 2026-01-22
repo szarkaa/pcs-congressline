@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import hu.congressline.pcs.web.rest.vm.MiscServiceVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -82,5 +84,12 @@ public class MiscService implements Serializable {
     @Override
     public String toString() {
         return "MiscService{" + "id=" + id + "}";
+    }
+
+    public void update(@NonNull MiscServiceVM viewModel) {
+        this.name = viewModel.getName();
+        this.description = viewModel.getDescription();
+        this.measure = viewModel.getMeasure();
+        this.price = viewModel.getPrice();
     }
 }

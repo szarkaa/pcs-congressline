@@ -47,12 +47,14 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 name: null,
                                 description: null,
                                 measure: null,
                                 price: null,
-                                id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                vatInfo: null,
+                                currency: null,
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }

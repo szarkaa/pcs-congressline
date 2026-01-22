@@ -16,9 +16,9 @@
                 url: 'api/registrations/:id/ordered-optional-services',
                 isArray: true
             },
-            'queryVMByRegistrationId' : {
+            'queryDTOByRegistrationId' : {
                 method: 'GET',
-                url: 'api/registrations/:id/ordered-optional-service-vms',
+                url: 'api/registrations/:id/ordered-optional-service-dtos',
                 isArray: true
             },
             'get': {
@@ -26,8 +26,6 @@
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
-                        data.dateOfGroupPayment = DateUtils.convertLocalDateFromServer(data.dateOfGroupPayment);
-                        data.createdDate = DateUtils.convertLocalDateFromServer(data.createdDate);
                     }
                     return data;
                 }
@@ -36,8 +34,6 @@
                 method: 'PUT',
                 transformRequest: function (data) {
                     var copy = angular.copy(data);
-                    copy.dateOfGroupPayment = DateUtils.convertLocalDateToServer(copy.dateOfGroupPayment);
-                    copy.createdDate = DateUtils.convertLocalDateToServer(copy.createdDate);
                     return angular.toJson(copy);
                 }
             },
@@ -45,8 +41,6 @@
                 method: 'POST',
                 transformRequest: function (data) {
                     var copy = angular.copy(data);
-                    copy.dateOfGroupPayment = DateUtils.convertLocalDateToServer(copy.dateOfGroupPayment);
-                    copy.createdDate = DateUtils.convertLocalDateToServer(copy.createdDate);
                     return angular.toJson(copy);
                 }
             }

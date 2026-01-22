@@ -75,15 +75,6 @@ public class OptionalServiceResource {
             .body(result);
     }
 
-    /*
-    @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/optional-services")
-    public List<OptionalService> getAll() {
-        log.debug("REST request to get all OptionalServices");
-        return repository.findAll();
-    }
-    */
-
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-services/congress/{id}")
     public List<OptionalService> getAllByCongressId(@PathVariable Long id) {

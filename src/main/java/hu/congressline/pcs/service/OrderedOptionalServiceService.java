@@ -1,5 +1,12 @@
 package hu.congressline.pcs.service;
 
+import hu.congressline.pcs.domain.Registration;
+import hu.congressline.pcs.domain.Workplace;
+import hu.congressline.pcs.repository.PayingGroupItemRepository;
+import hu.congressline.pcs.repository.RegistrationRepository;
+import hu.congressline.pcs.web.rest.vm.OrderedOptionalServiceVM;
+import hu.congressline.pcs.web.rest.vm.WorkplaceVM;
+import lombok.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +38,8 @@ public class OrderedOptionalServiceService {
     private final OptionalServiceRepository optionalServiceRepository;
     private final ChargeableItemInvoiceHistoryRepository ciihRepository;
     private final GroupDiscountInvoiceHistoryRepository gdihRepository;
+    private final PayingGroupItemRepository pgiRepository;
+    private final RegistrationRepository registrationRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     public OrderedOptionalService save(OrderedOptionalService orderedOptionalService) {
@@ -40,6 +49,20 @@ public class OrderedOptionalServiceService {
         increaseOptionalServiceReservedNumber(optionalService, result.getParticipant());
         optionalServiceRepository.save(optionalService);
         return result;
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public OrderedOptionalService save(@NonNull OrderedOptionalServiceVM viewModel) {
+        OrderedOptionalService oos = viewModel.getId() != null ? getById(viewModel.getId()) : new OrderedOptionalService();
+        oos.update(viewModel);
+        oos.setOptionalService(viewModel.getOptionalServiceId() != null ? optionalServiceRepository.findById(viewModel.getOptionalServiceId()).orElse(null) : null);
+        oos.setPayingGroupItem(viewModel.getPayingGroupItemId() != null ? pgiRepository.findById(viewModel.getPayingGroupItemId()).orElse(null) : null);
+        if (oos.getRegistration() == null) {
+            final Registration registration = registrationRepository.findById(viewModel.getRegistrationId())
+                .orElseThrow(() -> new IllegalArgumentException("Registration not found with id: " + viewModel.getRegistrationId()));
+            oos.setRegistration(registration);
+        }
+        return repository.save(oos);
     }
 
     @SuppressWarnings("MissingJavadocMethod")

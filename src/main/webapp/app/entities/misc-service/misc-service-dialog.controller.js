@@ -10,7 +10,16 @@
     function MiscServiceDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, MiscService, VatInfo,  Congress, CongressSelector) {
         var vm = this;
 
-        vm.miscService = entity;
+        vm.miscService = {
+            id: entity.id,
+            name: entity.name,
+            description: entity.description,
+            measure: entity.measure,
+            price: entity.price,
+            vatInfoId: entity.vatInfo ? entity.vatInfo.id : null,
+            currencyId: entity.currency ? entity.currency.id : null,
+            congressId: entity.congressId
+        };
         vm.clear = clear;
         vm.save = save;
         vm.currencies = [];

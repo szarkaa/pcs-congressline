@@ -47,7 +47,7 @@
                     return RoomReservation.queryVMByRegistrationId({id: $stateParams.registrationId}).$promise;
                 }],
                 orderedOptionalServices: ['$stateParams', 'OrderedOptionalService', function ($stateParams, OrderedOptionalService) {
-                    return OrderedOptionalService.queryVMByRegistrationId({id: $stateParams.registrationId}).$promise;
+                    return OrderedOptionalService.queryDTOByRegistrationId({id: $stateParams.registrationId}).$promise;
                 }],
                 chargedServices: ['$stateParams', 'ChargedService', function ($stateParams, ChargedService) {
                     return ChargedService.queryByRegistrationId({id: $stateParams.registrationId}).$promise;

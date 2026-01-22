@@ -61,16 +61,6 @@ public class PayingGroupItemResource {
             .body(result);
     }
 
-    /*
-    @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/paying-group-items")
-    public List<PayingGroupItem> getAllPayingGroupItems() {
-        log.debug("REST request to get all PayingGroupItems");
-        List<PayingGroupItem> payingGroupItems = payingGroupItemRepository.findAll();
-        return payingGroupItems;
-    }
-    */
-
     @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping("/paying-group/{id}/paying-group-items")
     public List<PayingGroupItem> getAllByPayingGroupId(@PathVariable Long id) {
