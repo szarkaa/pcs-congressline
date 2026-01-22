@@ -33,7 +33,7 @@ import hu.congressline.pcs.service.InvoiceService;
 import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.service.MiscInvoicePdfService;
 import hu.congressline.pcs.service.MiscInvoiceService;
-import hu.congressline.pcs.service.NavService;
+import hu.congressline.pcs.service.NavOnlineService;
 import hu.congressline.pcs.service.RegistrationService;
 import hu.congressline.pcs.service.dto.InvoiceDTO;
 import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
@@ -65,7 +65,7 @@ public class InvoiceResource {
     private final GroupDiscountInvoicePdfService groupDiscountInvoicePdfService;
     private final MiscInvoiceService miscInvoiceService;
     private final MiscInvoicePdfService miscInvoicePdfService;
-    private final NavService navOnlineService;
+    private final NavOnlineService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/invoices")
@@ -173,7 +173,7 @@ public class InvoiceResource {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/invoices/{invoiceId}/pdf")
+    @GetMapping(value = "/invoices/{invoiceId}/pdf", produces = "application/pdf")
     public ResponseEntity<byte[]> getPdf(@PathVariable Long invoiceId) {
         InvoiceRegistration invoice = invoiceService.getInvoiceRegistrationByInvoiceId(invoiceId);
         final InvoicePdfContext invoicePdfContext = invoicePdfService.createInvoicePdfContext(invoice);

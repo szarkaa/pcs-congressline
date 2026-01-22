@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +27,8 @@ import hu.congressline.pcs.repository.AuthorityRepository;
 import hu.congressline.pcs.repository.PersistentTokenRepository;
 import hu.congressline.pcs.repository.UserRepository;
 import hu.congressline.pcs.security.AuthoritiesConstants;
+import hu.congressline.pcs.security.RandomUtil;
 import hu.congressline.pcs.security.SecurityUtils;
-import hu.congressline.pcs.service.util.RandomUtil;
 import hu.congressline.pcs.web.rest.vm.CongressVM;
 import hu.congressline.pcs.web.rest.vm.ManagedUserVM;
 import lombok.RequiredArgsConstructor;
@@ -278,8 +278,7 @@ public class UserService {
     @SuppressWarnings("MissingJavadocMethod")
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
-        ZonedDateTime now = ZonedDateTime.now();
-        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minusDays(3));
+        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS));
         for (User user : users) {
             log.debug("Deleting not activated user {}", user.getLogin());
             userRepository.delete(user);

@@ -1,20 +1,20 @@
 package hu.congressline.pcs.service.pdf;
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfPageEventHelper;
-import com.lowagie.text.pdf.PdfTemplate;
-import com.lowagie.text.pdf.PdfWriter;
+import org.openpdf.text.Chunk;
+import org.openpdf.text.Document;
+import org.openpdf.text.DocumentException;
+import org.openpdf.text.Element;
+import org.openpdf.text.Font;
+import org.openpdf.text.Image;
+import org.openpdf.text.Paragraph;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.BaseFont;
+import org.openpdf.text.pdf.PdfContentByte;
+import org.openpdf.text.pdf.PdfPCell;
+import org.openpdf.text.pdf.PdfPTable;
+import org.openpdf.text.pdf.PdfPageEventHelper;
+import org.openpdf.text.pdf.PdfTemplate;
+import org.openpdf.text.pdf.PdfWriter;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.context.MessageSource;
@@ -371,13 +371,6 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         cb.setTextMatrix(document.left(), footerBase);
         cb.showText(messageSource.getMessage("invoice.pdf.invoiceGenerateMsg", new Object[]{}, pdfContext.getLocale()));
         cb.endText();
-
-        //the generator system of the invoice
-        //cb.beginText();
-        //cb.setFontAndSize(baseFont, 6);
-        //cb.setTextMatrix(document.left(), footerBase);
-        //cb.showText("The invoice has been created by the AAT Development's PCS system.");
-        //cb.endText();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -385,7 +378,7 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         total.beginText();
         total.setFontAndSize(baseFont, 6);
         total.setTextMatrix(0, 0);
-        total.showText(String.valueOf(writer.getPageNumber()));
+        total.showText(String.valueOf(writer.getPageNumber() - 1)); // bug? show one more page than actually exists
         total.endText();
     }
 

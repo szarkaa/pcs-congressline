@@ -13,7 +13,7 @@ import org.springframework.core.env.Profiles;
 
 import java.util.Arrays;
 
-import tech.jhipster.config.JHipsterConstants;
+import hu.congressline.pcs.config.Constants;
 
 /**
  * Aspect for logging execution of service and repository Spring components.
@@ -72,7 +72,7 @@ public class LoggingAspect {
     @AfterThrowing(pointcut = "applicationPackagePointcut() && springBeanPointcut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
         final String aNull = "NULL";
-        if (env.acceptsProfiles(Profiles.of(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT))) {
+        if (env.acceptsProfiles(Profiles.of(Constants.SPRING_PROFILE_DEVELOPMENT))) {
             logger(joinPoint).error(
                 "Exception in {}() with cause = '{}' and exception = '{}'",
                 joinPoint.getSignature().getName(),

@@ -1,6 +1,5 @@
 package hu.congressline.pcs.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -53,9 +52,9 @@ public class PaymentCryptoService {
 
             String merchantId = getMerchantId(currency);
             String data = String.join("", Files.readAllLines(new File(keyFilePath + "kh-public-key-" + merchantId + ".pub").toPath()));
-            data = StringUtils.remove(data, "-----BEGIN PUBLIC KEY-----");
-            data = StringUtils.remove(data, "-----END PUBLIC KEY-----");
-            data = StringUtils.remove(data, "\\n");
+            data = data.replace("-----BEGIN PUBLIC KEY-----", "");
+            data = data.replace(data, "-----END PUBLIC KEY-----");
+            data = data.replace(data, "\\n");
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(data));
             KeyFactory keyFactory = KeyFactory.getInstance(RSA);
             return keyFactory.generatePublic(keySpec);

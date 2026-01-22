@@ -15,7 +15,7 @@ import hu.congressline.pcs.domain.OnlineRegConfig;
 import hu.congressline.pcs.repository.CongressRepository;
 import hu.congressline.pcs.repository.OnlineRegConfigRepository;
 import hu.congressline.pcs.repository.OnlineRegCustomQuestionRepository;
-import hu.congressline.pcs.service.util.RandomUtil;
+import hu.congressline.pcs.security.RandomUtil;
 import hu.congressline.pcs.web.rest.vm.CongressVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +74,7 @@ public class CongressService {
     @SuppressWarnings("MissingJavadocMethod")
     public Congress persist(Congress congress) {
         if (congress.getUuid() == null) {
-            congress.setUuid(RandomUtil.generateUniqueId());
+            congress.setUuid(RandomUtil.generateRandomAlphanumericString());
         }
         Congress result = congressRepository.save(congress);
         OnlineRegConfig config = new OnlineRegConfig();

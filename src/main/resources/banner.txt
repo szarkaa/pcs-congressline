@@ -1,1 +1,1 @@
-${AnsiColor.BRIGHT_BLUE}:: JHipster 🤓  :: Running Spring Boot ${spring-boot.version} :: Startup profile(s) ${spring.profiles.active} ::
+${AnsiColor.BRIGHT_BLUE}:: PCS System :: Running Spring Boot ${spring-boot.version} :: Startup profile(s) ${spring.profiles.active} ::

@@ -19,10 +19,9 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.csrf.CsrfTokenRequestHandler;
 import org.springframework.security.web.csrf.XorCsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
-import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
 import org.springframework.security.web.util.matcher.OrRequestMatcher;
 import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import java.util.function.Supplier;
 
@@ -31,17 +30,15 @@ import hu.congressline.pcs.web.filter.SpaWebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import tech.jhipster.config.JHipsterProperties;
 
 import static org.springframework.security.config.Customizer.withDefaults;
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @RequiredArgsConstructor
 @Configuration
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
 
-    private final JHipsterProperties hipsterProperties;
+    private final PcsProperties pcsProperties;
     private final RememberMeServices rememberMeServices;
 
     @Bean
@@ -49,10 +46,13 @@ public class SecurityConfiguration {
         return new BCryptPasswordEncoder();
     }
 
-    @SuppressWarnings("MissingJavadocMethod")
+    @SuppressWarnings({"MissingJavadocMethod", "MethodLength"})
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         final String apiPattern = "/api/**";
+
+        PathPatternRequestMatcher.Builder pp = PathPatternRequestMatcher.withDefaults();
+
         http
             .cors(withDefaults())
             .csrf(AbstractHttpConfigurer::disable)
@@ -64,6 +64,109 @@ public class SecurityConfiguration {
             )
             */
             //.addFilterAfter(new CsrfCookieGeneratorFilter(), CsrfFilter.class)
+            .addFilterAfter(new SpaWebFilter(), BasicAuthenticationFilter.class)
+            .headers(headers ->
+                headers
+                    .contentSecurityPolicy(csp -> csp.policyDirectives(
+                        pcsProperties.getSecurity().getContentSecurityPolicy()
+                    ))
+                    .frameOptions(FrameOptionsConfig::sameOrigin)
+                    .referrerPolicy(referrer -> referrer.policy(
+                        ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN
+                    ))
+                    .permissionsPolicyHeader(permissions ->
+                        permissions.policy(
+                            "camera=(), fullscreen=(self), geolocation=(), gyroscope=(), magnetometer=(), "
+                                + "microphone=(), midi=(), payment=(), sync-xhr=()"
+                        )
+                    )
+            )
+            .authorizeHttpRequests(authz -> authz
+                // static assets
+                .requestMatchers(
+                    pp.matcher("/index.html"),
+                    pp.matcher("/*.js"),
+                    pp.matcher("/*.txt"),
+                    pp.matcher("/*.json"),
+                    pp.matcher("/*.map"),
+                    pp.matcher("/*.css")
+                ).permitAll()
+                .requestMatchers(
+                    pp.matcher("/*.ico"),
+                    pp.matcher("/*.png"),
+                    pp.matcher("/*.svg"),
+                    pp.matcher("/*.webapp")
+                ).permitAll()
+
+                // app folders
+                .requestMatchers(pp.matcher("/app/**")).permitAll()
+                .requestMatchers(pp.matcher("/bower_components/**")).permitAll()
+                .requestMatchers(pp.matcher("/i18n/**")).permitAll()
+                .requestMatchers(pp.matcher("/content/**")).permitAll()
+                .requestMatchers(pp.matcher("/swagger-ui/**")).permitAll()
+
+                // public API endpoints
+                .requestMatchers(pp.matcher("/api/authenticate")).permitAll()
+                .requestMatchers(pp.matcher("/api/register")).permitAll()
+                .requestMatchers(pp.matcher("/api/activate")).permitAll()
+                .requestMatchers(pp.matcher("/api/account/reset-password/init")).permitAll()
+                .requestMatchers(pp.matcher("/api/account/reset-password/finish")).permitAll()
+
+                // protected API endpoints
+                .requestMatchers(pp.matcher("/api/admin/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                .requestMatchers(pp.matcher(apiPattern)).authenticated()
+
+                // openapi / management
+                .requestMatchers(pp.matcher("/v3/api-docs/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+                .requestMatchers(pp.matcher("/management/health")).permitAll()
+                .requestMatchers(pp.matcher("/management/health/**")).permitAll()
+                .requestMatchers(pp.matcher("/management/info")).permitAll()
+                .requestMatchers(pp.matcher("/management/prometheus")).permitAll()
+                .requestMatchers(pp.matcher("/management/**")).hasAuthority(AuthoritiesConstants.ADMIN)
+            )
+            .rememberMe(rememberMe ->
+                rememberMe
+                    .rememberMeServices(rememberMeServices)
+                    .rememberMeParameter("remember-me")
+                    .key(pcsProperties.getSecurity().getRememberMe().getKey())
+            )
+            .exceptionHandling(exceptions ->
+                exceptions.defaultAuthenticationEntryPointFor(
+                    new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                    new OrRequestMatcher(pp.matcher(apiPattern))
+                )
+            )
+            .formLogin(formLogin ->
+                formLogin
+                    .loginPage("/")
+                    .loginProcessingUrl("/api/authentication")
+                    .successHandler((request, response, authentication) ->
+                        response.setStatus(HttpStatus.OK.value())
+                    )
+                    .failureHandler((request, response, exception) ->
+                        response.setStatus(HttpStatus.UNAUTHORIZED.value())
+                    )
+                    .usernameParameter("j_username")
+                    .passwordParameter("j_password")
+                    .permitAll()
+            )
+            .logout(logout ->
+                logout
+                    .logoutUrl("/api/logout")
+                    .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
+                    .permitAll()
+            );
+
+        return http.build();
+    }
+
+    /*
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+        final String apiPattern = "/api/**";
+        http
+            .cors(withDefaults())
+            .csrf(AbstractHttpConfigurer::disable)
             .addFilterAfter(new SpaWebFilter(), BasicAuthenticationFilter.class)
             .headers(headers ->
                 headers
@@ -128,11 +231,7 @@ public class SecurityConfiguration {
             );
         return http.build();
     }
-
-    @Bean
-    MvcRequestMatcher.Builder mvc(HandlerMappingIntrospector introspector) {
-        return new MvcRequestMatcher.Builder(introspector);
-    }
+    */
 
     /**
      * Custom CSRF handler to provide BREACH protection for Single-Page Applications (SPA).

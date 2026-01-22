@@ -50,7 +50,7 @@
                                 name: null,
                                 optionalText: null,
                                 id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }

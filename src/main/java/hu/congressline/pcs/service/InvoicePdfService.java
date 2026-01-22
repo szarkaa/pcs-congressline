@@ -1,16 +1,15 @@
 package hu.congressline.pcs.service;
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-
+import org.openpdf.text.Chunk;
+import org.openpdf.text.Document;
+import org.openpdf.text.DocumentException;
+import org.openpdf.text.Element;
+import org.openpdf.text.PageSize;
+import org.openpdf.text.Paragraph;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.PdfPCell;
+import org.openpdf.text.pdf.PdfPTable;
+import org.openpdf.text.pdf.PdfWriter;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -76,34 +75,15 @@ public class InvoicePdfService extends AbstractPdfService {
         pdfContext.setCompany(companyService.getCompanyProfile());
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            //A4 size with predefined margins (bottom is 100, because the footer section will take that place
-            //Top header section is generated on the fly, not after the pdf creation, like the footer)
             Document document = new Document(PageSize.A4, 20, 20, 40, 120);
-            //set a writer
             PdfWriter writer = PdfWriter.getInstance(document, baos);
-
-            //set the listener for events like (new page, end page, open document, close document etc.)
-            InvoiceHeaderFooter event = new InvoiceHeaderFooter(messageSource, pdfContext);
-            writer.setPageEvent(event);
-            writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));  //this box contains the footer's page of pages section
+            writer.setPageEvent(new InvoiceHeaderFooter(messageSource, pdfContext));
+            writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
 
             document.open();
             addMetaData(document, pdfContext);
             generateContent(document, pdfContext);
-
-            /*
-            document.newPage();
-            document.setPageCount(1);
-            generateContent(document, pdfContext);
-
-            document.newPage();
-            document.setPageCount(1);
-            generateContent(document, pdfContext);
-            */
-
             document.close();
-            writer.flush();
-
             return baos.toByteArray();
         } catch (Exception e) {
             log.error("Error while creating invoice pdf", e);
@@ -404,6 +384,7 @@ public class InvoicePdfService extends AbstractPdfService {
         cell4 = createCell(createRightParagraphWithMessage(invoicePdfSum, PcsPdfFont.P_SMALL_NORMAL, locale));
 
         addTableCell(table, cell1, cell2, cell3, cell4);
+/*
 
         Iterator<String> iterator = itemRowsByVat.keySet().iterator();
         if (iterator.hasNext()) {
@@ -497,6 +478,7 @@ public class InvoicePdfService extends AbstractPdfService {
 
             addTableCell(table, cell1, cell2, cell3, cell4);
         }
+*/
         preface.add(table);
 
         String additionalBillingText = pdfContext.getLocale().equals(Locale.forLanguageTag(Language.HU.toString().toLowerCase()))
@@ -533,5 +515,4 @@ public class InvoicePdfService extends AbstractPdfService {
     public BigDecimal getChargedServicesSumAmount(List<InvoiceCharge> list) {
         return list.stream().map(InvoiceCharge::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
-
 }

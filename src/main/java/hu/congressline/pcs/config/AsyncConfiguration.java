@@ -1,7 +1,5 @@
 package hu.congressline.pcs.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.boot.autoconfigure.task.TaskExecutionProperties;
@@ -15,15 +13,15 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 
-import tech.jhipster.async.ExceptionHandlingAsyncTaskExecutor;
+import hu.congressline.pcs.config.async.ExceptionHandlingAsyncTaskExecutor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 @EnableAsync
 @EnableScheduling
 @Profile("!testdev & !testprod")
 public class AsyncConfiguration implements AsyncConfigurer {
-
-    private static final Logger LOG = LoggerFactory.getLogger(AsyncConfiguration.class);
 
     private final TaskExecutionProperties taskExecutionProperties;
 
@@ -34,7 +32,7 @@ public class AsyncConfiguration implements AsyncConfigurer {
     @Override
     @Bean(name = "taskExecutor")
     public Executor getAsyncExecutor() {
-        LOG.debug("Creating Async Task Executor");
+        log.debug("Creating Async Task Executor");
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(taskExecutionProperties.getPool().getCoreSize());
         executor.setMaxPoolSize(taskExecutionProperties.getPool().getMaxSize());

@@ -1,8 +1,8 @@
 package hu.congressline.pcs.service.pdf;
 
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Font;
-import com.lowagie.text.pdf.BaseFont;
+import org.openpdf.text.DocumentException;
+import org.openpdf.text.Font;
+import org.openpdf.text.pdf.BaseFont;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;

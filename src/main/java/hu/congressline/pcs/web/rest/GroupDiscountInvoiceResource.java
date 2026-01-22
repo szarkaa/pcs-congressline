@@ -24,7 +24,7 @@ import hu.congressline.pcs.domain.enumeration.InvoiceType;
 import hu.congressline.pcs.service.GroupDiscountInvoicePdfService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceXlsService;
-import hu.congressline.pcs.service.NavService;
+import hu.congressline.pcs.service.NavOnlineService;
 import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.GroupDiscountInvoiceVM;
@@ -44,7 +44,7 @@ public class GroupDiscountInvoiceResource {
     private final GroupDiscountInvoiceXlsService groupDiscountInvoiceXlsService;
     private final GroupDiscountInvoicePdfService invoicePdfService;
     //private final MailService mailService;
-    private final NavService navOnlineService;
+    private final NavOnlineService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/group-discount-invoices")

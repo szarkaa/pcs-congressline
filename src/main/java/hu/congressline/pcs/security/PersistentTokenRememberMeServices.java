@@ -15,15 +15,13 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
 
+import hu.congressline.pcs.config.PcsProperties;
 import hu.congressline.pcs.domain.PersistentToken;
 import hu.congressline.pcs.repository.PersistentTokenRepository;
 import hu.congressline.pcs.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import tech.jhipster.config.JHipsterProperties;
-import tech.jhipster.security.PersistentTokenCache;
-import tech.jhipster.security.RandomUtil;
 
 @Slf4j
 @Service
@@ -44,12 +42,12 @@ public class PersistentTokenRememberMeServices extends AbstractRememberMeService
     private final UserRepository userRepository;
 
     public PersistentTokenRememberMeServices(
-        JHipsterProperties hipsterProperties,
+        PcsProperties properties,
         org.springframework.security.core.userdetails.UserDetailsService userDetailsService,
         PersistentTokenRepository persistentTokenRepository,
         UserRepository userRepository
     ) {
-        super(hipsterProperties.getSecurity().getRememberMe().getKey(), userDetailsService);
+        super(properties.getSecurity().getRememberMe().getKey(), userDetailsService);
         this.persistentTokenRepository = persistentTokenRepository;
         this.userRepository = userRepository;
         upgradedTokenCache = new PersistentTokenCache<>(UPGRADED_TOKEN_VALIDITY_MILLIS);

@@ -72,7 +72,7 @@
                 }
             }
 
-            for (i = 0; i < vm.orderedOptionalServices.length; i++) {
+            for (var i = 0; i < vm.orderedOptionalServices.length; i++) {
                 var oos = vm.orderedOptionalServices[i];
                 if (oos.chargeableItemPrice === vm.getGroupPaid(oos)) {
                     vm.invoice.ignoredChargeableItems[oos.id.toString()] = true;

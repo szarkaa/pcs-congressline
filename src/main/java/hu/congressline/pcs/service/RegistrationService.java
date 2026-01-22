@@ -30,14 +30,12 @@ import hu.congressline.pcs.domain.RoomReservationRegistration;
 import hu.congressline.pcs.domain.Workplace;
 import hu.congressline.pcs.domain.enumeration.RegistrationTypeType;
 import hu.congressline.pcs.repository.AccPeopleRepository;
-import hu.congressline.pcs.repository.ChargedServiceRepository;
 import hu.congressline.pcs.repository.CountryRepository;
 import hu.congressline.pcs.repository.OnlineRegistrationCustomAnswerRepository;
 import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
 import hu.congressline.pcs.repository.RegistrationRegistrationTypeRepository;
 import hu.congressline.pcs.repository.RegistrationRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
-import hu.congressline.pcs.repository.WorkplaceRepository;
 import hu.congressline.pcs.service.util.RegistrationUploadHeader;
 import hu.congressline.pcs.web.rest.vm.PcsBatchUploadVm;
 import hu.congressline.pcs.web.rest.vm.RegistrationSummaryVM;
@@ -57,11 +55,11 @@ public class RegistrationService {
     private final OrderedOptionalServiceRepository oosRepository;
     private final AccPeopleRepository accPeopleRepository;
     private final OrderedOptionalServiceService oosService;
-    private final ChargedServiceRepository chargedServiceRepository;
+    private final ChargedServiceService chargedServiceService;
     private final RoomReservationService roomReservationService;
     private final CongressService congressService;
     private final CountryRepository countryRepository;
-    private final WorkplaceRepository workplaceRepository;
+    private final WorkplaceService workplaceService;
     private final OnlineRegistrationCustomAnswerRepository orcaRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -116,10 +114,10 @@ public class RegistrationService {
         if (list.isEmpty()) {
             list = registrationRepository.findPreviousIdAfterDeletedId(id, congressId);
             if (!list.isEmpty()) {
-                nextId = list.get(0);
+                nextId = list.getFirst();
             }
         } else {
-            nextId = list.get(0);
+            nextId = list.getFirst();
         }
         return nextId;
     }
@@ -148,11 +146,12 @@ public class RegistrationService {
     public void delete(Long id) {
         log.debug("Request to delete Registration : {}", id);
         orcaRepository.deleteAllByRegistrationId(id);
+        chargedServiceService.deleteAllByRegistrationId(id);
         accPeopleRepository.deleteAllByRegistrationRegistrationTypeRegistrationId(id);
         rrtRepository.deleteAllByRegistrationId(id);
         roomReservationService.deleteAllByRegistrationId(id);
         oosService.deleteAllByRegistrationId(id);
-        chargedServiceRepository.deleteAllByRegistrationId(id);
+        workplaceService.deleteByRegistrationId(id);
         registrationRepository.deleteById(id);
     }
 
@@ -201,6 +200,7 @@ public class RegistrationService {
         return messageList;
     }
 
+    @SafeVarargs
     private String getCurrency(List<? extends ChargeableItem>... items) {
         String currency = null;
         for (List<? extends ChargeableItem> itemList : items) {
@@ -289,7 +289,7 @@ public class RegistrationService {
                 .flatMap(idx -> Optional.ofNullable(row.getCell(idx))).ifPresent(cell -> workplace.setPhone(formatter.formatCellValue(cell)));
         Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_FAX))
                 .flatMap(idx -> Optional.ofNullable(row.getCell(idx))).ifPresent(cell -> workplace.setFax(formatter.formatCellValue(cell)));
-        return workplaceRepository.save(workplace);
+        return workplaceService.save(workplace);
     }
 
     private Country getCountryFromCellValue(XSSFCell cell) {

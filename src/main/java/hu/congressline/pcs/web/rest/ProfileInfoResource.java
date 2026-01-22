@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import hu.congressline.pcs.service.util.DefaultProfileUtil;
+import hu.congressline.pcs.config.DefaultProfileUtil;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

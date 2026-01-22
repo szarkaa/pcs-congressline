@@ -1,0 +1,157 @@
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (1,'Thermal Hotel Visegrád','THV','Visegrád','Lepence völgy 2.','2025',NULL,NULL,'(06 26) 801 900',NULL,'bandlizs@thv.hu','Nagy-Bándli Zsófia'),
+	 (3,'Visegrád Hotel (nem a rendezvény helyszíne)','VISH','Visegrád','Rév u. 15.','2025',NULL,NULL,'+36 26 397 034',NULL,'info@hotelvisegrad.hu','Schreck Erika'),
+	 (5,'Royal Club Hotel','ROCH','Visegrád','Fő u. 92.','2025',NULL,NULL,'(06 26) 597 100',NULL,'kurti.mercedesz@royalclubhotel.hu','Kürti Mercédesz'),
+	 (7,'Hotel Silvanus','SILV','Visegrád','Panoráma út 2.','2025',NULL,NULL,'+36 26 398 311',NULL,'flaskai.dora@hotelsilvanus.hu','Flaskai Dóra'),
+	 (9,'Azúr Hotel Siófok','AZÚR','Siófok','Erkel Ferenc utca 2/c.','8600',NULL,NULL,'30 6789 538','','balazs.sternocky@hotelazur.hu','Sternóczky Balázs'),
+	 (11,'Hotel Yacht','YACHT','Siófok','Vitorlás u. 14.','8600',NULL,NULL,'+36 20 567 7973',NULL,'salesdirector@hotel-yacht.hu','Orbán Bence'),
+	 (13,'CE Pláza Hotel','CEPLÁZA','Siófok','Somogyi Bacsó út 18/b.','8600',NULL,NULL,'+36 70 371 3197',NULL,'judit.romhanyi@cehotels.hu','Romhányi Judit'),
+	 (15,'Prémium Hotel Panoráma','PRÉMIUMPAN','Siófok','Beszédes J. stny. 80.','8600',NULL,NULL,'+36 84/311-638','','foglalas@premiumhotelpanorama.hu','Varga Alexandra'),
+	 (17,'Novotel Budapest City','NOVCITY','Budapest','Alkotás u. 63-67.','1123',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (19,'Budapest Marriott Hotel*****','BMH','Budapest','Apáczai Csere János u. 4.','1052',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (21,'Budapest Mercure City Center****','MBCC','Budapest','Váci u. 20.','1052',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (23,'Patak Park Hotel','PPH','Visegrád','Mátyás király u. 82.','2025',NULL,NULL,'+36303327289',NULL,'lange.csilla@patakhotel.hu','Lange Csilla'),
+	 (25,'Zalakaros Park Inn Hotel','ZKAROSPARKINN','Zalakaros','Üdülő sor 1.','8749',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (27,'Karos Spa Hotel','KAROSSPA','Zalakaros','Alma utca 1.','8749',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (28,'Adele Boutique Hotel','Adele','Pécs','Mária u. 15','7621',NULL,NULL,'72/510-226',NULL,'sales@adelehotel.hu',NULL),
+	 (30,'Arkadia Hotel','Arkadia','Pécs','Hunyadi János utca 1.','7621',NULL,NULL,'72 512 550',NULL,'info@hotelarkadiapecs.hu',NULL),
+	 (32,'Barbakán Hotel','Barbakan','Pécs','Bartók Béla u. 10.','7624',NULL,NULL,'72/517-692',NULL,'info@barbakanhotel.hu',NULL),
+	 (34,'Corso Hotel','Corso','Pécs','Koller u. 8.','7626',NULL,NULL,'72 421 900',NULL,'rendezveny@corsohotel.hu',NULL),
+	 (36,'Fibula Residence Hotel','Fibula','Pécs','Jókai utca 17-19.','7621',NULL,NULL,'0630 327 3222',NULL,'sales@fibulahotel.hu',NULL),
+	 (38,'Hotel Makár Sport','Makár','Pécs','Középmakár dülő 4.','7635',NULL,NULL,'72 224-400',NULL,'sales@hotelmakar.hu',NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (40,'Laterum Hotel','Laterum','Pécs','Hajnóczy József u. 37-39.','7633',NULL,NULL,'72 252 108',NULL,'laterum@laterum.hu',NULL),
+	 (42,'Palatinus Grand Hotel','Palatinus','Pécs','Király u. 5.','7621',NULL,NULL,'72 889 440',NULL,'szabo.anett@palatinushotel.hu',NULL),
+	 (44,'Sopianae Boutique Hotel','Sopianae','Pécs','Felsőmalom u. 24.','7621',NULL,NULL,'72 517 770',NULL,'info@hotelsopianae.hu',NULL),
+	 (46,'Therapia Hotel','Therapia','Pécs','Málics Ottó u. 1/3','7635',NULL,NULL,'72510125',NULL,'t.balasko@hoteltherapia.com',NULL),
+	 (48,'Zsolnay Vendégház','Zsolnay','Pécs','Felsővámház u. 52.','7625',NULL,NULL,'72 500 390',NULL,'vendeghaz@zsn.hu',NULL),
+	 (50,'MTA Székház','MTA Székház','Pécs','Jurisics Mikló u. 44.','7624',NULL,NULL,'36/72/512-623 Mobil: +36/30/193-8248',NULL,'kalmar.peter@tab.mta.hu','Kalmár Péter'),
+	 (54,'Lifestyle Hotel Mátra','Lifestyle','Mátraháza','HRSZ. 7160','3233',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (56,'Sándor Hotel','Sándor Hotel','Pécs','Kálvária u. 58.','7625',-2.0,NULL,'0672512222',NULL,'info@sandorhotel-hu','Jávor Kitti'),
+	 (58,'Hotel Mediterrán','MEDITERRÁN','Budapest','Budaörsi út 20/a.','1118',NULL,NULL,NULL,NULL,'sales@hotelmediterran.hu',NULL),
+	 (60,'Anna Hotel','Anna','Mátrafüred','Üdülősor u. 55.','3232',NULL,NULL,NULL,NULL,'info@anna-hotel.hu',NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (62,'Hyatt Regency Jersey City on the Hudson','NJ Hyatt Regency','Jersey City, NJ','2 Exchange Place','07302',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (64,'Wellamarin Hotel','Wellamarin','Zamárdi','Eötvös u. 15/1.','8621',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (66,'NÉBIH Oktatási Centrum','NÉBIH','Zamárdi','Rákóczi u. 38.','8621',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (68,'Kastélyhotel Sasvár Resort','KAPA','Parádsasvár','Kossuth u. 1.','3242',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (70,'Mercure Budapest Castle Hill','MercureCastle','Budapest','Krisztina körút 41-43.','1013',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (72,'Ibis Budapest Castle Hill','IbisCastle','Budapest','Krisztina körút 41-43.','1013',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (74,'MTA Tudós Üdülő, Mátraháza','MTAM','Mátraháza','Külterület','3233',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (76,'Hotel City Inn','CITYINN','Budapest','Futó u. 55','1082',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (78,'Verdi Grand Hotel','VERDIGRAND','Budapest','Üllői út 89b','1091',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (80,'Mercure Budapest Korona Hotel','KORONAMERCURE','Budapest','Kecskeméti u. 14','1053',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (82,'Hunguest Hotel Millenium','HUNGUESTMILL','Budapest','Üllői út 94-98.','1089',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (84,'Dráva Hotel','Drava','Harkány','Bartók B. u. 1.','7815',NULL,NULL,'+3630 602 5128',NULL,'sales@dravahotel.hu','Puch Edina'),
+	 (86,'Lake Nona Wave Hotel','LNW','Orlando, Florida','6100 Wave Hotel Drive','32827',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (88,'D8 Hotel***','WD8','Budapest','Dorottya u. 8.','1051',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (90,'IBIS Budapest Centrum','IBISC','Budapest','Raday u. 6.','1092',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (92,'Zenit Budapest Palace','Zenit','Budapest','Apaczai Csere János u. 7.','1052',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (94,'La Prima Fashion Hotel','Laprima','Budapest','Piarista u. 6.','1052',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (96,'Promenade City Hotel','Promen','Budapest','Vaci u. 12.','1052',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (98,'Estilo Fashion Hotel','Estilo','Budapest','Vaci u. 83.','1056',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (100,'Eurostars Budapest Center','Euros','Budapest','Kossuth Lajos utca 7-9.','1053',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (102,'Millennium Court Budapest','Millen','Budapest','Piarista u. 4.','1052',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (104,'Boutique Hotel','Boutiq','Budapest','Só u. 6.','1056',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (106,'Kempinski Corvinus Budapest','Kempi','Budapest','Erzsebet ter 7-8.','1051',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (108,'SunGarden Hotel','SUNG','Siófok','Batthyány Lajos utca 24.','8600',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (110,'Residence Hotel Balaton','REZI','Siófok','Erkel Ferenc u. 49.','8600',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (112,'Anna Grand Hotel','ANNAG','Balatonfüred','Gyógy tér 1.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (114,'Ipoly Hotel Boutique Rooms and Suites','IPOLY','Balatonfüred','Kisfaludy u. 3.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (116,'Hotel Blaha Lujza','BLAHA','Balatonfüred','Blaha Lujza u. 4','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (118,'EXPO Congress Hotel ****','EXPO','Budapest','Expo tér 2.','1101',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (120,'Hunguest Hotel Szeged','HHSZ','Szeged','Szent-Györgyi Albert u. 16-24','6726',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (122,'IntercityHotel Budapest','INTERCITYHOTEL','Budapest','Baross tér 7-8.','1087',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (124,'Hotel Nemzeti Budapest','HOTELNEMZ','Budapest','József körút 4.','1088',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (126,'ibis Styles Budapest Center','IBISSTYLEBP','Budapest','Rákóczi út 58.','1074',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (128,'Hotel Palazzo Zichy','Zichy','Budapest','Lőrinc Pap tér 2.','1088',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (130,'Art’otel Budapest','ARTB','Budapest','Bem rakpart 16-19.','1011',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (132,'Novotel Budapest Danube','NOVD','Budapest','Bem Rakpart 33-34','1027',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (134,'Butikhotel Visegrád','BUVI','Visegrád','Mátyás király u. 61.','2025',NULL,NULL,'06-20-388-0676',NULL,'info@butikhotelvisegrad.hu','Krischner Gabriella'),
+	 (136,'Hotel Central Basilica****','BASILICA','Budapest','Hercegprímás street 8.','1051',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (138,'PRESTIGE Hotel Budapest**** superior','PRESTIGE','Budapest','Vigyázó Ferenc street 5.','1051',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (140,'D8 Hotel*** superior','D8HOTEL','Budapest','Dorottya street 8.','1051',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (142,'Hilton Garden Inn****','HIGA','Budapest','Lázár street 11-13.','1065',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (144,'Mercure Hotel Debrecen','MERD','Debrecen','Bajcsy-Zsilinszky utca 11.','4025',NULL,NULL,NULL,NULL,'zsuzsanna.szabo@accor.com','Szabó Zsuzsanna'),
+	 (146,'Hotel Eger & Park','EgerPark','Eger','Szálloda u. 1-3.','3300',NULL,NULL,'+36 36/522-232',NULL,NULL,NULL),
+	 (148,'Centrum Panzió','CENTRP','Debrecen','Péterfia u. 37/a','4026',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (150,'H2Hotel (Reservation with direct link)','H2H','Budapest','Sas u. 24.','1051',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (152,'Divina Boutique Hotel','Divina','Harkány','Bajcsy-Zsilinszky utca 11.','7815',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (154,'Avar Hotel Mátrafüred','Avar','Mátrafüred','Parádi út 24.','3232',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (156,'Hotel Ózon Mátraháza','ÓZON','Mátraháza','Ózon u. 1.','3233',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (158,'Wish Foz Iguacu Hotel','WISH','Tamandua, Foz do Iguaçu - PR','Av. das Cataratas, 6845','85853-000, Brazil',0.0,NULL,NULL,NULL,NULL,NULL),
+	 (159,'Crowne Plaza Budapest','CRPLA','Budapest','Váci út 1-3.','1062',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (162,'Imola Hotel Platán','IHP','Eger','Csákány u. 7.','3300',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (165,'1552 Boutique Hotel','1552','Eger','Zalár u. 11.','3300',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (168,'Hotel Unicornis***','Unicornis','Eger','Dr. Hibay Károly u. 2.','3300',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (171,'Thermal Park Egerszalók*** 3394 Egerszalók, Thermal kemping sor 2.','ThermalParkEgers','Egerszalók','Thermal kemping sor 2.','3394',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (174,'Erla Villa','ERLA VILLa','EGER','KOVÁCS JÁNOS UTCA 25-27.','3300',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (177,'Mátrafüred Hotel Akadémia','MatraAKADEMIA','Mátrafüred','Akadémia u. 1-3.','3232',NULL,NULL,'37/320-026',NULL,'matrafured@udulo.mta.hu',NULL),
+	 (180,'Villa Völgy Hotel ****','Villa Völgy','Eger','Szépasszonyvölgy, Tulipnkert u. 5.','3300',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (183,'Hotel Helikon','HELIKON','Keszthely','Mikus Gyula sétány 5.','8360',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (186,'THE US GRANT, a Luxury Collection Hotel, San Diego','USGrant','San Diego, CA','326 Broadway','92101',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (189,'Centrál Hotel****','CENT','Nyíregyháza','Nyár utca 2-4.','4400',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (192,'Hotel Fürdőház***','FURD','Nyíregyháza','Fürdőház tér 1.','4431',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (195,'Hotel Aventinus****','AVEN','Nyíregyház','Sóstói út 66.','4400',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (198,'Petra Hotel','Petra','Nyíregyháza','Szarvas utca 95.','4400',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (201,'Castrum Hotel****','CASTRUM','Székesfehérvár','Ady Endre u. 19-21.','8000',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (204,'Mercure Hotel Székesfehérvár Magyar Király***','MAGYARKIRÁLY','Székesfehérvár','Fő u. 10.','8000',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (207,'Hotel Four Points By Sheraton Kecskemét','KSHER','Kecskemét','Izsáki út 6.','6000',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (210,'Sirius Hotel','Sirius','Keszthely','Mikus Gyula sétány 8.','8360',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (213,'Maya Panzió','MayaP','Szeged','Népkert sor 1.','6725',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (216,'Vivien Szálló','VivienSZ','Szeged','Közép Kikötő sor 14.','6726',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (219,'Szárcsa Hotel','SZÁRCSA','Székesfehérvár','Szárcsa u. 1.','8000',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (222,'Royal Palm Tower Anhanguera','RPTAnhanguera','Campinas','Avenida Royal Palm Plaza, 100, Jardim Nova Califórnia','13051-092',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (225,'Park Plaza Waterloo Hotel','Waterloo','London','6 Hercules Road','SE1 7DP',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (228,'Hyatt Regency Mexico City','Hyatt Mexico','Mexico City','Campos Elíseos 204, Polanco Chapultepec','11560',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (231,'Sopronbánfalvi Kolostor Hotel','BÁNFALVI','Sopron','Kolostorhegy u. 11.','9400',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (234,'Sopronbánfalvi Kolostor Hotel (kedvezményes, korlátozott számban)','BÁNFALVKED','Sopron','Kolostorhegy u.11.','9400',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (237,'Boutique Hotel Budapest (ÚJ NÉV CHARM HOTEL BUDAPEST!)','BHB','Budapest','Só u. 6.','1056',NULL,NULL,NULL,NULL,'wunderlich.szelina@zeinahotels.com','Wunderlich Szelina'),
+	 (240,'Ibis Styles Hotel','Ibisstyles','Budapest','Soroksári út 12.','1095',NULL,NULL,NULL,NULL,'Nikolett.MIKLOSOVICS@accor.com','Miklosovics Nikolett'),
+	 (243,'Honti Hotel','Honti','Visegrád','Duna-parti út 9. (Visegrád, 11-es főút, 43-as km-kő','2025',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (246,'B&B Hotel Budapest City','B&B','Budapest','Angyal utca 1-3.','1094',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (249,'4 Évszak Erdei Hotel****','4ÉVERDEI','Mátrafüred','Muzsla u. 3-5.','3232',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (252,'4 Évszak Völgyhotel***','4ÉVVÖLGY','Mátrafüred','Kékesi út 1-3.','3232',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (255,'Loews Kansas City Hotel','LOEWS','Kansas City','1515 Wyandotte St','MO 64108',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (258,'Hyatt House Jersey City','NJ Hyatt House','Jersey City, NJ','1 Exchange Place','07302',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (264,'Tommy Bahama Miramonte Resort & Spa','TBpalmsprings','Indian Wells, CA','45000 Indian Wells Lane','92210',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (267,'Sheraton Hotel Santiago, Chile','Sheraton Chile','Santiago','Ave Santa Maria 1742','7500000',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (270,'Hilton Milwaukee City Center','HiltonMillw','Milwaukee','509 W Wisconsin Ave','WI 53203',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (273,'Hilton Garden Inn Debrecen City Center','Hilton DEB','Debrecen','Darabos u. 3-7.','4026',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (276,'Inter Hotel Debrecen','Inter DEB','Debrecen','Böszörményi út 2.','4027',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (279,'URBAN Hotel','URBAN DEB','Debrecen','Hatvan u. 17.','4025',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (282,'Centrum Hotel*** Superior','Centrum DEB','Debrecen','Kálvin tér 4.','4026',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (285,'Hotel Debrecen*** Superior','Hotel Debrecen','Debrecen','Péterfia u. 49.','4026',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (288,'Hotel Divinus*****','Divinus','Debrecen','Nagyerdei krt.1.','4032',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (291,'Aquaticum Debrecen Termál & Wellness Hotel****','Aquaticum','Debrecen','Nagyerdei park 1.','4032',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (294,'Novotel Budapest Centrum & Mövenpick','NOVBPC','Budapest','Rákóczi út 43-45.','1088',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (297,'Fairmont San Francisco','Fairmont SF','San Francisco','950 Mason Street','94108',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (300,'Danubius Hotel Hélia','Hélia','Budapest','Kárpát utca 62-64.','1113',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (303,'Akadémia Hotel **** Balatonfüred','AHB','Balatonfüred','Horváth Mihály utca 66.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (306,'Hotel Annabella','ANNAB','Balatonfüred','Deák Ferenc utca 25.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (309,'Astoria Hotel','AST','Balatonfüred','Jókai Mór utca 28.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (312,'Aura Hotel','AURA','Balatonfüred','Munkácsi Mihály utca 5.','8230',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (315,'Hotel Golden Lake Resort','LAKE','Balatonfüred','Zákonyi Ferenc utca 4.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (318,'Larum Hotel','LARUMM','Balatonfüred','Honvéd utca 9.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (321,'Lua Resort','LUA','Balatonfüred','Anna sétány 5.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (324,'Hotel Vinifera Wine&Spa','VIN','Balatonfüred','Mikes Kelemen utca 21.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (327,'Hotel Pallone','PALL','Balatonfüred','Fürdő utca 34.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (330,'Montello Hotel','MONT','Balatonfüred','Huray István utca 7.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (333,'Larum Hotel','LARUM','Balatonfüred','Honvéd utca 9.','8230',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (336,'Grand Hyatt São Paulo','Grand Hyatt SP','São Paulo','Av. das Nações Unidas, 13.301 - Vila Leopoldina','SP, 04578-000',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (339,'Novotel Szeged','NOVSZEGED','Szeged','Maros u. 1.','6721',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (342,'Hotel Margareta','MARGARETA','Balatonfüred','Széchenyi István utca 53.','8230',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO hotel (id,name,code,city,street,zip_code,latitude,longitude,phone,fax,email,contact_name) VALUES
+	 (345,'Palatinus Boutique Hotel','Palatinus Butik','Pécs','Király u. 3.','7621',NULL,NULL,NULL,NULL,NULL,NULL),
+	 (348,'R73 Residences','R73 Residences','Pécs','Rákóczi út 73/B.','7626',NULL,NULL,NULL,NULL,NULL,NULL);

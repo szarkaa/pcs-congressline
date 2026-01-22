@@ -9,20 +9,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.concurrent.TimeUnit;
 
-import tech.jhipster.config.JHipsterConstants;
-import tech.jhipster.config.JHipsterProperties;
-
 @Configuration
-@Profile({ JHipsterConstants.SPRING_PROFILE_PRODUCTION })
+@Profile({ Constants.SPRING_PROFILE_PRODUCTION })
 public class StaticResourcesWebConfiguration implements WebMvcConfigurer {
 
     protected static final String[] RESOURCE_LOCATIONS = {"classpath:/static/", "classpath:/static/content/", "classpath:/static/i18n/"};
     protected static final String[] RESOURCE_PATHS = {"/*.js", "/*.css", "/*.svg", "/*.png", "*.ico", "/content/**", "/i18n/*"};
 
-    private final JHipsterProperties hipsterProperties;
+    private final PcsProperties properties;
 
-    public StaticResourcesWebConfiguration(JHipsterProperties properties) {
-        this.hipsterProperties = properties;
+    public StaticResourcesWebConfiguration(PcsProperties properties) {
+        this.properties = properties;
     }
 
     @Override
@@ -44,6 +41,6 @@ public class StaticResourcesWebConfiguration implements WebMvcConfigurer {
     }
 
     private int getJHipsterHttpCacheProperty() {
-        return hipsterProperties.getHttp().getCache().getTimeToLiveInDays();
+        return properties.getHttp().getCache().getTimeToLiveInDays();
     }
 }

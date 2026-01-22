@@ -75,4 +75,9 @@ public class ChargedServiceService {
         }
         chargedServiceRepository.deleteById(id);
     }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void deleteAllByRegistrationId(Long registrationId) {
+        chargedServiceRepository.findAllByRegistrationId(registrationId).stream().map(ChargedService::getId).forEach(this::delete);
+    }
 }

@@ -9,7 +9,6 @@ import lombok.Setter;
  * Properties specific to Pcs.
  * <p>
  * Properties are configured in the {@code application.yml} file.
- * See {@link tech.jhipster.config.JHipsterProperties} for a good example.
  */
 @Getter
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)

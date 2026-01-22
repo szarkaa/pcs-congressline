@@ -116,7 +116,7 @@ spring:
       repositories:
         bootstrap-mode: deferred
   jpa:
-    open-in-view: false
+    open-in-view: true
     properties:
       hibernate.jdbc.time_zone: UTC
       hibernate.timezone.default_storage: NORMALIZE
@@ -136,7 +136,7 @@ spring:
       ddl-auto: none
       naming:
         physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        implicit-strategy: org.springframework.boot.hibernate.SpringImplicitNamingStrategy
   liquibase:
     database-change-log-table: PCS_DATABASECHANGELOG
     database-change-log-lock-table: PCS_DATABASECHANGELOGLOCK
@@ -189,12 +189,10 @@ info:
   display-ribbon-on-profiles: 'dev'
 
 # ===================================================================
-# JHipster specific properties
-#
-# Full reference is available at: https://www.jhipster.tech/common-application-properties/
+# PCS specific properties
 # ===================================================================
 
-jhipster:
+pcs:
   clientApp:
     name: 'pcsApp'
   # By default CORS is disabled. Uncomment to enable.
@@ -227,11 +225,6 @@ jhipster:
 ---
 # ===================================================================
 # Application specific properties
-# Add your own application properties here, see the ApplicationProperties class
-# to have type-safe configuration, like in the JHipsterProperties above
-#
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 application:

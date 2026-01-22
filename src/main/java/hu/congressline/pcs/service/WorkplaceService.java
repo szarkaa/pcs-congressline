@@ -57,6 +57,16 @@ public class WorkplaceService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
+    public void deleteByRegistrationId(Long registrationId) {
+        log.debug("Request to delete workplace by registration id: {}", registrationId);
+        registrationRepository.findById(registrationId).ifPresent(registration -> {
+            if (registration.getWorkplace() != null && registrationRepository.countByWorkplaceId(registration.getWorkplace().getId(), registrationId) == 0) {
+                workplaceRepository.deleteById(registration.getWorkplace().getId());
+            }
+        });
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<Workplace> findByCongressId(Long id) {
         log.debug("Request to get all Workplaces by congress id: {}", id);

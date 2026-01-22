@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.5</version>
+        <version>4.0.1</version>
         <relativePath/>
         <!-- lookup parent from repository -->
     </parent>
@@ -36,8 +36,8 @@
         <checkstyle.version>10.26.1</checkstyle.version>
         <lombok.version>1.18.42</lombok.version>
         <gson.version>2.13.2</gson.version>
-        <jaxb.version>2.3.0</jaxb.version>
-        <zxing.version>3.5.3</zxing.version>
+        <jaxb.version>4.0.4</jaxb.version>
+        <zxing.version>3.5.4</zxing.version>
         <checksum-maven-plugin.version>1.11</checksum-maven-plugin.version>
         <frontend-maven-plugin.version>1.15.1</frontend-maven-plugin.version>
         <git-commit-id-maven-plugin.version>9.0.1</git-commit-id-maven-plugin.version>
@@ -52,7 +52,7 @@
         <liquibase-plugin.username/>
         <mapstruct.version>1.6.3</mapstruct.version>
         <poi.ooxml.version>5.4.1</poi.ooxml.version>
-        <openpdf.version>2.0.5</openpdf.version>
+        <openpdf.version>3.0.0</openpdf.version>
         <zxing.version>3.5.3</zxing.version>
         <stripe.version>31.0.0</stripe.version>
         <maven-checkstyle-plugin.version>3.6.0</maven-checkstyle-plugin.version>
@@ -76,11 +76,13 @@
     </properties>
 
     <dependencies>
+<!--
         <dependency>
             <groupId>tech.jhipster</groupId>
             <artifactId>jhipster-framework</artifactId>
             <version>${jhipster-framework.version}</version>
         </dependency>
+-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -89,6 +91,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-loader-tools</artifactId>
+            <version>4.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -97,6 +100,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
+            <version>4.0.0-M2</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -120,6 +124,10 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-liquibase</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
@@ -127,10 +135,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+<!-- until undertow not support servlet 6.1
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-undertow</artifactId>
+            <version>4.0.0-M1</version>
         </dependency>
+-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
@@ -138,12 +149,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+<!--
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-tomcat</artifactId>
                 </exclusion>
             </exclusions>
+-->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -166,7 +179,7 @@
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-hibernate6</artifactId>
+            <artifactId>jackson-datatype-hibernate7</artifactId>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -176,10 +189,18 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
+<!--
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.xml.bind</groupId>
+                    <artifactId>jaxb-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
+-->
         <dependency>
             <groupId>com.tngtech.archunit</groupId>
             <artifactId>archunit-junit5-api</artifactId>
@@ -207,13 +228,12 @@
             <artifactId>jakarta.annotation-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <groupId>jakarta.activation</groupId>
+            <artifactId>jakarta.activation-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.glassfish.jaxb</groupId>
-            <artifactId>jaxb-runtime</artifactId>
-            <scope>provided</scope>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
         <dependency>
             <groupId>org.hibernate.orm</groupId>
@@ -221,7 +241,7 @@
         </dependency>
         <dependency>
             <groupId>org.hibernate.orm</groupId>
-            <artifactId>hibernate-jpamodelgen</artifactId>
+            <artifactId>hibernate-processor</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -232,6 +252,12 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.xml.bind</groupId>
+                    <artifactId>jaxb-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -242,11 +268,6 @@
             <groupId>com.github.librepdf</groupId>
             <artifactId>openpdf</artifactId>
             <version>${openpdf.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.zxing</groupId>
-            <artifactId>core</artifactId>
-            <version>${zxing.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.zxing</groupId>
@@ -281,17 +302,12 @@
         </dependency>
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
-            <artifactId>jaxb-core</artifactId>
-            <version>${jaxb.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
             <version>${jaxb.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
             <version>${jaxb.version}</version>
         </dependency>
         <dependency>
@@ -300,17 +316,17 @@
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>jdbc</artifactId>
+            <artifactId>testcontainers-jdbc</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>testcontainers-junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>mariadb</artifactId>
+            <artifactId>testcontainers-mariadb</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -375,19 +391,19 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
             <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
+                <groupId>org.jvnet.jaxb</groupId>
+                <artifactId>jaxb-maven-plugin</artifactId>
             </plugin>
-            <!--
-                        <plugin>
-                            <groupId>com.google.cloud.tools</groupId>
-                            <artifactId>jib-maven-plugin</artifactId>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.sonarsource.scanner.maven</groupId>
-                            <artifactId>sonar-maven-plugin</artifactId>
-                        </plugin>
-            -->
+<!--
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+            </plugin>
+-->
         </plugins>
         <pluginManagement>
             <plugins>
@@ -462,15 +478,15 @@
                             </path>
                             <path>
                                 <groupId>org.hibernate.orm</groupId>
-                                <artifactId>hibernate-jpamodelgen</artifactId>
+                                <artifactId>hibernate-processor</artifactId>
                             </path>
                             <path>
                                 <groupId>org.projectlombok</groupId>
                                 <artifactId>lombok</artifactId>
                             </path>
                             <path>
-                                <groupId>org.glassfish.jaxb</groupId>
-                                <artifactId>jaxb-runtime</artifactId>
+                                <groupId>com.sun.xml.bind</groupId>
+                                <artifactId>jaxb-impl</artifactId>
                             </path>
                         </annotationProcessorPaths>
                     </configuration>
@@ -616,6 +632,53 @@
                     </configuration>
                 </plugin>
                 <plugin>
+                    <groupId>org.jvnet.jaxb</groupId>
+                    <artifactId>jaxb-maven-plugin</artifactId>
+                    <version>4.0.12</version>
+
+                    <executions>
+                        <execution>
+                            <id>xjc-generate</id>
+                            <phase>generate-sources</phase>
+                            <goals>
+                                <goal>generate</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+
+                    <configuration>
+                        <!-- similar knobs to your old plugin -->
+                        <strict>false</strict>
+                        <extension>true</extension>
+
+                        <!-- where your .xsd files live -->
+                        <schemaDirectory>${project.basedir}/src/main/resources/xsd</schemaDirectory>
+                        <schemaIncludes>
+                            <include>**/*.xsd</include>
+                        </schemaIncludes>
+                        <schemaExcludes>
+                            <exclude>**/*.xml</exclude>
+                        </schemaExcludes>
+
+                        <!-- XML catalog (OASIS) -->
+                        <catalog>${project.basedir}/src/main/resources/xsd/catalog.xml</catalog>
+
+                        <!-- where generated sources go -->
+                        <generateDirectory>${project.build.directory}/generated-sources</generateDirectory>
+
+                        <!-- ensures IDE/compiler picks it up -->
+                        <addCompileSourceRoot>true</addCompileSourceRoot>
+
+                        <!-- recommended for reproducible builds -->
+                        <removeOldOutput>true</removeOldOutput>
+                        <cleanPackageDirectories>true</cleanPackageDirectories>
+                        <forceRegenerate>false</forceRegenerate>
+
+                        <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                </plugin>
+<!--
+                <plugin>
                     <groupId>org.jvnet.jaxb2.maven2</groupId>
                     <artifactId>maven-jaxb2-plugin</artifactId>
                     <version>0.15.3</version>
@@ -640,13 +703,13 @@
                     </configuration>
                     <dependencies>
                         <dependency>
-                            <groupId>org.glassfish.jaxb</groupId>
-                            <artifactId>jaxb-runtime</artifactId>
-                            <version>2.3.3</version>
-                            <!--<version>${maven.jaxb2.version}</version>-->
+                            <groupId>com.sun.xml.bind</groupId>
+                            <artifactId>jaxb-impl</artifactId>
+                            <version>${jaxb.version}</version>
                         </dependency>
                     </dependencies>
                 </plugin>
+-->
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>properties-maven-plugin</artifactId>
@@ -737,7 +800,7 @@
                         <defaultSchemaName/>
                         <username>${liquibase-plugin.username}</username>
                         <password>${liquibase-plugin.password}</password>
-                        <referenceUrl>hibernate:spring:hu.congressline.pcs.domain?dialect=org.hibernate.dialect.MariaDB103Dialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+                        <referenceUrl>hibernate:spring:hu.congressline.pcs.domain?dialect=org.hibernate.dialect.MariaDB103Dialect&amp;hibernate.physical_naming_strategy=org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                         <verbose>true</verbose>
                         <logging>debug</logging>
                         <contexts>!test</contexts>
@@ -917,7 +980,7 @@
             <dependencies>
                 <dependency>
                     <groupId>org.hibernate.orm</groupId>
-                    <artifactId>hibernate-jpamodelgen</artifactId>
+                    <artifactId>hibernate-processor</artifactId>
                 </dependency>
                 <dependency>
                     <groupId>org.mapstruct</groupId>

@@ -19,8 +19,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+import hu.congressline.pcs.config.PcsProperties;
 import hu.congressline.pcs.domain.PersistentToken;
 import hu.congressline.pcs.domain.User;
 import hu.congressline.pcs.repository.PersistentTokenRepository;
@@ -36,7 +38,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tech.jhipster.config.JHipsterProperties;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -49,7 +50,7 @@ public class AccountResource {
     private final UserService userService;
     private final PersistentTokenRepository persistentTokenRepository;
     private final MailService mailService;
-    private final JHipsterProperties properties;
+    private final PcsProperties properties;
 
     @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
@@ -152,7 +153,7 @@ public class AccountResource {
         String decodedSeries = URLDecoder.decode(series, StandardCharsets.UTF_8);
         SecurityUtils.getCurrentUserLogin()
             .flatMap(userRepository::findOneByLogin).flatMap(u -> persistentTokenRepository.findByUser(u).stream()
-                .filter(persistentToken -> StringUtils.equals(persistentToken.getSeries(), decodedSeries))
+                .filter(persistentToken -> Objects.equals(persistentToken.getSeries(), decodedSeries))
                 .findAny()).ifPresent(persistentTokenRepository::delete);
     }
 
