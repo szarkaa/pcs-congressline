@@ -18,10 +18,10 @@
             },
             'queryVMByRegistrationId' : {
                 method: 'GET',
-                url: 'api/registrations/:id/registration-registration-type-vms',
+                url: 'api/registrations/:id/registration-registration-type-dtos',
                 isArray: true
             },
-            'queryRegFeeVMByRegistrationTypeId' : {
+            'queryRegFeeByRegistrationTypeId' : {
                 method: 'GET',
                 url: 'api/registrations/:registrationId/registration-types/:registrationTypeId/calculate-reg-fee'
             },

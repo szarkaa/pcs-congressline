@@ -19,7 +19,7 @@
         };
         vm.clear = clear;
         vm.save = save;
-        vm.optionalServiceSelectionChanged = optionalServiceSelectionChanged ;
+        vm.optionalServiceSelectionChanged = optionalServiceSelectionChanged;
 
         vm.optionalServices = OptionalService.queryByCongress({id: CongressSelector.getSelectedCongress().id});
         vm.payingGroupItems = PayingGroupItem.queryByCongressAndItemType({id: CongressSelector.getSelectedCongress().id, itemType: 'OPTIONAL_SERVICE'});

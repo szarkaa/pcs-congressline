@@ -21,8 +21,9 @@ import hu.congressline.pcs.domain.RegistrationRegistrationType;
 import hu.congressline.pcs.service.DiscountService;
 import hu.congressline.pcs.service.PriceService;
 import hu.congressline.pcs.service.RegistrationRegistrationTypeService;
+import hu.congressline.pcs.service.dto.RegFeeDTO;
+import hu.congressline.pcs.service.dto.RegistrationRegistrationTypeDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
-import hu.congressline.pcs.web.rest.vm.RegFeeVM;
 import hu.congressline.pcs.web.rest.vm.RegistrationRegistrationTypeVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,73 +42,77 @@ public class RegistrationRegistrationTypeResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/registration-registration-types")
-    public ResponseEntity<RegistrationRegistrationType> create(@Valid @RequestBody RegistrationRegistrationType registrationRegistrationType) throws URISyntaxException {
-        log.debug("REST request to save RegistrationRegistrationType : {}", registrationRegistrationType);
-        if (registrationRegistrationType.getId() != null) {
+    public ResponseEntity<RegistrationRegistrationTypeDTO> create(@Valid @RequestBody RegistrationRegistrationTypeVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save registration registration type : {}", viewModel);
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert(ENTITY_NAME, "idexists", "A new registrationRegistrationType cannot already have an ID"))
+                .createFailureAlert(ENTITY_NAME, "idexists", "A new registration registration type cannot already have an ID"))
                 .body(null);
         }
-        service.setRegFee(registrationRegistrationType);
-        RegistrationRegistrationType result = service.save(registrationRegistrationType);
+
+        RegistrationRegistrationType result = service.save(viewModel);
         return ResponseEntity.created(new URI("/api/registration-registration-types/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new RegistrationRegistrationTypeDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/registration-registration-types")
-    public ResponseEntity<RegistrationRegistrationType> update(@Valid @RequestBody RegistrationRegistrationType registrationRegistrationType) throws URISyntaxException {
-        log.debug("REST request to update RegistrationRegistrationType : {}", registrationRegistrationType);
-        if (registrationRegistrationType.getId() == null) {
-            return create(registrationRegistrationType);
+    public ResponseEntity<RegistrationRegistrationTypeDTO> update(@Valid @RequestBody RegistrationRegistrationTypeVM viewModel) throws URISyntaxException {
+        log.debug("REST request to update registration registration type : {}", viewModel);
+        if (viewModel.getId() == null) {
+            return create(viewModel);
         }
-        service.setRegFee(registrationRegistrationType);
-        RegistrationRegistrationType result = service.save(registrationRegistrationType);
+
+        RegistrationRegistrationType result = service.save(viewModel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, registrationRegistrationType.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
+            .body(new RegistrationRegistrationTypeDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/{id}/registration-registration-types")
     public List<RegistrationRegistrationType> getAllByRegistrationId(@PathVariable Long id) {
-        log.debug("REST request to get all RegistrationRegistrationTypes by registration id {}", id);
+        log.debug("REST request to get all registration registration type by registration id {}", id);
         return service.findAllByRegistrationId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/{registrationId}/registration-types/{registrationTypeId}/calculate-reg-fee")
-    public ResponseEntity<RegFeeVM> getRegFeeByRegistrationTypes(@PathVariable Long registrationId, @PathVariable Long registrationTypeId) {
-        log.debug("REST request to get all RegistrationRegistrationTypes by registration id: {}, registrationTypeId: {}", registrationId, registrationTypeId);
-        return ResponseEntity.ok().body(new RegFeeVM(service.calculateRegFeeByRegistrationTypeId(registrationId, registrationTypeId)));
+    public ResponseEntity<RegFeeDTO> getRegFeeByRegistrationTypes(@PathVariable Long registrationId, @PathVariable Long registrationTypeId) {
+        log.debug("REST request to get all registration registration type by registration id: {}, registrationTypeId: {}", registrationId, registrationTypeId);
+        return ResponseEntity.ok().body(new RegFeeDTO(service.calculateRegFeeByRegistrationTypeId(registrationId, registrationTypeId)));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/registrations/{id}/registration-registration-type-vms")
-    public List<RegistrationRegistrationTypeVM> getAllVMsByRegistrationId(@PathVariable Long id) {
-        log.debug("REST request to get all RegistrationRegistrationTypeVMs by registration id {}", id);
+    @GetMapping("/registrations/{id}/registration-registration-type-dtos")
+    public List<RegistrationRegistrationTypeDTO> getAllDTOsByRegistrationId(@PathVariable Long id) {
+        log.debug("REST request to get all registration registration type dtos by registration id {}", id);
         return service.findAllByRegistrationId(id)
                 .stream().map(rrt -> {
-                    RegistrationRegistrationTypeVM vm = new RegistrationRegistrationTypeVM(rrt);
-                    vm.setPriceWithDiscount(discountService.getPriceWithDiscount(rrt.getPayingGroupItem(), rrt.getChargeableItemPrice(), priceService.getScale(rrt)));
-                    return vm;
+                    RegistrationRegistrationTypeDTO dto = new RegistrationRegistrationTypeDTO(rrt);
+                    dto.setPriceWithDiscount(discountService.getPriceWithDiscount(rrt.getPayingGroupItem(), rrt.getChargeableItemPrice(), priceService.getScale(rrt)));
+                    return dto;
                 }).collect(Collectors.toList());
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registration-registration-types/{id}")
-    public ResponseEntity<RegistrationRegistrationType> get(@PathVariable Long id) {
-        log.debug("REST request to get RegistrationRegistrationType : {}", id);
+    public ResponseEntity<RegistrationRegistrationTypeDTO> get(@PathVariable Long id) {
+        log.debug("REST request to get registration registration type : {}", id);
         return service.findById(id)
-            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+            .map(result -> {
+                RegistrationRegistrationTypeDTO dto = new RegistrationRegistrationTypeDTO(result);
+                dto.setPriceWithDiscount(discountService.getPriceWithDiscount(result.getPayingGroupItem(), result.getChargeableItemPrice(), priceService.getScale(result)));
+                return new ResponseEntity<>(dto, HttpStatus.OK);
+            })
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/registration-registration-types/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete RegistrationRegistrationType : {}", id);
+        log.debug("REST request to delete registration registration type : {}", id);
         try {
             service.delete(id);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.domain.enumeration.RegistrationTypeType;
+import hu.congressline.pcs.web.rest.vm.RegistrationRegistrationTypeVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -17,6 +18,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -109,5 +111,9 @@ public class RegistrationRegistrationType extends ChargeableItem {
     @Override
     public String toString() {
         return "RegistrationRegistrationType{" + "id=" + getId() + "}";
+    }
+
+    public void update(@NonNull RegistrationRegistrationTypeVM viewModel) {
+        this.accPeople = viewModel.getAccPeople();
     }
 }

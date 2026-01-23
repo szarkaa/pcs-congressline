@@ -26,7 +26,9 @@ public class PayingGroupItemDTO implements Serializable {
     private LocalDate hotelDateFrom;
     private LocalDate hotelDateTo;
     private ChargeableItemType chargeableItemType;
+    private CurrencyDTO currency;
     private Long payingGroupId;
+    private String payingGroupName;
 
     public PayingGroupItemDTO(@NonNull PayingGroupItem payingGroupItem) {
         this.id = payingGroupItem.getId();
@@ -36,7 +38,11 @@ public class PayingGroupItemDTO implements Serializable {
         this.hotelDateFrom = payingGroupItem.getHotelDateFrom();
         this.hotelDateTo = payingGroupItem.getHotelDateTo();
         this.chargeableItemType = payingGroupItem.getChargeableItemType();
-        this.payingGroupId = nonNull(payingGroupItem.getPayingGroup()) ? payingGroupItem.getPayingGroup().getId() : null;
+        if (nonNull(payingGroupItem.getPayingGroup())) {
+            this.currency = nonNull(payingGroupItem.getPayingGroup().getCurrency()) ? new CurrencyDTO(payingGroupItem.getPayingGroup().getCurrency()) : null;
+            this.payingGroupId = payingGroupItem.getPayingGroup().getId();
+            this.payingGroupName = payingGroupItem.getPayingGroup().getName();
+        }
     }
 
     @Override

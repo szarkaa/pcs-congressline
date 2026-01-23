@@ -442,7 +442,7 @@ public class OnlineRegService {
             rrt.setRegistrationType(onlineReg.getRegistrationType());
             rrt.setRegistration(result);
             rrt.setAccPeople(1);
-            rrtService.setRegFee(rrt);
+            rrtService.calculateRegFee(rrt);
             rrtService.save(rrt);
         }
 
@@ -454,7 +454,7 @@ public class OnlineRegService {
             rrt.setRegistrationType(orrt.getRegistrationType());
             rrt.setRegistration(result);
             rrt.setAccPeople(accPeopleOnlineList.size());
-            rrtService.setRegFee(rrt);
+            rrtService.calculateRegFee(rrt);
             final RegistrationRegistrationType rrtResult = rrtService.save(rrt);
             accPeopleOnlineList.forEach(accPeopleOnline -> {
                 AccPeople accPeople = new AccPeople();

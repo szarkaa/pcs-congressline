@@ -83,7 +83,7 @@ public class RegistrationTypeService {
         List<RegistrationRegistrationType> rrtList = rrtRepository.findAllByRegistrationTypeId(id);
         rrtList.forEach(rrt -> {
             rrt.setRegFee(null);
-            rrtService.setRegFee(rrt);
+            rrtService.calculateRegFee(rrt);
         });
         rrtService.save(rrtList);
     }

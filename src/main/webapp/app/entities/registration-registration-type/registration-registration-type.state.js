@@ -45,14 +45,14 @@
                         resolve: {
                             entity: function () {
                                 return {
+                                    id: null,
                                     regFee: null,
                                     currency: null,
                                     createdDate: new Date(),
-                                    dateOfGroupPayment: null,
                                     accPeople: null,
-                                    id: null,
-                                    registration: registration,
-                                    '@class': 'hu.congressline.pcs.domain.RegistrationRegistrationType'
+                                    registrationTypeId: null,
+                                    payingGroupItemId: null,
+                                    registrationId: registration ? registration.id : null
                                 };
                             },
                             registrationCurrency: function () {
