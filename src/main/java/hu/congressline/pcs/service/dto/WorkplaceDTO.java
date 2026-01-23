@@ -27,8 +27,7 @@ public class WorkplaceDTO implements Serializable {
     private String phone;
     private String fax;
     private String email;
-    private Long countryId;
-    private String countryName;
+    private CountryDTO country;
     private Long congressId;
 
     public WorkplaceDTO(@NonNull Workplace workplace) {
@@ -42,8 +41,7 @@ public class WorkplaceDTO implements Serializable {
         this.phone = workplace.getPhone();
         this.fax = workplace.getFax();
         this.email = workplace.getEmail();
-        this.countryId = nonNull(workplace.getCountry()) ? workplace.getCountry().getId() : null;
-        this.countryName = nonNull(workplace.getCountry()) ? workplace.getCountry().getName() : null;
+        this.country = nonNull(workplace.getCountry()) ? new CountryDTO(workplace.getCountry()) : null;
         this.congressId = nonNull(workplace.getCongress()) ? workplace.getCongress().getId() : null;
     }
 

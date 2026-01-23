@@ -92,9 +92,14 @@
                         <div class="form-group">
                             <label translate="pcsApp.registration.workplace" for="field_workplace">workplace</label>
                             <div class="input-group">
-                                <select class="form-control" id="field_workplace" name="workplace" ng-model="vm.registration.workplace" ng-options="workplace as workplace.name for workplace in vm.workplaces | orderBy: 'name' track by workplace.id">
-                                    <option value="" translate="global.form.please.select">Please select!</option>
-                                </select>
+                                <ui-select ng-model="vm.registration.workplaceId" name="workplace" id="field_workplace" theme="bootstrap">
+                                    <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                        <span ng-bind="$select.selected.name"></span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="workplace.id as workplace in (vm.workplaces | filter: $select.search) track by workplace.id">
+                                        <div ng-bind-html="workplace.name | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
                                 <span class="input-group-btn"> <button type="button" ng-click="vm.copyWorkplace()" class="btn btn-info">Copy</button></span>
                                 <span class="input-group-btn"> <button type="button" ui-sref=".workplace-new" class="btn btn-primary">New workplace</button></span>
                             </div>
@@ -113,12 +118,19 @@
                         </div>
                         <div class="form-group">
                             <label translate="pcsApp.registration.country" for="field_country">Country</label>
-                            <!--<div class="input-group">-->
-                                <select class="form-control" id="field_country" name="country" ng-model="vm.registration.country" ng-options="country as country.name for country in vm.countries | orderBy: 'name' track by country.id">
-                                    <option value="" translate="global.form.please.select">Please select!</option>
-                                </select>
-                                <!--<span class="input-group-btn"> <button type="button" ui-sref=".country-new" class="btn btn-primary">New country</button></span>-->
-                            <!--</div>-->
+                            <ui-select ng-model="vm.registration.countryId" name="country" id="field_country" theme="bootstrap">
+                                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                                    <span ng-bind="$select.selected.name"></span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="country.id as country in (vm.countries | filter: $select.search) track by country.id">
+                                    <div ng-bind-html="country.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                            <div ng-show="editForm.country.$invalid">
+                                <p class="error-block" ng-show="editForm.country.$error.required" translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" translate="pcsApp.registration.zipCode" for="field_zipCode">Zip code</label>
@@ -221,9 +233,19 @@
                         </div>
                         <div class="form-group">
                             <label translate="pcsApp.registration.invoiceCountry" for="field_invoiceCountry">Invoice country</label>
-                            <select class="form-control" id="field_invoiceCountry" name="invoiceCountry" ng-model="vm.registration.invoiceCountry" ng-options="country as country.name for country in vm.countries | orderBy: 'name' track by country.id">
-                                <option value="" translate="global.form.please.select">Please select!</option>
-                            </select>
+                            <ui-select ng-model="vm.registration.invoiceCountryId" name="invoiceCountry" id="field_invoiceCountry" theme="bootstrap">
+                                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                                    <span ng-bind="$select.selected.name"></span>
+                                </ui-select-match>
+                                <ui-select-choices repeat="country.id as country in (vm.countries | filter: $select.search) track by country.id">
+                                    <div ng-bind-html="country.name | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                            <div ng-show="editForm.invoiceCountry.$invalid">
+                                <p class="error-block" ng-show="editForm.invoiceCountry.$error.required" translate="entity.validation.required">
+                                    This field is required.
+                                </p>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" translate="pcsApp.registration.invoiceZipCode" for="field_invoiceZipCode">Invoice Zip code</label>
@@ -246,7 +268,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label" translate="pcsApp.registration.invoiceAddress" for="field_invoiceAddress">Invoice street</label>
+                            <label class="control-label" translate="pcsApp.registration.invoiceAddress" for="field_invoiceAddress">Invoice address</label>
                             <input type="text" class="form-control" name="invoiceAddress" id="field_invoiceAddress" autocomplete="off"
                                    ng-model="vm.registration.invoiceAddress" ng-maxlength="255" />
                             <div ng-show="editForm.invoiceAddress.$invalid">

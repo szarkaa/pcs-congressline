@@ -1,7 +1,10 @@
 package hu.congressline.pcs.web.rest.vm;
 
+import java.io.Serial;
+import java.io.Serializable;
+import java.math.BigDecimal;
+
 import hu.congressline.pcs.domain.Currency;
-import hu.congressline.pcs.domain.VatInfo;
 import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -11,10 +14,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 @NoArgsConstructor
 @Data

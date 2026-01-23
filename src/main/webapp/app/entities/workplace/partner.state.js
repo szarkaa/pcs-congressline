@@ -48,8 +48,9 @@
                         resolve: {
                             entity: function () {
                                 return {
+                                    id: null,
                                     name: null,
-                                    countryId: null,
+                                    countryId: CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null,
                                     vatRegNumber: null,
                                     department: null,
                                     zipCode: null,
@@ -58,7 +59,6 @@
                                     phone: null,
                                     fax: null,
                                     email: null,
-                                    id: null,
                                     congressId: null
                                 };
                             }

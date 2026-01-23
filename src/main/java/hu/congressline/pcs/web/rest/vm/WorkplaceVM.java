@@ -35,6 +35,5 @@ public class WorkplaceVM implements Serializable {
     @Size(max = 64)
     private String email;
     private Long countryId;
-    private String countryName;
     private Long congressId;
 }

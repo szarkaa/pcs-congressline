@@ -21,7 +21,7 @@
             phone: entity.phone,
             fax: entity.fax,
             taxNumber: entity.taxNumber,
-            countryId: entity.country ? entity.country.id : null,
+            countryId: entity.country ? entity.country.id : (CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null),
             currencyId: entity.currency ? entity.currency.id : null,
             congressId: CongressSelector.getSelectedCongress().id
         };;

@@ -36,10 +36,11 @@ import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
 import hu.congressline.pcs.repository.RegistrationRegistrationTypeRepository;
 import hu.congressline.pcs.repository.RegistrationRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
+import hu.congressline.pcs.service.dto.RegistrationSummaryDTO;
 import hu.congressline.pcs.service.util.RegistrationUploadHeader;
 import hu.congressline.pcs.web.rest.vm.PcsBatchUploadVm;
-import hu.congressline.pcs.web.rest.vm.RegistrationSummaryVM;
 import hu.congressline.pcs.web.rest.vm.RegistrationVM;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -49,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class RegistrationService {
 
-    private final RegistrationRepository registrationRepository;
+    private final RegistrationRepository repository;
     private final RegistrationRegistrationTypeRepository rrtRepository;
     private final RoomReservationRegistrationRepository rrrRepository;
     private final OrderedOptionalServiceRepository oosRepository;
@@ -64,55 +65,63 @@ public class RegistrationService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public Registration save(Registration registration) {
-        log.debug("Request to save Registration : {}", registration);
+        log.debug("Request to save registration : {}", registration);
         injectRegId(registration);
         if (registration.getDateOfApp() == null) {
             registration.setDateOfApp(LocalDate.now());
         }
-        return registrationRepository.save(registration);
+        return repository.save(registration);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @Transactional(readOnly = true)
-    public List<RegistrationVM> findAllRegistrationVMByCongressId(Long congressId) {
-        log.debug("Request to get all Registration ids");
-        return registrationRepository.findAllByCongressId(congressId).stream().map(RegistrationVM::new).collect(Collectors.toList());
+    public Registration save(@NonNull RegistrationVM viewModel) {
+        log.debug("Request to save registration from view model: {}", viewModel);
+        Registration registration = viewModel.getId() != null ? getById(viewModel.getId()) : new Registration();
+        registration.update(viewModel);
+        registration.setInvoiceCountry(viewModel.getInvoiceCountryId() != null ? countryRepository.findById(viewModel.getInvoiceCountryId()).orElse(null) : null);
+        registration.setWorkplace(viewModel.getWorkplaceId() != null ? workplaceService.findById(viewModel.getWorkplaceId()).orElse(null) : null);
+        registration.setCountry(viewModel.getCountryId() != null ? countryRepository.findById(viewModel.getCountryId()).orElse(null) : null);
+        if (registration.getCongress() == null) {
+            final Congress congress = congressService.getById(viewModel.getCongressId());
+            registration.setCongress(congress);
+        }
+        return save(registration);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<Registration> findAllByCongressId(Long id) {
         log.debug("Request to get all Registrations by congress id: {}", id);
-        return registrationRepository.findAllByCongressId(id);
+        return repository.findAllByCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
     public Optional<Registration> findTheFirstOneByCongressId(Long id) {
-        return registrationRepository.findFirstRegistrationByCongressId(id);
+        return repository.findFirstRegistrationByCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<Registration> findById(Long id) {
         log.debug("Request to find Registration : {}", id);
-        return registrationRepository.findById(id);
+        return repository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Registration getById(Long id) {
         log.debug("Request to get Registration : {}", id);
-        return registrationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Registration not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Registration not found with id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Long findNextIdAfterDeletedId(Long id, Long congressId) {
         Long nextId = null;
-        List<Long> list = registrationRepository.findNextIdAfterDeletedId(id, congressId);
+        List<Long> list = repository.findNextIdAfterDeletedId(id, congressId);
         if (list.isEmpty()) {
-            list = registrationRepository.findPreviousIdAfterDeletedId(id, congressId);
+            list = repository.findPreviousIdAfterDeletedId(id, congressId);
             if (!list.isEmpty()) {
                 nextId = list.getFirst();
             }
@@ -124,11 +133,11 @@ public class RegistrationService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public RegistrationSummaryVM getRegistrationSummaryByCongressId(Long id) {
-        RegistrationSummaryVM dto = new RegistrationSummaryVM();
-        dto.setRegistered(registrationRepository.countByCongressId(id));
-        dto.setOnSpot(registrationRepository.countByCongressIdAndOnSpot(id, Boolean.TRUE));
-        dto.setAccPeople(registrationRepository.countAccPeopleByCongressId(id, RegistrationTypeType.ACCOMPANYING_FEE));
+    public RegistrationSummaryDTO getRegistrationSummaryByCongressId(Long id) {
+        RegistrationSummaryDTO dto = new RegistrationSummaryDTO();
+        dto.setRegistered(repository.countByCongressId(id));
+        dto.setOnSpot(repository.countByCongressIdAndOnSpot(id, Boolean.TRUE));
+        dto.setAccPeople(repository.countAccPeopleByCongressId(id, RegistrationTypeType.ACCOMPANYING_FEE));
         return dto;
     }
 
@@ -152,7 +161,7 @@ public class RegistrationService {
         roomReservationService.deleteAllByRegistrationId(id);
         oosService.deleteAllByRegistrationId(id);
         workplaceService.deleteByRegistrationId(id);
-        registrationRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -381,7 +390,7 @@ public class RegistrationService {
 
     private void injectRegId(Registration registration) {
         if (registration.getRegId() == null) {
-            Integer regId = registrationRepository.findLastRegistrationId(registration.getCongress().getId());
+            Integer regId = repository.findLastRegistrationId(registration.getCongress().getId());
             registration.setRegId(regId == null ? Integer.valueOf(1) : Integer.valueOf(regId + 1));
         }
     }

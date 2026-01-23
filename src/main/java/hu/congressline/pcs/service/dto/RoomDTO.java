@@ -3,9 +3,7 @@ package hu.congressline.pcs.service.dto;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-import hu.congressline.pcs.domain.Currency;
 import hu.congressline.pcs.domain.Room;
 import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
 import lombok.Data;

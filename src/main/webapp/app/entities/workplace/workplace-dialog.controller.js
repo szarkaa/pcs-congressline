@@ -5,16 +5,16 @@
         .module('pcsApp')
         .controller('WorkplaceDialogController', WorkplaceDialogController);
 
-    WorkplaceDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Workplace', 'Country', 'Congress'];
+    WorkplaceDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Workplace', 'Country', 'Congress', 'CongressSelector'];
 
-    function WorkplaceDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Workplace, Country, Congress) {
+    function WorkplaceDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Workplace, Country, Congress, CongressSelector) {
         var vm = this;
 
         vm.workplace = {
-            id: null,
+            id: entity.id,
             name: entity.name,
-            vatRegNumber: null,
-            countryId: entity.countryId,
+            vatRegNumber: entity.vatRegNumber,
+            countryId: entity.country ? entity.country.id : (CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null),
             department: entity.department,
             zipCode: entity.zipCode,
             city: entity.city,

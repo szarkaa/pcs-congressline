@@ -84,6 +84,7 @@
             resolve: {
                 registration: ['CongressSelector', function (CongressSelector) {
                     return {
+                        id: null,
                         regId: null,
                         lastName: null,
                         firstName: null,
@@ -92,13 +93,19 @@
                         position: null,
                         otherData: null,
                         department: null,
-                        country: CongressSelector.getSelectedCongress().defaultCountry,
+                        countryId: null,
                         zipCode: null,
                         city: null,
                         street: null,
                         phone: null,
                         email: null,
                         fax: null,
+                        invoiceName: null,
+                        invoiceCountryId: null,
+                        invoiceZipCode: null,
+                        invoiceCity: null,
+                        invoiceAddress: null,
+                        invoiceTaxNumber: null,
                         dateOfApp: new Date(),
                         remark: null,
                         onSpot: null,
@@ -106,8 +113,8 @@
                         presenter: null,
                         closed: null,
                         etiquette: null,
-                        id: null,
-                        congress: CongressSelector.getSelectedCongress()
+                        workplaceId: null,
+                        congressId: CongressSelector.getSelectedCongress().id
                     };
                 }],
                 workplaces: ['Workplace', 'CongressSelector', function(Workplace, CongressSelector) {

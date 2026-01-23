@@ -1,8 +1,9 @@
 package hu.congressline.pcs.web.rest.vm;
 
-import java.util.Objects;
+import java.time.LocalDate;
 
-import hu.congressline.pcs.domain.Registration;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,32 +11,55 @@ import lombok.NoArgsConstructor;
 @Data
 public class RegistrationVM {
     private Long id;
-    private Integer regId;
+    @NotNull
+    @Size(max = 64)
     private String lastName;
+    @NotNull
+    @Size(max = 64)
     private String firstName;
-
-    public RegistrationVM(Registration registration) {
-        this.id = registration.getId();
-        this.regId = registration.getRegId();
-        this.lastName = registration.getLastName();
-        this.firstName = registration.getFirstName();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        RegistrationVM that = (RegistrationVM) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id != null ? id.hashCode() : 0;
-    }
+    @Size(max = 16)
+    private String shortName;
+    @Size(max = 16)
+    private String title;
+    @Size(max = 64)
+    private String position;
+    @Size(max = 255)
+    private String otherData;
+    @Size(max = 128)
+    private String department;
+    @Size(max = 32)
+    private String zipCode;
+    @Size(max = 64)
+    private String city;
+    @Size(max = 255)
+    private String street;
+    @Size(max = 64)
+    private String phone;
+    @Size(max = 64)
+    private String email;
+    @Size(max = 64)
+    private String fax;
+    private LocalDate dateOfApp;
+    @Size(max = 2000)
+    private String remark;
+    @Size(max = 128)
+    private String invoiceName;
+    private Long invoiceCountryId;
+    @Size(max = 32)
+    private String invoiceZipCode;
+    @Size(max = 64)
+    private String invoiceCity;
+    @Size(max = 255)
+    private String invoiceAddress;
+    @Size(max = 64)
+    private String invoiceTaxNumber;
+    private Boolean onSpot;
+    private Boolean cancelled;
+    private Boolean presenter;
+    private Boolean closed;
+    private Boolean etiquette;
+    private Long workplaceId;
+    private Long countryId;
+    @NotNull
+    private Long congressId;
 }
