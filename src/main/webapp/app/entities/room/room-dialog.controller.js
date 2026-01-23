@@ -10,7 +10,21 @@
     function RoomDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, congressHotel, Room, Congress, VatInfo, CongressSelector) {
         var vm = this;
 
-        vm.room = entity;
+        vm.room = {
+            id: entity.id,
+            roomType: entity.roomType,
+            bed: entity.bed,
+            quantity: entity.quantity,
+            reserved: entity.reserved,
+            price: entity.price,
+            onlineLabel: entity.onlineLabel,
+            onlineVisibility: entity.onlineVisibility,
+            onlineExternalLink: entity.onlineExternalLink,
+            onlineExternalEmail: entity.onlineExternalEmail,
+            vatInfoId: entity.vatInfo ? entity.vatInfo.id : null,
+            currencyId: entity.currency ? entity.currency.id : null,
+            congressHotelId: $stateParams.congressHotelId
+        };
         vm.congressHotel = congressHotel;
         vm.clear = clear;
         vm.save = save;
@@ -53,9 +67,9 @@
         function save () {
             vm.isSaving = true;
             if (vm.room.id !== null) {
-                Room.update(createRoomEntity(), onSaveSuccess, onSaveError);
+                Room.update(vm.room, onSaveSuccess, onSaveError);
             } else {
-                Room.save(createRoomEntity(), onSaveSuccess, onSaveError);
+                Room.save(vm.room, onSaveSuccess, onSaveError);
             }
         }
 

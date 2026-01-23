@@ -54,15 +54,19 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 roomType: null,
                                 bed: null,
                                 quantity: null,
                                 reserved: 0,
                                 price: null,
-                                id: null,
                                 onlineLabel: null,
                                 onlineVisibility: 'VISIBLE',
-                                congressHotel: {id: $stateParams.congressHotelId }
+                                onlineExternalLink: null,
+                                onlineExternalEmail: null,
+                                vatInfoId: null,
+                                currencyId: null,
+                                congressHotelId: $stateParams.congressHotelId
                             };
                         },
                         congressHotel: function () {

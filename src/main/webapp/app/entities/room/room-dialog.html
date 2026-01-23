@@ -101,11 +101,11 @@
 
         <div class="form-group">
             <label translate="pcsApp.room.currency" for="field_currency">Currency</label>
-            <ui-select ng-model="vm.room.currency" name="currency" id="field_currency" theme="bootstrap" required>
+            <ui-select ng-model="vm.room.currencyId" name="currency" id="field_currency" theme="bootstrap" required>
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.currency"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="currency in (vm.currencies | filter: $select.search) track by currency.id">
+                <ui-select-choices repeat="currency.id as currency in (vm.currencies | filter: $select.search) track by currency.id">
                     <div ng-bind-html="currency.currency | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
@@ -118,11 +118,11 @@
 
         <div class="form-group">
             <label translate="pcsApp.room.vatInfo" for="field_vatInfo">Vat info</label>
-            <ui-select ng-model="vm.room.vatInfo" name="vatInfo" id="field_vatInfo" theme="bootstrap" required>
+            <ui-select ng-model="vm.room.vatInfoId" name="vatInfo" id="field_vatInfo" theme="bootstrap" required>
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.name"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="vatInfo in (vm.vatInfos | filter: $select.search) track by vatInfo.id">
+                <ui-select-choices repeat="vatInfo.id as vatInfo in (vm.vatInfos | filter: $select.search) track by vatInfo.id">
                     <div ng-bind-html="vatInfo.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>

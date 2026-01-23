@@ -72,10 +72,10 @@ public class CongressHotelResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congress-hotels/{id}")
-    public ResponseEntity<CongressHotel> getById(@PathVariable Long id) {
+    public ResponseEntity<CongressHotelDTO> getById(@PathVariable Long id) {
         log.debug("REST request to get congress hotel: {}", id);
         return service.findById(id)
-            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+            .map(result -> new ResponseEntity<>(new CongressHotelDTO(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

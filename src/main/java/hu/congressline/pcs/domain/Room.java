@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
+import hu.congressline.pcs.web.rest.vm.RoomVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,6 +23,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -83,6 +85,18 @@ public class Room implements Serializable {
     @ManyToOne
     private CongressHotel congressHotel;
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull RoomVM viewModel) {
+        this.roomType = viewModel.getRoomType();
+        this.bed = viewModel.getBed();
+        this.quantity = viewModel.getQuantity();
+        this.price = viewModel.getPrice();
+        this.onlineExternalEmail = viewModel.getOnlineExternalEmail();
+        this.onlineLabel = viewModel.getOnlineLabel();
+        this.onlineVisibility = viewModel.getOnlineVisibility();
+        this.onlineExternalLink = viewModel.getOnlineExternalLink();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -107,4 +121,5 @@ public class Room implements Serializable {
     public String toString() {
         return "Room{" + "id=" + id + "}";
     }
+
 }
