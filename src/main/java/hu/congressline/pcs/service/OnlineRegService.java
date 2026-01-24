@@ -68,7 +68,7 @@ import hu.congressline.pcs.service.dto.online.OptionalServiceDTO;
 import hu.congressline.pcs.service.dto.online.PaymentResultDTO;
 import hu.congressline.pcs.service.dto.online.RegistrationTypeDTO;
 import hu.congressline.pcs.service.dto.online.RoomDTO;
-import hu.congressline.pcs.web.rest.vm.AccPeopleVM;
+import hu.congressline.pcs.web.rest.vm.OnlineAccPeopleVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegFilterVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegOptionalServiceVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegRegTypeVM;
@@ -545,7 +545,7 @@ public class OnlineRegService {
             orrtVM.setRegistrationType(orrt.getRegistrationType());
             final List<AccPeopleOnline> accPeopleOnlineList = accPeopleOnlineRepository.findAllByOnlineRegistrationRegistrationType(orrt);
             orrtVM.setAccompanies(accPeopleOnlineList.stream().map(accPeopleOnline -> {
-                AccPeopleVM accPeople = new AccPeopleVM();
+                OnlineAccPeopleVM accPeople = new OnlineAccPeopleVM();
                 accPeople.setLastName(accPeopleOnline.getLastName());
                 accPeople.setFirstName(accPeopleOnline.getFirstName());
                 return accPeople;

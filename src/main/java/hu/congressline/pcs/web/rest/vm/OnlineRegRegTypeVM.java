@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class OnlineRegRegTypeVM {
     private RegistrationType registrationType;
-    private List<AccPeopleVM> accompanies;
+    private List<OnlineAccPeopleVM> accompanies;
 }
