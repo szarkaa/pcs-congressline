@@ -83,8 +83,8 @@ public class RegistrationResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/vm/congress/{id}")
-    public List<RegistrationBriefDTO> getAllRegistrationVMByCongressId(@PathVariable Long id) {
-        log.debug("REST request to get all registration ids by congress id: {}", id);
+    public List<RegistrationBriefDTO> getAllRegistrationBriefByCongressId(@PathVariable Long id) {
+        log.debug("REST request to get all registration briefs by congress id: {}", id);
         return registrationService.findAllByCongressId(id).stream().map(RegistrationBriefDTO::new).toList();
     }
 

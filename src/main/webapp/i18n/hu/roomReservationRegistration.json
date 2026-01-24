@@ -1,6 +1,6 @@
 {
     "pcsApp": {
-        "roomReservationRegistration" : {
+        "roomReservationRegistration1" : {
             "home": {
                 "title": "RoomReservationRegistrations",
                 "createLabel": "Create a new RoomReservationRegistration",

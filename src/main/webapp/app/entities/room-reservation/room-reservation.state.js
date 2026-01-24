@@ -45,14 +45,14 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 roomId: null,
                                 shared: false,
                                 arrivalDate: new Date(CongressSelector.getSelectedCongress().startDate),
                                 departureDate: new Date(CongressSelector.getSelectedCongress().endDate),
+                                comment: null,
                                 payingGroupItemId: null,
-                                id: null,
-                                registrationId: registration.id,
-                                '@class': 'hu.congressline.pcs.domain.RoomReservation'
+                                registrationId: registration.id
                             };
                         },
                         registrationCurrency: function () {
@@ -85,7 +85,7 @@
                         size: 'lg',
                         resolve: {
                             roomReservations: ['RoomReservation', 'CongressSelector', function(RoomReservation, CongressSelector) {
-                                return RoomReservation.queryVMForSharedRoomReservations({congressId: CongressSelector.getSelectedCongress().id, registrationId: $stateParams.registrationId});
+                                return RoomReservation.querySharedRoomReservations({congressId: CongressSelector.getSelectedCongress().id, registrationId: $stateParams.registrationId});
                             }],
                             registrationCurrency: function () {
                                 return registrationCurrency;

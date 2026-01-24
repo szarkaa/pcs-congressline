@@ -25,16 +25,16 @@
             },
             'queryVMByRegistrationId': {
                 method: 'GET',
-                url: 'api/registrations/:id/room-reservation-vms',
+                url: 'api/registrations/:id/room-reservation-dtos',
                 isArray: true
             },
             'queryByRegistrationId': {
                 method: 'GET',
                 url: 'api/registrations/:id/room-reservations',
                 isArray: true},
-            'queryVMForSharedRoomReservations': {
+            'querySharedRoomReservations': {
                 method: 'GET',
-                url: 'api/congresses/:congressId/registrations/:registrationId/shared-room-reservation-vms',
+                url: 'api/congresses/:congressId/registrations/:registrationId/shared-room-reservations',
                 isArray: true},
             'getByRoomReservationId': {
                 method: 'GET',

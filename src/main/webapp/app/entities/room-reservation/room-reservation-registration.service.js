@@ -10,6 +10,7 @@
         var resourceUrl =  'api/room-reservation-registrations/:id';
 
         return $resource(resourceUrl, {}, {
+/*
             'query': { method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
@@ -40,6 +41,7 @@
                     return angular.toJson(copy);
                 }
             }
+*/
         });
     }
 })();

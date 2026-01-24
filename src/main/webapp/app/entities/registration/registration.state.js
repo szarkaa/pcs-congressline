@@ -57,7 +57,6 @@
                     $translatePartialLoader.addPart('global');
                     $translatePartialLoader.addPart('registrationRegistrationType');
                     $translatePartialLoader.addPart('roomReservation');
-                    $translatePartialLoader.addPart('roomReservationRegistration');
                     $translatePartialLoader.addPart('chargedService');
                     $translatePartialLoader.addPart('orderedOptionalService');
                     $translatePartialLoader.addPart('workplace');

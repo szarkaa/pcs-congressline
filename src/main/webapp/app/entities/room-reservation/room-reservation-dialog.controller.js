@@ -12,7 +12,16 @@
         RoomReservation, Room, PayingGroupItem, CongressSelector, registrationCurrency, invoicedChargeableItemIds) {
         var vm = this;
 
-        vm.roomReservation = entity;
+        vm.roomReservation = {
+            id: entity.id,
+            roomId: entity.roomId,
+            shared: entity.shared,
+            arrivalDate: entity.arrivalDate,
+            departureDate: entity.departureDate,
+            comment: entity.comment,
+            payingGroupItemId: entity.payingGroupItemId,
+            registrationId: entity.registrationId
+        };
         vm.invoicedChargeableItemIds = invoicedChargeableItemIds;
         vm.clear = clear;
         vm.save = save;
