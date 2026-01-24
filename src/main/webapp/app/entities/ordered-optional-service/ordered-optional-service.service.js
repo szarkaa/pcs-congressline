@@ -16,11 +16,6 @@
                 url: 'api/registrations/:id/ordered-optional-services',
                 isArray: true
             },
-            'queryDTOByRegistrationId' : {
-                method: 'GET',
-                url: 'api/registrations/:id/ordered-optional-service-dtos',
-                isArray: true
-            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

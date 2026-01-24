@@ -143,7 +143,7 @@ public class InvoiceService {
     @Transactional(readOnly = true)
     public Invoice getById(Long id) {
         log.debug("Request to get Invoice : {}", id);
-        return invoiceRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invoice not found with id: " + id));
+        return invoiceRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invoice not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

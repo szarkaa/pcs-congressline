@@ -23,11 +23,6 @@
                     return data;
                 }
             },
-            'queryVMByRegistrationId': {
-                method: 'GET',
-                url: 'api/registrations/:id/room-reservation-dtos',
-                isArray: true
-            },
             'queryByRegistrationId': {
                 method: 'GET',
                 url: 'api/registrations/:id/room-reservations',

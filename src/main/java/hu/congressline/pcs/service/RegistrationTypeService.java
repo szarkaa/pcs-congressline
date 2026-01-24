@@ -73,7 +73,7 @@ public class RegistrationTypeService {
     @Transactional(readOnly = true)
     public RegistrationType getById(Long id) {
         log.debug("Request to get registration type by id : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Registration type not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Registration type not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

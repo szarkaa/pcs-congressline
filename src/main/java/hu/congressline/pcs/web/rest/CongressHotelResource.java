@@ -30,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 public class CongressHotelResource {
     private static final String ENTITY_NAME = "congressHotel";
-    private static final String CONGRESS_HOTEL_NOT_FOUND = "CongressHotel not found with id: ";
+    private static final String CONGRESS_HOTEL_NOT_FOUND = "CongressHotel not found by id: ";
 
     private final CongressHotelService service;
 

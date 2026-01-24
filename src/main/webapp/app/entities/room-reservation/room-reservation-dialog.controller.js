@@ -23,15 +23,16 @@
             registrationId: entity.registrationId
         };
         vm.invoicedChargeableItemIds = invoicedChargeableItemIds;
+        vm.datePickerOpenStatus = {};
+        vm.rooms = Room.queryByCongressId({id: CongressSelector.getSelectedCongress().id});
+        vm.payingGroupItems = PayingGroupItem.queryByCongressAndItemType({id: CongressSelector.getSelectedCongress().id, itemType: 'HOTEL'});
+        vm.registrationCurrency = registrationCurrency;
+
         vm.clear = clear;
         vm.save = save;
         vm.filterChargeableItemsByCurrencyCriteria = filterChargeableItemsByCurrencyCriteria;
         vm.isDateEditable = isDateEditable;
-        vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
-        vm.rooms = Room.queryByCongressId({id: CongressSelector.getSelectedCongress().id});
-        vm.payingGroupItems = PayingGroupItem.queryByCongressAndItemType({id: CongressSelector.getSelectedCongress().id, itemType: 'HOTEL'});
-        vm.registrationCurrency = registrationCurrency;
 
 
         $timeout(function (){

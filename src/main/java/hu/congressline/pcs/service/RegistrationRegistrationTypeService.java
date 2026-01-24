@@ -53,7 +53,7 @@ public class RegistrationRegistrationTypeService {
         rrt.setPayingGroupItem(viewModel.getPayingGroupItemId() != null ? pgiRepository.findById(viewModel.getPayingGroupItemId()).orElse(null) : null);
         if (rrt.getRegistration() == null) {
             final Registration registration = registrationRepository.findById(viewModel.getRegistrationId())
-                .orElseThrow(() -> new IllegalArgumentException("Registration not found with id: " + viewModel.getRegistrationId()));
+                .orElseThrow(() -> new IllegalArgumentException("Registration not found by id: " + viewModel.getRegistrationId()));
             rrt.setRegistration(registration);
         }
         calculateRegFee(rrt);
@@ -90,7 +90,7 @@ public class RegistrationRegistrationTypeService {
     @Transactional(readOnly = true)
     public RegistrationRegistrationType getById(Long id) {
         log.debug("Request to get RegistrationRegistrationType : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("RegistrationRegistrationType not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("RegistrationRegistrationType not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

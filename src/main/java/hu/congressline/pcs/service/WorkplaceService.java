@@ -62,7 +62,7 @@ public class WorkplaceService {
     @Transactional(readOnly = true)
     public Workplace getById(Long id) {
         log.debug("Request to get Workplace : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Workplace not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Workplace not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

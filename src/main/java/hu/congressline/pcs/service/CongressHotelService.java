@@ -51,7 +51,7 @@ public class CongressHotelService {
     @Transactional(readOnly = true)
     public CongressHotel getById(Long id) {
         log.debug("Request to get congress hotel : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Congress hotel not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Congress hotel not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

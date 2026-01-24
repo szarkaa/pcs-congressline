@@ -68,7 +68,7 @@ public class RoomReservationResource {
         }
 
         Set<LocalDate> noAvailableRoomDates = new TreeSet<>();
-        Room room = roomRepository.findById(viewModel.getRoomId()).orElseThrow(() -> new IllegalArgumentException("Room not found with id: " + viewModel.getRoomId()));
+        Room room = roomRepository.findById(viewModel.getRoomId()).orElseThrow(() -> new IllegalArgumentException("Room not found by id: " + viewModel.getRoomId()));
         final Stream<LocalDate> range = Stream.iterate(viewModel.getArrivalDate(), d -> d.plusDays(1))
                 .limit(ChronoUnit.DAYS.between(viewModel.getArrivalDate(), viewModel.getDepartureDate()));
         range.forEach(localDate -> {
@@ -123,16 +123,9 @@ public class RoomReservationResource {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/registrations/{registrationId}/room-reservation-dtos")
-    public List<RoomReservationDTO> getAllVMsByRegistrationId(@PathVariable Long registrationId) {
-        log.debug("REST request to get all room reservation dtos by registration id: {}", registrationId);
-        return rrService.findAllVMByRegistrationId(registrationId);
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/{registrationId}/room-reservations")
-    public List<RoomReservation> getAllByRegistrationId(@PathVariable Long registrationId) {
-        log.debug("REST request to get all room reservations by registration id: {}", registrationId);
+    public List<RoomReservationDTO> getAllVMsByRegistrationId(@PathVariable Long registrationId) {
+        log.debug("REST request to get all room reservation by registration id: {}", registrationId);
         return rrService.findAllByRegistrationId(registrationId);
     }
 

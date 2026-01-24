@@ -134,7 +134,7 @@ public class CongressResource {
         return congressService.findConfigByCongressId(id)
             .map(config -> {
                 final Congress congress = congressRepository.findOneEagerlyById(config.getCongress().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Congress not found with id: " + id));
+                    .orElseThrow(() -> new IllegalArgumentException("Congress not found by id: " + id));
                 config.setCongress(congress);
                 return config;
             })

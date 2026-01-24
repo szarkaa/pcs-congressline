@@ -48,7 +48,7 @@ public class AccPeopleService {
     @Transactional(readOnly = true)
     public AccPeople getById(Long id) {
         log.debug("Request to get acc people : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Acc people not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Acc people not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

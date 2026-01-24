@@ -120,7 +120,7 @@ public class PaymentTransactionService extends XlsReportService {
     @Transactional(readOnly = true)
     public PaymentTransaction getById(Long id) {
         log.debug("Request to get Registration : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("PaymentTransaction not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("PaymentTransaction not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

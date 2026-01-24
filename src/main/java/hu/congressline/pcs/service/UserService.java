@@ -243,7 +243,7 @@ public class UserService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public User getUserWithAuthorities(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found by id: " + id));
         user.getAuthorities().size(); // eagerly load the association
         user.getCongresses().size();
         return user;

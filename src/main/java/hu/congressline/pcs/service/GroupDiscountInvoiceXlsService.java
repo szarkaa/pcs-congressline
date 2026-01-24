@@ -163,7 +163,7 @@ public class GroupDiscountInvoiceXlsService extends XlsReportService {
     public byte[] downloadProFormaInvoiceReportXls(String meetingCode, Long payingGroupId, String chargeableItemType) throws IOException {
         final List<GroupDiscountItemDTO> gdiList = groupDiscountItemService.findAll(meetingCode, payingGroupId, chargeableItemType);
         PayingGroup payingGroup = payingGroupRepository.findById(payingGroupId)
-                .orElseThrow(() -> new IllegalArgumentException("Paying group not found with id: " + payingGroupId));
+                .orElseThrow(() -> new IllegalArgumentException("Paying group not found by id: " + payingGroupId));
         final List<Long> registrationTypeIdList = new ArrayList<>();
         final List<Long> roomReservationIdList = new ArrayList<>();
         final List<Long> optionalServiceIdList = new ArrayList<>();

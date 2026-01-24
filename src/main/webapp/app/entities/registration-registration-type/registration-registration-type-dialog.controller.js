@@ -34,11 +34,8 @@
             angular.element('.form-group:eq(0)>input').focus();
         });
 
-        $scope.$watchCollection(
-            () => vm.registrationTypes,
-            function (newVal) {
+        $scope.$watchCollection(() => vm.registrationTypes,function (newVal) {
                 if (!newVal || !newVal.length) return;
-
                 vm.registrationTypeSelectionChanged();
             }
         );

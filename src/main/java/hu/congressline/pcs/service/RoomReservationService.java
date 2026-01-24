@@ -54,7 +54,7 @@ public class RoomReservationService {
         rr.setRoomReservationRegistrations(new ArrayList<>());
         final RoomReservation rrResult = rrRepository.save(rr);
         final Registration registration = registrationRepository.findById(viewModel.getRegistrationId())
-            .orElseThrow(() -> new IllegalArgumentException("Registration not found with id: " + viewModel.getRegistrationId()));
+            .orElseThrow(() -> new IllegalArgumentException("Registration not found by id: " + viewModel.getRegistrationId()));
         RoomReservationRegistration rrr = new RoomReservationRegistration();
         rrr.setRegistration(registration);
         rrr.setRoomReservation(rr);
@@ -111,12 +111,12 @@ public class RoomReservationService {
     @Transactional(readOnly = true)
     public RoomReservation getById(Long id) {
         log.debug("Request to get room reservation : {}", id);
-        return rrRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Room reservation not found with id: " + id));
+        return rrRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Room reservation not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public List<RoomReservationDTO> findAllVMByRegistrationId(final Long registrationId) {
+    public List<RoomReservationDTO> findAllByRegistrationId(final Long registrationId) {
         log.debug("Request to get all RoomReservationVMs");
         return rrrRepository.findAllByRegistrationId(registrationId).stream().map(rrr -> {
             RoomReservationDTO dto = new RoomReservationDTO(rrr);
@@ -127,13 +127,6 @@ public class RoomReservationService {
             }
             return dto;
         }).collect(Collectors.toList());
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    @Transactional(readOnly = true)
-    public List<RoomReservation> findAllByRegistrationId(final Long registrationId) {
-        log.debug("Request to get all RoomReservations");
-        return rrRepository.findAllByRegistrationId(registrationId);
     }
 
     @SuppressWarnings("MissingJavadocMethod")

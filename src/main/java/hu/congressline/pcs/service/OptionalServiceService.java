@@ -56,7 +56,7 @@ public class OptionalServiceService {
     @Transactional(readOnly = true)
     public OptionalService getById(Long id) {
         log.debug("Request to get optional service : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Optional service not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Optional service not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

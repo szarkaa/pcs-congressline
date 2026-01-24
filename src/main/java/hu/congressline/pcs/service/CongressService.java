@@ -47,14 +47,14 @@ public class CongressService {
     @Transactional(readOnly = true)
     public Congress getById(Long id) {
         log.debug("Request to get Congress : {}", id);
-        return congressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Congress not found with id: " + id));
+        return congressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Congress not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Congress getEagerById(Long id) {
         log.debug("Request to get Congress eagerly: {}", id);
-        return congressRepository.findOneEagerlyById(id).orElseThrow(() -> new IllegalArgumentException("Congress eager not found with id: " + id));
+        return congressRepository.findOneEagerlyById(id).orElseThrow(() -> new IllegalArgumentException("Congress eager not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -95,7 +95,7 @@ public class CongressService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public OnlineRegConfig getConfigByCongressId(Long id) {
-        return onlineRegConfigRepository.findOneByCongressId(id).orElseThrow(() -> new IllegalArgumentException("Online reg config not found with id: " + id));
+        return onlineRegConfigRepository.findOneByCongressId(id).orElseThrow(() -> new IllegalArgumentException("Online reg config not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

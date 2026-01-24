@@ -264,7 +264,7 @@ public class GroupDiscountInvoiceService {
     @Transactional
     public InvoicePayingGroup setPaymentDate(SetPaymentDateDTO groupSetPaymentDateDTO) {
         InvoicePayingGroup ipg = invoicePayingGroupRepository.findById(groupSetPaymentDateDTO.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Invoice paying group not found with id: " + groupSetPaymentDateDTO.getId()));
+                .orElseThrow(() -> new IllegalArgumentException("Invoice paying group not found by id: " + groupSetPaymentDateDTO.getId()));
         ipg.setDateOfGroupPayment(groupSetPaymentDateDTO.getPaymentDate());
         InvoicePayingGroup result = invoicePayingGroupRepository.save(ipg);
 
@@ -331,7 +331,7 @@ public class GroupDiscountInvoiceService {
         final Invoice result = invoiceRepository.save(stornoInvoice);
 
         InvoicePayingGroup payingGroup = invoicePayingGroupRepository.findByInvoiceId(invoice.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Invoice paying group not found with id: " + invoice.getId()));
+                .orElseThrow(() -> new IllegalArgumentException("Invoice paying group not found by id: " + invoice.getId()));
         InvoicePayingGroup ipg = new InvoicePayingGroup();
         ipg.setInvoice(result);
         ipg.setPayingGroup(payingGroup.getPayingGroup());

@@ -44,7 +44,7 @@ public class VatInfoService {
     @Transactional(readOnly = true)
     public VatInfo getById(Long id) {
         log.debug("Request to get Congress : {}", id);
-        return vatInfoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("VatInfo not found with id: " + id));
+        return vatInfoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("VatInfo not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

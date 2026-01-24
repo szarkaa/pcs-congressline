@@ -57,7 +57,7 @@ public class OrderedOptionalServiceService {
         oos.setPayingGroupItem(viewModel.getPayingGroupItemId() != null ? pgiRepository.findById(viewModel.getPayingGroupItemId()).orElse(null) : null);
         if (oos.getRegistration() == null) {
             final Registration registration = registrationRepository.findById(viewModel.getRegistrationId())
-                .orElseThrow(() -> new IllegalArgumentException("Registration not found with id: " + viewModel.getRegistrationId()));
+                .orElseThrow(() -> new IllegalArgumentException("Registration not found by id: " + viewModel.getRegistrationId()));
             oos.setRegistration(registration);
         }
         return repository.save(oos);
@@ -81,7 +81,7 @@ public class OrderedOptionalServiceService {
     @Transactional(readOnly = true)
     public OrderedOptionalService getById(Long id) {
         log.debug("Request to get OrderedOptionalService : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OrderedOptionalService not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OrderedOptionalService not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

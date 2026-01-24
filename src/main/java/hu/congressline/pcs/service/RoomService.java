@@ -59,7 +59,7 @@ public class RoomService {
     @Transactional(readOnly = true)
     public Room getById(Long id) {
         log.debug("Request to get Room : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Room not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Room not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

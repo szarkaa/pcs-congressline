@@ -127,7 +127,7 @@ public class OnlineRegService {
     @Transactional(readOnly = true)
     public OnlineRegistration getById(Long id) {
         log.debug("Request to get OnlineRegistration : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OnlineRegistration not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OnlineRegistration not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -363,7 +363,7 @@ public class OnlineRegService {
             oros.setParticipant(os.getParticipants());
             final OnlineRegistrationOptionalService oos = orosRepository.save(oros);
             final OptionalService optionalService = osRepository.findById(oos.getOptionalService().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Optional service not found with id: " + oos.getOptionalService().getId()));
+                    .orElseThrow(() -> new IllegalArgumentException("Optional service not found by id: " + oos.getOptionalService().getId()));
             oosService.increaseOptionalServiceReservedNumber(optionalService, oos.getParticipant());
         });
 
@@ -631,7 +631,7 @@ public class OnlineRegService {
 
         if (registration.getRegistrationType() != null) {
             final RegistrationType rt = rtRepository.findById(registration.getRegistrationType().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Registration type not found with id: " + registration.getRegistrationType().getId()));
+                    .orElseThrow(() -> new IllegalArgumentException("Registration type not found by id: " + registration.getRegistrationType().getId()));
             total = total.add(rrtService.calculateRegFee(rt, registration.getDateOfApp().toLocalDate()));
         }
 

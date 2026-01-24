@@ -70,14 +70,7 @@ public class OrderedOptionalServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/{id}/ordered-optional-services")
-    public List<OrderedOptionalService> getAllByRegistrationId(@PathVariable Long id) {
-        log.debug("REST request to get all ordered optional services by registration id: {}", id);
-        return service.findAllByRegistrationId(id);
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/registrations/{id}/ordered-optional-service-dtos")
-    public List<OrderedOptionalServiceDTO> getAllDTOsByRegistrationId(@PathVariable Long id) {
+    public List<OrderedOptionalServiceDTO> getAllByRegistrationId(@PathVariable Long id) {
         log.debug("REST request to get all ordered optional serviceVMs by registration id: {}", id);
         return service.findAllByRegistrationId(id).stream().map(oos -> {
             OrderedOptionalServiceDTO dto = new OrderedOptionalServiceDTO(oos);

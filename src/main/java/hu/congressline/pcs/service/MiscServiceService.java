@@ -55,7 +55,7 @@ public class MiscServiceService {
     @Transactional(readOnly = true)
     public MiscService getById(Long id) {
         log.debug("Request to get misc service : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Misc service not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Misc service not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

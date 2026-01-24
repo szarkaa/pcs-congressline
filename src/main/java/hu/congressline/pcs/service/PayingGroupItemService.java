@@ -50,7 +50,7 @@ public class PayingGroupItemService {
     @Transactional(readOnly = true)
     public PayingGroupItem getById(Long id) {
         log.debug("Request to get paying group item: {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Paying group item not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Paying group item not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

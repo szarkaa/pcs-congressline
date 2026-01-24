@@ -54,10 +54,10 @@
             <label translate="pcsApp.orderedOptionalService.payingGroupItem" for="field_payingGroupItem">Discount</label>
             <ui-select ng-model="vm.orderedOptionalService.payingGroupItemId" name="payingGroupItem" id="field_payingGroupItem" theme="bootstrap">
                 <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
-                    <span ng-bind="$select.selected.payingGroup.name + '/' + $select.selected.name"></span>
+                    <span ng-bind="$select.selected.payingGroupName + '/' + $select.selected.name"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="payingGroupItem.id as payingGroupItem in (vm.payingGroupItems | filter: { payingGroup: { currency: { currency: vm.orderedOptionalService.optionalService.currency.currency }}} | filter: $select.search) track by payingGroupItem.id">
-                    <div ng-bind-html="payingGroupItem.payingGroup.name + '/' + payingGroupItem.name | highlight: $select.search"></div>
+                <ui-select-choices repeat="payingGroupItem.id as payingGroupItem in (vm.payingGroupItems | filter: { currency: { currency: vm.orderedOptionalService.optionalService.currency.currency }} | filter: $select.search) track by payingGroupItem.id">
+                    <div ng-bind-html="payingGroupItem.payingGroupName + '/' + payingGroupItem.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
         </div>

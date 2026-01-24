@@ -71,13 +71,6 @@ public class RegistrationRegistrationTypeResource {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/registrations/{id}/registration-registration-types")
-    public List<RegistrationRegistrationType> getAllByRegistrationId(@PathVariable Long id) {
-        log.debug("REST request to get all registration registration type by registration id {}", id);
-        return service.findAllByRegistrationId(id);
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/{registrationId}/registration-types/{registrationTypeId}/calculate-reg-fee")
     public ResponseEntity<RegFeeDTO> getRegFeeByRegistrationTypes(@PathVariable Long registrationId, @PathVariable Long registrationTypeId) {
         log.debug("REST request to get all registration registration type by registration id: {}, registrationTypeId: {}", registrationId, registrationTypeId);
@@ -85,8 +78,8 @@ public class RegistrationRegistrationTypeResource {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/registrations/{id}/registration-registration-type-dtos")
-    public List<RegistrationRegistrationTypeDTO> getAllDTOsByRegistrationId(@PathVariable Long id) {
+    @GetMapping("/registrations/{id}/registration-registration-types")
+    public List<RegistrationRegistrationTypeDTO> getAllByRegistrationId(@PathVariable Long id) {
         log.debug("REST request to get all registration registration type dtos by registration id {}", id);
         return service.findAllByRegistrationId(id)
                 .stream().map(rrt -> {

@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/api")
 public class HotelSummaryReportResource {
-    private static final String HOTEL_NOT_FOUND = "Hotel not found with id: ";
+    private static final String HOTEL_NOT_FOUND = "Hotel not found by id: ";
 
     private final HotelSummaryReportService service;
     private final CongressService congressService;

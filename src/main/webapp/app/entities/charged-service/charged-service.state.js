@@ -30,6 +30,7 @@
                         resolve: {
                             entity: function () {
                                 return {
+                                    id: null,
                                     paymentMode: null,
                                     paymentType: null,
                                     dateOfPayment: new Date(),
@@ -39,15 +40,15 @@
                                     cardExpirationDate: null,
                                     transactionId: null,
                                     comment: null,
-                                    id: null,
-                                    registration: {id: registration.id}
+                                    chargeableItemId: null,
+                                    registrationId: registration.id
                                 };
                             },
                             registrationRegistrationTypes: ['RegistrationRegistrationType', function (RegistrationRegistrationType) {
                                 return RegistrationRegistrationType.queryByRegistrationId({id: $stateParams.registrationId});
                             }],
                             roomReservations: ['RoomReservation', function (RoomReservation) {
-                                return RoomReservation.queryVMByRegistrationId({id: $stateParams.registrationId});
+                                return RoomReservation.queryByRegistrationId({id: $stateParams.registrationId});
                             }],
                             orderedOptionalServices: ['OrderedOptionalService', function (OrderedOptionalService) {
                                 return OrderedOptionalService.queryByRegistrationId({id: $stateParams.registrationId});
@@ -66,8 +67,8 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'registrationRegistrationTypes', 'orderedOptionalServices',
-                function($stateParams, $state, $uibModal, registration, registrationRegistrationTypes, orderedOptionalServices) {
+            onEnter: ['$stateParams', '$state', '$uibModal', 'registration',
+                function($stateParams, $state, $uibModal, registration) {
                 $uibModal.open({
                     templateUrl: 'app/entities/charged-service/charged-service-dialog.html',
                     controller: 'ChargedServiceDialogController',
@@ -76,17 +77,17 @@
                     size: 'lg',
                     resolve: {
                         entity: ['ChargedService', function (ChargedService) {
-                            return ChargedService.get({id: $stateParams.chargedServiceId});
+                            return ChargedService.get({id: $stateParams.chargedServiceId}).$promise;
                         }],
-                        registrationRegistrationTypes: function () {
-                            return registrationRegistrationTypes;
-                        },
+                        registrationRegistrationTypes: ['RegistrationRegistrationType', function (RegistrationRegistrationType) {
+                            return RegistrationRegistrationType.queryByRegistrationId({id: $stateParams.registrationId});
+                        }],
                         roomReservations: ['RoomReservation', function (RoomReservation) {
                             return RoomReservation.queryByRegistrationId({id: $stateParams.registrationId});
                         }],
-                        orderedOptionalServices: function () {
-                            return orderedOptionalServices;
-                        }
+                        orderedOptionalServices: ['OrderedOptionalService', function (OrderedOptionalService) {
+                            return OrderedOptionalService.queryByRegistrationId({id: $stateParams.registrationId});
+                        }]
                     }
                 }).result.then(function (result) {
                         $state.go('registration', {registrationId: registration.id}, {reload: true});

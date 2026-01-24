@@ -39,7 +39,7 @@ public class RoomResource {
     private static final String ENTITY_NAME = "room";
     private static final String ROOM_TYPE_EXISTS = "roomtypeexists";
     private static final String ROOM_TYPE_EXISTS_MSG = "Room type already exists";
-    private static final String CONGRESS_HOTEL_NOT_FOUND = "CongressHotel not found with id: ";
+    private static final String CONGRESS_HOTEL_NOT_FOUND = "CongressHotel not found by id: ";
 
     private final RoomService service;
     private final CongressHotelService congressHotelService;

@@ -226,7 +226,7 @@ public class MiscInvoiceService {
     @Transactional(readOnly = true)
     public InvoiceCongress getById(Long id) {
         log.debug("Request to get InvoiceCongress : {}", id);
-        return invoiceCongressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("InvoiceCongress not found with id: " + id));
+        return invoiceCongressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("InvoiceCongress not found by id: " + id));
     }
 
     private String getCurrency(List<MiscInvoiceItem> items) {

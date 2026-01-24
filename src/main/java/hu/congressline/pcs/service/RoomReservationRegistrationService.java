@@ -49,7 +49,7 @@ public class RoomReservationRegistrationService {
     @Transactional(readOnly = true)
     public RoomReservationRegistration getById(Long id) {
         log.debug("Request to get room reservation registration by id: {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("room reservation registration not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("room reservation registration not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

@@ -30,7 +30,7 @@ public class OnlineRegCustomQuestionService {
     @Transactional(readOnly = true)
     public OnlineRegCustomQuestion getById(Long id) {
         log.debug("Request to get OnlineRegCustomQuestion : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OnlineRegCustomQuestion not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OnlineRegCustomQuestion not found by id: " + id));
     }
 
     public List<OnlineRegCustomQuestion> findAllByCongressId(Long id) {

@@ -57,7 +57,7 @@ public class PayingGroupService {
     @Transactional(readOnly = true)
     public PayingGroup getById(Long id) {
         log.debug("Request to get paying group : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("paying group not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("paying group not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

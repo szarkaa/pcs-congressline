@@ -41,13 +41,13 @@
                     }
                 }],
                 registrationRegistrationTypes: ['$stateParams', 'RegistrationRegistrationType', function ($stateParams, RegistrationRegistrationType) {
-                    return RegistrationRegistrationType.queryVMByRegistrationId({id: $stateParams.registrationId}).$promise;
+                    return RegistrationRegistrationType.queryByRegistrationId({id: $stateParams.registrationId}).$promise;
                 }],
                 roomReservations: ['$stateParams', 'RoomReservation', function ($stateParams, RoomReservation) {
-                    return RoomReservation.queryVMByRegistrationId({id: $stateParams.registrationId}).$promise;
+                    return RoomReservation.queryByRegistrationId({id: $stateParams.registrationId}).$promise;
                 }],
                 orderedOptionalServices: ['$stateParams', 'OrderedOptionalService', function ($stateParams, OrderedOptionalService) {
-                    return OrderedOptionalService.queryDTOByRegistrationId({id: $stateParams.registrationId}).$promise;
+                    return OrderedOptionalService.queryByRegistrationId({id: $stateParams.registrationId}).$promise;
                 }],
                 chargedServices: ['$stateParams', 'ChargedService', function ($stateParams, ChargedService) {
                     return ChargedService.queryByRegistrationId({id: $stateParams.registrationId}).$promise;
