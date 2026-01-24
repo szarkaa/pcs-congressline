@@ -1,7 +1,5 @@
 package hu.congressline.pcs.service;
 
-import hu.congressline.pcs.domain.Registration;
-import hu.congressline.pcs.repository.RegistrationRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,9 +9,11 @@ import java.util.Optional;
 import hu.congressline.pcs.domain.ChargedService;
 import hu.congressline.pcs.domain.ChargedServiceInvoiceHistory;
 import hu.congressline.pcs.domain.Congress;
+import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.repository.ChargeableItemRepository;
 import hu.congressline.pcs.repository.ChargedServiceInvoiceHistoryRepository;
 import hu.congressline.pcs.repository.ChargedServiceRepository;
+import hu.congressline.pcs.repository.RegistrationRepository;
 import hu.congressline.pcs.web.rest.vm.ChargedServiceVM;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class ChargedServiceService {
     private final RegistrationRepository registrationRepository;
     private final ChargedServiceRepository repository;
     private final ChargedServiceInvoiceHistoryRepository csihRepository;
-    private final ChargeableItemRepository  chargeableItemRepository;
+    private final ChargeableItemRepository chargeableItemRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     public ChargedService save(ChargedService chargedService) {

@@ -1,30 +1,20 @@
 package hu.congressline.pcs.web.rest.vm;
 
-import hu.congressline.pcs.domain.ChargeableItem;
-import hu.congressline.pcs.domain.Registration;
+import java.io.Serial;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.domain.enumeration.ChargedServicePaymentMode;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Objects;
 
 @NoArgsConstructor
 @Data
@@ -56,7 +46,6 @@ public class ChargedServiceVM implements Serializable {
 
     @Size(max = 50)
     private String cardNumber;
-
 
     @Size(max = 8)
     private String cardExpirationDate;
