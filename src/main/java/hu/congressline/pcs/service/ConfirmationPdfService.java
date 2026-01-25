@@ -54,6 +54,7 @@ import hu.congressline.pcs.repository.RegistrationRegistrationTypeRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
 import hu.congressline.pcs.service.pdf.ConfirmationHeaderFooter;
 import hu.congressline.pcs.service.pdf.ConfirmationPdfContext;
+import hu.congressline.pcs.service.pdf.ConfirmationPdfHeaderFooterTextContext;
 import hu.congressline.pcs.service.pdf.PcsPdfFont;
 import hu.congressline.pcs.service.pdf.PdfContext;
 import hu.congressline.pcs.web.rest.vm.ConfirmationPdfVM;
@@ -136,8 +137,7 @@ public class ConfirmationPdfService extends AbstractPdfService {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             Document document = new Document(PageSize.A4, 20, 20, 40, 100);
             PdfWriter writer = PdfWriter.getInstance(document, baos);
-            ConfirmationHeaderFooter event = new ConfirmationHeaderFooter(messageSource, pdfContext);
-            writer.setPageEvent(event);
+            writer.setPageEvent(new ConfirmationHeaderFooter(new ConfirmationPdfHeaderFooterTextContext(messageSource, pdfContext.getLocale(), pdfContext.getContactEmail())));
             writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
 
             document.open();

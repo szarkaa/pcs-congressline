@@ -29,6 +29,7 @@ import hu.congressline.pcs.domain.enumeration.VatRateType;
 import hu.congressline.pcs.repository.InvoiceChargeRepository;
 import hu.congressline.pcs.repository.InvoiceItemRepository;
 import hu.congressline.pcs.service.pdf.InvoiceHeaderFooter;
+import hu.congressline.pcs.service.pdf.InvoicePdfHeaderFooterTextContext;
 import hu.congressline.pcs.service.pdf.MiscInvoicePdfContext;
 import hu.congressline.pcs.service.pdf.PcsPdfFont;
 import hu.congressline.pcs.service.pdf.PdfContext;
@@ -72,7 +73,7 @@ public class MiscInvoicePdfService extends AbstractPdfService {
             PdfWriter writer = PdfWriter.getInstance(document, baos);
 
             //set the listener for events like (new page, end page, open document, close document etc.)
-            InvoiceHeaderFooter event = new InvoiceHeaderFooter(messageSource, context);
+            InvoiceHeaderFooter event = new InvoiceHeaderFooter(new InvoicePdfHeaderFooterTextContext(messageSource, context));
             writer.setPageEvent(event);
             writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));  //this box contains the footer's page of pages section
 

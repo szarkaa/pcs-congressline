@@ -30,6 +30,7 @@ import hu.congressline.pcs.repository.InvoiceChargeRepository;
 import hu.congressline.pcs.repository.InvoiceItemRepository;
 import hu.congressline.pcs.service.pdf.GroupDiscountInvoicePdfContext;
 import hu.congressline.pcs.service.pdf.InvoiceHeaderFooter;
+import hu.congressline.pcs.service.pdf.InvoicePdfHeaderFooterTextContext;
 import hu.congressline.pcs.service.pdf.PcsPdfFont;
 import hu.congressline.pcs.service.pdf.PdfContext;
 import hu.congressline.pcs.service.util.ServiceUtil;
@@ -67,7 +68,7 @@ public class GroupDiscountInvoicePdfService extends AbstractPdfService {
             Document document = new Document(PageSize.A4, 20, 20, 40, 120);
             PdfWriter writer = PdfWriter.getInstance(document, baos);
 
-            InvoiceHeaderFooter event = new InvoiceHeaderFooter(messageSource, pdfContext);
+            InvoiceHeaderFooter event = new InvoiceHeaderFooter(new InvoicePdfHeaderFooterTextContext(messageSource, pdfContext));
             writer.setPageEvent(event);
             writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
 
