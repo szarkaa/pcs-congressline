@@ -30,10 +30,10 @@ import hu.congressline.pcs.repository.UserRepository;
 import hu.congressline.pcs.security.SecurityUtils;
 import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.service.UserService;
+import hu.congressline.pcs.service.dto.ManagedUserDTO;
 import hu.congressline.pcs.service.dto.UserDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.KeyAndPasswordVM;
-import hu.congressline.pcs.web.rest.vm.ManagedUserVM;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -54,19 +54,19 @@ public class AccountResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping(value = "/register", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE})
-    public ResponseEntity<?> registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM, HttpServletRequest request) {
+    public ResponseEntity<?> registerAccount(@Valid @RequestBody ManagedUserDTO managedUserDTO, HttpServletRequest request) {
 
         HttpHeaders textPlainHeaders = new HttpHeaders();
         textPlainHeaders.setContentType(MediaType.TEXT_PLAIN);
 
-        return userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase())
+        return userRepository.findOneByLogin(managedUserDTO.getLogin().toLowerCase())
             .map(user -> new ResponseEntity<>("login already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
-            .orElseGet(() -> userRepository.findOneByEmail(managedUserVM.getEmail())
+            .orElseGet(() -> userRepository.findOneByEmail(managedUserDTO.getEmail())
                 .map(user -> new ResponseEntity<>("e-mail address already in use", textPlainHeaders, HttpStatus.BAD_REQUEST))
                 .orElseGet(() -> {
-                    User user = userService.createUser(managedUserVM.getLogin(), managedUserVM.getPassword(),
-                        managedUserVM.getFirstName(), managedUserVM.getLastName(), managedUserVM.getEmail().toLowerCase(),
-                        managedUserVM.getLangKey());
+                    User user = userService.createUser(managedUserDTO.getLogin(), managedUserDTO.getPassword(),
+                        managedUserDTO.getFirstName(), managedUserDTO.getLastName(), managedUserDTO.getEmail().toLowerCase(),
+                        managedUserDTO.getLangKey());
                     String baseUrl = request.getScheme() // "http"
                         + "://"                          // "://"
                         + request.getServerName()        // "myhost"
@@ -180,6 +180,6 @@ public class AccountResource {
     }
 
     private boolean checkPasswordLength(String password) {
-        return !StringUtils.isEmpty(password) && password.length() >= ManagedUserVM.PASSWORD_MIN_LENGTH && password.length() <= ManagedUserVM.PASSWORD_MAX_LENGTH;
+        return !StringUtils.isEmpty(password) && password.length() >= ManagedUserDTO.PASSWORD_MIN_LENGTH && password.length() <= ManagedUserDTO.PASSWORD_MAX_LENGTH;
     }
 }

@@ -25,9 +25,9 @@ import hu.congressline.pcs.service.GroupDiscountInvoicePdfService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceXlsService;
 import hu.congressline.pcs.service.NavOnlineService;
-import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.GroupDiscountInvoiceVM;
+import hu.congressline.pcs.web.rest.vm.SetPaymentDateVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,9 +77,9 @@ public class GroupDiscountInvoiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping(value = "/group-discount-invoices/set-payment-date", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Invoice> setPaymentDate(@Valid @RequestBody SetPaymentDateDTO groupSetPaymentDateDTO) {
-        log.debug("REST request to set payment date of GroupDiscountInvoice : {}", groupSetPaymentDateDTO.getId());
-        InvoicePayingGroup invoice = invoiceService.setPaymentDate(groupSetPaymentDateDTO);
+    public ResponseEntity<Invoice> setPaymentDate(@Valid @RequestBody SetPaymentDateVM groupSetPaymentDateVM) {
+        log.debug("REST request to set payment date of GroupDiscountInvoice : {}", groupSetPaymentDateVM.getId());
+        InvoicePayingGroup invoice = invoiceService.setPaymentDate(groupSetPaymentDateVM);
 
         return Optional.ofNullable(invoice)
             .map(result -> new ResponseEntity<>(result.getInvoice(), HttpStatus.OK))

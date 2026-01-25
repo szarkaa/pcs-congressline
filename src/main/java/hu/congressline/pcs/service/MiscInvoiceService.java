@@ -20,8 +20,8 @@ import hu.congressline.pcs.repository.CountryRepository;
 import hu.congressline.pcs.repository.InvoiceCongressRepository;
 import hu.congressline.pcs.repository.InvoiceItemRepository;
 import hu.congressline.pcs.repository.MiscInvoiceItemRepository;
-import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
 import hu.congressline.pcs.web.rest.vm.MiscInvoiceVM;
+import hu.congressline.pcs.web.rest.vm.SetPaymentDateVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -113,16 +113,16 @@ public class MiscInvoiceService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
-    public InvoiceCongress setPaymentDate(SetPaymentDateDTO setPaymentDateDTO) {
-        InvoiceCongress ic = getById(setPaymentDateDTO.getId());
+    public InvoiceCongress setPaymentDate(SetPaymentDateVM setPaymentDateVM) {
+        InvoiceCongress ic = getById(setPaymentDateVM.getId());
         if (ic == null) {
             return null;
         }
-        ic.setDateOfPayment(setPaymentDateDTO.getPaymentDate());
+        ic.setDateOfPayment(setPaymentDateVM.getPaymentDate());
         InvoiceCongress result = invoiceCongressRepository.save(ic);
 
         final List<MiscInvoiceItem> miscInvoiceItems = miscInvoiceItemRepository.findAllByInvoice(ic.getInvoice());
-        miscInvoiceItems.forEach(miscInvoiceItem -> miscInvoiceItem.setDateOfPayment(setPaymentDateDTO.getPaymentDate()));
+        miscInvoiceItems.forEach(miscInvoiceItem -> miscInvoiceItem.setDateOfPayment(setPaymentDateVM.getPaymentDate()));
         miscInvoiceItemRepository.saveAll(miscInvoiceItems);
         return result;
     }

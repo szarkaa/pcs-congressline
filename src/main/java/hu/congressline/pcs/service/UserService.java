@@ -29,8 +29,8 @@ import hu.congressline.pcs.repository.UserRepository;
 import hu.congressline.pcs.security.AuthoritiesConstants;
 import hu.congressline.pcs.security.RandomUtil;
 import hu.congressline.pcs.security.SecurityUtils;
+import hu.congressline.pcs.service.dto.ManagedUserDTO;
 import hu.congressline.pcs.web.rest.vm.CongressVM;
-import hu.congressline.pcs.web.rest.vm.ManagedUserVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -136,28 +136,28 @@ public class UserService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    public User createUser(ManagedUserVM managedUserVM) {
+    public User createUser(ManagedUserDTO managedUserDTO) {
         User user = new User();
-        user.setLogin(managedUserVM.getLogin());
-        user.setFirstName(managedUserVM.getFirstName());
-        user.setLastName(managedUserVM.getLastName());
-        user.setEmail(managedUserVM.getEmail());
-        if (managedUserVM.getLangKey() == null) {
+        user.setLogin(managedUserDTO.getLogin());
+        user.setFirstName(managedUserDTO.getFirstName());
+        user.setLastName(managedUserDTO.getLastName());
+        user.setEmail(managedUserDTO.getEmail());
+        if (managedUserDTO.getLangKey() == null) {
             user.setLangKey("en"); // default language
         } else {
-            user.setLangKey(managedUserVM.getLangKey());
+            user.setLangKey(managedUserDTO.getLangKey());
         }
-        if (managedUserVM.getAuthorities() != null) {
+        if (managedUserDTO.getAuthorities() != null) {
             Set<Authority> authorities = new HashSet<>();
-            managedUserVM.getAuthorities().forEach(
+            managedUserDTO.getAuthorities().forEach(
                     authority -> authorities.add(authorityRepository.findById(authority).orElseThrow(() -> new IllegalArgumentException(AUTHORITY_NOT_FOUND + authority)))
             );
             user.setAuthorities(authorities);
         }
 
-        if (managedUserVM.getCongresses() != null) {
+        if (managedUserDTO.getCongresses() != null) {
             Set<Congress> congresses = new HashSet<>();
-            managedUserVM.getCongresses().forEach(
+            managedUserDTO.getCongresses().forEach(
                 congress -> congresses.add(congressService.getById(congress.getId()))
             );
             user.setCongresses(congresses);

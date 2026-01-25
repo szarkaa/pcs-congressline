@@ -1,4 +1,4 @@
-package hu.congressline.pcs.service.dto;
+package hu.congressline.pcs.web.rest.vm;
 
 import java.time.LocalDate;
 
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class SetPaymentDateDTO {
+public class SetPaymentDateVM {
     private Long id;
     private LocalDate paymentDate;
 }

@@ -30,8 +30,8 @@ import hu.congressline.pcs.repository.InvoiceRepository;
 import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
 import hu.congressline.pcs.repository.RegistrationRegistrationTypeRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
-import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
 import hu.congressline.pcs.web.rest.vm.GroupDiscountInvoiceVM;
+import hu.congressline.pcs.web.rest.vm.SetPaymentDateVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -262,16 +262,16 @@ public class GroupDiscountInvoiceService {
 
     @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
     @Transactional
-    public InvoicePayingGroup setPaymentDate(SetPaymentDateDTO groupSetPaymentDateDTO) {
-        InvoicePayingGroup ipg = invoicePayingGroupRepository.findById(groupSetPaymentDateDTO.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Invoice paying group not found by id: " + groupSetPaymentDateDTO.getId()));
-        ipg.setDateOfGroupPayment(groupSetPaymentDateDTO.getPaymentDate());
+    public InvoicePayingGroup setPaymentDate(SetPaymentDateVM groupSetPaymentDateVM) {
+        InvoicePayingGroup ipg = invoicePayingGroupRepository.findById(groupSetPaymentDateVM.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invoice paying group not found by id: " + groupSetPaymentDateVM.getId()));
+        ipg.setDateOfGroupPayment(groupSetPaymentDateVM.getPaymentDate());
         InvoicePayingGroup result = invoicePayingGroupRepository.save(ipg);
 
         final List<GroupDiscountInvoiceHistory> discountInvoiceHistories = groupDiscountInvoiceHistoryRepository.findAllByInvoice(ipg.getInvoice());
         final List<ChargeableItem> chargeableItems = discountInvoiceHistories.stream().map(GroupDiscountInvoiceHistory::getChargeableItem).toList();
         chargeableItems.forEach(item -> {
-            item.setDateOfGroupPayment(groupSetPaymentDateDTO.getPaymentDate());
+            item.setDateOfGroupPayment(groupSetPaymentDateVM.getPaymentDate());
             if (ChargeableItemType.REGISTRATION.equals(item.getChargeableItemType())) {
                 rrtRepository.save((RegistrationRegistrationType) item);
             } else if (ChargeableItemType.HOTEL.equals(item.getChargeableItemType())) {

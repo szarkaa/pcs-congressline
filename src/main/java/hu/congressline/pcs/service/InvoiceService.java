@@ -44,8 +44,8 @@ import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
 import hu.congressline.pcs.repository.RegistrationRegistrationTypeRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
 import hu.congressline.pcs.service.dto.InvoiceDTO;
-import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
 import hu.congressline.pcs.web.rest.vm.InvoiceVM;
+import hu.congressline.pcs.web.rest.vm.SetPaymentDateVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -83,7 +83,7 @@ public class InvoiceService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public InvoiceRegistration save(InvoiceVM invoiceVM) {
-        log.debug("Request to save Invoice : {}", invoiceVM);
+        log.debug("Request to save invoice : {}", invoiceVM);
         final Registration registration = registrationService.getById(invoiceVM.getRegistrationId());
         final String currency = registrationService.getRegistrationCurrency(registration);
 
@@ -135,21 +135,21 @@ public class InvoiceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<Invoice> findById(Long id) {
-        log.debug("Request to find Invoice : {}", id);
+        log.debug("Request to find invoice : {}", id);
         return invoiceRepository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Invoice getById(Long id) {
-        log.debug("Request to get Invoice : {}", id);
+        log.debug("Request to get invoice : {}", id);
         return invoiceRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invoice not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public InvoiceRegistration getInvoiceRegistrationByInvoiceId(Long id) {
-        log.debug("Request to get Invoice by invoice id: {}", id);
+        log.debug("Request to get invoice by invoice id: {}", id);
         return invoiceRegistrationRepository.findByInvoiceId(id)
                 .orElseThrow(() -> new IllegalArgumentException("InvoiceRegistration not found by invoice id:" + id));
     }
@@ -157,7 +157,7 @@ public class InvoiceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
     public Invoice stornoInvoice(Long id) {
-        log.debug("Request to get storno Invoice : {}", id);
+        log.debug("Request to get storno invoice : {}", id);
         Invoice invoice = getById(id);
         if (invoice.getStornired()) {
             throw new IllegalArgumentException("This invoice is already stornired invoice id: " + id);
@@ -233,9 +233,13 @@ public class InvoiceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<InvoiceDTO> findAllByRegistrationId(Long id) {
-        log.debug("Request to get all Invoices by registration id");
+        log.debug("Request to get all invoices by registration id");
         List<InvoiceRegistration> result = invoiceRegistrationRepository.findByRegistrationIdOrderByIdDesc(id);
-        return result.stream().map(InvoiceDTO::new).collect(Collectors.toList());
+        return result.stream().map(invoiceRegistration -> {
+            InvoiceDTO dto = new InvoiceDTO(invoiceRegistration.getInvoice());
+            dto.setDateOfPayment(invoiceRegistration.getDateOfPayment());
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -267,24 +271,24 @@ public class InvoiceService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long id) {
-        log.debug("Request to delete Invoice : {}", id);
+        log.debug("Request to delete invoice : {}", id);
         invoiceRepository.deleteById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
-    public InvoiceDTO setPaymentDate(SetPaymentDateDTO setPaymentDateDTO) {
-        InvoiceRegistration ir = getInvoiceRegistrationByInvoiceId(setPaymentDateDTO.getId());
+    public InvoiceDTO setPaymentDate(SetPaymentDateVM viewModel) {
+        InvoiceRegistration ir = getInvoiceRegistrationByInvoiceId(viewModel.getId());
         if (ir == null) {
             return null;
         }
-        ir.setDateOfPayment(setPaymentDateDTO.getPaymentDate());
+        ir.setDateOfPayment(viewModel.getPaymentDate());
         InvoiceRegistration result = invoiceRegistrationRepository.save(ir);
 
         final List<ChargeableItemInvoiceHistory> invoiceHistories = chargeableItemInvoiceHistoryRepository.findAllByInvoice(ir.getInvoice());
         final List<ChargeableItem> chargeableItems = invoiceHistories.stream().map(ChargeableItemInvoiceHistory::getChargeableItem).collect(Collectors.toList());
         chargeableItems.forEach(item -> {
-            item.setDateOfGroupPayment(setPaymentDateDTO.getPaymentDate());
+            item.setDateOfGroupPayment(viewModel.getPaymentDate());
             if (ChargeableItemType.REGISTRATION.equals(item.getChargeableItemType())) {
                 rrtRepository.save((RegistrationRegistrationType) item);
             } else if (ChargeableItemType.HOTEL.equals(item.getChargeableItemType())) {
@@ -293,7 +297,10 @@ public class InvoiceService {
                 oosRepository.save((OrderedOptionalService) item);
             }
         });
-        return new InvoiceDTO(result);
+
+        final InvoiceDTO dto = new InvoiceDTO(result.getInvoice());
+        dto.setDateOfPayment(result.getDateOfPayment());
+        return dto;
     }
 
     @SuppressWarnings("MissingJavadocMethod")

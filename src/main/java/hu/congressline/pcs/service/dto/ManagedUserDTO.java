@@ -1,11 +1,11 @@
-package hu.congressline.pcs.web.rest.vm;
+package hu.congressline.pcs.service.dto;
 
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.User;
-import hu.congressline.pcs.service.dto.UserDTO;
+import hu.congressline.pcs.web.rest.vm.CongressVM;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ManagedUserVM extends UserDTO {
+public class ManagedUserDTO extends UserDTO {
 
     public static final int PASSWORD_MIN_LENGTH = 4;
     public static final int PASSWORD_MAX_LENGTH = 100;
@@ -34,7 +34,7 @@ public class ManagedUserVM extends UserDTO {
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
 
-    public ManagedUserVM(User user) {
+    public ManagedUserDTO(User user) {
         super(user);
         this.id = user.getId();
         this.createdBy = user.getCreatedBy();
@@ -46,9 +46,9 @@ public class ManagedUserVM extends UserDTO {
     }
 
     @SuppressWarnings("ParameterNumber")
-    public ManagedUserVM(Long id, String login, String password, String firstName, String lastName,
-                         String email, boolean activated, String langKey, Set<String> authorities,
-                         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate) {
+    public ManagedUserDTO(Long id, String login, String password, String firstName, String lastName,
+                          String email, boolean activated, String langKey, Set<String> authorities,
+                          String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate) {
         super(login, firstName, lastName, email, activated, langKey, authorities);
         this.id = id;
         this.createdBy = createdBy;
@@ -60,6 +60,6 @@ public class ManagedUserVM extends UserDTO {
 
     @Override
     public String toString() {
-        return "ManagedUserVM{" + "id=" + id + "} " + super.toString();
+        return "ManagedUserDTO{" + "id=" + id + "} " + super.toString();
     }
 }

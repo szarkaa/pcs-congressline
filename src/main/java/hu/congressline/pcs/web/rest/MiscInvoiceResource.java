@@ -24,9 +24,9 @@ import hu.congressline.pcs.service.CongressService;
 import hu.congressline.pcs.service.MiscInvoicePdfService;
 import hu.congressline.pcs.service.MiscInvoiceService;
 import hu.congressline.pcs.service.NavOnlineService;
-import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.MiscInvoiceVM;
+import hu.congressline.pcs.web.rest.vm.SetPaymentDateVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -78,9 +78,9 @@ public class MiscInvoiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/misc-invoices/set-payment-date")
-    public ResponseEntity<Invoice> setPaymentDate(@Valid @RequestBody SetPaymentDateDTO setPaymentDateDTO) {
-        log.debug("REST request to set payment date of MiscInvoice : {}", setPaymentDateDTO.getId());
-        InvoiceCongress invoice = miscInvoiceService.setPaymentDate(setPaymentDateDTO);
+    public ResponseEntity<Invoice> setPaymentDate(@Valid @RequestBody SetPaymentDateVM setPaymentDateVM) {
+        log.debug("REST request to set payment date of MiscInvoice : {}", setPaymentDateVM.getId());
+        InvoiceCongress invoice = miscInvoiceService.setPaymentDate(setPaymentDateVM);
 
         return Optional.ofNullable(invoice)
             .map(result -> new ResponseEntity<>(result.getInvoice(), HttpStatus.OK))
