@@ -45,7 +45,7 @@ public class ConfirmationPdfHeaderFooterTextContext {
         this.bankAccountEurLabel = messageSource.getMessage("confirmation.pdf.footer.bank.accountEur", new Object[]{}, locale);
 
         this.contactEmailValue = Objects.toString(contactEmail, messageSource.getMessage("confirmation.pdf.footer.contact.defaultEmail", new Object[]{}, locale));
-        this.pageNumberLabel = messageSource.getMessage("confirmation.pdf.footer.pageNumber", new Object[]{}, locale);
+        this.pageNumberLabel = messageSource.getMessage("confirmation.pdf.footer.page", new Object[]{}, locale);
     }
 
 }

@@ -31,7 +31,7 @@ public class OnlineRegHeaderFooter extends PdfPageEventHelper {
 
     @SuppressWarnings("MissingJavadocMethod")
     public void onEndPage(PdfWriter writer, Document document) {
-        String text = String.format(messageSource.getMessage("confirmation.pdf.page", null, locale) + " %d /", writer.getPageNumber());
+        String text = String.format(messageSource.getMessage("confirmation.pdf.footer.page", null, locale) + " %d /", writer.getPageNumber());
 
         float footerBase = document.bottom() - 25 - 65;
         float textSize = 9;

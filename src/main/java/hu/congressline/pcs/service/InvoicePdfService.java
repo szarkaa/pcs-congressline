@@ -16,8 +16,10 @@ import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -70,7 +72,6 @@ public class InvoicePdfService extends AbstractPdfService {
     @Override
     public byte[] generatePdf(PdfContext context) {
         InvoicePdfContext pdfContext = (InvoicePdfContext) context;
-        Locale locale = pdfContext.getLocale();
         pdfContext.setCompany(companyService.getCompanyProfile());
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
@@ -383,7 +384,6 @@ public class InvoicePdfService extends AbstractPdfService {
         cell4 = createCell(createRightParagraphWithMessage(invoicePdfSum, PcsPdfFont.P_SMALL_NORMAL, locale));
 
         addTableCell(table, cell1, cell2, cell3, cell4);
-        /*
 
         Iterator<String> iterator = itemRowsByVat.keySet().iterator();
         if (iterator.hasNext()) {
@@ -477,7 +477,7 @@ public class InvoicePdfService extends AbstractPdfService {
 
             addTableCell(table, cell1, cell2, cell3, cell4);
         }
-        */
+
         preface.add(table);
 
         String additionalBillingText = pdfContext.getLocale().equals(Locale.forLanguageTag(Language.HU.toString().toLowerCase()))
