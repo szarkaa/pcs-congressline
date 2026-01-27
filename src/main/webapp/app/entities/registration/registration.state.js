@@ -15,7 +15,7 @@
             parent: 'administration',
             url: '/registrations/{registrationId}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.registration.detail.title'
             },
             onEnter: ['$stateParams', 'RegIdStorage', function($stateParams, RegIdStorage) {

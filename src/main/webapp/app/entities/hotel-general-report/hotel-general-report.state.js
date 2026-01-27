@@ -13,7 +13,7 @@
                 parent: 'report',
                 url: '/hotel-general-report',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.hotelGeneralReport.home.title'
                 },
                 views: {

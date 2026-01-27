@@ -13,7 +13,7 @@
                 parent: 'administration',
                 url: '/group-discount-invoice',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.groupDiscountInvoice.home.title'
                 },
                 views: {
@@ -35,7 +35,7 @@
                 parent: 'group-discount-invoice',
                 url: '/{id}/set-payment-date',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -63,7 +63,7 @@
                 parent: 'group-discount-invoice',
                 url: '/{id}/storno',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({

@@ -16,7 +16,7 @@
                 congressSpecific: false
             },
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.vatInfo.home.title'
             },
             views: {
@@ -43,7 +43,7 @@
             parent: 'vat-info',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'congressSpecific', 'CongressSelector', function($stateParams, $state, $uibModal, congressSpecific, CongressSelector) {
                 $uibModal.open({
@@ -77,7 +77,7 @@
             parent: 'vat-info',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -102,7 +102,7 @@
             parent: 'vat-info',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -129,7 +129,7 @@
                 congressSpecific: true
             },
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.vatInfo.home.title'
             },
             views: {
@@ -156,7 +156,7 @@
             parent: 'congress-vat-info',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'congressSpecific', 'CongressSelector', function($stateParams, $state, $uibModal, congressSpecific, CongressSelector) {
                 $uibModal.open({
@@ -190,7 +190,7 @@
             parent: 'congress-vat-info',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -215,7 +215,7 @@
             parent: 'congress-vat-info',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

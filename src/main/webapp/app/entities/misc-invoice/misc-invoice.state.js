@@ -13,7 +13,7 @@
             parent: 'administration',
             url: '/misc-invoice',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.miscInvoice.home.title'
             },
             views: {
@@ -69,7 +69,7 @@
             parent: 'misc-invoice',
             url: '/setup',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             views: {
                 'content@base': {
@@ -91,7 +91,7 @@
             parent: 'misc-invoice',
             url: '/optional-text/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'CongressSelector', function($stateParams, $state, $uibModal, CongressSelector) {
                 $uibModal.open({
@@ -120,7 +120,7 @@
             parent: 'misc-invoice',
             url: '/{invoiceId}/storno',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -144,7 +144,7 @@
             parent: 'misc-invoice',
             url: '/{id}/set-payment-date',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                 $uibModal.open({

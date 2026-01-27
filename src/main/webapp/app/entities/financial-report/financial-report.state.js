@@ -13,7 +13,7 @@
                 parent: 'report',
                 url: '/financial-report',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.financialReport.home.title'
                 },
                 views: {

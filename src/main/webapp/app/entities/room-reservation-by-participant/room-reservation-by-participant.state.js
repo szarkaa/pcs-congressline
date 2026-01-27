@@ -13,7 +13,7 @@
                 parent: 'report',
                 url: '/room-reservation-by-participant',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.roomReservationByParticipant.home.title'
                 },
                 views: {
@@ -38,7 +38,7 @@
                 parent: 'room-reservation-by-participant',
                 url: '/select',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'listFilter', function ($stateParams, $state, $uibModal, listFilter) {
                     $uibModal.open({

@@ -13,7 +13,7 @@
                 parent: 'report',
                 url: '/regfee-details',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.regFeeDetailsController.home.title'
                 },
                 views: {

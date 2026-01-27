@@ -13,7 +13,7 @@
                 parent: 'report',
                 url: '/payment-summary',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.paymentSummary.home.title'
                 },
                 views: {

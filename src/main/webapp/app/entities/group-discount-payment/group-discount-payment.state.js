@@ -13,7 +13,7 @@
             parent: 'group-discount',
             url: '/group-discount-payment',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.groupDiscountPayment.home.title'
             },
             views: {
@@ -36,7 +36,7 @@
             parent: 'group-discount-payment-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -61,7 +61,7 @@
             parent: 'group-discount-payment',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'CongressSelector', function($stateParams, $state, $uibModal, CongressSelector) {
                 $uibModal.open({
@@ -92,7 +92,7 @@
             parent: 'group-discount-payment',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -117,7 +117,7 @@
             parent: 'group-discount-payment',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

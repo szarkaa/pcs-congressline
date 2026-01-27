@@ -13,7 +13,7 @@
                 parent: 'maintenance',
                 url: '/credit-card-report',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADMIN'],
                     pageTitle: 'pcsApp.creditCardReport.home.title'
                 },
                 views: {

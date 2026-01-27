@@ -13,7 +13,7 @@
                 parent: 'maintenance',
                 url: '/company',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADMIN'],
                     pageTitle: 'pcsApp.company.home.title'
                 },
                 views: {

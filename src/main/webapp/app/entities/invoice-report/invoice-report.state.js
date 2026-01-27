@@ -13,7 +13,7 @@
                 parent: 'maintenance',
                 url: '/invoice-report',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ACCOUNTANT','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.invoiceReport.home.title'
                 },
                 views: {
@@ -45,7 +45,7 @@
                 parent: 'invoice-report',
                 url: '/{id}/send-to-nav',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_ACCOUNTANT','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -71,7 +71,7 @@
                 parent: 'invoice-report',
                 url: '/{id}/show-nav-sending-status',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_ACCOUNTANT','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({

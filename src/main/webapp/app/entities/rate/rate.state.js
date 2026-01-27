@@ -13,7 +13,7 @@
             parent: 'maintenance',
             url: '/rate',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.rate.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'rate',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -64,7 +64,7 @@
             parent: 'rate',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -89,7 +89,7 @@
             parent: 'rate',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

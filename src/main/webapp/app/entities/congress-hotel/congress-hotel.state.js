@@ -13,7 +13,7 @@
             parent: 'administration',
             url: '/congress-hotel',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.congressHotel.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'congress-hotel',
             url: '/select-hotels',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.congressHotel.selectHotel.title'
             },
             views: {

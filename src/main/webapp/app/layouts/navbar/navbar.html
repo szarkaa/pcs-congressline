@@ -15,7 +15,7 @@
                 </div>
             </li>
 
-            <li ng-class="{active: $state.includes('administration')}" ng-show="vm.isCongressSelected()">
+            <li ng-class="{active: $state.includes('administration')}" ng-show="vm.isCongressSelected()" has-any-authority="ROLE_USER,ROLE_ADVANCED_USER,ROLE_ADMIN">
                 <a href=""><i class="fa fa-edit"></i> <span class="nav-label" translate="global.menu.administration.main">Administration</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('administration')}">
                     <li ui-sref-active="active"><a ui-sref="registration" translate="global.menu.administration.registration">Registration</a></li>
@@ -35,7 +35,7 @@
                 </ul>
             </li>
 
-            <li ng-class="{active: $state.includes('report')}" ng-show="vm.isCongressSelected()">
+            <li ng-class="{active: $state.includes('report')}" ng-show="vm.isCongressSelected()" has-any-authority="ROLE_ADVANCED_USER,ROLE_ADMIN" >
                 <a href=""><i class="fa fa-bar-chart-o"></i> <span class="nav-label" translate="global.menu.report.main">Report</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('report')}">
                     <li ui-sref-active="active"><a ui-sref="general-registration-report" translate="global.menu.report.generalRegistrationReport">Registration Report</a></li>
@@ -53,20 +53,20 @@
                 </ul>
             </li>
 
-            <li ng-class="{active: $state.includes('maintenance')}" has-authority="ROLE_ADMIN">
+            <li ng-class="{active: $state.includes('maintenance')}" has-any-authority="ROLE_ACCOUNTANT,ROLE_ADVANCED_USER,ROLE_ADMIN">
                 <a href=""><i class="fa fa-th-large"></i> <span class="nav-label" translate="global.menu.maintenance.main">Maintenance</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('maintenance')}">
-                    <li ui-sref-active="active"><a ui-sref="congress" translate="global.menu.maintenance.congress">Congress</a></li>
-                    <li ui-sref-active="active"><a ui-sref="hotel" translate="global.menu.maintenance.hotel">Hotel</a></li>
-                    <li ui-sref-active="active"><a ui-sref="invoice-report" translate="global.menu.maintenance.invoiceReport">Invoice Report</a></li>
-                    <li ui-sref-active="active"><a ui-sref="credit-card-report" translate="global.menu.maintenance.creditCardReport">Credit Card Report</a></li>
-                    <li ui-sref-active="active"><a ui-sref="payment-transaction-report" translate="global.menu.maintenance.paymentTransactionReport">Payment Transaction Report</a></li>
-                    <li ui-sref-active="active"><a ui-sref="rate" translate="global.menu.maintenance.rate">Currency Rate</a></li>
-                    <li ui-sref-active="active"><a ui-sref="bank-account" translate="global.menu.maintenance.bankAccount">Bank Account</a></li>
-                    <li ui-sref-active="active"><a ui-sref="vat-info({congressSpecific: false})" translate="global.menu.maintenance.vatInfo">VAT info</a></li>
-                    <li ui-sref-active="active"><a ui-sref="partner" translate="global.menu.maintenance.partner">Partner</a></li>
-                    <li ui-sref-active="active"><a ui-sref="country" translate="global.menu.maintenance.country">Country</a></li>
-                    <li ui-sref-active="active"><a ui-sref="company" translate="global.menu.maintenance.companyProfile">Company Profile</a></li>
+                    <li has-authority="ROLE_ADMIN" ui-sref-active="active"><a ui-sref="congress" translate="global.menu.maintenance.congress">Congress</a></li>
+                    <li has-any-authority="ROLE_ADVANCED_USER,ROLE_ADMIN" ui-sref-active="active"><a ui-sref="hotel" translate="global.menu.maintenance.hotel">Hotel</a></li>
+                    <li has-any-authority="ROLE_ACCOUNTANT,ROLE_ADMIN" ui-sref-active="active"><a ui-sref="invoice-report" translate="global.menu.maintenance.invoiceReport">Invoice Report</a></li>
+                    <li has-authority="ROLE_ADMIN" ui-sref-active="active"><a ui-sref="credit-card-report" translate="global.menu.maintenance.creditCardReport">Credit Card Report</a></li>
+                    <li has-authority="ROLE_ADMIN" ui-sref-active="active"><a ui-sref="payment-transaction-report" translate="global.menu.maintenance.paymentTransactionReport">Payment Transaction Report</a></li>
+                    <li has-any-authority="ROLE_ADVANCED_USER,ROLE_ADMIN" ui-sref-active="active"><a ui-sref="rate" translate="global.menu.maintenance.rate">Currency Rate</a></li>
+                    <li has-authority="ROLE_ADMIN" ui-sref-active="active"><a ui-sref="bank-account" translate="global.menu.maintenance.bankAccount">Bank Account</a></li>
+                    <li has-authority="ROLE_ADMIN" ui-sref-active="active"><a ui-sref="vat-info({congressSpecific: false})" translate="global.menu.maintenance.vatInfo">VAT info</a></li>
+                    <li has-any-authority="ROLE_ADVANCED_USER,ROLE_ADMIN" ui-sref-active="active"><a ui-sref="partner" translate="global.menu.maintenance.partner">Partner</a></li>
+                    <li has-authority="ROLE_ADMIN" ui-sref-active="active"><a ui-sref="country" translate="global.menu.maintenance.country">Country</a></li>
+                    <li has-authority="ROLE_ADMIN" ui-sref-active="active"><a ui-sref="company" translate="global.menu.maintenance.companyProfile">Company Profile</a></li>
                 </ul>
             </li>
 
@@ -75,21 +75,21 @@
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('account')}">
                     <li ui-sref-active="active"><a ui-sref="settings" translate="global.menu.account.settings">Settings</a></li>
                     <li ui-sref-active="active"><a ui-sref="password" translate="global.menu.account.password">Password</a></li>
-                    <!--<li ui-sref-active="active"><a ui-sref="sessions" translate="global.menu.account.sessions">Sessions</a></li>-->
+                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="sessions" translate="global.menu.account.sessions">Sessions</a></li>
                 </ul>
             </li>
 
             <li ng-class="{active: $state.includes('system')}" has-authority="ROLE_ADMIN">
                 <a href=""><i class="fa fa-cogs"></i> <span class="nav-label" translate="global.menu.admin.main">Administration</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('system')}">
-                    <li ui-sref-active="active"><a ui-sref="user-management" translate="global.menu.admin.user-management">User management</a></li>
-                    <li ui-sref-active="active"><a ui-sref="currency" translate="global.menu.admin.currency">Currency</a></li>
-                    <!--<li ui-sref-active="active"><a ui-sref="jhi-metrics" translate="global.menu.admin.metrics">Metrics</a></li>-->
-                    <!--<li ui-sref-active="active"><a ui-sref="jhi-health" translate="global.menu.admin.health">Health</a></li>-->
-                    <!--<li ui-sref-active="active"><a ui-sref="jhi-configuration" translate="global.menu.admin.configuration">Configuration</a></li>-->
-                    <!--<li ui-sref-active="active"><a ui-sref="audits" translate="global.menu.admin.audits">Audits</a></li>-->
-                    <!--<li ui-sref-active="active"><a ui-sref="logs" translate="global.menu.admin.logs">Logs</a></li>-->
-                    <!--<li ng-hide="inProduction" ui-sref-active="active"><a ui-sref="docs" translate="global.menu.admin.apidocs">API</a></li>-->
+                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="user-management" translate="global.menu.admin.user-management">User management</a></li>
+                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="currency" translate="global.menu.admin.currency">Currency</a></li>
+                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="jhi-metrics" translate="global.menu.admin.metrics">Metrics</a></li>
+                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="jhi-health" translate="global.menu.admin.health">Health</a></li>
+                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="jhi-configuration" translate="global.menu.admin.configuration">Configuration</a></li>
+                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="audits" translate="global.menu.admin.audits">Audits</a></li>
+                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="logs" translate="global.menu.admin.logs">Logs</a></li>
+                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="docs" translate="global.menu.admin.apidocs">API</a></li>
                 </ul>
             </li>
 
