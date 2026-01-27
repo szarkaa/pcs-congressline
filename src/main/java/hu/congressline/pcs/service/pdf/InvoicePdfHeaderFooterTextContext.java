@@ -3,6 +3,7 @@ package hu.congressline.pcs.service.pdf;
 import org.springframework.context.MessageSource;
 
 import java.util.Locale;
+import java.util.Objects;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -73,24 +74,24 @@ public class InvoicePdfHeaderFooterTextContext {
         this.supplierManagerLabel = messageSource.getMessage("invoice.pdf.manager", new Object[]{}, locale);
         this.supplierEmailLabel = messageSource.getMessage("invoice.pdf.email", new Object[]{}, locale);
 
-        this.supplierNameValue = pdfContext.getCompany().getName();
-        this.supplierAddressValue = pdfContext.getCompany().getFullAddress();
-        this.supplierAddress2Value = pdfContext.getCompany().getAddress2();
-        this.supplierPhoneValue = pdfContext.getCompany().getPhone();
-        this.supplierFaxValue = pdfContext.getCompany().getFax();
-        this.supplierManagerValue = pdfContext.getContactPerson();
-        this.supplierEmailValue = pdfContext.getContactEmail();
+        this.supplierNameValue = Objects.toString(pdfContext.getCompany().getName(), "");
+        this.supplierAddressValue = Objects.toString(pdfContext.getCompany().getFullAddress(), "");
+        this.supplierAddress2Value = Objects.toString(pdfContext.getCompany().getAddress2(), "");
+        this.supplierPhoneValue = Objects.toString(pdfContext.getCompany().getPhone(), "");
+        this.supplierFaxValue = Objects.toString(pdfContext.getCompany().getFax(), "");
+        this.supplierManagerValue = Objects.toString(pdfContext.getContactPerson(), "");
+        this.supplierEmailValue = Objects.toString(pdfContext.getContactEmail(), "");
 
         this.customerLabel = messageSource.getMessage("invoice.pdf.customer", new Object[]{}, locale);
-        this.customerName1Value = pdfContext.getName1();
-        this.customerName2Value = pdfContext.getName2();
-        this.customerName3Value = pdfContext.getName3();
-        this.customerStreetValue = pdfContext.getStreet();
-        this.customerCityValue = pdfContext.getCity();
-        this.customerZipCodeValue = pdfContext.getZipCode();
-        this.customerCountryValue = pdfContext.getCountry();
+        this.customerName1Value = Objects.toString(pdfContext.getName1(), "");
+        this.customerName2Value = Objects.toString(pdfContext.getName2(), "");
+        this.customerName3Value = Objects.toString(pdfContext.getName3(), "");
+        this.customerStreetValue = Objects.toString(pdfContext.getStreet(), "");
+        this.customerCityValue = Objects.toString(pdfContext.getCity(), "");
+        this.customerZipCodeValue = Objects.toString(pdfContext.getZipCode(), "");
+        this.customerCountryValue = Objects.toString(pdfContext.getCountry(), "");
         this.customerVatRegNumberLabel = messageSource.getMessage("invoice.pdf.vatNumber", new Object[]{}, locale);
-        this.customerVatRegNumberValue = pdfContext.getVatRegNumber();
+        this.customerVatRegNumberValue = Objects.toString(pdfContext.getVatRegNumber(), "");
 
         //footer
         this.bankNameLabel = messageSource.getMessage("invoice.pdf.footer.bank.name", new Object[]{}, locale);
@@ -103,13 +104,13 @@ public class InvoicePdfHeaderFooterTextContext {
         this.pageNumberLabel = messageSource.getMessage("invoice.pdf.footer.page", new Object[]{}, locale);
         this.invoiceGeneratedMsgLabel = messageSource.getMessage("invoice.pdf.footer.invoiceGenerateMsg", new Object[]{}, locale);
 
-        this.bankNameValue = pdfContext.getBankName();
-        this.bankAddressValue = pdfContext.getBankAddress();
-        this.bankSwiftCodeValue = pdfContext.getSwiftCode();
-        this.bankAccountValue = pdfContext.getBankAccount();
-        this.huTaxNoValue = pdfContext.getCompany().getTaxNumber();
-        this.euTaxNoValue = pdfContext.getCompany().getEuTaxNumber();
-        this.admissionNumberValue = pdfContext.getCompany().getLicenceNumber();
+        this.bankNameValue = Objects.toString(pdfContext.getBankName(), "");
+        this.bankAddressValue = Objects.toString(pdfContext.getBankAddress(), "");
+        this.bankSwiftCodeValue = Objects.toString(pdfContext.getSwiftCode(), "");
+        this.bankAccountValue = Objects.toString(pdfContext.getBankAccount(), "");
+        this.huTaxNoValue = Objects.toString(pdfContext.getCompany().getTaxNumber(), "");
+        this.euTaxNoValue = Objects.toString(pdfContext.getCompany().getEuTaxNumber(), "");
+        this.admissionNumberValue = Objects.toString(pdfContext.getCompany().getLicenceNumber(), "");
     }
 
 }

@@ -135,14 +135,14 @@ public class ConfirmationPdfService extends AbstractPdfService {
         pdfContext.setCompany(companyService.getCompanyProfile());
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            Document document = new Document(PageSize.A4, 20, 20, 40, 100);
+            Document document = new Document(PageSize.A4, 20, 20, 40, 120);
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             writer.setPageEvent(new ConfirmationHeaderFooter(new ConfirmationPdfHeaderFooterTextContext(messageSource, pdfContext.getLocale(), pdfContext.getContactEmail())));
             writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
 
             document.open();
             addMetaData(document, pdfContext);
-            generateContent(document, writer, pdfContext);
+            generateContent(document, pdfContext);
 
             document.close();
             writer.flush();
@@ -195,7 +195,7 @@ public class ConfirmationPdfService extends AbstractPdfService {
         document.add(p);
     }
 
-    private void createContentFirstBlock(Document document, PdfWriter writer, ConfirmationPdfContext pdfContext) throws DocumentException {
+    private void createContentFirstBlock(Document document, ConfirmationPdfContext pdfContext) throws DocumentException {
         final Locale locale = pdfContext.getLocale();
         Registration registration = pdfContext.getRegistration();
 
@@ -473,10 +473,10 @@ public class ConfirmationPdfService extends AbstractPdfService {
         document.add(table);
     }
 
-    private void generateContent(Document document, PdfWriter writer, ConfirmationPdfContext pdfContext) throws DocumentException {
+    private void generateContent(Document document, ConfirmationPdfContext pdfContext) throws DocumentException {
 
         createContentTitle(document, pdfContext);
-        createContentFirstBlock(document, writer, pdfContext);
+        createContentFirstBlock(document, pdfContext);
         createContentSecondBlock(document, pdfContext);
         createContentThirdBlock(document, pdfContext);
         createOrdersTableHeader(document, pdfContext);

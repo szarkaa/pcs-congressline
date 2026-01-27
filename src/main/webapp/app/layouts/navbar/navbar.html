@@ -70,206 +70,12 @@
                 </ul>
             </li>
 
-            <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-            <li ui-sref-active="active" ng-show="false">
-                <a href=""><i class="fa fa-th-large"></i> <span class="nav-label" translate="global.menu.entities.main">Entities</span> <span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('dashboards')}">
-                    <li ui-sref-active="active">
-                            <a ui-sref="currency" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.currency">Currency</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="congress" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.congress">Congress</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="country" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.country">Country</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="bank-account" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.bankAccount">Bank Account</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="rate" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.rate">Rate</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="hotel" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.hotel">Hotel</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="vat-info" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.vatInfo">Vat Info</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="company" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.company">Company</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="optional-text" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.optionalText">Optional Text</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="workplace" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.workplace">Workplace</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="registration-type" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.registrationType">Registration Type</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="optional-service" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.optionalService">Optional Service</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="paying-group" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.payingGroup">Paying Group</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="paying-group-item" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.payingGroupItem">Paying Group Item</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="misc-service" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.miscService">Misc Service</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="congress-hotel" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.congressHotel">Congress Hotel</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="room" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.room">Room</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="misc-invoice" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.miscInvoice">Misc Invoice</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="misc-invoice-item" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.miscInvoiceItem">Misc Invoice Item</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="registration" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.registration">Registration</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="registration-registration-type" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.registrationRegistrationType">Registration Registration Type</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="room-reservation" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.roomReservation">Room Reservation</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="room-reservation-registration" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.roomReservationRegistration">Room Reservation Registration</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="ordered-optional-service" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.orderedOptionalService">Ordered Optional Service</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="charged-service" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.chargedService">Charged Service</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="acc-people" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.accPeople">Acc People</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="invoice" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.invoice">Invoice</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="group-discount-item" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.groupDiscountItem">Group Discount Item</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="group-discount-invoice" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.groupDiscountInvoice">Group Invoice</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="group-discount-invoice-history" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.groupDiscountInvoiceHistory">Group Invoice History</span>
-                            </a>
-                        </li>
-                    <li ui-sref-active="active">
-                            <a ui-sref="group-discount-payment" ng-click="vm.collapseNavbar()">
-                                <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
-                                <span data-translate="global.menu.entities.groupDiscountPayment">Group Discount Payment</span>
-                            </a>
-                        </li>
-                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
-                </ul>
-            </li>
-
             <li ng-class="{active: $state.includes('account')}">
                 <a href=""><i class="fa fa-user"></i> <span class="nav-label" translate="global.menu.account.main">Account</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('account')}">
                     <li ui-sref-active="active"><a ui-sref="settings" translate="global.menu.account.settings">Settings</a></li>
                     <li ui-sref-active="active"><a ui-sref="password" translate="global.menu.account.password">Password</a></li>
-                    <li ui-sref-active="active"><a ui-sref="sessions" translate="global.menu.account.sessions">Sessions</a></li>
+                    <!--<li ui-sref-active="active"><a ui-sref="sessions" translate="global.menu.account.sessions">Sessions</a></li>-->
                 </ul>
             </li>
 
@@ -278,13 +84,12 @@
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('system')}">
                     <li ui-sref-active="active"><a ui-sref="user-management" translate="global.menu.admin.user-management">User management</a></li>
                     <li ui-sref-active="active"><a ui-sref="currency" translate="global.menu.admin.currency">Currency</a></li>
-                    <li ui-sref-active="active"><a ui-sref="jhi-metrics" translate="global.menu.admin.metrics">Metrics</a></li>
-                    <li ui-sref-active="active"><a ui-sref="jhi-health" translate="global.menu.admin.health">Health</a></li>
-                    <li ui-sref-active="active"><a ui-sref="jhi-configuration" translate="global.menu.admin.configuration">Configuration</a></li>
-                    <li ui-sref-active="active"><a ui-sref="audits" translate="global.menu.admin.audits">Audits</a></li>
-                    <li ui-sref-active="active"><a ui-sref="logs" translate="global.menu.admin.logs">Logs</a></li>
-                    <li ng-hide="inProduction" ui-sref-active="active"><a ui-sref="docs" translate="global.menu.admin.apidocs">API</a></li>
-                    <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
+                    <!--<li ui-sref-active="active"><a ui-sref="jhi-metrics" translate="global.menu.admin.metrics">Metrics</a></li>-->
+                    <!--<li ui-sref-active="active"><a ui-sref="jhi-health" translate="global.menu.admin.health">Health</a></li>-->
+                    <!--<li ui-sref-active="active"><a ui-sref="jhi-configuration" translate="global.menu.admin.configuration">Configuration</a></li>-->
+                    <!--<li ui-sref-active="active"><a ui-sref="audits" translate="global.menu.admin.audits">Audits</a></li>-->
+                    <!--<li ui-sref-active="active"><a ui-sref="logs" translate="global.menu.admin.logs">Logs</a></li>-->
+                    <!--<li ng-hide="inProduction" ui-sref-active="active"><a ui-sref="docs" translate="global.menu.admin.apidocs">API</a></li>-->
                 </ul>
             </li>
 

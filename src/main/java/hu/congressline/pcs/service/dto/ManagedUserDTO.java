@@ -5,7 +5,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.User;
-import hu.congressline.pcs.web.rest.vm.CongressVM;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +28,7 @@ public class ManagedUserDTO extends UserDTO {
 
     private Instant lastModifiedDate;
 
-    private Set<CongressVM> congresses;
+    private Set<CongressDTO> congresses;
 
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
@@ -42,7 +41,7 @@ public class ManagedUserDTO extends UserDTO {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.password = null;
-        this.congresses = user.getCongresses().stream().filter(congress -> !Boolean.TRUE.equals(congress.getArchive())).map(CongressVM::new).collect(Collectors.toSet());
+        this.congresses = user.getCongresses().stream().filter(congress -> !Boolean.TRUE.equals(congress.getArchive())).map(CongressDTO::new).collect(Collectors.toSet());
     }
 
     @SuppressWarnings("ParameterNumber")

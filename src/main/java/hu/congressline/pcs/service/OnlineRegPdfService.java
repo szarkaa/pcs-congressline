@@ -109,14 +109,9 @@ public class OnlineRegPdfService extends AbstractPdfService {
         OnlineRegPdfContext pdfContext = (OnlineRegPdfContext) context;
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            //A4 size with predefined margins (bottom is 100, because the footer section will take that place
-            //Top header section is generated on the fly, not after the pdf creation, like the footer)
             Document document = new Document(PageSize.A4, 20, 20, 40, 100);
-
-            //set a writer
             PdfWriter writer = PdfWriter.getInstance(document, baos);
 
-            //set the listener for events like (new page, end page, open document, close document etc.)
             OnlineRegHeaderFooter event = new OnlineRegHeaderFooter(messageSource, pdfContext.getLocale());
             writer.setPageEvent(event);
             writer.setBoxSize("art", new Rectangle(36, 54, 559, 788)); //this box contains the footer's page of pages section

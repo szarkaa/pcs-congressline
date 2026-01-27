@@ -29,8 +29,7 @@ import hu.congressline.pcs.repository.UserRepository;
 import hu.congressline.pcs.security.AuthoritiesConstants;
 import hu.congressline.pcs.security.RandomUtil;
 import hu.congressline.pcs.security.SecurityUtils;
-import hu.congressline.pcs.service.dto.ManagedUserDTO;
-import hu.congressline.pcs.web.rest.vm.CongressVM;
+import hu.congressline.pcs.web.rest.vm.ManagedUserVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -136,30 +135,28 @@ public class UserService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    public User createUser(ManagedUserDTO managedUserDTO) {
+    public User createUser(ManagedUserVM viewModel) {
         User user = new User();
-        user.setLogin(managedUserDTO.getLogin());
-        user.setFirstName(managedUserDTO.getFirstName());
-        user.setLastName(managedUserDTO.getLastName());
-        user.setEmail(managedUserDTO.getEmail());
-        if (managedUserDTO.getLangKey() == null) {
+        user.setLogin(viewModel.getLogin());
+        user.setFirstName(viewModel.getFirstName());
+        user.setLastName(viewModel.getLastName());
+        user.setEmail(viewModel.getEmail());
+        if (viewModel.getLangKey() == null) {
             user.setLangKey("en"); // default language
         } else {
-            user.setLangKey(managedUserDTO.getLangKey());
+            user.setLangKey(viewModel.getLangKey());
         }
-        if (managedUserDTO.getAuthorities() != null) {
+        if (viewModel.getAuthorities() != null) {
             Set<Authority> authorities = new HashSet<>();
-            managedUserDTO.getAuthorities().forEach(
+            viewModel.getAuthorities().forEach(
                     authority -> authorities.add(authorityRepository.findById(authority).orElseThrow(() -> new IllegalArgumentException(AUTHORITY_NOT_FOUND + authority)))
             );
             user.setAuthorities(authorities);
         }
 
-        if (managedUserDTO.getCongresses() != null) {
+        if (viewModel.getCongressIds() != null) {
             Set<Congress> congresses = new HashSet<>();
-            managedUserDTO.getCongresses().forEach(
-                congress -> congresses.add(congressService.getById(congress.getId()))
-            );
+            viewModel.getCongressIds().forEach(congressId -> congresses.add(congressService.getById(congressId)));
             user.setCongresses(congresses);
         }
         String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
@@ -186,7 +183,7 @@ public class UserService {
 
     @SuppressWarnings({"MissingJavadocMethod", "ParameterNumber"})
     public void updateUser(Long id, String login, String firstName, String lastName, String email,
-        boolean activated, String langKey, Set<String> authorities, Set<CongressVM> congresses) {
+        boolean activated, String langKey, Set<String> authorities, Set<Long> congressIds) {
 
         userRepository.findOneById(id)
             .ifPresent(u -> {
@@ -204,8 +201,7 @@ public class UserService {
                 );
                 Set<Congress> managedCongresses = u.getCongresses();
                 managedCongresses.clear();
-                congresses.forEach(
-                        congress -> managedCongresses.add(congressService.getById(congress.getId()))
+                congressIds.forEach(congressId -> managedCongresses.add(congressService.getById(congressId))
                 );
 
                 log.debug("Changed Information for User: {}", u);

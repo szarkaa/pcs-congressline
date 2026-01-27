@@ -66,13 +66,9 @@ public class MiscInvoicePdfService extends AbstractPdfService {
         //todo change the whole logic only registration and ignoredChargeableItemIdList should come from frontend
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            //A4 size with predefined margins (bottom is 100, because the footer section will take that place
-            //Top header section is generated on the fly, not after the pdf creation, like the footer)
             Document document = new Document(PageSize.A4, 20, 20, 40, 120);
-            //set a writer
             PdfWriter writer = PdfWriter.getInstance(document, baos);
 
-            //set the listener for events like (new page, end page, open document, close document etc.)
             InvoiceHeaderFooter event = new InvoiceHeaderFooter(new InvoicePdfHeaderFooterTextContext(messageSource, context));
             writer.setPageEvent(event);
             writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));  //this box contains the footer's page of pages section
@@ -101,9 +97,6 @@ public class MiscInvoicePdfService extends AbstractPdfService {
         return null;
     }
 
-    // iText allows to add metadata to the PDF which can be viewed in your Adobe
-    // Reader
-    // under File -> Properties
     private void addMetaData(Document document, MiscInvoicePdfContext pdfContext) {
         final String messageKeyPrefix = "invoice.pdf.invoice";
         document.addTitle(getMessage(messageKeyPrefix, pdfContext.getLocale()));
