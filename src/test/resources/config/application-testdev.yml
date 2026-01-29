@@ -21,7 +21,7 @@ spring:
         prepStmtCacheSqlLimit: 2048
         useServerPrepStmts: true
   jpa:
-    open-in-view: true
+    open-in-view: false
     hibernate:
       ddl-auto: none
       naming:

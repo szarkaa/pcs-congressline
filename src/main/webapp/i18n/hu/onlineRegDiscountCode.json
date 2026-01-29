@@ -3,14 +3,14 @@
         "onlineRegDiscountCode" : {
             "home": {
                 "title": "Online reg discount codes for {{ congressName }}",
-                "createLabel": "Create a new Online reg code",
-                "createOrEditLabel": "Create or edit a Online reg discount code"
+                "createLabel": "Create a new online reg code",
+                "createOrEditLabel": "Create or edit a online reg discount code"
             },
-            "created": "A new Online reg discount code is created with identifier {{ param }}",
-            "updated": "A Online reg discount code is updated with identifier {{ param }}",
-            "deleted": "A Online reg discount code is deleted with identifier {{ param }}",
+            "created": "A new Online reg discount code has been created successfully",
+            "updated": "A Online reg discount code has been updated successfully",
+            "deleted": "A Online reg discount code has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete Online reg discount code {{ id }}?"
+                "question": "Are you sure you want to delete the selected online reg discount code?"
             },
             "code": "Code",
             "discountType": "Discount type",

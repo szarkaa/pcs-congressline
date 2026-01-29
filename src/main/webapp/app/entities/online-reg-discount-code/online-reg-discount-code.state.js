@@ -13,7 +13,7 @@
             parent: 'maintenance',
             url: '/congress/{congressId}/online-reg-discount-codes',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'pcsApp.onlineRegDiscountCode.home.title'
             },
             views: {
@@ -39,7 +39,7 @@
             parent: 'online-reg-discount-code',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -55,7 +55,7 @@
                                 code: null,
                                 discountPercentage: null,
                                 discountType: null,
-                                congress: {id: $stateParams.congressId }
+                                congressId: $stateParams.congressId
                             };
                         }
                     }
@@ -70,7 +70,7 @@
             parent: 'online-reg-discount-code',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -95,7 +95,7 @@
             parent: 'online-reg-discount-code',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
