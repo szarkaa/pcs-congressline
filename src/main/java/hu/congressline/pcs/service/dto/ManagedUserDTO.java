@@ -28,7 +28,7 @@ public class ManagedUserDTO extends UserDTO {
 
     private Instant lastModifiedDate;
 
-    private Set<CongressDTO> congresses;
+    private Set<StrippedCongressDTO> congresses;
 
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
@@ -41,7 +41,8 @@ public class ManagedUserDTO extends UserDTO {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.password = null;
-        this.congresses = user.getCongresses().stream().filter(congress -> !Boolean.TRUE.equals(congress.getArchive())).map(CongressDTO::new).collect(Collectors.toSet());
+        this.congresses = user.getCongresses().stream()
+            .filter(congress -> !Boolean.TRUE.equals(congress.getArchive())).map(StrippedCongressDTO::new).collect(Collectors.toSet());
     }
 
     @SuppressWarnings("ParameterNumber")

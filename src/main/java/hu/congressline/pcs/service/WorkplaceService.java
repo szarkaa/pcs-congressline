@@ -121,6 +121,6 @@ public class WorkplaceService {
         });
 
         toCongress.setMigratedFromCongressCode(fromCongress.getMeetingCode());
-        congressService.update(toCongress);
+        congressService.save(toCongress);
     }
 }

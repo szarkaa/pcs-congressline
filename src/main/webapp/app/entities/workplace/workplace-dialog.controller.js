@@ -14,7 +14,7 @@
             id: entity.id,
             name: entity.name,
             vatRegNumber: entity.vatRegNumber,
-            countryId: entity.country ? entity.country.id : (CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null),
+            countryId: entity.country ? entity.country.id : (CongressSelector.getSelectedCongress() && CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null),
             department: entity.department,
             zipCode: entity.zipCode,
             city: entity.city,

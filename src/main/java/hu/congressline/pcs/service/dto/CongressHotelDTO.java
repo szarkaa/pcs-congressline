@@ -26,8 +26,6 @@ public class CongressHotelDTO extends HotelDTO {
         this.city = hotel.getCity();
         this.street = hotel.getStreet();
         this.zipCode = hotel.getZipCode();
-        this.latitude = hotel.getLatitude();
-        this.longitude = hotel.getLongitude();
         this.phone = hotel.getPhone();
         this.fax = hotel.getFax();
         this.email = hotel.getEmail();

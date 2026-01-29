@@ -167,11 +167,11 @@
 
         <div class="form-group">
             <label translate="pcsApp.congress.defaultCountry" for="field_defaultCountry">Default Country</label>
-            <ui-select ng-model="vm.congress.defaultCountry" name="defaultCountry" id="field_defaultCountry" theme="bootstrap">
+            <ui-select ng-model="vm.congress.defaultCountryId" name="defaultCountry" id="field_defaultCountry" theme="bootstrap">
                 <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.name"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="country in (vm.countries | filter: $select.search) track by country.id">
+                <ui-select-choices repeat="country.id as country in (vm.countries | filter: $select.search) track by country.id">
                     <div ng-bind-html="country.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
@@ -207,7 +207,7 @@
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.name"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="bankAccount in (vm.bankaccounts | filter: currency.currency | filter: $select.search) track by bankAccount.id">
+                <ui-select-choices repeat="bankAccount in (vm.bankAccounts | filter: currency.currency | filter: $select.search) track by bankAccount.id">
                     <div ng-bind-html="bankAccount.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
@@ -219,7 +219,7 @@
             </div>
         </div>
         <div class="form-group" ng-if="!vm.congress.id">
-            <label translate="pcsApp.congress.congressFromCopyWp" for="field_defaultCountry">Default Country</label>
+            <label translate="pcsApp.congress.congressFromCopyWp" for="field_congressFromCopyWp">Migrate workplaces from this congress</label>
             <ui-select ng-model="vm.congressFromCopyWp" name="congressFromCopyWp" id="field_congressFromCopyWp" theme="bootstrap">
                 <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.name"></span>

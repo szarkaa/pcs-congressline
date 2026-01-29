@@ -21,8 +21,6 @@ public class HotelDTO implements Serializable {
     protected String city;
     protected String street;
     protected String zipCode;
-    protected Double latitude;
-    protected Double longitude;
     protected String phone;
     protected String fax;
     protected String email;
@@ -35,8 +33,6 @@ public class HotelDTO implements Serializable {
         this.city = hotel.getCity();
         this.street = hotel.getStreet();
         this.zipCode = hotel.getZipCode();
-        this.latitude = hotel.getLatitude();
-        this.longitude = hotel.getLongitude();
         this.phone = hotel.getPhone();
         this.fax = hotel.getFax();
         this.email = hotel.getEmail();

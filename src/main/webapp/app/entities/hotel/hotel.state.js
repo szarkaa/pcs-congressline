@@ -109,8 +109,6 @@
                                 city: null,
                                 street: null,
                                 zipCode: null,
-                                latitude: null,
-                                longitude: null,
                                 phone: null,
                                 fax: null,
                                 email: null,

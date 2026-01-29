@@ -1,37 +1,57 @@
 package hu.congressline.pcs.service.dto;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import hu.congressline.pcs.domain.BankAccount;
 import hu.congressline.pcs.domain.Congress;
-import hu.congressline.pcs.domain.Country;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @NoArgsConstructor
 @Data
 public class CongressDTO {
 
-    @NotNull
     private Long id;
-    @NotNull
+    private String uuid;
     private String meetingCode;
-    @NotNull
     private String name;
-    @NotNull
     private LocalDate startDate;
-    @NotNull
     private LocalDate endDate;
-    @NotNull
-    private Country defaultCountry;
+    private String contactPerson;
+    private String contactEmail;
+    private String programNumber;
+    private String website;
+    private String migratedFromCongressCode;
+    private String additionalBillingTextHu;
+    private String additionalBillingTextEn;
+    private Boolean archive;
+    private CountryDTO defaultCountry;
+    private Set<CurrencyDTO> currencies = new HashSet<>();
+    private Set<CurrencyDTO> onlineRegCurrencies = new HashSet<>();
+    private Set<BankAccount> bankAccounts = new HashSet<>();
 
-    public CongressDTO(Congress congress) {
+    public CongressDTO(@NonNull Congress congress) {
         this.id = congress.getId();
         this.meetingCode = congress.getMeetingCode();
         this.name = congress.getName();
         this.startDate = congress.getStartDate();
         this.endDate = congress.getEndDate();
-        this.defaultCountry = congress.getDefaultCountry();
+        this.contactPerson = congress.getContactPerson();
+        this.contactEmail = congress.getContactEmail();
+        this.programNumber = congress.getProgramNumber();
+        this.website = congress.getWebsite();
+        this.migratedFromCongressCode = congress.getMigratedFromCongressCode();
+        this.additionalBillingTextHu = congress.getAdditionalBillingTextHu();
+        this.additionalBillingTextEn = congress.getAdditionalBillingTextEn();
+        this.archive = congress.getArchive();
+        this.defaultCountry = congress.getDefaultCountry() != null ? new CountryDTO(congress.getDefaultCountry()) : null;
+        this.currencies = congress.getCurrencies().stream().map(CurrencyDTO::new).collect(Collectors.toSet());
+        this.onlineRegCurrencies = congress.getOnlineRegCurrencies().stream().map(CurrencyDTO::new).collect(Collectors.toSet());
+        this.bankAccounts = congress.getBankAccounts();
     }
 
     @Override

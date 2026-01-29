@@ -82,8 +82,8 @@
             <li ng-class="{active: $state.includes('system')}" has-authority="ROLE_ADMIN">
                 <a href=""><i class="fa fa-cogs"></i> <span class="nav-label" translate="global.menu.admin.main">Administration</span> <span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse" ng-class="{in: $state.includes('system')}">
-                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="user-management" translate="global.menu.admin.user-management">User management</a></li>
-                    <li ng-hide="true" ui-sref-active="active"><a ui-sref="currency" translate="global.menu.admin.currency">Currency</a></li>
+                    <li ui-sref-active="active"><a ui-sref="user-management" translate="global.menu.admin.user-management">User management</a></li>
+                    <li ui-sref-active="active"><a ui-sref="currency" translate="global.menu.admin.currency">Currency</a></li>
                     <li ng-hide="true" ui-sref-active="active"><a ui-sref="jhi-metrics" translate="global.menu.admin.metrics">Metrics</a></li>
                     <li ng-hide="true" ui-sref-active="active"><a ui-sref="jhi-health" translate="global.menu.admin.health">Health</a></li>
                     <li ng-hide="true" ui-sref-active="active"><a ui-sref="jhi-configuration" translate="global.menu.admin.configuration">Configuration</a></li>

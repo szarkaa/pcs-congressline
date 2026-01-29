@@ -47,6 +47,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 meetingCode: null,
                                 name: null,
                                 startDate: null,
@@ -55,12 +56,14 @@
                                 contactEmail: null,
                                 website: null,
                                 programNumber: null,
-                                archive: false,
+                                defaultCountryId: null,
                                 additionalBillingTextHu: null,
                                 additionalBillingTextEn: null,
+                                migratedFromCongressCode: null,
+                                archive: false,
                                 currencies: [],
                                 onlineRegCurrencies: [],
-                                id: null
+                                bankAccounts: []
                             };
                         }
                     }

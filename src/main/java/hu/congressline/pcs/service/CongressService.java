@@ -7,12 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.Currency;
 import hu.congressline.pcs.domain.OnlineRegConfig;
+import hu.congressline.pcs.repository.BankAccountRepository;
 import hu.congressline.pcs.repository.CongressRepository;
+import hu.congressline.pcs.repository.CountryRepository;
 import hu.congressline.pcs.repository.OnlineRegConfigRepository;
 import hu.congressline.pcs.repository.OnlineRegCustomQuestionRepository;
 import hu.congressline.pcs.security.RandomUtil;
@@ -29,11 +30,13 @@ public class CongressService {
     private final CongressRepository congressRepository;
     private final OnlineRegConfigRepository onlineRegConfigRepository;
     private final OnlineRegCustomQuestionRepository onlineRegCustomQuestionRepository;
+    private final BankAccountRepository bankAccountRepository;
+    private final CurrencyService currencyService;
+    private final CountryRepository countryRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
-    public List<CongressVM> findAllCongresses() {
-        List<Congress> congresses = congressRepository.findAll();
-        return congresses.stream().map(CongressVM::new).collect(Collectors.toList());
+    public List<Congress> findAllCongresses() {
+        return congressRepository.findAll();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -72,10 +75,14 @@ public class CongressService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    public Congress persist(Congress congress) {
-        if (congress.getUuid() == null) {
-            congress.setUuid(RandomUtil.generateRandomAlphanumericString());
-        }
+    public Congress persist(CongressVM viewModel) {
+        Congress congress = new Congress();
+        congress.setUuid(RandomUtil.generateRandomAlphanumericString());
+        congress.update(viewModel);
+        congress.setDefaultCountry(viewModel.getDefaultCountryId() != null ? countryRepository.findById(viewModel.getDefaultCountryId()).orElse(null) : null);
+        congress.setCurrencies(currencyService.getAllByIds(viewModel.getCurrencyIds()));
+        congress.setOnlineRegCurrencies(currencyService.getAllByIds(viewModel.getOnlineRegCurrencyIds()));
+        congress.setBankAccounts(new HashSet<>(bankAccountRepository.findAllById(viewModel.getBankAccountIds())));
         Congress result = congressRepository.save(congress);
         OnlineRegConfig config = new OnlineRegConfig();
         config.setCongress(result);
@@ -84,7 +91,20 @@ public class CongressService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    public Congress update(Congress congress) {
+    public Congress update(CongressVM viewModel) {
+        Congress congress = getById(viewModel.getId());
+        congress.setUuid(RandomUtil.generateRandomAlphanumericString());
+        congress.update(viewModel);
+        congress.setDefaultCountry(viewModel.getDefaultCountryId() != null ? countryRepository.findById(viewModel.getDefaultCountryId()).orElse(null) : null);
+        congress.setCurrencies(currencyService.getAllByIds(viewModel.getCurrencyIds()));
+        congress.setOnlineRegCurrencies(currencyService.getAllByIds(viewModel.getOnlineRegCurrencyIds()));
+        congress.setBankAccounts(new HashSet<>(bankAccountRepository.findAllById(viewModel.getBankAccountIds())));
+        return congressRepository.save(congress);
+
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public Congress save(Congress congress) {
         return congressRepository.save(congress);
     }
 

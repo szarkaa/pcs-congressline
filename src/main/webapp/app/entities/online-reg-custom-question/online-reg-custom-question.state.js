@@ -13,7 +13,7 @@
             parent: 'congress',
             url: '/{congressId}/online-reg-custom-questions',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN'],
             },
             views: {
                 'content@base': {
@@ -37,7 +37,7 @@
             parent: 'online-reg-custom-question',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -53,10 +53,10 @@
                                 question: null,
                                 questionOrder: null,
                                 questionAnswers: [],
-                                currency: null,
+                                currencyId: null,
                                 required: false,
                                 onlineVisibility: 'VISIBLE',
-                                congress: { id: $stateParams.congressId }
+                                congressId: $stateParams.congressId
                             };
                         }
                     }
@@ -71,7 +71,7 @@
             parent: 'online-reg-custom-question',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -96,7 +96,7 @@
             parent: 'online-reg-custom-question',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

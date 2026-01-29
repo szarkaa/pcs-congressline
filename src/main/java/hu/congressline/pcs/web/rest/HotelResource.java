@@ -19,6 +19,7 @@ import java.util.Optional;
 
 import hu.congressline.pcs.domain.Hotel;
 import hu.congressline.pcs.repository.HotelRepository;
+import hu.congressline.pcs.service.dto.HotelDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,8 @@ public class HotelResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/hotels")
-    public ResponseEntity<Hotel> create(@Valid @RequestBody Hotel hotel) throws URISyntaxException {
-        log.debug("REST request to save Hotel : {}", hotel);
+    public ResponseEntity<HotelDTO> create(@Valid @RequestBody Hotel hotel) throws URISyntaxException {
+        log.debug("REST request to save hotel : {}", hotel);
         if (hotel.getId() != null) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new hotel cannot already have an ID"))
@@ -53,13 +54,13 @@ public class HotelResource {
         Hotel result = hotelRepository.save(hotel);
         return ResponseEntity.created(new URI("/api/hotels/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new HotelDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/hotels")
-    public ResponseEntity<Hotel> update(@Valid @RequestBody Hotel hotel) throws URISyntaxException {
-        log.debug("REST request to update Hotel : {}", hotel);
+    public ResponseEntity<HotelDTO> update(@Valid @RequestBody Hotel hotel) throws URISyntaxException {
+        log.debug("REST request to update hotel : {}", hotel);
         if (hotel.getId() == null) {
             return create(hotel);
         }
@@ -74,20 +75,20 @@ public class HotelResource {
         Hotel result = hotelRepository.save(hotel);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, hotel.getId().toString()))
-            .body(result);
+            .body(new HotelDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/hotels")
-    public List<Hotel> getAll() {
-        log.debug("REST request to get all Hotels");
-        return hotelRepository.findAll();
+    public List<HotelDTO> getAll() {
+        log.debug("REST request to get all hotels");
+        return hotelRepository.findAll().stream().map(HotelDTO::new).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/hotels/{id}")
     public ResponseEntity<Hotel> getById(@PathVariable Long id) {
-        log.debug("REST request to get Hotel : {}", id);
+        log.debug("REST request to get hotel : {}", id);
         return hotelRepository.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -96,7 +97,7 @@ public class HotelResource {
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/hotels/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete Hotel : {}", id);
+        log.debug("REST request to delete hotel : {}", id);
         try {
             hotelRepository.deleteById(id);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

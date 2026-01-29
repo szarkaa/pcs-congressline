@@ -10,13 +10,22 @@
     function OnlineRegCustomQuestionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, OnlineRegCustomQuestion, Congress) {
         var vm = this;
 
-        vm.onlineRegCustomQuestion = entity;
+        vm.onlineRegCustomQuestion = {
+            id: entity.id,
+            question: entity.question,
+            questionOrder: entity.questionOrder,
+            questionAnswers: entity.questionAnswers,
+            currencyId: entity.currency ? entity.currency.id : entity.currencyId,
+            required: entity.required,
+            onlineVisibility: entity.onlineVisibility,
+            congressId: entity.congress ? entity.congress.id : entity.congressId
+        };
         vm.clear = clear;
         vm.save = save;
         vm.appendSelectableValue = appendSelectableValue;
         vm.deleteFromSelectableValues = deleteFromSelectableValues;
 
-        Congress.getOnlineRegCurrenciesByCongressId({ id: vm.onlineRegCustomQuestion.congress.id } , function (result) {
+        Congress.getOnlineRegCurrenciesByCongressId({ id: vm.onlineRegCustomQuestion.congressId } , function (result) {
             vm.currencies = result;
         });
 

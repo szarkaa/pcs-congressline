@@ -50,7 +50,7 @@
                                 return {
                                     id: null,
                                     name: null,
-                                    countryId: CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null,
+                                    countryId: null,
                                     vatRegNumber: null,
                                     department: null,
                                     zipCode: null,
