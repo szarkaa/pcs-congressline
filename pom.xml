@@ -52,6 +52,7 @@
         <liquibase-plugin.username/>
         <mapstruct.version>1.6.3</mapstruct.version>
         <poi.ooxml.version>5.4.1</poi.ooxml.version>
+        <jsoup.version>1.17.2</jsoup.version>
         <openpdf.version>3.0.0</openpdf.version>
         <zxing.version>3.5.3</zxing.version>
         <stripe.version>31.0.0</stripe.version>
@@ -258,6 +259,11 @@
                     <artifactId>jaxb-api</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
