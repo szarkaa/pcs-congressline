@@ -26,6 +26,7 @@ import hu.congressline.pcs.service.CongressService;
 import hu.congressline.pcs.service.WorkplaceService;
 import hu.congressline.pcs.service.dto.CongressDTO;
 import hu.congressline.pcs.service.dto.CurrencyDTO;
+import hu.congressline.pcs.service.dto.OnlineRegConfigDTO;
 import hu.congressline.pcs.service.dto.StrippedCongressDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.CongressMigrateWorkplaceVM;
@@ -122,25 +123,20 @@ public class CongressResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/congresses/online-reg-config")
-    public ResponseEntity<OnlineRegConfig> updateOnlineRegConfig(@Valid @RequestBody OnlineRegConfig onlineRegConfig) {
+    public ResponseEntity<OnlineRegConfigDTO> updateOnlineRegConfig(@Valid @RequestBody OnlineRegConfigDTO onlineRegConfig) {
         log.debug("REST request to update online reg config : {}", onlineRegConfig);
-        OnlineRegConfig result = congressService.saveConfig(onlineRegConfig);
+        OnlineRegConfig result = congressService.saveOnlineRegConfig(onlineRegConfig);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("onlineRegConfig", onlineRegConfig.getId().toString()))
-            .body(result);
+            .body(new OnlineRegConfigDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congresses/{congressId}/online-reg-config")
-    public ResponseEntity<OnlineRegConfig> getOnlineRegConfigBy(@PathVariable Long congressId) {
+    public ResponseEntity<OnlineRegConfigDTO> getOnlineRegConfigBy(@PathVariable Long congressId) {
         log.debug("REST request to get online reg config by congress id: {}", congressId);
         return congressService.findConfigByCongressId(congressId)
-            .map(config -> {
-                final Congress congress = congressRepository.findOneEagerlyById(config.getCongress().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Congress not found by id: " + congressId));
-                config.setCongress(congress);
-                return config;
-            })
+            .map(OnlineRegConfigDTO::new)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
