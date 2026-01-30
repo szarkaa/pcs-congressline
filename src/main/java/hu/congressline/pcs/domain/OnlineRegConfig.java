@@ -54,11 +54,9 @@ public class OnlineRegConfig {
     @Column(name = "header_normal_content_type")
     private String headerNormalContentType;
 
-    @NotNull
     @Column(name = "closed")
     private Boolean closed;
 
-    @NotNull
     @Column(name = "no_payment_required")
     private Boolean noPaymentRequired;
 
@@ -92,39 +90,30 @@ public class OnlineRegConfig {
     @Column(name = "browser_remark_pt", columnDefinition = "TEXT", length = 60000)
     private String browserRemarkPt;
 
-    @NotNull
     @Column(name = "last_name_visible")
     private Boolean lastNameVisible;
 
-    @NotNull
     @Column(name = "last_name_required")
     private Boolean lastNameRequired;
 
-    @NotNull
     @Column(name = "first_name_visible")
     private Boolean firstNameVisible;
 
-    @NotNull
     @Column(name = "first_name_required")
     private Boolean firstNameRequired;
 
-    @NotNull
     @Column(name = "title_visible")
     private Boolean titleVisible;
 
-    @NotNull
     @Column(name = "title_required")
     private Boolean titleRequired;
 
-    @NotNull
     @Column(name = "title_selectable")
     private Boolean titleSelectable;
 
-    @NotNull
     @Column(name = "position_visible")
     private Boolean positionVisible;
 
-    @NotNull
     @Column(name = "position_required")
     private Boolean positionRequired;
 
@@ -164,11 +153,9 @@ public class OnlineRegConfig {
     @Column(name = "value")
     private List<String> positionPtValues;
 
-    @NotNull
     @Column(name = "workplace_visible")
     private Boolean workplaceVisible;
 
-    @NotNull
     @Column(name = "workplace_required")
     private Boolean workplaceRequired;
 
@@ -192,75 +179,57 @@ public class OnlineRegConfig {
     @Column(name = "value")
     private List<String> workplacePtValues;
 
-    @NotNull
     @Column(name = "department_visible")
     private Boolean departmentVisible;
 
-    @NotNull
     @Column(name = "department_required")
     private Boolean departmentRequired;
 
-    @NotNull
     @Column(name = "zip_code_visible")
     private Boolean zipCodeVisible;
 
-    @NotNull
     @Column(name = "zip_code_required")
     private Boolean zipCodeRequired;
 
-    @NotNull
     @Column(name = "country_visible")
     private Boolean countryVisible;
 
-    @NotNull
     @Column(name = "country_required")
     private Boolean countryRequired;
 
-    @NotNull
     @Column(name = "city_visible")
     private Boolean cityVisible;
 
-    @NotNull
     @Column(name = "city_required")
     private Boolean cityRequired;
 
-    @NotNull
     @Column(name = "street_visible")
     private Boolean streetVisible;
 
-    @NotNull
     @Column(name = "street_required")
     private Boolean streetRequired;
 
-    @NotNull
     @Column(name = "phone_visible")
     private Boolean phoneVisible;
 
-    @NotNull
     @Column(name = "phone_required")
     private Boolean phoneRequired;
 
-    @NotNull
     @Column(name = "email_visible")
     private Boolean emailVisible;
 
-    @NotNull
     @Column(name = "email_required")
     private Boolean emailRequired;
 
-    @NotNull
     @Column(name = "fax_visible")
     private Boolean faxVisible;
 
-    @NotNull
     @Column(name = "fax_required")
     private Boolean faxRequired;
 
-    @NotNull
     @Column(name = "other_data_visible")
     private Boolean otherDataVisible;
 
-    @NotNull
     @Column(name = "other_data_required")
     private Boolean otherDataRequired;
 
@@ -348,11 +317,9 @@ public class OnlineRegConfig {
     @Column(name = "reg_type_third_fee_label_pt", length = 100)
     private String regTypeThirdFeeLabelPt;
 
-    @NotNull
     @Column(name = "roommate_required_visible")
     private Boolean roommateRequiredVisible;
 
-    @NotNull
     @Column(name = "special_booking_request_visible")
     private Boolean specialBookingRequiredVisible;
 
@@ -452,15 +419,12 @@ public class OnlineRegConfig {
     @Column(name = "optional_service_remark_pt", columnDefinition = "TEXT", length = 60000)
     private String optionalServiceRemarkPt;
 
-    @NotNull
     @Column(name = "bank_transfer_visible")
     private Boolean bankTransferVisible = true;
 
-    @NotNull
     @Column(name = "check_visible")
     private Boolean checkVisible = true;
 
-    @NotNull
     @Column(name = "credit_card_visible")
     private Boolean creditCardVisible = true;
 

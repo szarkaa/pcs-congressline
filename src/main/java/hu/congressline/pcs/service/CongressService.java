@@ -16,6 +16,7 @@ import hu.congressline.pcs.repository.CongressRepository;
 import hu.congressline.pcs.repository.CountryRepository;
 import hu.congressline.pcs.repository.OnlineRegConfigRepository;
 import hu.congressline.pcs.repository.OnlineRegCustomQuestionRepository;
+import hu.congressline.pcs.repository.OnlineRegDiscountCodeRepository;
 import hu.congressline.pcs.security.RandomUtil;
 import hu.congressline.pcs.service.dto.OnlineRegConfigDTO;
 import hu.congressline.pcs.service.util.RichTextHtmlCodec;
@@ -32,6 +33,7 @@ public class CongressService {
     private final CongressRepository congressRepository;
     private final OnlineRegConfigRepository onlineRegConfigRepository;
     private final OnlineRegCustomQuestionRepository onlineRegCustomQuestionRepository;
+    private final OnlineRegDiscountCodeRepository onlineRegDiscountCodeRepository;
     private final BankAccountRepository bankAccountRepository;
     private final CurrencyService currencyService;
     private final CountryRepository countryRepository;
@@ -71,6 +73,7 @@ public class CongressService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long id) {
+        onlineRegDiscountCodeRepository.deleteAllByCongressId(id);
         onlineRegCustomQuestionRepository.deleteAllByCongressId(id);
         onlineRegConfigRepository.deleteAllByCongressId(id);
         congressRepository.deleteById(id);
