@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import hu.congressline.pcs.domain.RegistrationType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

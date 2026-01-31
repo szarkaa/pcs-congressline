@@ -71,7 +71,7 @@
             parent: 'registration',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             views: {
                 'content@base': {

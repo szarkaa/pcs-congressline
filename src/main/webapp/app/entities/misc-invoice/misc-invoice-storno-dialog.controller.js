@@ -10,7 +10,7 @@
     function MiscInvoiceStornoController ($scope, $uibModalInstance, entity, MiscInvoice) {
         var vm = this;
 
-        vm.invoiceCongress = entity;
+        vm.miscInvoice = entity;
         vm.clear = function() {
             $uibModalInstance.dismiss('cancel');
         };
@@ -18,9 +18,9 @@
         vm.confirmStorno = confirmStorno;
 
         function confirmStorno() {
-            MiscInvoice.storno({id: vm.invoiceCongress.invoice.id},
+            MiscInvoice.storno({id: vm.miscInvoice.invoiceId},
                 function (result) {
-                    var pdfLink = '/api/misc-invoices/' + result.id + '/pdf';
+                    var pdfLink = '/api/misc-invoices/' + result.invoiceCongressId + '/pdf';
                     window.open(pdfLink, '_blank');
                     $uibModalInstance.close(true);
                 });

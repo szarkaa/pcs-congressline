@@ -6,8 +6,6 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
-import hu.congressline.pcs.service.dto.RegistrationRegistrationTypeDTO;
-import hu.congressline.pcs.service.dto.RegistrationTypeDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -28,24 +26,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.DecimalFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.RegistrationRegistrationType;
-import hu.congressline.pcs.domain.RegistrationType;
 import hu.congressline.pcs.service.dto.GeneralRegistrationReportDTO;
+import hu.congressline.pcs.service.dto.RegistrationTypeDTO;
 import hu.congressline.pcs.web.rest.vm.GeneralRegistrationReportVM;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

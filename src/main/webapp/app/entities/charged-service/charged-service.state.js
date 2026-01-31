@@ -17,7 +17,7 @@
             parent: 'charged-service',
             url: '/charged-service/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration',
                 function($stateParams, $state, $uibModal, registration) {
@@ -65,7 +65,7 @@
             parent: 'charged-service',
             url: '/charged-service/{chargedServiceId}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration',
                 function($stateParams, $state, $uibModal, registration) {
@@ -100,7 +100,7 @@
             parent: 'charged-service',
             url: '/charged-service/{chargedServiceId}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', function($stateParams, $state, $uibModal, registration) {
                 $uibModal.open({

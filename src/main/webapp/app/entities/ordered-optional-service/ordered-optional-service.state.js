@@ -33,7 +33,7 @@
                 parent: 'ordered-optional-service',
                 url: '/optional-service/new',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 },
                 onEnter: ['$stateParams', '$state', 'registration', '$uibModal', 'registrationCurrency', function($stateParams, $state, registration, $uibModal, registrationCurrency) {
                     $uibModal.open({
@@ -66,7 +66,7 @@
                 parent: 'ordered-optional-service',
                 url: '/optional-service/{optionalServiceId}/edit',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 },
                 onEnter: ['$stateParams', '$state', 'registration', '$uibModal', 'registrationCurrency', function($stateParams, $state, registration, $uibModal, registrationCurrency) {
                     $uibModal.open({
@@ -93,7 +93,7 @@
                 parent: 'ordered-optional-service',
                 url: '/optional-service/{optionalServiceId}/delete',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 },
                 onEnter: ['$stateParams', '$state', 'registration', '$uibModal', function($stateParams, $state, registration, $uibModal) {
                     $uibModal.open({

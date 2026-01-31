@@ -26,15 +26,14 @@
             resolve: {
                 miscInvoice: ['CongressSelector', function (CongressSelector) {
                     return {
-                        invoiceNumber: null,
-                        stornoInvoiceNumber: null,
+                        id: null,
                         name1: null,
                         name2: null,
                         name3: null,
                         vatRegNumber: null,
+                        street: null,
                         city: null,
                         zipCode: null,
-                        street: null,
                         country: CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.code : null,
                         optionalText: null,
                         startDate: new Date(CongressSelector.getSelectedCongress().startDate),
@@ -45,15 +44,11 @@
                         language: 'hu',
                         invoiceType: null,
                         navVatCategory: null,
-                        bankAccount: null,
+                        customInvoiceEmail: null,
+                        bankAccountId: null,
                         createdDate: new Date(),
-                        dateOfGroupPayment: null,
-                        locale: null,
-                        storno: null,
-                        stornired: null,
-                        id: null,
                         miscInvoiceItems: [],
-                        congress: {id: CongressSelector.getSelectedCongress().id }
+                        congressId: CongressSelector.getSelectedCongress().id
                     };
                 }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
@@ -102,10 +97,10 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 name: null,
                                 optionalText: null,
-                                id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }
@@ -118,7 +113,7 @@
         })
         .state('misc-invoice.storno', {
             parent: 'misc-invoice',
-            url: '/{invoiceId}/storno',
+            url: '/{invoiceCongressId}/storno',
             data: {
                 authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
@@ -130,7 +125,7 @@
                     size: 'md',
                     resolve: {
                         entity: ['MiscInvoice', function(MiscInvoice) {
-                            return MiscInvoice.get({id : $stateParams.invoiceId});
+                            return MiscInvoice.get({id : $stateParams.invoiceCongressId});
                         }]
                     }
                 }).result.then(function(result) {

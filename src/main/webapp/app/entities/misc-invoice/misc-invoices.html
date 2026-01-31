@@ -32,21 +32,21 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="invoiceCongress in vm.miscInvoices track by invoiceCongress.id">
-                            <td>{{invoiceCongress.invoice.invoiceNumber}}</td>
-                            <td>{{invoiceCongress.invoice.stornoInvoiceNumber}}</td>
-                            <td data-translate="pcsApp.InvoiceType.{{invoiceCongress.invoice.invoiceType}}"></td>
-                            <td>{{invoiceCongress.invoice.createdDate | date: 'mediumDate'}}</td>
-                            <td>{{invoiceCongress.invoice.name1}}</td>
-                            <td>{{invoiceCongress.invoice.vatRegNumber}}</td>
-                            <td>{{invoiceCongress.dateOfPayment}}</td>
+                        <tr ng-repeat="miscInvoice in vm.miscInvoices track by miscInvoice.invoiceCongressId">
+                            <td>{{miscInvoice.invoiceNumber}}</td>
+                            <td>{{miscInvoice.stornoInvoiceNumber}}</td>
+                            <td data-translate="pcsApp.InvoiceType.{{miscInvoice.invoiceType}}"></td>
+                            <td>{{miscInvoice.createdDate | date: 'mediumDate'}}</td>
+                            <td>{{miscInvoice.name1}}</td>
+                            <td>{{miscInvoice.vatRegNumber}}</td>
+                            <td>{{miscInvoice.dateOfPayment}}</td>
                             <td>
                                 <button class="btn btn-info" type="button"
-                                        ng-click="vm.downloadPdf(invoiceCongress.id)"><i class="fa fa-download"></i></button>
-                                <button class="btn btn-danger" type="submit" ng-hide="invoiceCongress.invoice.storno || invoiceCongress.invoice.stornired || invoiceCongress.invoice.invoiceType == 'PRO_FORMA'"
-                                        ui-sref="misc-invoice.storno({invoiceId: invoiceCongress.id})"><i class="fa fa-undo"></i></button>
-                                <button class="btn btn-success" type="submit" ng-hide="invoiceCongress.invoice.storno || invoiceCongress.invoice.stornired"
-                                        ui-sref="misc-invoice.set-payment-date({id: invoiceCongress.id})" tooltip-placement="left" uib-tooltip="Set payment date"><i class="fa fa-calendar"></i></button>
+                                        ng-click="vm.downloadPdf(miscInvoice.invoiceCongressId)"><i class="fa fa-download"></i></button>
+                                <button class="btn btn-danger" type="submit" ng-hide="miscInvoice.storno || miscInvoice.stornired || miscInvoice.invoiceType == 'PRO_FORMA'"
+                                        ui-sref="misc-invoice.storno({invoiceCongressId: miscInvoice.invoiceCongressId})"><i class="fa fa-undo"></i></button>
+                                <button class="btn btn-success" type="submit" ng-hide="miscInvoice.storno || miscInvoice.stornired"
+                                        ui-sref="misc-invoice.set-payment-date({id: miscInvoice.invoiceCongressId})" tooltip-placement="left" uib-tooltip="Set payment date"><i class="fa fa-calendar"></i></button>
                             </td>
                         </tr>
                         </tbody>

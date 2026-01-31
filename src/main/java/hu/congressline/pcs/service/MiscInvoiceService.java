@@ -5,21 +5,26 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import hu.congressline.pcs.domain.BankAccount;
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.Invoice;
 import hu.congressline.pcs.domain.InvoiceCongress;
 import hu.congressline.pcs.domain.InvoiceItem;
 import hu.congressline.pcs.domain.MiscInvoiceItem;
+import hu.congressline.pcs.domain.MiscService;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.domain.enumeration.Currency;
+import hu.congressline.pcs.repository.BankAccountRepository;
 import hu.congressline.pcs.repository.CountryRepository;
 import hu.congressline.pcs.repository.InvoiceCongressRepository;
 import hu.congressline.pcs.repository.InvoiceItemRepository;
 import hu.congressline.pcs.repository.MiscInvoiceItemRepository;
+import hu.congressline.pcs.web.rest.vm.MiscInvoiceItemVM;
 import hu.congressline.pcs.web.rest.vm.MiscInvoiceVM;
 import hu.congressline.pcs.web.rest.vm.SetPaymentDateVM;
 import lombok.RequiredArgsConstructor;
@@ -41,10 +46,13 @@ public class MiscInvoiceService {
     private final CurrencyService currencyService;
     private final InvoiceItemRepository invoiceItemRepository;
     private final CountryRepository countyRepository;
+    private final BankAccountRepository bankAccountRepository;
+    private final CongressService congressService;
+    private final MiscServiceService miscServiceService;
 
     @SuppressWarnings("MissingJavadocMethod")
     public InvoiceCongress save(MiscInvoiceVM invoiceVM) {
-        log.debug("Request to save MiscInvoice : {}", invoiceVM);
+        log.debug("Request to save misc invoice : {}", invoiceVM);
         Invoice invoice = new Invoice();
         invoice.setInvoiceType(invoiceVM.getInvoiceType());
         invoice.setNavVatCategory(invoiceVM.getNavVatCategory());
@@ -65,24 +73,31 @@ public class MiscInvoiceService {
         invoice.setEndDate(invoiceVM.getEndDate());
         invoice.setDateOfFulfilment(invoiceVM.getDateOfFulfilment());
         invoice.setPaymentDeadline(invoiceVM.getPaymentDeadline());
-        invoice.setBankName(invoiceVM.getBankAccount().getBankName());
-        invoice.setBankAddress(invoiceVM.getBankAccount().getBankAddress());
-        invoice.setBankAccount(invoiceVM.getBankAccount().getBankAccount());
-        invoice.setSwiftCode(invoiceVM.getBankAccount().getSwiftCode());
+        BankAccount bankAccount = bankAccountRepository.findById(invoiceVM.getBankAccountId())
+            .orElseThrow(() -> new IllegalArgumentException("Bank account not found by id: " + invoiceVM.getBankAccountId()));
+        invoice.setBankName(bankAccount.getBankName());
+        invoice.setBankAddress(bankAccount.getBankAddress());
+        invoice.setBankAccount(bankAccount.getBankAccount());
+        invoice.setSwiftCode(bankAccount.getSwiftCode());
         invoice.setOptionalText(invoiceVM.getOptionalText());
-        final String currency = getCurrency(invoiceVM.getMiscInvoiceItems());
+        final Map<Long, MiscService> miscServiceMap = getMiscServices(invoiceVM.getMiscInvoiceItems());
+        final String currency = miscServiceMap.values().stream().findFirst().map(MiscService::getCurrency).map(hu.congressline.pcs.domain.Currency::getCurrency)
+            .orElseThrow(() -> new IllegalArgumentException("Currency of the misc service is not identifiable"));
+
         invoice.setExchangeRate(!Currency.HUF.toString().equalsIgnoreCase(currency) ? currencyService.getRateForDate(currency, LocalDate.now()) : null);
         Invoice result = invoiceService.save(invoice);
 
         InvoiceCongress ic = new InvoiceCongress();
         ic.setInvoice(result);
-        ic.setCongress(invoiceVM.getCongress());
+        ic.setCongress(congressService.getById(invoiceVM.getCongressId()));
         InvoiceCongress invoiceCongress = invoiceCongressRepository.save(ic);
 
-        List<MiscInvoiceItem> items = new ArrayList<>();
-        invoiceVM.getMiscInvoiceItems().forEach(item -> {
+        invoiceVM.getMiscInvoiceItems().forEach(vm -> {
+            MiscInvoiceItem item = new MiscInvoiceItem();
+            item.setItemQuantity(vm.getItemQuantity());
             item.setInvoice(result);
-            items.add(miscInvoiceItemRepository.save(item));
+            item.setMiscService(miscServiceMap.get(vm.getMiscServiceId()));
+            miscInvoiceItemRepository.save(item);
 
             BigDecimal netPrice = priceService.getVatBase(item.getMiscService().getPrice(), item.getMiscService().getVatInfo().getVat(),
                     !Currency.HUF.toString().equalsIgnoreCase(item.getMiscService().getCurrency().getCurrency()) ? 2 : 0);
@@ -129,11 +144,12 @@ public class MiscInvoiceService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
-    public InvoiceCongress stornoInvoice(Long id) {
-        log.debug("Request to get storno Invoice : {}", id);
-        Invoice invoice = invoiceService.getById(id);
+    public InvoiceCongress stornoInvoice(Long invoiceId) {
+        log.debug("Request to get storno Invoice : {}", invoiceId);
+        Invoice invoice = invoiceService.getById(invoiceId);
+
         if (invoice.getStornired()) {
-            throw new IllegalArgumentException("This invoice is already stornired invoice id: " + id);
+            throw new IllegalArgumentException("This invoice is already stornired invoice invoiceId: " + invoiceId);
         }
 
         Invoice stornoInvoice = new Invoice();
@@ -196,21 +212,21 @@ public class MiscInvoiceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<InvoiceCongress> findByCongressId(Long id) {
-        log.debug("Request to get all MiscInvoices by congress id: {}", id);
+        log.debug("Request to get all misc invoices by congress id: {}", id);
         return invoiceCongressRepository.findByCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public InvoiceCongress findInvoiceCongressByInvoiceId(Long invoiceId) {
-        log.debug("Request to get Invoice : {}", invoiceId);
+        log.debug("Request to get invoice congress by id : {}", invoiceId);
         return invoiceCongressRepository.findByInvoiceId(invoiceId);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<InvoiceItem> findItems(Long invoiceCongressId) {
-        log.debug("Request to get MiscInvoiceItems by invoiceCongressId : {}", invoiceCongressId);
+        log.debug("Request to get misc invoice items by invoice congress id : {}", invoiceCongressId);
         final InvoiceCongress invoiceCongress = getById(invoiceCongressId);
         return invoiceItemRepository.findAllByInvoice(invoiceCongress.getInvoice());
     }
@@ -218,24 +234,22 @@ public class MiscInvoiceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<InvoiceCongress> findById(Long id) {
-        log.debug("Request to find InvoiceCongress : {}", id);
+        log.debug("Request to find invoice congress : {}", id);
         return invoiceCongressRepository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public InvoiceCongress getById(Long id) {
-        log.debug("Request to get InvoiceCongress : {}", id);
-        return invoiceCongressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("InvoiceCongress not found by id: " + id));
+        log.debug("Request to get invoice congress : {}", id);
+        return invoiceCongressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invoice congress not found by id: " + id));
     }
 
-    private String getCurrency(List<MiscInvoiceItem> items) {
-        String currency = null;
-        for (MiscInvoiceItem item : items) {
-            currency = item.getMiscService().getCurrency().getCurrency();
-            break;
+    private Map<Long, MiscService> getMiscServices(List<MiscInvoiceItemVM> items) {
+        Map<Long, MiscService> serviceMap = new HashMap<>();
+        for (MiscInvoiceItemVM item : items) {
+            serviceMap.put(item.getMiscServiceId(), miscServiceService.getById(item.getMiscServiceId()));
         }
-
-        return currency;
+        return serviceMap;
     }
 }

@@ -86,22 +86,20 @@
 
         BankAccount.queryByCongressId({congressId: CongressSelector.getSelectedCongress().id, currency: vm.getCurrency() }, function(result) {
             vm.bankAccounts = result;
-            if (vm.bankAccounts.length == 1) {
-                vm.invoice.bankAccount = vm.bankAccounts[0];
+            if (vm.bankAccounts.length === 1) {
+                vm.invoice.bankAccountId = vm.bankAccounts[0].id;
             }
         });
 
         function clear() {
-            vm.invoice.invoiceNumber = null;
-            vm.invoice.stornoInvoiceNumber = null;
             vm.invoice.invoiceType = null;
             vm.invoice.name1 = null;
             vm.invoice.name2 = null;
             vm.invoice.name3 = null;
             vm.invoice.vatRegNumber = null;
+            vm.invoice.street = null;
             vm.invoice.city = null;
             vm.invoice.zipCode = null;
-            vm.invoice.street = null;
             vm.invoice.country = null;
             vm.invoice.optionalText = null;
             vm.invoice.startDate = new Date(CongressSelector.getSelectedCongress().startDate);
@@ -110,12 +108,7 @@
             vm.invoice.paymentDeadline = (new Date()).setDate((new Date()).getDate() + 10);
             vm.invoice.billingMethod = 'TRANSFER';
             vm.invoice.language = 'hu';
-            vm.invoice.bankAccount = null;
-            vm.invoice.createdDate = new Date();
-            vm.invoice.dateOfGroupPayment = null;
-            vm.invoice.storno = null;
-            vm.invoice.stornired = null;
-            vm.invoice.id = null;
+            vm.invoice.bankAccountId = null;
         }
 
         function showConfirmationPanel() {
@@ -124,7 +117,7 @@
         }
 
         function onSaveSuccess(result) {
-            var pdfLink = '/api/misc-invoices/' + result.id + '/pdf';
+            var pdfLink = '/api/misc-invoices/' + result.invoiceCongressId + '/pdf';
             window.open(pdfLink, '_blank');
             $state.go('misc-invoice', {}, {reload: true, notify: true});
         }
@@ -136,43 +129,22 @@
 
         function printInvoice() {
             vm.isSaving = true;
-            MiscInvoice.save(createMiscInvoiceForPrinting(), onSaveSuccess, onSaveError);
+            transformInvoice()
+            MiscInvoice.save(vm.invoice, onSaveSuccess, onSaveError);
         }
 
         function sendAndPrintInvoice () {
             vm.isSaving = true;
-            MiscInvoice.saveAndSendEmail(createMiscInvoiceForPrinting(), onSaveSuccess, onSaveError);
+            transformInvoice();
+            MiscInvoice.saveAndSendEmail(vm.invoice, onSaveSuccess, onSaveError);
         }
 
-        function createMiscInvoiceForPrinting() {
-            var invoice = {};
-            invoice.name1 = vm.invoice.name1;
-            invoice.name2 = vm.invoice.name2;
-            invoice.name3 = vm.invoice.name3;
-            invoice.invoiceType = vm.invoice.invoiceType;
-            invoice.vatRegNumber = vm.invoice.vatRegNumber;
-            invoice.city = vm.invoice.city;
-            invoice.zipCode = vm.invoice.zipCode;
-            invoice.street = vm.invoice.street;
-            invoice.country = vm.invoice.country;
-            invoice.startDate = vm.invoice.startDate;
-            invoice.endDate = vm.invoice.endDate;
-            invoice.dateOfFulfilment = vm.invoice.dateOfFulfilment;
-            invoice.paymentDeadline = vm.invoice.paymentDeadline;
-            invoice.billingMethod = vm.invoice.billingMethod;
-            invoice.language = vm.invoice.language;
-            invoice.navVatCategory = vm.invoice.navVatCategory;
-            invoice.optionalText = vm.invoice.optionalText;
-            invoice.bankAccount = vm.invoice.bankAccount;
-            invoice.registration = vm.registration;
-            invoice.customInvoiceEmail = vm.invoiceEmail;
-            invoice.congress = vm.invoice.congress;
-            invoice.miscInvoiceItems = vm.invoice.miscInvoiceItems;
-
-            for (var i = 0; i < invoice.miscInvoiceItems.length; i++) {
-                invoice.miscInvoiceItems[i].id = null;
+        function transformInvoice() {
+            for (var i = 0; i < vm.invoice.miscInvoiceItems.length; i++) {
+                vm.invoice.miscInvoiceItems[i].miscServiceId = vm.invoice.miscInvoiceItems[i].miscService.id;
+                delete vm.invoice.miscInvoiceItems[i].miscService;
+                delete vm.invoice.miscInvoiceItems[i].id;
             }
-            return invoice;
         }
 
         function openCalendar (date) {
