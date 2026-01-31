@@ -28,12 +28,14 @@
             vatInfoId: entity.vatInfo ? entity.vatInfo.id : null,
             congressId: CongressSelector.getSelectedCongress().id
         };
-        vm.clear = clear;
+
+        vm.vatInfos = [];
+        vm.currencies = [];
         vm.datePickerOpenStatus = {};
+        vm.clear = clear;
         vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.currencies = [];
-        vm.vatInfos = [];
+        vm.onlineVisibilityChanged = onlineVisibilityChanged;
 
         Congress.get({id: CongressSelector.getSelectedCongress().id}, function(data) {
             vm.currencies = data.currencies;
@@ -47,6 +49,14 @@
         $timeout(function (){
             angular.element('.form-group:eq(0)>input').focus();
         });
+
+        function onlineVisibilityChanged() {
+            if (vm.registrationType.onlineVisibility !== 'VISIBLE') {
+                vm.registrationType.onlineLabel = null;
+                vm.registrationType.onlineOrder = null;
+                vm.registrationType.onlineType = 'NORMAL';
+            }
+        }
 
         function clear () {
             $uibModalInstance.dismiss('cancel');

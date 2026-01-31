@@ -13,7 +13,7 @@
             parent: 'congress-hotel',
             url: '/{congressHotelId}/rooms',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.room.home.title'
             },
             views: {
@@ -42,7 +42,7 @@
             parent: 'room',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'congressHotel', function($stateParams, $state, $uibModal, congressHotel) {
                 $uibModal.open({
@@ -84,7 +84,7 @@
             parent: 'room',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'congressHotel', function($stateParams, $state, $uibModal, congressHotel) {
                 $uibModal.open({
@@ -112,7 +112,7 @@
             parent: 'room',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

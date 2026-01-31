@@ -17,20 +17,22 @@
             quantity: entity.quantity,
             reserved: entity.reserved,
             price: entity.price,
-            onlineLabel: entity.onlineLabel,
             onlineVisibility: entity.onlineVisibility,
+            onlineLabel: entity.onlineLabel,
             onlineExternalLink: entity.onlineExternalLink,
             onlineExternalEmail: entity.onlineExternalEmail,
             vatInfoId: entity.vatInfo ? entity.vatInfo.id : null,
             currencyId: entity.currency ? entity.currency.id : null,
             congressHotelId: $stateParams.congressHotelId
         };
+
+        vm.vatInfos = [];
+        vm.currencies = [];
         vm.congressHotel = congressHotel;
         vm.clear = clear;
         vm.save = save;
-        vm.currencies = [];
-        vm.vatInfos = [];
         vm.getMaxReservedRoomNumber = getMaxReservedRoomNumber;
+        vm.onlineVisibilityChanged = onlineVisibilityChanged;
 
         Congress.get({id: CongressSelector.getSelectedCongress().id}, function(data) {
             vm.currencies = data.currencies;
@@ -44,24 +46,16 @@
             angular.element('.form-group:eq(0)>input').focus();
         });
 
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
+        function onlineVisibilityChanged() {
+            if (vm.room.onlineVisibility !== 'VISIBLE') {
+                vm.room.onlineLabel = null;
+                vm.room.onlineExternalLink = null;
+                vm.room.onlineExternalEmail = null;
+            }
         }
 
-        function createRoomEntity() {
-            return {
-                id: vm.room.id,
-                congressHotel: {id: vm.congressHotel.id},
-                roomType: vm.room.roomType,
-                bed: vm.room.bed,
-                quantity: vm.room.quantity,
-                price: vm.room.price,
-                currency: {id: vm.room.currency.id},
-                vatInfo: {id: vm.room.vatInfo.id},
-                onlineVisibility: vm.room.onlineVisibility,
-                onlineLabel: vm.room.onlineLabel,
-                onlineExternalLink: vm.room.onlineExternalLink
-            };
+        function clear () {
+            $uibModalInstance.dismiss('cancel');
         }
 
         function save () {

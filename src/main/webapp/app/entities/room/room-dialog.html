@@ -134,30 +134,41 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label" data-translate="pcsApp.room.onlineVisibility" for="onlineVisibility">Online visibility</label>
+            <select class="form-control" name="onlineVisibility" ng-model="vm.room.onlineVisibility" id="onlineVisibility" ng-change="vm.onlineVisibilityChanged()" required>
+                <option value="" data-translate="global.form.please.select">Please select</option>
+                <option value="VISIBLE" data-translate="pcsApp.OnlineVisibility.VISIBLE">VISIBLE</option>
+                <option value="NOT_VISIBLE" data-translate="pcsApp.OnlineVisibility.NOT_VISIBLE">NOT_VISIBLE</option>
+            </select>
+            <div ng-show="editForm.onlineVisibility.$invalid">
+                <p class="error-block" ng-show="editForm.onlineVisibility.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group" ng-hide="vm.room.onlineVisibility !== 'VISIBLE'">
             <label class="control-label" data-translate="pcsApp.room.onlineLabel" for="field_onlineLabel">Online label</label>
-            <input type="text" class="form-control" name="onlineLabel" id="field_onlineLabel" autocomplete="off"
-                   ng-model="vm.room.onlineLabel" ng-maxlength="200" />
+            <input type="text" class="form-control" name="onlineLabel" id="field_onlineLabel" autocomplete="off" ng-model="vm.room.onlineLabel" ng-maxlength="200" />
             <div ng-show="editForm.onlineLabel.$invalid">
-                <p class="error-block"
-                   ng-show="editForm.onlineLabel.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                <p class="error-block" ng-show="editForm.onlineLabel.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
                     This field cannot be longer than 200 characters.
                 </p>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" ng-hide="vm.room.onlineVisibility !== 'VISIBLE'">
             <label class="control-label" data-translate="pcsApp.room.onlineExternalLink" for="field_onlineExternalLink">Online external link</label>
             <input type="text" class="form-control" name="onlineExternalLink" id="field_onlineExternalLink" autocomplete="off"
                    ng-model="vm.room.onlineExternalLink" ng-maxlength="255" />
             <div ng-show="editForm.onlineExternalLink.$invalid">
-                <p class="error-block"
-                   ng-show="editForm.onlineExternalLink.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                <p class="error-block" ng-show="editForm.onlineExternalLink.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
                     This field cannot be longer than 255 characters.
                 </p>
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" ng-hide="vm.room.onlineVisibility !== 'VISIBLE'">
             <label class="control-label" data-translate="pcsApp.room.onlineExternalEmail" for="field_onlineExternalEmail">Online external email</label>
             <input type="email" class="form-control" name="onlineExternalEmail" id="field_onlineExternalEmail" autocomplete="off"
                    ng-model="vm.room.onlineExternalEmail" ng-maxlength="64" />
@@ -167,20 +178,6 @@
                 </p>
                 <p class="error-block" ng-show="editForm.onlineExternalEmail.$error.email" data-translate="global.messages.validate.email.invalid">
                     Your e-mail is invalid.
-                </p>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label" data-translate="pcsApp.room.onlineVisibility" for="onlineVisibility">Online visibility</label>
-            <select class="form-control" name="onlineVisibility" ng-model="vm.room.onlineVisibility" id="onlineVisibility" required>
-                <option value="" data-translate="global.form.please.select">Please select</option>
-                <option value="VISIBLE" data-translate="pcsApp.OnlineVisibility.VISIBLE">VISIBLE</option>
-                <option value="NOT_VISIBLE" data-translate="pcsApp.OnlineVisibility.NOT_VISIBLE">NOT_VISIBLE</option>
-            </select>
-            <div ng-show="editForm.onlineVisibility.$invalid">
-                <p class="error-block" ng-show="editForm.onlineVisibility.$error.required" data-translate="entity.validation.required">
-                    This field is required.
                 </p>
             </div>
         </div>
