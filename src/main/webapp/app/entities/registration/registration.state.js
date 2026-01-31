@@ -128,7 +128,7 @@
             parent: 'registration',
             url: '/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             views: {
                 'content@base': {
@@ -153,7 +153,7 @@
             parent: 'registration',
             url: '/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'RegIdStorage', function($stateParams, $state, $uibModal, RegIdStorage) {
                 $uibModal.open({
@@ -181,7 +181,7 @@
             parent: 'registration',
             url: '/upload',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             views: {
                 'content@base': {
@@ -200,7 +200,7 @@
             parent: 'registration',
             url: '/search',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'RegIdStorage', 'registrationArray', function($stateParams, $state, $uibModal, RegIdStorage, registrationArray) {
                 $uibModal.open({
@@ -224,7 +224,7 @@
             parent: 'registration.new',
             url: '/workplace/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'workplaces', 'CongressSelector', function($stateParams, $state, $uibModal, registration, workplaces, CongressSelector) {
                 $uibModal.open({
@@ -270,7 +270,7 @@
             parent: 'registration.edit',
             url: '/workplace/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'workplaces', 'CongressSelector', function($stateParams, $state, $uibModal, registration, workplaces, CongressSelector) {
                 $uibModal.open({
@@ -316,7 +316,7 @@
             parent: 'registration.new',
             url: '/country/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'countries', function($stateParams, $state, $uibModal, registration, countries) {
                 $uibModal.open({
@@ -347,7 +347,7 @@
             parent: 'registration.edit',
             url: '/country/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'countries', function($stateParams, $state, $uibModal, registration, countries) {
                 $uibModal.open({
@@ -378,7 +378,7 @@
             parent: 'registration',
             url: '/summary',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', function($stateParams, $state, $uibModal, registration) {
                 $uibModal.open({

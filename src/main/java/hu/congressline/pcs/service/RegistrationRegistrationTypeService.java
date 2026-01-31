@@ -40,7 +40,7 @@ public class RegistrationRegistrationTypeService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public RegistrationRegistrationType save(RegistrationRegistrationType registrationRegistrationType) {
-        log.debug("Request to save RegistrationRegistrationType : {}", registrationRegistrationType);
+        log.debug("Request to save registration registrationtype : {}", registrationRegistrationType);
         calculateRegFee(registrationRegistrationType);
         return repository.save(registrationRegistrationType);
     }
@@ -68,29 +68,29 @@ public class RegistrationRegistrationTypeService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<RegistrationRegistrationType> findAllByRegistrationId(Long id) {
-        log.debug("Request to get all RegistrationRegistrationType by registration id: {}", id);
+        log.debug("Request to get all registration registrationtype by registration id: {}", id);
         return repository.findAllByRegistrationId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<RegistrationRegistrationType> findAllByCongressId(Long id) {
-        log.debug("Request to get all RegistrationRegistrationType by congress id: {}", id);
+        log.debug("Request to get all registration registrationtype by congress id: {}", id);
         return repository.findAllByRegistrationCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<RegistrationRegistrationType> findById(Long id) {
-        log.debug("Request to find RegistrationRegistrationType : {}", id);
+        log.debug("Request to find registration registrationtype : {}", id);
         return repository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public RegistrationRegistrationType getById(Long id) {
-        log.debug("Request to get RegistrationRegistrationType : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("RegistrationRegistrationType not found by id: " + id));
+        log.debug("Request to get registration registrationtype : {}", id);
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("registration registrationtype not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -109,7 +109,7 @@ public class RegistrationRegistrationTypeService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long id) {
-        log.debug("Request to delete RegistrationRegistrationType : {}", id);
+        log.debug("Request to delete registration registrationtype : {}", id);
         // if last invoice this item is on is a storno then it is deleteable
         List<ChargeableItemInvoiceHistory> ciihList = ciihRepository.findAllByChargeableItemIdOrderByIdDesc(id);
         final ChargeableItemInvoiceHistory lastHistoryItem = ciihList.stream().findFirst().orElse(null);

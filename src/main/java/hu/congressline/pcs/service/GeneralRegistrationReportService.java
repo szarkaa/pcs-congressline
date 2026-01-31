@@ -6,6 +6,8 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 
+import hu.congressline.pcs.service.dto.RegistrationRegistrationTypeDTO;
+import hu.congressline.pcs.service.dto.RegistrationTypeDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.ClientAnchor;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -29,6 +31,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,18 +71,19 @@ public class GeneralRegistrationReportService extends XlsReportService {
         log.debug("Request to get all GeneralRegistrationReportDTO");
         final Query query = entityManager.createNativeQuery(composeQuery(reportFilter));
         List result = query.getResultList();
-        final List<RegistrationRegistrationType> regTypesForCongress = rrtService.findAllByCongressId(Long.valueOf(reportFilter.getCongressId()));
+        final List<RegistrationTypeDTO> regTypes = rrtService.findAllByCongressId(Long.valueOf(reportFilter.getCongressId()))
+            .stream().map(RegistrationRegistrationType::getRegistrationType).map(RegistrationTypeDTO::new).toList();
         List<GeneralRegistrationReportDTO> list = new ArrayList<>();
         for (Object item : result) {
-            GeneralRegistrationReportDTO dto = getBeanFromRow((Object[]) item, regTypesForCongress);
+            GeneralRegistrationReportDTO dto = getBeanFromRow((Object[]) item, regTypes);
             list.add(dto);
         }
         return list;
     }
 
-    private GeneralRegistrationReportDTO getBeanFromRow(Object[] row, List<RegistrationRegistrationType> regTypesForCongress) {
+    private GeneralRegistrationReportDTO getBeanFromRow(Object[] row, List<RegistrationTypeDTO> registrationTypes) {
         GeneralRegistrationReportDTO bean = new GeneralRegistrationReportDTO();
-        bean.setId(((BigInteger) row[0]).longValue());
+        bean.setId((Long) row[0]);
         bean.setRegId((Integer) row[1]);
         bean.setLastName((String) row[2]);
         bean.setFirstName((String) row[3]);
@@ -105,12 +109,11 @@ public class GeneralRegistrationReportService extends XlsReportService {
         bean.setWorkplacePhone((String) row[23]);
         bean.setWorkplaceEmail((String) row[24]);
         bean.setRemark((String) row[25]);
-        bean.setDateOfApp(Instant.ofEpochMilli(((Date) row[26]).getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
+        bean.setDateOfApp((LocalDate) row[26]);
         bean.setAccompanyingNum(row[27] != null ? ((BigDecimal) row[27]).intValue() : 0);
         bean.setAccompanyingNames((String) row[28]);
         bean.setHotelNames((String) row[29]);
-        bean.setRegistrationTypes(regTypesForCongress.stream().filter(rrt -> rrt.getRegistration().getId().equals(bean.getId()))
-                .map(RegistrationRegistrationType::getRegistrationType).collect(Collectors.toList()));
+        bean.setRegistrationTypes(registrationTypes);
         return bean;
     }
 
@@ -349,7 +352,7 @@ public class GeneralRegistrationReportService extends XlsReportService {
         columns.put("Workplace Phone", 100);
         columns.put("Workplace Email", 100);
         final List<String> regTypeColumns = dtos.stream().flatMap(dto -> dto.getRegistrationTypes().stream())
-                .map(RegistrationType::getCode).distinct().sorted().collect(Collectors.toList());
+                .map(RegistrationTypeDTO::getCode).distinct().sorted().toList();
         regTypeColumns.forEach(column -> columns.put("Reg. type: " + column, 100));
         columns.put("Accompanying no.", 200);
         columns.put("Accompanying names", 200);

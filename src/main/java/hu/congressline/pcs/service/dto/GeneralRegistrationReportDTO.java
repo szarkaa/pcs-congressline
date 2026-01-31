@@ -43,7 +43,7 @@ public class GeneralRegistrationReportDTO implements Serializable {
     private Integer accompanyingNum;
     private String hotelNames;
     private LocalDate dateOfApp;
-    private List<RegistrationType> registrationTypes = Collections.emptyList();
+    private List<RegistrationTypeDTO> registrationTypes = Collections.emptyList();
 
     @Override
     public boolean equals(Object o) {
