@@ -195,11 +195,12 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         //important to control pdf errors
         cb.sanityCheck();
 
-        generateFooterContent(writer, document, footerBase, cb);
+        generateFooterContent(writer, document, footerBase);
     }
 
     @SuppressWarnings({"MethodLength", "ParameterAssignment"})
-    private void generateFooterContent(PdfWriter writer, Document document, float footerBase, PdfContentByte cb) {
+    private void generateFooterContent(PdfWriter writer, Document document, float footerBase) {
+        PdfContentByte cb = writer.getDirectContent();
 
         //new table
         table = new PdfPTable(2);
@@ -333,20 +334,20 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         addTableCell(table, cell2);
 
         // write the table to an absolute position
-        cb.beginText();
-        cb = writer.getDirectContent();
-        cb.setTextMatrix(document.left(), footerBase + 7);
         table.setTotalWidth(600);
-        table.writeSelectedRows(0, -1, 0, table.getTotalHeight() + 30, cb);
-        cb.endText();
+        float x = document.left() - 20;
+        float y = footerBase + 85;
+        table.writeSelectedRows(0, -1, x, y, cb);
 
-        //the generator system of the invoice
         cb.beginText();
-        cb.setFontAndSize(baseFont, 6);
-        //cb.setTextMatrix(document.left(), footerBase + 7);
-        cb.setTextMatrix(document.left(), footerBase);
-        cb.showText(textContext.getInvoiceGeneratedMsgLabel());
-        cb.endText();
+        try {
+            cb.setFontAndSize(baseFont, 6);
+            cb.setTextMatrix(document.left(), footerBase);
+            cb.showText(textContext.getInvoiceGeneratedMsgLabel());
+        } finally {
+            cb.endText();
+        }
+        cb.sanityCheck();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
