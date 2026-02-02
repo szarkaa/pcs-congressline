@@ -3,8 +3,10 @@ package hu.congressline.pcs.service;
 import org.openpdf.text.DocumentException;
 import org.openpdf.text.Font;
 import org.openpdf.text.Paragraph;
+import org.openpdf.text.Rectangle;
 import org.openpdf.text.pdf.PdfPCell;
 import org.openpdf.text.pdf.PdfPTable;
+import org.openpdf.text.pdf.draw.LineSeparator;
 import org.springframework.context.MessageSource;
 
 import java.math.BigDecimal;
@@ -146,6 +148,7 @@ public abstract class AbstractPdfService {
         for (PdfPCell cell : cells) {
             table.addCell(cell);
         }
+        table.completeRow();
     }
 
     protected void setBorder(int border, PdfPCell... cells) {
@@ -198,7 +201,7 @@ public abstract class AbstractPdfService {
         cell.setPaddingBottom(0);
         cell.setPaddingRight(0);
         cell.setPaddingLeft(0);
-        cell.setBorder(0);
+        cell.setBorder(Rectangle.NO_BORDER);
         return cell;
     }
 
@@ -207,6 +210,19 @@ public abstract class AbstractPdfService {
             paragraph.add(new Paragraph(" "));
         }
     }
+
+    protected PdfPCell createLineSeparatorCell(int colspan) {
+        final LineSeparator lineSeparator = new LineSeparator();
+        lineSeparator.setLineWidth(0.5f);
+        Paragraph paragraph = new Paragraph();
+        paragraph.add(lineSeparator);
+        PdfPCell sepCell = createCell(paragraph);
+        if (colspan > 1) {
+            sepCell.setColspan(colspan);
+        }
+        return sepCell;
+    }
+
 
     protected BigDecimal getInvoiceItemsSumAmount(List<InvoiceItem> list) {
         return list.stream().map(InvoiceItem::getTotal).reduce(BigDecimal.ZERO, BigDecimal::add);

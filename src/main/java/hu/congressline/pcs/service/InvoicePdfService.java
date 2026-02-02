@@ -79,6 +79,7 @@ public class InvoicePdfService extends AbstractPdfService {
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             Document document = new Document(PageSize.A4, 20, 20, 40, 120);
+
             PdfWriter writer = PdfWriter.getInstance(document, baos);
             writer.setPageEvent(new InvoiceHeaderFooter(new InvoicePdfHeaderFooterTextContext(messageSource, pdfContext)));
             writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
@@ -100,9 +101,6 @@ public class InvoicePdfService extends AbstractPdfService {
         return !rates.isEmpty();
     }
 
-    // iText allows to add metadata to the PDF which can be viewed in your Adobe
-    // Reader
-    // under File -> Properties
     private void addMetaData(Document document, InvoicePdfContext pdfContext) {
         document.addTitle(getMessage(MESSAGE_KEY_PREFIX, pdfContext.getLocale()));
         document.addSubject(getMessage(MESSAGE_KEY_PREFIX, pdfContext.getLocale()));
