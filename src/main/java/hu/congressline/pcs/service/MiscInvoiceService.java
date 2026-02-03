@@ -17,6 +17,7 @@ import hu.congressline.pcs.domain.InvoiceCongress;
 import hu.congressline.pcs.domain.InvoiceItem;
 import hu.congressline.pcs.domain.MiscInvoiceItem;
 import hu.congressline.pcs.domain.MiscService;
+import hu.congressline.pcs.domain.Workplace;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.domain.enumeration.Currency;
 import hu.congressline.pcs.repository.BankAccountRepository;
@@ -49,10 +50,21 @@ public class MiscInvoiceService {
     private final BankAccountRepository bankAccountRepository;
     private final CongressService congressService;
     private final MiscServiceService miscServiceService;
+    private final WorkplaceService workplaceService;
 
-    @SuppressWarnings("MissingJavadocMethod")
+    @SuppressWarnings({"MissingJavadocMethod", "MethodLength"})
     public InvoiceCongress save(MiscInvoiceVM invoiceVM) {
         log.debug("Request to save misc invoice : {}", invoiceVM);
+        if (invoiceVM.isSavePartner()) {
+            Workplace workplace = new Workplace();
+            workplace.setName(invoiceVM.getName1());
+            workplace.setVatRegNumber(invoiceVM.getVatRegNumber());
+            countyRepository.findOneByCodeIgnoreCase(invoiceVM.getCountry()).ifPresent(workplace::setCountry);
+            workplace.setZipCode(invoiceVM.getZipCode());
+            workplace.setCity(invoiceVM.getCity());
+            workplace.setStreet(invoiceVM.getStreet());
+            workplaceService.save(workplace);
+        }
         Invoice invoice = new Invoice();
         invoice.setInvoiceType(invoiceVM.getInvoiceType());
         invoice.setNavVatCategory(invoiceVM.getNavVatCategory());

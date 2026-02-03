@@ -16,6 +16,7 @@
             "detail": {
                 "title": "Misc Invoice Item"
             },
+            "itemPrice": "Item price",
             "itemQuantity": "Item quantity",
             "measure": "Measure",
             "miscService": "Misc service"

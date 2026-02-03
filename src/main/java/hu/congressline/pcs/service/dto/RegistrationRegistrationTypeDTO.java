@@ -18,6 +18,7 @@ public class RegistrationRegistrationTypeDTO {
     private Long payingGroupItemId;
     private BigDecimal regFee;
     private Integer accPeople;
+    private String chargeableItemName;
     private BigDecimal chargeableItemPrice;
     private String chargeableItemCurrency;
     private Integer chargeableItemVAT;
@@ -32,7 +33,8 @@ public class RegistrationRegistrationTypeDTO {
         this.registrationTypeType = rrt.getRegistrationType().getRegistrationType().toString();
         this.registrationId = rrt.getRegistration().getId();
         this.payingGroupItemId = rrt.getPayingGroupItem() != null ? rrt.getPayingGroupItem().getId() : null;
-        this.chargeableItemPrice = rrt.getRegFee();
+        this.chargeableItemName = rrt.getRegistrationType().getName();
+        this.chargeableItemPrice = rrt.getChargeableItemPrice();
         this.accPeople = rrt.getAccPeople();
         this.chargeableItemCurrency = rrt.getCurrency();
         this.chargeableItemVAT = rrt.getRegistrationType().getVatInfo().getVat();

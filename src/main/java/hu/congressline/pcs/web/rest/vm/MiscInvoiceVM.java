@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class MiscInvoiceVM {
+    private boolean savePartner;
     private String name1;
     private String name2;
     private String name3;

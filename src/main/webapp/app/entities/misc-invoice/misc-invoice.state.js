@@ -27,6 +27,7 @@
                 miscInvoice: ['CongressSelector', function (CongressSelector) {
                     return {
                         id: null,
+                        savePartner: true,
                         name1: null,
                         name2: null,
                         name3: null,

@@ -83,10 +83,10 @@
             <ui-select ng-model="vm.chargedService.chargeableItemId" name="oosForChargeableItem" id="field_oos_for_chargeableItem" ng-change="vm.chargeableItemTypeChanged()"
                        theme="bootstrap" ng-required="vm.chargedService.paymentType === 'OPTIONAL_SERVICE'">
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
-                    <span ng-bind="$select.selected.optionalServiceName"></span>
+                    <span ng-bind="$select.selected.chargeableItemName"></span>
                 </ui-select-match>
                 <ui-select-choices repeat="orderedOptionalService.id as orderedOptionalService in (vm.orderedOptionalServices | filter: $select.search) track by orderedOptionalService.id">
-                    <div ng-bind-html="orderedOptionalService.optionalServiceName | highlight: $select.search"></div>
+                    <div ng-bind-html="orderedOptionalService.chargeableItemName | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
             <div ng-show="editForm.oosForChargeableItem.$invalid">

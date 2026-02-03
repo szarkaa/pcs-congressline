@@ -16,6 +16,7 @@ public class OrderedOptionalServiceDTO {
     private Integer participant;
     private Long registrationId;
     private Long payingGroupItemId;
+    private String chargeableItemName;
     private BigDecimal chargeableItemPrice;
     private String chargeableItemCurrency;
     private Integer chargeableItemVAT;
@@ -30,6 +31,7 @@ public class OrderedOptionalServiceDTO {
         this.participant = oos.getParticipant();
         this.registrationId = oos.getRegistration().getId();
         this.payingGroupItemId = oos.getPayingGroupItem() != null ? oos.getPayingGroupItem().getId() : null;
+        this.chargeableItemName = oos.getOptionalService().getName();
         this.chargeableItemPrice = oos.getChargeableItemPrice();
         this.chargeableItemCurrency = oos.getOptionalService().getCurrency().getCurrency();
         this.chargeableItemVAT = oos.getOptionalService().getVatInfo().getVat();

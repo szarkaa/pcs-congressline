@@ -53,9 +53,9 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 miscService: null,
-                                itemQuantity: null,
-                                id: null
+                                itemQuantity: null
                             };
                         },
                         miscInvoice: function () {

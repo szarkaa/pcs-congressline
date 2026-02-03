@@ -191,10 +191,10 @@
                         <tr ng-repeat="chargedService in vm.chargedServices track by chargedService.id">
                             <td><span translate="pcsApp.ChargedServicePaymentMode.{{chargedService.paymentMode}}">{{chargedService.paymentMode}}</span></td>
                             <td><span translate="pcsApp.ChargeableItemType.{{chargedService.paymentType}}">{{chargedService.paymentType}}</span></td>
-                            <td>{{chargedService.chargeableItem.chargeableItemName}}</td>
-                            <td>{{chargedService.amount | number : 2}} {{chargedService.chargeableItem.chargeableItemCurrency}}</td>
+                            <td>{{chargedService.chargeableItemName}}</td>
+                            <td>{{chargedService.amount | number : 2}} {{chargedService.chargeableItemCurrency}}</td>
                             <td>{{chargedService.dateOfPayment | date:'mediumDate'}}</td>
-                            <td>{{chargedService.latestInvoice.invoiceNumber}}</td>
+                            <td>{{chargedService.invoiceNumber}}</td>
                             <td>
                                 <input ng-model="vm.ignoredChargedServices[chargedService.id.toString()]" ng-checked="vm.ignoredChargedServices[chargedService.id.toString()]"
                                        ng-change="vm.toggleIgnoreChargedService(chargedService.id)" type="checkbox" />
@@ -202,7 +202,7 @@
                         </tr>
                         <tr ng-show="vm.chargedServices.length">
                             <td colspan="3">&nbsp;</td>
-                            <td><strong>{{(vm.chargedServices | sumByKey: 'amount') | number : 2}} {{vm.chargedServices[0].chargeableItem.chargeableItemCurrency}}</strong></td>
+                            <td><strong>{{(vm.chargedServices | sumByKey: 'amount') | number : 2}} {{vm.chargedServices[0].chargeableItemCurrency}}</strong></td>
                             <td colspan="2">&nbsp;</td>
                             <td></td>
                         </tr>

@@ -145,35 +145,6 @@
         function calculateTotalDue() {
             var i, total = 0;
             for (i = 0; i < vm.registrationRegistrationTypes.length; i++) {
-                if (!vm.invoice.ignoredChargeableItems[vm.registrationRegistrationTypes[i].id]) {
-                    total += vm.registrationRegistrationTypes[i].priceWithDiscount;
-                }
-            }
-
-            for (i = 0; i < vm.roomReservations.length; i++) {
-                if (!vm.invoice.ignoredChargeableItems[vm.roomReservations[i].id]) {
-                    total += vm.roomReservations[i].priceWithDiscount;
-                }
-            }
-
-            for (i = 0; i < vm.orderedOptionalServices.length; i++) {
-                if (!vm.invoice.ignoredChargeableItems[vm.orderedOptionalServices[i].id]) {
-                    total += vm.orderedOptionalServices[i].priceWithDiscount;
-                }
-            }
-
-            for (i = 0; i < vm.chargedServices.length; i++) {
-                if (!vm.invoice.ignoredChargedServices[vm.chargedServices[i].id]) {
-                    total -= vm.chargedServices[i].amount;
-                }
-            }
-
-            return total;
-        }
-
-        function calculateTotalDue() {
-            var i, total = 0;
-            for (i = 0; i < vm.registrationRegistrationTypes.length; i++) {
                 if (!vm.ignoredChargeableItems[vm.registrationRegistrationTypes[i].id]) {
                     total += vm.registrationRegistrationTypes[i].priceWithDiscount;
                 }

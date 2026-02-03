@@ -51,6 +51,7 @@
         }
 
         function selectPartner(partner) {
+            vm.invoice.savePartner = false;
             vm.invoice.name1 = partner.name;
             vm.invoice.vatRegNumber = partner.vatRegNumber;
             vm.invoice.country = partner.country ? partner.country.code : '';
