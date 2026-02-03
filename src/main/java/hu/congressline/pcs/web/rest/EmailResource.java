@@ -1,5 +1,6 @@
 package hu.congressline.pcs.web.rest;
 
+import hu.congressline.pcs.service.MailService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 public class EmailResource {
 
-    //private final MailService mailService;
+    private final MailService mailService;
     private final CongressService congressService;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -30,7 +31,8 @@ public class EmailResource {
     public ResponseEntity<Void> sendEmail(@Valid @RequestBody EmailVM email) throws URISyntaxException {
         log.debug("REST request to send email: {}", email);
         final Congress congress = congressService.getById(Long.valueOf(email.getCongressId()));
-        //mailService.sendEmail(congress.getContactEmail(), email.getEmail(), "Congressline Kft.", email.getBody(), false, true);
+        mailService.sendEmail(congress.getContactEmail(), null, email.getEmail(), congress.getContactEmail(),
+            "Congressline - " + congress.getMeetingCode(), email.getBody(), false, true);
         return ResponseEntity.ok()
                 .headers(HeaderUtil.createEntityCreationAlert("emailDialog", email.getEmail())).build();
     }

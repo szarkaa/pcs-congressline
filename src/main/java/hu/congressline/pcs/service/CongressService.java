@@ -46,14 +46,14 @@ public class CongressService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<Congress> findById(Long id) {
-        log.debug("Request to find Congress : {}", id);
+        log.debug("Request to find Congress by id: {}", id);
         return congressRepository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Congress getById(Long id) {
-        log.debug("Request to get Congress : {}", id);
+        log.debug("Request to get Congress by id: {}", id);
         return congressRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Congress not found by id: " + id));
     }
 

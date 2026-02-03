@@ -66,7 +66,7 @@
                         <strong>{{ "pcsApp.registration.position" | translate }}: </strong>{{vm.registration.position}}
                     </address>
                     <address>
-                        <strong>{{ "pcsApp.registration.email" | translate }}: </strong>{{vm.registration.email}}
+                        <strong>{{ "pcsApp.registration.email" | translate }}: </strong><email-dialog email="{{vm.registration.email}}" last-name="{{vm.registration.lastName}}" first-name="{{vm.registration.firstName}}">{{vm.registration.email}}</email-dialog>
                     </address>
                     <address>
                         <strong>{{ "pcsApp.registration.phone" | translate }}: </strong>{{vm.registration.phone}}

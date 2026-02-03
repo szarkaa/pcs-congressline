@@ -49,8 +49,8 @@ public class MailService {
     private final SpringTemplateEngine templateEngine;
 
     @Async
-    public void sendEmail(String from, String fromName, String to, String subject, String content, boolean isMultipart, boolean isHtml) {
-        sendEmailSync(from, fromName, to, null, subject, content, isMultipart, isHtml);
+    public void sendEmail(String from, String fromName, String to, String cc, String subject, String content, boolean isMultipart, boolean isHtml) {
+        sendEmailSync(from, fromName, to, cc, subject, content, isMultipart, isHtml);
     }
 
     @Async
