@@ -13,7 +13,7 @@
             parent: 'administration',
             url: '/misc-service',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.miscService.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'misc-service',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'CongressSelector', function($stateParams, $state, $uibModal, CongressSelector) {
                 $uibModal.open({
@@ -47,12 +47,14 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 name: null,
                                 description: null,
                                 measure: null,
                                 price: null,
-                                id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                vatInfo: null,
+                                currency: null,
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }
@@ -67,7 +69,7 @@
             parent: 'misc-service',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -92,7 +94,7 @@
             parent: 'misc-service',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

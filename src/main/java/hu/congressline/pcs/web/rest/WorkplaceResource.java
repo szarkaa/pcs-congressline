@@ -18,8 +18,10 @@ import java.util.List;
 
 import hu.congressline.pcs.domain.Workplace;
 import hu.congressline.pcs.service.WorkplaceService;
+import hu.congressline.pcs.service.dto.WorkplaceDTO;
 import hu.congressline.pcs.service.dto.WorkplaceMergeDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.WorkplaceVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,62 +37,53 @@ public class WorkplaceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/workplaces")
-    public ResponseEntity<Workplace> create(@Valid @RequestBody Workplace workplace) throws URISyntaxException {
-        log.debug("REST request to save Workplace : {}", workplace);
-        if (workplace.getId() != null) {
+    public ResponseEntity<WorkplaceDTO> create(@Valid @RequestBody WorkplaceVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save workplace : {}", viewModel);
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
                 .createFailureAlert(ENTITY_NAME, "idexists", "A new workplace cannot already have an ID"))
                 .body(null);
         }
 
-        Workplace result = workplaceService.save(workplace);
+        Workplace result = workplaceService.save(viewModel);
         return ResponseEntity.created(new URI("/api/workplaces/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new WorkplaceDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/workplaces")
-    public ResponseEntity<Workplace> update(@Valid @RequestBody Workplace workplace) throws URISyntaxException {
-        log.debug("REST request to update Workplace : {}", workplace);
-        if (workplace.getId() == null) {
-            return create(workplace);
+    public ResponseEntity<WorkplaceDTO> update(@Valid @RequestBody WorkplaceVM viewModel) throws URISyntaxException {
+        log.debug("REST request to update workplace : {}", viewModel);
+        if (viewModel.getId() == null) {
+            return create(viewModel);
         }
-        Workplace result = workplaceService.save(workplace);
+        Workplace result = workplaceService.save(viewModel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, workplace.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
+            .body(new WorkplaceDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/workplaces/congress/{congressId}")
-    public List<Workplace> getAllOnlyByCongressId(@PathVariable Long congressId) {
-        log.debug("REST request to get all Workplaces by congress id: {}", congressId);
-        return workplaceService.findByCongressId(congressId);
+    public List<WorkplaceDTO> getAllOnlyByCongressId(@PathVariable Long congressId) {
+        log.debug("REST request to get all workplaces by congress id: {}", congressId);
+        return workplaceService.findByCongressId(congressId).stream().map(WorkplaceDTO::new).toList();
     }
-
-    /*
-    @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/workplaces")
-    public List<Workplace> getAll() {
-        log.debug("REST request to get all Workplaces");
-        return workplaceService.findAll();
-    }
-    */
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/workplaces/all/congress/{id}")
-    public List<Workplace> getAllWorkplacesForCongressId(@PathVariable Long id) {
+    public List<WorkplaceDTO> getAllWorkplacesForCongressId(@PathVariable Long id) {
         log.debug("REST request to get all workplaces for null congress and congress id");
-        return workplaceService.findAllForCongressId(id);
+        return workplaceService.findAllForCongressId(id).stream().map(WorkplaceDTO::new).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/workplaces/{id}")
-    public ResponseEntity<Workplace> getById(@PathVariable Long id) {
+    public ResponseEntity<WorkplaceDTO> getById(@PathVariable Long id) {
         log.debug("REST request to get Workplace : {}", id);
         return workplaceService.findById(id)
-            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+            .map(result -> new ResponseEntity<>(new WorkplaceDTO(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

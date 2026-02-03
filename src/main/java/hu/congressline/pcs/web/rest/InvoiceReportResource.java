@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.Invoice;
 import hu.congressline.pcs.service.InvoiceReportService;
-import hu.congressline.pcs.service.NavService;
+import hu.congressline.pcs.service.NavOnlineService;
 import hu.congressline.pcs.service.dto.InvoiceReportDTO;
 import hu.congressline.pcs.service.dto.online.InvoiceNavValidationDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
@@ -39,7 +39,7 @@ public class InvoiceReportResource {
     private static final String CONTENT_DISPOSITION = "Content-Disposition";
     private static final String XLSX_SUFFIX = ".xlsx";
     private final InvoiceReportService service;
-    private final NavService navOnlineService;
+    private final NavOnlineService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/invoice-report")

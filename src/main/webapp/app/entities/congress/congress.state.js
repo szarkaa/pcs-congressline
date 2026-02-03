@@ -13,7 +13,7 @@
             parent: 'maintenance',
             url: '/congress',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'pcsApp.congress.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'congress',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -47,6 +47,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 meetingCode: null,
                                 name: null,
                                 startDate: null,
@@ -55,12 +56,14 @@
                                 contactEmail: null,
                                 website: null,
                                 programNumber: null,
-                                archive: false,
+                                defaultCountryId: null,
                                 additionalBillingTextHu: null,
                                 additionalBillingTextEn: null,
+                                migratedFromCongressCode: null,
+                                archive: false,
                                 currencies: [],
                                 onlineRegCurrencies: [],
-                                id: null
+                                bankAccounts: []
                             };
                         }
                     }
@@ -75,7 +78,7 @@
             parent: 'congress',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -100,7 +103,7 @@
             parent: 'congress',
             url: '/{id}/online-reg-config',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -133,7 +136,7 @@
             parent: 'congress',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

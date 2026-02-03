@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import hu.congressline.pcs.domain.InvoiceRegistration;
+import hu.congressline.pcs.domain.Invoice;
 import hu.congressline.pcs.domain.enumeration.InvoiceNavStatus;
 import hu.congressline.pcs.domain.enumeration.InvoiceType;
 import hu.congressline.pcs.domain.enumeration.NavVatCategory;
@@ -50,41 +50,39 @@ public class InvoiceDTO implements Serializable {
     private InvoiceType invoiceType;
     private LocalDate dateOfPayment;
 
-    public InvoiceDTO(InvoiceRegistration invoiceReg) {
-        this.id = invoiceReg.getInvoice().getId();
-        this.invoiceNumber = invoiceReg.getInvoice().getInvoiceNumber();
-        this.stornoInvoiceNumber = invoiceReg.getInvoice().getStornoInvoiceNumber();
-        this.name1 = invoiceReg.getInvoice().getName1();
-        this.name2 = invoiceReg.getInvoice().getName2();
-        this.name3 = invoiceReg.getInvoice().getName3();
-        this.optionalName = invoiceReg.getInvoice().getOptionalName();
-        this.vatRegNumber = invoiceReg.getInvoice().getVatRegNumber();
-        this.city = invoiceReg.getInvoice().getCity();
-        this.zipCode = invoiceReg.getInvoice().getZipCode();
-        this.street = invoiceReg.getInvoice().getStreet();
-        this.country = invoiceReg.getInvoice().getCountry();
-        this.countryCode = invoiceReg.getInvoice().getCountryCode();
-        this.optionalText = invoiceReg.getInvoice().getOptionalText();
-        this.startDate = invoiceReg.getInvoice().getStartDate();
-        this.endDate = invoiceReg.getInvoice().getEndDate();
-        this.dateOfFulfilment = invoiceReg.getInvoice().getDateOfFulfilment();
-        this.paymentDeadline = invoiceReg.getInvoice().getPaymentDeadline();
-        this.billingMethod = invoiceReg.getInvoice().getBillingMethod();
-        this.bankName = invoiceReg.getInvoice().getBankName();
-        this.bankAccount = invoiceReg.getInvoice().getBankAccount();
-        this.bankAddress = invoiceReg.getInvoice().getBankAddress();
-        this.swiftCode = invoiceReg.getInvoice().getSwiftCode();
-        this.printLocale = invoiceReg.getInvoice().getPrintLocale();
-        this.storno = invoiceReg.getInvoice().getStorno();
-        this.stornired = invoiceReg.getInvoice().getStornired();
-        this.createdDate = invoiceReg.getInvoice().getCreatedDate();
-        this.exchangeRate = invoiceReg.getInvoice().getExchangeRate();
-        this.navTrxId = invoiceReg.getInvoice().getNavTrxId();
-        this.navStatus = invoiceReg.getInvoice().getNavStatus();
-        this.navVatCategory = invoiceReg.getInvoice().getNavVatCategory();
-        this.invoiceType = invoiceReg.getInvoice().getInvoiceType();
-        this.dateOfPayment = invoiceReg.getDateOfPayment();
-
+    public InvoiceDTO(Invoice invoice) {
+        this.id = invoice.getId();
+        this.invoiceNumber = invoice.getInvoiceNumber();
+        this.stornoInvoiceNumber = invoice.getStornoInvoiceNumber();
+        this.name1 = invoice.getName1();
+        this.name2 = invoice.getName2();
+        this.name3 = invoice.getName3();
+        this.optionalName = invoice.getOptionalName();
+        this.vatRegNumber = invoice.getVatRegNumber();
+        this.city = invoice.getCity();
+        this.zipCode = invoice.getZipCode();
+        this.street = invoice.getStreet();
+        this.country = invoice.getCountry();
+        this.countryCode = invoice.getCountryCode();
+        this.optionalText = invoice.getOptionalText();
+        this.startDate = invoice.getStartDate();
+        this.endDate = invoice.getEndDate();
+        this.dateOfFulfilment = invoice.getDateOfFulfilment();
+        this.paymentDeadline = invoice.getPaymentDeadline();
+        this.billingMethod = invoice.getBillingMethod();
+        this.bankName = invoice.getBankName();
+        this.bankAccount = invoice.getBankAccount();
+        this.bankAddress = invoice.getBankAddress();
+        this.swiftCode = invoice.getSwiftCode();
+        this.printLocale = invoice.getPrintLocale();
+        this.storno = invoice.getStorno();
+        this.stornired = invoice.getStornired();
+        this.createdDate = invoice.getCreatedDate();
+        this.exchangeRate = invoice.getExchangeRate();
+        this.navTrxId = invoice.getNavTrxId();
+        this.navStatus = invoice.getNavStatus();
+        this.navVatCategory = invoice.getNavVatCategory();
+        this.invoiceType = invoice.getInvoiceType();
     }
 
     @Override

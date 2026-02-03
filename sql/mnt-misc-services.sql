@@ -1,0 +1,178 @@
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (7926,'Szállás előleg (ÁFA tv15.§) (Sandoz csoport)',NULL,'alkalom',1703000.00,21,1,354),
+                                                                                                     (7992,'Részvételi díj (NEM TAG)',NULL,'fő',79000.00,5,1,354),
+                                                                                                     (8070,'Szállás 1/1 Avar Hotel (Áfa tv 15§)',NULL,'éj',55000.00,21,1,354),
+                                                                                                     (8073,'Kiállítói csütörtök esti vacsora',NULL,'fő',15000.00,21,1,354),
+                                                                                                     (8076,'Péntek esti közös vacsora',NULL,'fő',15000.00,21,1,354),
+                                                                                                     (8109,'Cégszimpózium (szombat)',NULL,'alkalom',1397000.00,5,1,354),
+                                                                                                     (8115,'Részvételi díj',NULL,'alkalom',189000.00,5,1,354),
+                                                                                                     (8118,'Szállás  (Áfa tv 15§)',NULL,'alkalom',330000.00,21,1,354),
+                                                                                                     (8121,'Péntek esti közös vacsora',NULL,'alkalom',45000.00,21,1,354),
+                                                                                                     (8151,'Kiállítási terület',NULL,'nm',368300.00,5,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (8157,'Részvételi díj Merck',NULL,'alkalom',1046000.00,5,1,354),
+                                                                                                     (8160,'Szállás Merck (Áfa tv 15§)',NULL,'alkalom',2001000.00,21,1,354),
+                                                                                                     (8163,'Részvételi díj UCB',NULL,'alkalom',987000.00,5,1,354),
+                                                                                                     (8166,'Szállás UCB  (Áfa tv 15§)',NULL,'alkalom',1618000.00,21,1,354),
+                                                                                                     (8169,'Kiállító részvételi díj',NULL,'fő',69000.00,5,1,354),
+                                                                                                     (8172,'Szállás (Ózon  Hotel) (Áfa tv 15§)',NULL,'éj',69000.00,21,1,354),
+                                                                                                     (8175,'Kiállítói péntek esti vacsora',NULL,'fő',15000.00,21,1,354),
+                                                                                                     (8178,'Részvételi díj Merck D.',NULL,'alkalom',414000.00,5,1,354),
+                                                                                                     (8181,'Szállás Merck D. (Áfa tv 15§)',NULL,'alkalom',605000.00,21,1,354),
+                                                                                                     (8184,'Napijegy csütörtök',NULL,'fő',35000.00,5,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (8187,'Szállás Lifestyle (ÁFA tv 15§)',NULL,'éj',59000.00,21,1,354),
+                                                                                                     (8211,'Részvételi díj Merck',NULL,'alkalom',967000.00,5,1,354),
+                                                                                                     (8214,'Szállás Merck (Áfa tv 15§)',NULL,'alkalom',1883000.00,21,1,354),
+                                                                                                     (8217,'Szállás Merck (Áfa tv 15§)',NULL,'alkalom',1891000.00,21,1,354),
+                                                                                                     (8220,'Részvételi díj MANIT tag',NULL,'fő',69000.00,5,1,354),
+                                                                                                     (8223,'Részvételi dj',NULL,'fő',55000.00,5,1,354),
+                                                                                                     (8226,'Részvételi díj',NULL,'fő',55000.00,5,1,354),
+                                                                                                     (8229,'Szállás AVAR 1/2  (Áfa tv 15§)',NULL,'éj',71000.00,21,1,354),
+                                                                                                     (8250,'Részvételi díj (Q Pharma)',NULL,'alkalom',275000.00,5,1,354),
+                                                                                                     (8253,'Szállás (Q Pharma )',NULL,'alkalom',590000.00,21,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (8256,'Péntek esti közös vacsora (Q Pharma)',NULL,'alkalom',75000.00,21,1,354),
+                                                                                                     (8262,'Részvételi díj differencia',NULL,'fő',24000.00,5,1,354),
+                                                                                                     (8283,'Részvételi díj',NULL,'fő',89000.00,5,1,354),
+                                                                                                     (8334,'Részvételi dj',NULL,'fő',65000.00,5,1,354),
+                                                                                                     (8343,'Richter Gedeon Részvételi díj',NULL,'alkalom',1749000.00,5,1,354),
+                                                                                                     (8346,'Richter Gedeon Szállás (Áfa tv 15§)',NULL,'alkalom',2766000.00,21,1,354),
+                                                                                                     (8355,'Részvételi díj 50 % előleg (KRKA)',NULL,'alkalom',-520000.00,5,1,354),
+                                                                                                     (8358,'Szállás (Áfa tv 15§) 50 % előleg (KRKA)',NULL,'alkalom',-681000.00,21,1,354),
+                                                                                                     (8361,'Péntek esti vacsora 50 % előleg (KRKA)',NULL,'alkalom',-82500.00,21,1,354),
+                                                                                                     (8364,'Részvételi díj',NULL,'fő',65000.00,5,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (8370,'Részvételi díj NEM tag',NULL,'fő',89000.00,5,1,354),
+                                                                                                     (8625,'Single room Hotel Ózon 6 November, 2025 (Áfatv 15§)',NULL,'night',69000.00,21,1,354),
+                                                                                                     (8628,'Daily ticket 6 November, 2025',NULL,'person',35000.00,5,1,354),
+                                                                                                     (8631,'Dinner 6 November 2025',NULL,'person',15000.00,21,1,354),
+                                                                                                     (8655,'Kiállítási terület 50 % előleg Biogen',NULL,'/négyzetméter',-184150.00,5,1,354),
+                                                                                                     (8658,'Cégszimpózium 50 % előleg Nővérszekció Biogen',NULL,'alkalom',-317500.00,5,1,354),
+                                                                                                     (8661,'Szimpózium előadás rögzítése 50 % előleg Biogen',NULL,'alkalom',-127000.00,5,1,354),
+                                                                                                     (8664,'Részvételi díj 50 % előleg Biogen',NULL,'alkalom',-138000.00,5,1,354),
+                                                                                                     (8667,'Szállás 50 % előleg Biogen (Áfa tv 15§)',NULL,'alkalom',-195000.00,21,1,354),
+                                                                                                     (8670,'Vacsora 50 % előleg Biogen',NULL,'alkalom',-60000.00,21,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (8673,'Részvételi díj 50% előleg Biogen D',NULL,'alkalom',55000.00,5,1,354),
+                                                                                                     (8676,'Részvételi díj Biotest D.',NULL,'alkalom',345000.00,5,1,354),
+                                                                                                     (8679,'Szállás Biotest D. (Áfa tv 15§)',NULL,'alkalom',454000.00,21,1,354),
+                                                                                                     (8730,'Cégszimpózium csütörtök',NULL,'alkalom',1524000.00,5,1,354),
+                                                                                                     (8733,'Cégszimpózium',NULL,'alkalom',1905000.00,5,1,354),
+                                                                                                     (8736,'Hirdetés a mobilaplikációban belső',NULL,'alkalom',381000.00,5,1,354),
+                                                                                                     (8739,'Hirdetés a mobilaplikációban borító',NULL,'alkalom',508000.00,5,1,354),
+                                                                                                     (8742,'Szimpózium előadás rögzítése','','alkalom',254000.00,5,1,354),
+                                                                                                     (8766,'Szállás differencia','','alkalom',81000.00,21,1,354),
+                                                                                                     (8784,'Részvételi díj , Rezidens, PHD, nyugdíjas',NULL,'fő',55000.00,5,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (8835,'Részvételi díj CSL Behring',NULL,'alkalom',1097000.00,5,1,354),
+                                                                                                     (8838,'Szállás CSL Behring  (Áfa tv 15§)',NULL,'alkalom',1391000.00,21,1,354),
+                                                                                                     (8841,'Program CSL Behring DOLGOZÓK',NULL,'alkalom',60000.00,21,1,354),
+                                                                                                     (8844,'Részvételi díj EGIS támogatott résztvevők',NULL,'alkalom',639000.00,5,1,354),
+                                                                                                     (8847,'Szállás EGIS támogatott résztvevők (ÁFA Tv. 15 §)',NULL,'alkalom',1042000.00,21,1,354),
+                                                                                                     (8850,'Részvételi díj EGIS dolgozók',NULL,'alkalom',649000.00,5,1,354),
+                                                                                                     (8853,'Szállás EGIS dolgozók (Áfa tv 15§)',NULL,'alkalom',603000.00,21,1,354),
+                                                                                                     (8856,'Vacsora EGIS dolgozók (Áfa tv 15§)',NULL,'alkalom',105000.00,21,1,354),
+                                                                                                     (8859,'Szállás (ÁFA tv. 15§)',NULL,'alkalom',75000.00,21,1,354),
+                                                                                                     (8898,'Kiállítási terület 4nm Roche 50 % előleg',NULL,'alkalom',-736600.00,5,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (8901,'Cégszimpózium 50 % előelg ROCHE',NULL,'alkalom',-952500.00,5,1,354),
+                                                                                                     (8904,'Cégszimpózium nővér szekció 50 % előleg ROCHE',NULL,'alkalom',-317500.00,5,1,354),
+                                                                                                     (8916,'Részvételi díj  előleg ROCHE',NULL,'alkalom',-900000.00,5,1,354),
+                                                                                                     (8919,'Szállás 50 % előleg ROCHE',NULL,'alkalom',-1639000.00,21,1,354),
+                                                                                                     (8922,'Részvételi díj előleg ROCHE dolgozók',NULL,'alkalom',-313500.00,5,1,354),
+                                                                                                     (8925,'Szállás   (Áfa tv 15§) előleg ROCHE dolgozók',NULL,'alkalom',-413000.00,21,1,354),
+                                                                                                     (8928,'Program (Áfa tv 15§)  előleg ROCHE dolgzók',NULL,'alkalom',-127500.00,21,1,354),
+                                                                                                     (8931,'Részvételi díj Richter D.',NULL,'alkalom',276000.00,5,1,354),
+                                                                                                     (8934,'Szállás  (ÁFA tv15.§)  Richter D.',NULL,'alkalom',236000.00,21,1,354),
+                                                                                                     (8937,'Program Richter D.  (ÁFA tv15.§)',NULL,'alkalom',90000.00,21,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (8946,'Cégszimpózium nővérszekció',NULL,'alkalom',635000.00,5,1,354),
+                                                                                                     (8949,'Kiállítási terület 50 % előleg 6 nm RICHTER',NULL,'alkalom',-1104900.00,5,1,354),
+                                                                                                     (8952,'Cégszimpózium nővérszekció 50 % előleg RICHTER',NULL,'alkalom',-317500.00,5,1,354),
+                                                                                                     (8955,'Részvételi díj SANDOZ',NULL,'alkalom',2441000.00,5,1,354),
+                                                                                                     (8958,'Szállás (ÁFA tv.15§) SANDOZ',NULL,'alkalom',4132000.00,21,1,354),
+                                                                                                     (8961,'Szállás előleg SANDOZ (ÁFA tv 15§)',NULL,'alkalom',-1703000.00,21,1,354),
+                                                                                                     (8964,'Program SANDOZ',NULL,'alkalom',30000.00,21,1,354),
+                                                                                                     (8967,'Részvételi díj',NULL,'alkalom',174000.00,5,1,354),
+                                                                                                     (8970,'Szállás (ÁFA tv 15§)',NULL,'alkalom',118000.00,21,1,354),
+                                                                                                     (8973,'Program',NULL,'alkalom',30000.00,21,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (9021,'Részvételi díj (Teva)',NULL,'alkalom',1740000.00,5,1,354),
+                                                                                                     (9024,'Szállás (Áfa tv 15§) Teva',NULL,'alkalom',1983000.00,21,1,354),
+                                                                                                     (9027,'Részvételi díj TEVA D.',NULL,'alkalom',420000.00,5,1,354),
+                                                                                                     (9030,'Szállás (ÁFA tv 15§) Teva D',NULL,'alkalom',320000.00,21,1,354),
+                                                                                                     (9033,'Program (ÁFA tv 15§) Teva D.',NULL,'alkalom',90000.00,21,1,354),
+                                                                                                     (9039,'Napijegy péntek',NULL,'fő',48000.00,5,1,354),
+                                                                                                     (9042,'Szállás (ÁFA tv. 15§) Zentiva 50% előleg',NULL,'alkalom',110000.00,21,1,354),
+                                                                                                     (9045,'Péntek esti közös vacsora (ÁFA tv 15§) Zentiva 50 % előleg',NULL,'alkalom',30000.00,21,1,354),
+                                                                                                     (9048,'Program visszatérítés',NULL,'alkalom',-30000.00,21,1,354),
+                                                                                                     (9054,'Péntek esti közös vacsora',NULL,'alkalom',22500.00,21,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (9057,'Részvételi díj','','fő',69000.00,5,1,354),
+                                                                                                     (9060,'Napijegy péntek',NULL,'fő',48000.00,5,1,354),
+                                                                                                     (9066,'Megállapodás szerinti jutalék',NULL,'alkalom',1043819.00,5,1,354),
+                                                                                                     (9114,'Kiállítási terület VÉGSZÁMLA Richter 6 nm',NULL,'alkalom',2209800.00,5,1,354),
+                                                                                                     (9117,'Cégszimpózium Nővérszekció Richter végszámla',NULL,'alkalom',635000.00,5,1,354),
+                                                                                                     (9120,'Hirdetés nyakpáton',NULL,'alkalom',508000.00,5,1,354),
+                                                                                                     (9123,'Tároló szekrény kihelyezés (céges logóval, hirdetés)',NULL,'alkalom',762000.00,5,1,354),
+                                                                                                     (9126,'Rollup kihelyezés',NULL,'alkalom',254000.00,5,1,354),
+                                                                                                     (9129,'Cégszimpózium (15 perc)',NULL,'alkalom',952500.00,5,1,354),
+                                                                                                     (9132,'Terembérlet',NULL,'alkalom',60000.00,5,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (9135,'Novartis meeting étkezések',NULL,'alkalom',245000.00,21,1,354),
+                                                                                                     (9138,'Megállapodás szerinti jutalék',NULL,'alkalom',18233.00,5,1,354),
+                                                                                                     (9150,'Céges logó megjelenítés a névkitűzőn (hirdetés)',NULL,'alkalom',508000.00,5,1,354),
+                                                                                                     (9153,'Kiállítási terület Zentiva (4nm )',NULL,'alkalom',1473200.00,5,1,354),
+                                                                                                     (9156,'Részvételi díj NOVARTIS',NULL,'alkalom',4520000.00,5,1,354),
+                                                                                                     (9159,'Szállás (Áfa tv 15§)  Novartis',NULL,'alkalom',7532000.00,21,1,354),
+                                                                                                     (9162,'Részvételi díj (Novartis D)',NULL,'alkalom',483000.00,5,1,354),
+                                                                                                     (9165,'Szállás (Áfa tv 15§)  Novartis D',NULL,'alkalom',770000.00,21,1,354),
+                                                                                                     (9168,'Program (Áfa tv 15§) Novartis D.',NULL,'alkalom',210000.00,21,1,354),
+                                                                                                     (9174,'Megállapodás szerint jutalék',NULL,'alkalom',39878.00,5,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (9186,'Részvételi díj BIOGEN',NULL,'alkalom',276000.00,5,1,354),
+                                                                                                     (9189,'Szállás (ÁFA tv. 15§) BIOGEN',NULL,'alkalom',390000.00,21,1,354),
+                                                                                                     (9192,'Vacsora  (ÁFA tv. 15§) BIOGEN',NULL,'alkalom',120000.00,21,1,354),
+                                                                                                     (9195,'Jutalék  SV',NULL,'összesen',690118.00,5,1,354),
+                                                                                                     (9198,'Részvételi díj ASTRAZENECA',NULL,'alkalom',541000.00,5,1,354),
+                                                                                                     (9201,'Szállás (ÁFA tv. 15§ ) ASTRAZENECA',NULL,'alkalom',966000.00,21,1,354),
+                                                                                                     (9204,'Program (ÁFA tv. 15§) AstraZeneca',NULL,'alkalom',150000.00,21,1,354),
+                                                                                                     (9213,'Részvételi díj KRKA',NULL,'alkalom',1040000.00,5,1,354),
+                                                                                                     (9216,'Szállás (ÁFA tv. 15§) KRKA',NULL,'alkalom',1362000.00,21,1,354),
+                                                                                                     (9219,'Program (ÁFA tv 15§) KRKA',NULL,'alkalom',165000.00,21,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (9222,'Részvételi díj Richter II.',NULL,'alkalom',257000.00,5,1,354),
+                                                                                                     (9225,'Szállás (ÁFA tv. 15§) Richter II.',NULL,'alkalom',366000.00,21,1,354),
+                                                                                                     (9228,'Részvételi díj ROCHE',NULL,'alkalom',1800000.00,5,1,354),
+                                                                                                     (9231,'Szállás (ÁFA tv. 15§) ROCHE',NULL,'alkalom',3278000.00,21,1,354),
+                                                                                                     (9234,'Részvételi díj ROCHE dolgozók',NULL,'alkalom',786000.00,5,1,354),
+                                                                                                     (9237,'Szállás (ÁFA tv. 15§) Roche dolgozók',NULL,'alkalom',1259000.00,21,1,354),
+                                                                                                     (9240,'Program ROCHE dolgozók',NULL,'alkalom',330000.00,21,1,354),
+                                                                                                     (9243,'Részvételi díj SANDOZ D',NULL,'alkalom',276000.00,5,1,354),
+                                                                                                     (9246,'Szállás (ÁFA tv. 15§) SANDOZ D.',NULL,'alkalom',440000.00,21,1,354),
+                                                                                                     (9249,'Program (ÁFA tv. 15§) Sandoz D.',NULL,'alkalom',120000.00,21,1,354);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (9252,'Megállapodás szerinti jutalék',NULL,'alkalom',6576332.00,5,1,354),
+                                                                                                     (9270,'Megállapodás szerinti jutalék számla',NULL,'alkalom',1170248.00,5,1,354),
+                                                                                                     (9273,'Szállás (ÁFA tv. 15§ ) Zentiva',NULL,'alkalom',220000.00,21,1,354),
+                                                                                                     (9276,'Program (ÁFA tv. 15§) Zentiva',NULL,'alkalom',60000.00,21,1,354),
+                                                                                                     (9528,'korai kiállítói jegy',NULL,'fő',60000.00,5,1,402),
+                                                                                                     (9531,'Hotel Golden Lake nem panorámás 2 ágyas (ÁFA tv15.§)',NULL,'éj',87000.00,21,1,402),
+                                                                                                     (9534,'Gálavacsora',NULL,'fő',28000.00,5,1,402),
+                                                                                                     (9537,'Ebéd (csütörtök)',NULL,'fő',14000.00,21,1,402),
+                                                                                                     (9540,'Ebéd (szombat)',NULL,'fő',14000.00,21,1,402),
+                                                                                                     (9555,'Hotel Astoria 2 ágyas (ÁFA tv15.§)',NULL,'éj',58000.00,21,1,402);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+                                                                                                     (9564,'MNT Tag',NULL,'fő',85000.00,5,1,402),
+                                                                                                     (9567,'Hotel Montello 1 ágyas (ÁFA tv15.§)',NULL,'éj',55000.00,21,1,402),
+                                                                                                     (9585,'Hotel Vinifera Kétágyas szoba (ÁFA tv15.§)',NULL,'éj',92000.00,21,1,402),
+                                                                                                     (9588,'Hotel Golden Lake panoráma lakosztály2 (ÁFA tv15.§)',NULL,'éj',102000.00,21,1,402),
+                                                                                                     (9591,'Hotel Golden Lake nem panorámás(ÁFA tv15.§)',NULL,'éj',86000.00,21,1,402),
+                                                                                                     (9594,'Anna Grand Egyágyas (ÁFA tv15.§)',NULL,'éj',85000.00,21,1,402),
+                                                                                                     (9597,'Nem MNT Tag',NULL,'fő',110000.00,5,1,402),
+                                                                                                     (9600,'Larum 1ágyas apartman+R (ÁFA tv15.§)',NULL,'éj',60000.00,21,1,402),
+                                                                                                     (9609,'Phytotec D Részvételi díj',NULL,'összesen',320000.00,5,1,402),
+                                                                                                     (9612,'Phytotec D  Szállás (ÁFA tv15.§)',NULL,'összesen',148000.00,21,1,402);
+INSERT INTO misc_service (id,name,description,measure,price,vat_info_id,currency_id,congress_id) VALUES
+    (9615,'Phytotec D Étkezés',NULL,'összesen',70000.00,21,1,402);

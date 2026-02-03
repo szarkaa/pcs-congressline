@@ -13,7 +13,7 @@
             parent: 'administration',
             url: '/optional-text',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.optionalText.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'optional-text',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'CongressSelector', function($stateParams, $state, $uibModal, CongressSelector) {
                 $uibModal.open({
@@ -50,7 +50,7 @@
                                 name: null,
                                 optionalText: null,
                                 id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }
@@ -65,7 +65,7 @@
             parent: 'optional-text',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -90,7 +90,7 @@
             parent: 'optional-text',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

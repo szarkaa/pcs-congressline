@@ -5,18 +5,18 @@ import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Image;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
 
+import org.openpdf.text.Chunk;
+import org.openpdf.text.Document;
+import org.openpdf.text.DocumentException;
+import org.openpdf.text.Element;
+import org.openpdf.text.Image;
+import org.openpdf.text.PageSize;
+import org.openpdf.text.Paragraph;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.PdfPCell;
+import org.openpdf.text.pdf.PdfPTable;
+import org.openpdf.text.pdf.PdfWriter;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -54,6 +54,7 @@ import hu.congressline.pcs.repository.RegistrationRegistrationTypeRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
 import hu.congressline.pcs.service.pdf.ConfirmationHeaderFooter;
 import hu.congressline.pcs.service.pdf.ConfirmationPdfContext;
+import hu.congressline.pcs.service.pdf.ConfirmationPdfHeaderFooterTextContext;
 import hu.congressline.pcs.service.pdf.PcsPdfFont;
 import hu.congressline.pcs.service.pdf.PdfContext;
 import hu.congressline.pcs.web.rest.vm.ConfirmationPdfVM;
@@ -134,15 +135,14 @@ public class ConfirmationPdfService extends AbstractPdfService {
         pdfContext.setCompany(companyService.getCompanyProfile());
 
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            Document document = new Document(PageSize.A4, 20, 20, 40, 100);
+            Document document = new Document(PageSize.A4, 20, 20, 40, 120);
             PdfWriter writer = PdfWriter.getInstance(document, baos);
-            ConfirmationHeaderFooter event = new ConfirmationHeaderFooter(messageSource, pdfContext);
-            writer.setPageEvent(event);
+            writer.setPageEvent(new ConfirmationHeaderFooter(new ConfirmationPdfHeaderFooterTextContext(messageSource, pdfContext.getLocale(), pdfContext.getContactEmail())));
             writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
 
             document.open();
             addMetaData(document, pdfContext);
-            generateContent(document, writer, pdfContext);
+            generateContent(document, pdfContext);
 
             document.close();
             writer.flush();
@@ -195,7 +195,7 @@ public class ConfirmationPdfService extends AbstractPdfService {
         document.add(p);
     }
 
-    private void createContentFirstBlock(Document document, PdfWriter writer, ConfirmationPdfContext pdfContext) throws DocumentException {
+    private void createContentFirstBlock(Document document, ConfirmationPdfContext pdfContext) throws DocumentException {
         final Locale locale = pdfContext.getLocale();
         Registration registration = pdfContext.getRegistration();
 
@@ -473,10 +473,10 @@ public class ConfirmationPdfService extends AbstractPdfService {
         document.add(table);
     }
 
-    private void generateContent(Document document, PdfWriter writer, ConfirmationPdfContext pdfContext) throws DocumentException {
+    private void generateContent(Document document, ConfirmationPdfContext pdfContext) throws DocumentException {
 
         createContentTitle(document, pdfContext);
-        createContentFirstBlock(document, writer, pdfContext);
+        createContentFirstBlock(document, pdfContext);
         createContentSecondBlock(document, pdfContext);
         createContentThirdBlock(document, pdfContext);
         createOrdersTableHeader(document, pdfContext);

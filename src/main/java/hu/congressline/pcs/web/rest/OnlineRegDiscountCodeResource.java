@@ -17,8 +17,10 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import hu.congressline.pcs.domain.OnlineRegDiscountCode;
-import hu.congressline.pcs.repository.OnlineRegDiscountCodeRepository;
+import hu.congressline.pcs.service.OnlineRegDiscountCodeService;
+import hu.congressline.pcs.service.dto.OnlineRegDiscountCodeDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.OnlineRegDiscountCodeVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,60 +32,60 @@ import lombok.extern.slf4j.Slf4j;
 public class OnlineRegDiscountCodeResource {
     private static final String ENTITY_NAME = "onlineRegDiscountCode";
 
-    private final OnlineRegDiscountCodeRepository onlineRegDiscountCodeRepository;
+    private final OnlineRegDiscountCodeService service;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/online-reg-discount-codes")
-    public ResponseEntity<OnlineRegDiscountCode> create(@Valid @RequestBody OnlineRegDiscountCode onlineRegDiscountCode) throws URISyntaxException {
-        log.debug("REST request to save OnlineRegDiscountCode : {}", onlineRegDiscountCode);
-        if (onlineRegDiscountCode.getId() != null) {
+    public ResponseEntity<OnlineRegDiscountCodeDTO> create(@Valid @RequestBody OnlineRegDiscountCodeVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save online reg discount code : {}", viewModel);
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert(ENTITY_NAME, "idexists", "A new onlineRegDiscountCode cannot already have an ID"))
+                .createFailureAlert(ENTITY_NAME, "idexists", "A new online reg discount code cannot already have an ID"))
                 .body(null);
         }
 
-        OnlineRegDiscountCode result = onlineRegDiscountCodeRepository.save(onlineRegDiscountCode);
+        OnlineRegDiscountCode result = service.save(viewModel);
         return ResponseEntity.created(new URI("/api/online-reg-discount-codes/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new OnlineRegDiscountCodeDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/online-reg-discount-codes")
-    public ResponseEntity<OnlineRegDiscountCode> update(@Valid @RequestBody OnlineRegDiscountCode onlineRegDiscountCode) throws URISyntaxException {
-        log.debug("REST request to update OnlineRegDiscountCode : {}", onlineRegDiscountCode);
+    public ResponseEntity<OnlineRegDiscountCodeDTO> update(@Valid @RequestBody OnlineRegDiscountCodeVM onlineRegDiscountCode) throws URISyntaxException {
+        log.debug("REST request to update online reg discount code : {}", onlineRegDiscountCode);
         if (onlineRegDiscountCode.getId() == null) {
             return create(onlineRegDiscountCode);
         }
 
-        OnlineRegDiscountCode result = onlineRegDiscountCodeRepository.save(onlineRegDiscountCode);
+        OnlineRegDiscountCode result = service.save(onlineRegDiscountCode);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, onlineRegDiscountCode.getId().toString()))
-            .body(result);
+            .body(new OnlineRegDiscountCodeDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/online-reg-discount-codes/{id}/congress")
-    public List<OnlineRegDiscountCode> getAllByCongressId(@PathVariable Long id) {
-        log.debug("REST request to get all OnlineRegDiscountCodes by congress id: {}", id);
-        return onlineRegDiscountCodeRepository.findAllByCongressId(id);
+    public List<OnlineRegDiscountCodeDTO> getAllByCongressId(@PathVariable Long id) {
+        log.debug("REST request to get all online reg discount codes by congress id: {}", id);
+        return service.findAllByCongressId(id).stream().map(OnlineRegDiscountCodeDTO::new).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/online-reg-discount-codes/{id}")
-    public ResponseEntity<OnlineRegDiscountCode> getById(@PathVariable Long id) {
-        log.debug("REST request to get OnlineRegDiscountCode : {}", id);
-        return onlineRegDiscountCodeRepository.findById(id)
-            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+    public ResponseEntity<OnlineRegDiscountCodeDTO> getById(@PathVariable Long id) {
+        log.debug("REST request to get online reg discount code by id: {}", id);
+        return service.findById(id)
+            .map(result -> new ResponseEntity<>(new OnlineRegDiscountCodeDTO(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/online-reg-discount-codes/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete OnlineRegDiscountCode : {}", id);
+        log.debug("REST request to delete online reg discount code : {}", id);
         try {
-            onlineRegDiscountCodeRepository.deleteById(id);
+            service.delete(id);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
         } catch (DataIntegrityViolationException e) {
             log.debug("Constraint violation exception during delete operation.", e);

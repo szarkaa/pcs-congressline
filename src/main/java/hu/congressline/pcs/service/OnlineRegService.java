@@ -68,7 +68,7 @@ import hu.congressline.pcs.service.dto.online.OptionalServiceDTO;
 import hu.congressline.pcs.service.dto.online.PaymentResultDTO;
 import hu.congressline.pcs.service.dto.online.RegistrationTypeDTO;
 import hu.congressline.pcs.service.dto.online.RoomDTO;
-import hu.congressline.pcs.web.rest.vm.AccPeopleVM;
+import hu.congressline.pcs.web.rest.vm.OnlineAccPeopleVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegFilterVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegOptionalServiceVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegRegTypeVM;
@@ -127,7 +127,7 @@ public class OnlineRegService {
     @Transactional(readOnly = true)
     public OnlineRegistration getById(Long id) {
         log.debug("Request to get OnlineRegistration : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OnlineRegistration not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OnlineRegistration not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -363,7 +363,7 @@ public class OnlineRegService {
             oros.setParticipant(os.getParticipants());
             final OnlineRegistrationOptionalService oos = orosRepository.save(oros);
             final OptionalService optionalService = osRepository.findById(oos.getOptionalService().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Optional service not found with id: " + oos.getOptionalService().getId()));
+                    .orElseThrow(() -> new IllegalArgumentException("Optional service not found by id: " + oos.getOptionalService().getId()));
             oosService.increaseOptionalServiceReservedNumber(optionalService, oos.getParticipant());
         });
 
@@ -442,7 +442,7 @@ public class OnlineRegService {
             rrt.setRegistrationType(onlineReg.getRegistrationType());
             rrt.setRegistration(result);
             rrt.setAccPeople(1);
-            rrtService.setRegFee(rrt);
+            rrtService.calculateRegFee(rrt);
             rrtService.save(rrt);
         }
 
@@ -454,7 +454,7 @@ public class OnlineRegService {
             rrt.setRegistrationType(orrt.getRegistrationType());
             rrt.setRegistration(result);
             rrt.setAccPeople(accPeopleOnlineList.size());
-            rrtService.setRegFee(rrt);
+            rrtService.calculateRegFee(rrt);
             final RegistrationRegistrationType rrtResult = rrtService.save(rrt);
             accPeopleOnlineList.forEach(accPeopleOnline -> {
                 AccPeople accPeople = new AccPeople();
@@ -545,7 +545,7 @@ public class OnlineRegService {
             orrtVM.setRegistrationType(orrt.getRegistrationType());
             final List<AccPeopleOnline> accPeopleOnlineList = accPeopleOnlineRepository.findAllByOnlineRegistrationRegistrationType(orrt);
             orrtVM.setAccompanies(accPeopleOnlineList.stream().map(accPeopleOnline -> {
-                AccPeopleVM accPeople = new AccPeopleVM();
+                OnlineAccPeopleVM accPeople = new OnlineAccPeopleVM();
                 accPeople.setLastName(accPeopleOnline.getLastName());
                 accPeople.setFirstName(accPeopleOnline.getFirstName());
                 return accPeople;
@@ -631,7 +631,7 @@ public class OnlineRegService {
 
         if (registration.getRegistrationType() != null) {
             final RegistrationType rt = rtRepository.findById(registration.getRegistrationType().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Registration type not found with id: " + registration.getRegistrationType().getId()));
+                    .orElseThrow(() -> new IllegalArgumentException("Registration type not found by id: " + registration.getRegistrationType().getId()));
             total = total.add(rrtService.calculateRegFee(rt, registration.getDateOfApp().toLocalDate()));
         }
 

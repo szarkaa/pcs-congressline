@@ -1,9 +1,11 @@
 package hu.congressline.pcs.web.rest.vm;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.User;
 import hu.congressline.pcs.service.dto.UserDTO;
 import jakarta.validation.constraints.Size;
@@ -29,7 +31,7 @@ public class ManagedUserVM extends UserDTO {
 
     private Instant lastModifiedDate;
 
-    private Set<CongressVM> congresses;
+    private Set<Long> congressIds = new HashSet<>();
 
     @Size(min = PASSWORD_MIN_LENGTH, max = PASSWORD_MAX_LENGTH)
     private String password;
@@ -42,20 +44,7 @@ public class ManagedUserVM extends UserDTO {
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
         this.password = null;
-        this.congresses = user.getCongresses().stream().filter(congress -> !Boolean.TRUE.equals(congress.getArchive())).map(CongressVM::new).collect(Collectors.toSet());
-    }
-
-    @SuppressWarnings("ParameterNumber")
-    public ManagedUserVM(Long id, String login, String password, String firstName, String lastName,
-                         String email, boolean activated, String langKey, Set<String> authorities,
-                         String createdBy, Instant createdDate, String lastModifiedBy, Instant lastModifiedDate) {
-        super(login, firstName, lastName, email, activated, langKey, authorities);
-        this.id = id;
-        this.createdBy = createdBy;
-        this.createdDate = createdDate;
-        this.lastModifiedBy = lastModifiedBy;
-        this.lastModifiedDate = lastModifiedDate;
-        this.password = password;
+        this.congressIds = user.getCongresses().stream().filter(congress -> !Boolean.TRUE.equals(congress.getArchive())).map(Congress::getId).collect(Collectors.toSet());
     }
 
     @Override

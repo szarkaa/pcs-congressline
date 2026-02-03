@@ -27,41 +27,40 @@ import lombok.extern.slf4j.Slf4j;
 public class RoomReservationRegistrationService {
 
     private final RoomReservationService roomReservationService;
-    private final RoomReservationRegistrationRepository rrrRepository;
+    private final RoomReservationRegistrationRepository repository;
     private final RoomReservationRepository rrRepository;
     private final ChargeableItemInvoiceHistoryRepository ciihRepository;
     private final GroupDiscountInvoiceHistoryRepository gdihRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     public RoomReservationRegistration save(RoomReservationRegistration roomReservationRegistration) {
-        log.debug("Request to save RoomReservationRegistration : {}", roomReservationRegistration);
-        return rrrRepository.save(roomReservationRegistration);
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    @Transactional(readOnly = true)
-    public List<RoomReservationRegistration> findAll() {
-        log.debug("Request to get all RoomReservationRegistrations");
-        return rrrRepository.findAll();
+        log.debug("Request to save room reservation registration : {}", roomReservationRegistration);
+        return repository.save(roomReservationRegistration);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<RoomReservationRegistration> findById(Long id) {
-        log.debug("Request to find RoomReservationRegistration : {}", id);
-        return rrrRepository.findById(id);
+        log.debug("Request to find room reservation registration by id: {}", id);
+        return repository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public RoomReservationRegistration getById(Long id) {
-        log.debug("Request to get RoomReservationRegistration : {}", id);
-        return rrrRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("RoomReservationRegistration not found with id: " + id));
+        log.debug("Request to get room reservation registration by id: {}", id);
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("room reservation registration not found by id: " + id));
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public List<RoomReservationRegistration> findAllByRegistrationId(Long registrationId) {
+        return repository.findAllByRegistrationId(registrationId);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long id) {
-        log.debug("Request to delete RoomReservationRegistration : {}", id);
+        log.debug("Request to delete room reservation registration by id: {}", id);
         // if last invoice this item is on is a storno then it is deleteable
         final RoomReservationRegistration rrr = getById(id);
 
@@ -85,7 +84,8 @@ public class RoomReservationRegistrationService {
             range.forEach(localDate -> roomReservationService.decreaseRoomReservedNumber(rr.getRoom(), localDate));
             rrRepository.deleteById(rrr.getRoomReservation().getId());
         } else {
-            rrrRepository.deleteById(id);
+            repository.deleteById(id);
         }
     }
+
 }

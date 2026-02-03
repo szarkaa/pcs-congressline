@@ -13,7 +13,7 @@
                 parent: 'administration',
                 url: '/workplace',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.workplace.home.title'
                 },
                 views: {
@@ -36,7 +36,7 @@
                 parent: 'workplace',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'CongressSelector', function ($stateParams, $state, $uibModal, CongressSelector) {
                     $uibModal.open({
@@ -48,9 +48,10 @@
                         resolve: {
                             entity: function () {
                                 return {
+                                    id: null,
                                     name: null,
                                     vatRegNumber: null,
-                                    country: CongressSelector.getSelectedCongress().defaultCountry,
+                                    countryId: null,
                                     department: null,
                                     zipCode: null,
                                     city: null,
@@ -58,8 +59,7 @@
                                     phone: null,
                                     fax: null,
                                     email: null,
-                                    id: null,
-                                    congress: CongressSelector.getSelectedCongress()
+                                    congressId: CongressSelector.getSelectedCongress().id
                                 };
                             }
                         }
@@ -74,7 +74,7 @@
                 parent: 'workplace',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -99,7 +99,7 @@
                 parent: 'workplace',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -123,7 +123,7 @@
                 parent: 'workplace',
                 url: '/{id}/merge',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.workplace.home.title'
                 },
                 views: {
@@ -146,7 +146,7 @@
                 parent: 'workplace.merge',
                 url: '/confirm',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.workplace.home.title'
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'selectedWorkplaces', function ($stateParams, $state, $uibModal, selectedWorkplaces) {

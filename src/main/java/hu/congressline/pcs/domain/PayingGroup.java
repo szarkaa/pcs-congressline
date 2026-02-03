@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
 
+import hu.congressline.pcs.web.rest.vm.PayingGroupVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -17,6 +18,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -79,6 +81,19 @@ public class PayingGroup implements Serializable {
     @OneToMany(mappedBy = "payingGroup", fetch = FetchType.LAZY)
     private Set<PayingGroupItem> payingGroupItems;
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull PayingGroupVM viewModel) {
+        this.name = viewModel.getName();
+        this.taxNumber = viewModel.getTaxNumber();
+        this.zipCode = viewModel.getZipCode();
+        this.city = viewModel.getCity();
+        this.street = viewModel.getStreet();
+        this.email = viewModel.getEmail();
+        this.phone = viewModel.getPhone();
+        this.fax = viewModel.getFax();
+        this.contactName = viewModel.getContactName();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -103,4 +118,5 @@ public class PayingGroup implements Serializable {
     public String toString() {
         return "PayingGroup{" + "id=" + id + "}";
     }
+
 }

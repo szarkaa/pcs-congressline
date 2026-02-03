@@ -12,17 +12,27 @@
         RoomReservation, Room, PayingGroupItem, CongressSelector, registrationCurrency, invoicedChargeableItemIds) {
         var vm = this;
 
-        vm.roomReservation = entity;
+        vm.roomReservation = {
+            id: entity.id,
+            roomId: entity.roomId,
+            shared: entity.shared,
+            arrivalDate: entity.arrivalDate,
+            departureDate: entity.departureDate,
+            comment: entity.comment,
+            payingGroupItemId: entity.payingGroupItemId,
+            registrationId: entity.registrationId
+        };
         vm.invoicedChargeableItemIds = invoicedChargeableItemIds;
+        vm.datePickerOpenStatus = {};
+        vm.rooms = Room.queryByCongressId({id: CongressSelector.getSelectedCongress().id});
+        vm.payingGroupItems = PayingGroupItem.queryByCongressAndItemType({id: CongressSelector.getSelectedCongress().id, itemType: 'HOTEL'});
+        vm.registrationCurrency = registrationCurrency;
+
         vm.clear = clear;
         vm.save = save;
         vm.filterChargeableItemsByCurrencyCriteria = filterChargeableItemsByCurrencyCriteria;
         vm.isDateEditable = isDateEditable;
-        vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
-        vm.rooms = Room.queryByCongressId({id: CongressSelector.getSelectedCongress().id});
-        vm.payingGroupItems = PayingGroupItem.queryByCongressAndItemType({id: CongressSelector.getSelectedCongress().id, itemType: 'HOTEL'});
-        vm.registrationCurrency = registrationCurrency;
 
 
         $timeout(function (){

@@ -51,12 +51,6 @@ public class Hotel implements Serializable {
     @Column(name = "zip_code", length = 32, nullable = false)
     private String zipCode;
 
-    @Column(name = "latitude")
-    private Double latitude;
-
-    @Column(name = "longitude")
-    private Double longitude;
-
     @Size(max = 64)
     @Column(name = "phone", length = 64)
     private String phone;

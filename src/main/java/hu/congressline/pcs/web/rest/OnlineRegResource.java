@@ -68,7 +68,7 @@ public class OnlineRegResource {
         log.debug("REST request to save OnlineRegistration");
         final OnlineRegistration onlineReg = onlineRegService.save(vm);
         OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(onlineReg.getCongress().getId())
-            .orElseThrow(() -> new IllegalArgumentException("OnlineRegConfig not found with id: " + onlineReg.getCongress().getId()));
+            .orElseThrow(() -> new IllegalArgumentException("OnlineRegConfig not found by id: " + onlineReg.getCongress().getId()));
 
         HttpHeaders headers = new HttpHeaders();
         if (PaymentSupplier.STRIPE.equals(onlineRegConfig.getPaymentSupplier())) {
@@ -106,7 +106,7 @@ public class OnlineRegResource {
     @PostMapping("/stripe/payment/status")
     public ResponseEntity<Void> setStripePaymentStatus(@RequestBody StripePaymentStatusVM status) throws URISyntaxException {
         OnlineRegistration onlineReg = onlineRegistrationRepository.findOneByPaymentTrxId(status.getTxId())
-            .orElseThrow(() -> new IllegalArgumentException("OnlineRegistration not found with id: " + status.getTxId()));
+            .orElseThrow(() -> new IllegalArgumentException("OnlineRegistration not found by id: " + status.getTxId()));
         if ("STRIPE".equals(onlineReg.getPaymentMethod())) {
             onlineReg.setPaymentTrxDate(ZonedDateTime.now());
             final OnlineRegistration result = onlineRegistrationRepository.save(onlineReg);

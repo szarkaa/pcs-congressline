@@ -6,11 +6,11 @@
                 "createLabel": "Create a new question",
                 "createOrEditLabel": "Create or edit a question"
             },
-            "created": "A new online reg custom question is created with identifier {{ param }}",
-            "updated": "Online reg custom question is updated with identifier {{ param }}",
-            "deleted": "An online reg custom question is deleted with identifier {{ param }}",
+            "created": "A new online reg custom question has been created successfully",
+            "updated": "Online reg custom question has been updated successfully",
+            "deleted": "An online reg custom question has been deleted successfully",
             "delete": {
-                "question": "Are you sure you want to delete the question {{ id }}?"
+                "question": "Are you sure you want to delete the selected question?"
             },
             "question": "Question",
             "required": "Required",

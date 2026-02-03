@@ -13,7 +13,7 @@
                     parent: 'registration',
                     url: '/confirmation',
                     data: {
-                        authorities: ['ROLE_USER'],
+                        authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                         pageTitle: 'pcsApp.registration.confirmation.title'
                     },
                     views: {
@@ -35,7 +35,7 @@
                     parent: 'confirmation',
                     url: '/optional-text/new',
                     data: {
-                        authorities: ['ROLE_USER']
+                        authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
                     },
                     onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'CongressSelector', function ($stateParams, $state, $uibModal, registration, CongressSelector) {
                         $uibModal.open({

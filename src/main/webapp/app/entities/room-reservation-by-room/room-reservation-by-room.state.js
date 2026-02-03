@@ -13,7 +13,7 @@
                 parent: 'report',
                 url: '/room-reservation-by-room',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.roomReservationByRoom.home.title'
                 },
                 views: {

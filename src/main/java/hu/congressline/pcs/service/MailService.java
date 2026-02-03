@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import hu.congressline.pcs.config.PcsProperties;
 import hu.congressline.pcs.domain.Invoice;
 import hu.congressline.pcs.domain.PayingGroup;
 import hu.congressline.pcs.domain.Registration;
@@ -31,7 +32,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import tech.jhipster.config.JHipsterProperties;
 
 import static java.util.Objects.nonNull;
 
@@ -43,7 +43,7 @@ public class MailService {
     private static final String USER = "user";
     private static final String BASE_URL = "baseUrl";
 
-    private final JHipsterProperties properties;
+    private final PcsProperties properties;
     private final JavaMailSender javaMailSender;
     private final MessageSource messageSource;
     private final SpringTemplateEngine templateEngine;

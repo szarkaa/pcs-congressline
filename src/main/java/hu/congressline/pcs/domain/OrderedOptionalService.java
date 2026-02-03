@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
+import hu.congressline.pcs.web.rest.vm.OrderedOptionalServiceVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -15,6 +16,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -96,5 +98,10 @@ public class OrderedOptionalService extends ChargeableItem {
     @Override
     public String toString() {
         return "OrderedOptionalService{" + "id=" + getId() + "}";
+    }
+
+    public void update(@NonNull OrderedOptionalServiceVM viewModel) {
+        this.participant = viewModel.getParticipant();
+        this.createdDate = this.createdDate == null ? LocalDate.now() : this.createdDate;
     }
 }

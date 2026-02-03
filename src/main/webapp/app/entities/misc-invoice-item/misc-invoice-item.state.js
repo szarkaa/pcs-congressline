@@ -13,7 +13,7 @@
             parent: 'misc-invoice',
             url: '/misc-invoice-item',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.miscInvoiceItem.home.title'
             },
             views: {
@@ -41,7 +41,7 @@
             parent: 'misc-invoice-item',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'miscInvoice', 'selectedCurrency', function($stateParams, $state, $uibModal, miscInvoice, selectedCurrency) {
                 $uibModal.open({
@@ -53,8 +53,9 @@
                     resolve: {
                         entity: function () {
                             return {
-                                itemQuantity: null,
-                                id: null
+                                id: null,
+                                miscService: null,
+                                itemQuantity: null
                             };
                         },
                         miscInvoice: function () {
@@ -75,7 +76,7 @@
             parent: 'misc-invoice-item',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'miscInvoice', 'selectedCurrency', function($stateParams, $state, $uibModal, miscInvoice, selectedCurrency) {
                 $uibModal.open({
@@ -111,7 +112,7 @@
             parent: 'misc-invoice-item',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'miscInvoice', 'selectedCurrency', function($stateParams, $state, $uibModal, miscInvoice, selectedCurrency) {
                 $uibModal.open({

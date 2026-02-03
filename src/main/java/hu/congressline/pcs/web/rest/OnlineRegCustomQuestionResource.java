@@ -17,7 +17,9 @@ import java.util.List;
 
 import hu.congressline.pcs.domain.OnlineRegCustomQuestion;
 import hu.congressline.pcs.service.OnlineRegCustomQuestionService;
+import hu.congressline.pcs.service.dto.OnlineRegCustomQuestionDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.OnlineRegCustomQuestionVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,54 +35,54 @@ public class OnlineRegCustomQuestionResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/online/custom-questions")
-    public ResponseEntity<OnlineRegCustomQuestion> create(@Valid @RequestBody OnlineRegCustomQuestion question) throws URISyntaxException {
-        log.debug("REST request to save OnlineRegCustomQuestion");
-        if (question.getId() != null) {
+    public ResponseEntity<OnlineRegCustomQuestionDTO> create(@Valid @RequestBody OnlineRegCustomQuestionVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save online reg custom question by vm : {}", viewModel);
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert(ENTITY_NAME, "idexists", "A new online reg custom question cannot already have an ID"))
+                .createFailureAlert(ENTITY_NAME, "idexists", "A new online reg custom viewModel cannot already have an ID"))
                 .body(null);
         }
 
-        OnlineRegCustomQuestion result = service.save(question);
+        OnlineRegCustomQuestion result = service.save(viewModel);
         return ResponseEntity.created(new URI("/api/congresses/online/custom-questions/" + result.getId()))
-                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, question.getId().toString()))
-                .body(result);
+                .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, viewModel.getId().toString()))
+                .body(new OnlineRegCustomQuestionDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping("/online/custom-questions")
-    public ResponseEntity<OnlineRegCustomQuestion> update(@Valid @RequestBody OnlineRegCustomQuestion question) throws URISyntaxException {
-        log.debug("REST request to update OnlineRegCustomQuestion : {}", question);
-        if (question.getId() == null) {
-            return create(question);
+    public ResponseEntity<OnlineRegCustomQuestionDTO> update(@Valid @RequestBody OnlineRegCustomQuestionVM viewModel) throws URISyntaxException {
+        log.debug("REST request to update online reg custom question by vm: {}", viewModel);
+        if (viewModel.getId() == null) {
+            return create(viewModel);
         }
 
-        OnlineRegCustomQuestion result = service.save(question);
+        OnlineRegCustomQuestion result = service.save(viewModel);
         return ResponseEntity.ok()
-                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, question.getId().toString()))
-                .body(result);
+                .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
+                .body(new OnlineRegCustomQuestionDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/{id}/online/custom-questions")
-    public List<OnlineRegCustomQuestion> getQuestionsByCongressId(@PathVariable Long id) {
-        log.debug("REST request to get OnlineRegCustomQuestions by congress id : {}", id);
-        return service.findAllByCongressId(id);
+    public List<OnlineRegCustomQuestionDTO> getQuestionsByCongressId(@PathVariable Long id) {
+        log.debug("REST request to get online reg custom question by congress id : {}", id);
+        return service.findAllByCongressId(id).stream().map(OnlineRegCustomQuestionDTO::new).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/online/custom-questions/{id}")
-    public ResponseEntity<OnlineRegCustomQuestion> getById(@PathVariable Long id) {
-        log.debug("REST request to get OnlineRegCustomQuestion by id : {}", id);
+    public ResponseEntity<OnlineRegCustomQuestionDTO> getById(@PathVariable Long id) {
+        log.debug("REST request to get online reg custom question by id : {}", id);
         return service.findById(id)
-                .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+                .map(result -> new ResponseEntity<>(new OnlineRegCustomQuestionDTO(result), HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/online/custom-questions/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete OnlineRegCustomQuestion : {}", id);
+        log.debug("REST request to delete online reg custom question : {}", id);
         try {
             service.delete(id);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

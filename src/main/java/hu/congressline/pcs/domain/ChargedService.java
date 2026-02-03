@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.domain.enumeration.ChargedServicePaymentMode;
+import hu.congressline.pcs.web.rest.vm.ChargedServiceVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -22,6 +23,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -79,6 +81,19 @@ public class ChargedService implements Serializable {
 
     @ManyToOne
     private ChargeableItem chargeableItem;
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull ChargedServiceVM viewModel) {
+        this.paymentMode = viewModel.getPaymentMode();
+        this.paymentType = viewModel.getPaymentType();
+        this.dateOfPayment = viewModel.getDateOfPayment();
+        this.amount = viewModel.getAmount();
+        this.cardType = viewModel.getCardType();
+        this.cardNumber = viewModel.getCardNumber();
+        this.cardExpirationDate = viewModel.getCardExpirationDate();
+        this.transactionId = viewModel.getTransactionId();
+        this.comment = viewModel.getComment();
+    }
 
     @Override
     public boolean equals(Object o) {

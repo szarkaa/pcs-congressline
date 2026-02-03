@@ -33,7 +33,7 @@
             parent: 'room-reservation',
             url: '/room-reservation/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'CongressSelector', 'registrationCurrency', function($stateParams, $state, $uibModal, registration, CongressSelector, registrationCurrency) {
                 $uibModal.open({
@@ -45,14 +45,14 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 roomId: null,
                                 shared: false,
                                 arrivalDate: new Date(CongressSelector.getSelectedCongress().startDate),
                                 departureDate: new Date(CongressSelector.getSelectedCongress().endDate),
+                                comment: null,
                                 payingGroupItemId: null,
-                                id: null,
-                                registrationId: registration.id,
-                                '@class': 'hu.congressline.pcs.domain.RoomReservation'
+                                registrationId: registration.id
                             };
                         },
                         registrationCurrency: function () {
@@ -73,7 +73,7 @@
             parent: 'room-reservation',
             url: '/room-reservation/shared-selection',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'RoomReservation', 'CongressSelector', 'registrationCurrency',
                 function($stateParams, $state, $uibModal, registration, RoomReservation, CongressSelector, registrationCurrency) {
@@ -85,7 +85,7 @@
                         size: 'lg',
                         resolve: {
                             roomReservations: ['RoomReservation', 'CongressSelector', function(RoomReservation, CongressSelector) {
-                                return RoomReservation.queryVMForSharedRoomReservations({congressId: CongressSelector.getSelectedCongress().id, registrationId: $stateParams.registrationId});
+                                return RoomReservation.querySharedRoomReservations({congressId: CongressSelector.getSelectedCongress().id, registrationId: $stateParams.registrationId});
                             }],
                             registrationCurrency: function () {
                                 return registrationCurrency;
@@ -102,7 +102,7 @@
             parent: 'room-reservation',
             url: '/room-reservation/{rrrId}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'registrationCurrency', function($stateParams, $state, $uibModal, registration, registrationCurrency) {
                 $uibModal.open({
@@ -133,7 +133,7 @@
             parent: 'room-reservation',
             url: '/room-reservation/{rrrId}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', function($stateParams, $state, $uibModal, registration) {
                 $uibModal.open({

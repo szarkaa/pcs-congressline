@@ -10,6 +10,7 @@
     function MiscInvoiceController ($scope, $state, MiscInvoice, CongressSelector, DTOptionsBuilder, DTColumnDefBuilder) {
         var vm = this;
         vm.dtOptions = DTOptionsBuilder.newOptions().withOption('stateSave', true);
+        vm.dtOptions.withOption('order', [0, 'desc']);
         vm.dtColumnDefs = [
             // negative int calculated from the right of the columns
             DTColumnDefBuilder.newColumnDef(-1).notSortable()

@@ -10,7 +10,13 @@
     function OnlineRegDiscountCodeDialogController ($timeout, $scope, $uibModalInstance, entity, OnlineRegDiscountCode) {
         var vm = this;
 
-        vm.discountCode = entity;
+        vm.discountCode = {
+            id: entity.id,
+            code: entity.code,
+            discountPercentage: entity.discountPercentage,
+            discountType: entity.discountType,
+            congressId: entity.congressId
+        };
         vm.clear = clear;
         vm.save = save;
         vm.onDiscountTypeChanged = onDiscountTypeChanged;

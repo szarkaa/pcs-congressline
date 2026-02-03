@@ -22,8 +22,10 @@ import hu.congressline.pcs.repository.RegistrationRepository;
 import hu.congressline.pcs.repository.RoomReservationEntryRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
 import hu.congressline.pcs.repository.RoomReservationRepository;
+import hu.congressline.pcs.service.dto.RoomReservationDTO;
 import hu.congressline.pcs.service.dto.SharedRoomReservationDTO;
 import hu.congressline.pcs.web.rest.vm.RoomReservationVM;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,99 +41,92 @@ public class RoomReservationService {
     private final DiscountService discountService;
     private final RoomService roomService;
     private final RoomReservationEntryRepository rreRepository;
+    private final PayingGroupItemService payingGroupItemService;
 
     @SuppressWarnings("MissingJavadocMethod")
-    public RoomReservationVM save(RoomReservationVM vm) {
-        log.debug("Request to save RoomReservation by vm : {}", vm);
+    public RoomReservationRegistration save(RoomReservationVM viewModel) {
+        log.debug("Request to save room reservation by viewModel : {}", viewModel);
         RoomReservation rr = new RoomReservation();
-        rr.setRoom(roomService.getById(vm.getRoomId()));
-        rr.setArrivalDate(vm.getArrivalDate());
-        rr.setDepartureDate(vm.getDepartureDate());
-        rr.setShared(vm.getShared());
+        rr.setRoom(roomService.getById(viewModel.getRoomId()));
+        rr.setArrivalDate(viewModel.getArrivalDate());
+        rr.setDepartureDate(viewModel.getDepartureDate());
+        rr.setShared(viewModel.getShared());
         rr.setRoomReservationRegistrations(new ArrayList<>());
         final RoomReservation rrResult = rrRepository.save(rr);
-
-        final Registration registration = registrationRepository.findById(vm.getRegistrationId())
-                .orElseThrow(() -> new IllegalArgumentException("Registration not found with id: " + vm.getRegistrationId()));
+        final Registration registration = registrationRepository.findById(viewModel.getRegistrationId())
+            .orElseThrow(() -> new IllegalArgumentException("Registration not found by id: " + viewModel.getRegistrationId()));
         RoomReservationRegistration rrr = new RoomReservationRegistration();
         rrr.setRegistration(registration);
         rrr.setRoomReservation(rr);
-        rrr.setPayingGroupItem(vm.getPayingGroupItem());
-        rrr.setComment(vm.getComment());
+        rrr.setPayingGroupItem(viewModel.getPayingGroupItemId() != null ? payingGroupItemService.getById(viewModel.getPayingGroupItemId()) : null);
+        rrr.setComment(viewModel.getComment());
         RoomReservationRegistration rrrResult = rrrRepository.save(rrr);
 
         rr.getRoomReservationRegistrations().add(rrr);
         final Stream<LocalDate> range = Stream.iterate(rrResult.getArrivalDate(), d -> d.plusDays(1))
                 .limit(ChronoUnit.DAYS.between(rrResult.getArrivalDate(), rrResult.getDepartureDate()));
         range.forEach(localDate -> increaseRoomReservedNumber(rrResult.getRoom(), localDate));
-        return new RoomReservationVM(rrrResult);
+        return rrrResult;
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     public RoomReservation save(RoomReservation roomReservation) {
-        log.debug("Request to save RoomReservation by entity: {}", roomReservation);
+        log.debug("Request to save room reservation: {}", roomReservation);
         return rrRepository.save(roomReservation);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public RoomReservationRegistration update(RoomReservationVM viewModel) {
+        log.debug("Request to update room reservation by rrr id: {}", viewModel.getId());
+        RoomReservationRegistration rrr = rrrRepository.findById(viewModel.getId())
+            .orElseThrow(() -> new IllegalArgumentException("Room reservation registration not found by id: " + viewModel.getRegistrationId()));
+        // decrease the room reservations on dates according to the old date values
+        Stream<LocalDate> range = Stream.iterate(rrr.getRoomReservation().getArrivalDate(), d -> d.plusDays(1))
+            .limit(ChronoUnit.DAYS.between(rrr.getRoomReservation().getArrivalDate(), rrr.getRoomReservation().getDepartureDate()));
+        range.forEach(localDate -> decreaseRoomReservedNumber(rrr.getRoomReservation().getRoom(), localDate));
+
+        rrr.getRoomReservation().setRoom(roomService.getById(viewModel.getRoomId()));
+        rrr.getRoomReservation().setArrivalDate(viewModel.getArrivalDate());
+        rrr.getRoomReservation().setDepartureDate(viewModel.getDepartureDate());
+        rrr.getRoomReservation().setShared(viewModel.getShared());
+        rrr.setPayingGroupItem(viewModel.getPayingGroupItemId() != null ? payingGroupItemService.getById(viewModel.getPayingGroupItemId()) : null);
+        rrr.setComment(viewModel.getComment());
+        RoomReservationRegistration result = rrrRepository.save(rrr);
+        // increase the room reservations on dates according to the new date values
+        range = Stream.iterate(result.getRoomReservation().getArrivalDate(), d -> d.plusDays(1))
+            .limit(ChronoUnit.DAYS.between(result.getRoomReservation().getArrivalDate(), result.getRoomReservation().getDepartureDate()));
+        range.forEach(localDate -> increaseRoomReservedNumber(result.getRoomReservation().getRoom(), localDate));
+
+        return result;
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<RoomReservation> findById(Long id) {
-        log.debug("Request to find RoomReservation : {}", id);
+        log.debug("Request to find room reservation : {}", id);
         return rrRepository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public RoomReservation getById(Long id) {
-        log.debug("Request to get RoomReservation : {}", id);
-        return rrRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("RoomReservation not found with id: " + id));
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    public RoomReservationVM update(RoomReservationVM vm) {
-        log.debug("Request to update RoomReservation : {}", vm);
-        RoomReservationRegistration rrr = rrrRepository.findById(vm.getId())
-                .orElseThrow(() -> new IllegalArgumentException("RoomReservationRegistration not found with id: " + vm.getId()));
-        // decrease the room reservations on dates according to the old date values
-        Stream<LocalDate> range = Stream.iterate(rrr.getRoomReservation().getArrivalDate(), d -> d.plusDays(1))
-                .limit(ChronoUnit.DAYS.between(rrr.getRoomReservation().getArrivalDate(), rrr.getRoomReservation().getDepartureDate()));
-        range.forEach(localDate -> decreaseRoomReservedNumber(rrr.getRoomReservation().getRoom(), localDate));
-
-        rrr.getRoomReservation().setRoom(roomService.getById(vm.getRoomId()));
-        rrr.getRoomReservation().setArrivalDate(vm.getArrivalDate());
-        rrr.getRoomReservation().setDepartureDate(vm.getDepartureDate());
-        rrr.getRoomReservation().setShared(vm.getShared());
-        rrr.setPayingGroupItem(vm.getPayingGroupItem());
-        rrr.setComment(vm.getComment());
-        RoomReservationRegistration result = rrrRepository.save(rrr);
-        // increase the room reservations on dates according to the new date values
-        range = Stream.iterate(result.getRoomReservation().getArrivalDate(), d -> d.plusDays(1))
-                .limit(ChronoUnit.DAYS.between(result.getRoomReservation().getArrivalDate(), result.getRoomReservation().getDepartureDate()));
-        range.forEach(localDate -> increaseRoomReservedNumber(result.getRoomReservation().getRoom(), localDate));
-
-        return new RoomReservationVM(result);
+        log.debug("Request to get room reservation : {}", id);
+        return rrRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Room reservation not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public List<RoomReservationVM> findAllVMByRegistrationId(final Long registrationId) {
+    public List<RoomReservationDTO> findAllByRegistrationId(final Long registrationId) {
         log.debug("Request to get all RoomReservationVMs");
         return rrrRepository.findAllByRegistrationId(registrationId).stream().map(rrr -> {
-            RoomReservationVM vm = new RoomReservationVM(rrr);
+            RoomReservationDTO dto = new RoomReservationDTO(rrr);
             if (rrr.getPayingGroupItem() != null) {
-                vm.setPriceWithDiscount(discountService.getRoomReservationPriceWithDiscount(rrr.getPayingGroupItem(), rrr));
+                dto.setPriceWithDiscount(discountService.getRoomReservationPriceWithDiscount(rrr.getPayingGroupItem(), rrr));
             } else {
-                vm.setPriceWithDiscount(vm.getChargeableItemPrice());
+                dto.setPriceWithDiscount(dto.getChargeableItemPrice());
             }
-            return vm;
+            return dto;
         }).collect(Collectors.toList());
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    @Transactional(readOnly = true)
-    public List<RoomReservation> findAllByRegistrationId(final Long registrationId) {
-        log.debug("Request to get all RoomReservations");
-        return rrRepository.findAllByRegistrationId(registrationId);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -143,14 +138,14 @@ public class RoomReservationService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public List<RoomReservation> findAllRoomReservationByHotelAndCongress(final Congress congress, final Hotel hotel) {
-        log.debug("Request to get all Room Reservation by congressId: {}, and hotel: {}", congress, hotel);
+    public List<RoomReservation> findAllRoomReservationByHotelAndCongress(@NonNull Congress congress, @NonNull Hotel hotel) {
+        log.debug("Request to get all room reservation by congress id: {}, and hotel id: {}", congress.getId(), hotel.getId());
         return rrRepository.findAllByCongressAndHotel(congress, hotel);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     public void deleteAllByRegistrationId(Long registrationId) {
-        log.debug("Request to delete all RoomReservationRegistration and RoomReservation by registration id : {}", registrationId);
+        log.debug("Request to delete all room reservation registration and room reservation by registration id : {}", registrationId);
         final List<RoomReservation> roomReservations = rrRepository.findAllByRegistrationId(registrationId);
         roomReservations.forEach(rr -> {
             if (rr.getRoomReservationRegistrations().size() == 1) {

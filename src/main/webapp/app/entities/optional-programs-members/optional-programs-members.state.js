@@ -13,7 +13,7 @@
                 parent: 'report',
                 url: '/optional-programs-members',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.optionalProgramsMembers.home.title'
                 },
                 views: {

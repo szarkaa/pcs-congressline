@@ -10,12 +10,12 @@
         <jhi-alert-error></jhi-alert-error>
         <div class="form-group">
             <label translate="pcsApp.registrationRegistrationType.registrationType" for="field_registrationType">Registration type</label>
-            <ui-select ng-model="vm.registrationRegistrationType.registrationType" name="registrationType" id="field_registrationType" theme="bootstrap"
-                       ng-change="vm.setRegFeeAndCurrency()" ng-disabled="vm.registrationRegistrationType.id" required>
+            <ui-select ng-model="vm.registrationRegistrationType.registrationTypeId" name="registrationType" id="field_registrationType" theme="bootstrap"
+                       ng-change="vm.registrationTypeSelectionChanged()" ng-disabled="vm.registrationRegistrationType.id" required>
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.name"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="registrationType in (vm.registrationTypes | filterChargeableItemsByCurrency: {searchText: $select.search, registrationCurrency: vm.registrationCurrency }) track by registrationType.id">
+                <ui-select-choices repeat="registrationType.id as registrationType in (vm.registrationTypes | filterChargeableItemsByCurrency: {searchText: $select.search, registrationCurrency: vm.registrationCurrency }) track by registrationType.id">
                     <div ng-bind-html="registrationType.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
@@ -57,21 +57,39 @@
             </div>
         </div>
 
-        <div class="form-group" ng-show="vm.registrationRegistrationType.registrationType.registrationType == 'ACCOMPANYING_FEE'">
+        <div class="form-group" ng-show="vm.selectedRegistrationType.registrationType === 'ACCOMPANYING_FEE'">
             <label class="control-label" data-translate="pcsApp.registrationRegistrationType.accPeople" for="field_accPeople">Acc People</label>
             <input type="number" class="form-control" name="accPeople" id="field_accPeople" autocomplete="off"
-                   ng-required="vm.registrationRegistrationType.registrationType.registrationType == 'ACCOMPANYING_FEE'" ng-disabled="vm.registrationRegistrationType.id"
-                    ng-model="vm.registrationRegistrationType.accPeople" />
+                   ng-required="vm.selectedRegistrationType.registrationType === 'ACCOMPANYING_FEE'" ng-disabled="vm.registrationRegistrationType.id"
+                    ng-model="vm.registrationRegistrationType.accPeople" min="1" max="100" />
+                <div ng-show="editForm.accPeople.$invalid">
+                    <p class="error-block"
+                       ng-show="editForm.accPeople.$error.required" data-translate="entity.validation.required">
+                        This field is required.
+                    </p>
+                    <p class="error-block"
+                       ng-show="editForm.accPeople.$error.min" data-translate="entity.validation.min" translate-value-min="1">
+                        This field should be more than 1.
+                    </p>
+                    <p class="error-block"
+                       ng-show="editForm.accPeople.$error.max" data-translate="entity.validation.max" translate-value-max="100">
+                        This field cannot be more than 100.
+                    </p>
+                    <p class="error-block"
+                       ng-show="editForm.accPeople.$error.number" data-translate="entity.validation.number">
+                        This field should be a number.
+                    </p>
+                </div>
         </div>
 
         <div class="form-group">
             <label translate="pcsApp.registrationRegistrationType.payingGroupItem" for="field_payingGroupItem">Discount</label>
-            <ui-select ng-model="vm.registrationRegistrationType.payingGroupItem" name="payingGroupItem" id="field_payingGroupItem" theme="bootstrap">
+            <ui-select ng-model="vm.registrationRegistrationType.payingGroupItemId" name="payingGroupItem" id="field_payingGroupItem" theme="bootstrap">
                 <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
-                    <span ng-bind="$select.selected.payingGroup.name + '/' + $select.selected.name"></span>
+                    <span ng-bind="$select.selected.payingGroupName + '/' + $select.selected.name"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="payingGroupItem in (vm.payingGroupItems | filter: { payingGroup: { currency: { currency: vm.registrationRegistrationType.registrationType.currency.currency }}} | filter: $select.search) track by payingGroupItem.id">
-                    <div ng-bind-html="payingGroupItem.payingGroup.name + '/' + payingGroupItem.name | highlight: $select.search"></div>
+                <ui-select-choices repeat="payingGroupItem.id as payingGroupItem in (vm.payingGroupItems | filter: { currency: { currency: vm.registrationRegistrationType.currency }} | filter: $select.search) track by payingGroupItem.id">
+                    <div ng-bind-html="payingGroupItem.payingGroupName + '/' + payingGroupItem.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
         </div>

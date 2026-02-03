@@ -29,6 +29,7 @@
                         <thead>
                         <tr>
                             <th><span translate="pcsApp.miscInvoiceItem.miscService">Misc service</span></th>
+                            <th><span translate="pcsApp.miscInvoiceItem.itemPrice">Item price</span></th>
                             <th><span translate="pcsApp.miscInvoiceItem.itemQuantity">Item quantity</span></th>
                             <th><span translate="pcsApp.miscInvoiceItem.measure">Measure</span></th>
                             <th></th>
@@ -37,6 +38,7 @@
                         <tbody>
                         <tr ng-repeat="miscInvoiceItem in vm.miscInvoiceItems track by miscInvoiceItem.id">
                             <td>{{miscInvoiceItem.miscService.name}}</td>
+                            <td>{{miscInvoiceItem.miscService.price}} {{miscInvoiceItem.miscService.currency.currency}}</td>
                             <td>{{miscInvoiceItem.itemQuantity}}</td>
                             <td>{{miscInvoiceItem.miscService.measure}}</td>
                             <td>

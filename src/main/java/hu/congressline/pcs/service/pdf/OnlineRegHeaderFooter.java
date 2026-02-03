@@ -1,13 +1,12 @@
 package hu.congressline.pcs.service.pdf;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfPageEventHelper;
-import com.lowagie.text.pdf.PdfTemplate;
-import com.lowagie.text.pdf.PdfWriter;
-
+import org.openpdf.text.Document;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.BaseFont;
+import org.openpdf.text.pdf.PdfContentByte;
+import org.openpdf.text.pdf.PdfPageEventHelper;
+import org.openpdf.text.pdf.PdfTemplate;
+import org.openpdf.text.pdf.PdfWriter;
 import org.springframework.context.MessageSource;
 
 import java.util.Locale;
@@ -32,7 +31,7 @@ public class OnlineRegHeaderFooter extends PdfPageEventHelper {
 
     @SuppressWarnings("MissingJavadocMethod")
     public void onEndPage(PdfWriter writer, Document document) {
-        String text = String.format(messageSource.getMessage("confirmation.pdf.page", null, locale) + " %d /", writer.getPageNumber());
+        String text = String.format(messageSource.getMessage("confirmation.pdf.footer.page", null, locale) + " %d /", writer.getPageNumber());
 
         float footerBase = document.bottom() - 25 - 65;
         float textSize = 9;

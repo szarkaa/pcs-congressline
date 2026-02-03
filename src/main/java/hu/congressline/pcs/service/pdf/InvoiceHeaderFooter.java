@@ -1,41 +1,41 @@
 package hu.congressline.pcs.service.pdf;
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfPageEventHelper;
-import com.lowagie.text.pdf.PdfTemplate;
-import com.lowagie.text.pdf.PdfWriter;
-
 import org.apache.commons.io.IOUtils;
-import org.springframework.context.MessageSource;
+import org.openpdf.text.Chunk;
+import org.openpdf.text.Document;
+import org.openpdf.text.DocumentException;
+import org.openpdf.text.Element;
+import org.openpdf.text.Font;
+import org.openpdf.text.Image;
+import org.openpdf.text.Paragraph;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.BaseFont;
+import org.openpdf.text.pdf.PdfContentByte;
+import org.openpdf.text.pdf.PdfPCell;
+import org.openpdf.text.pdf.PdfPTable;
+import org.openpdf.text.pdf.PdfPageEventHelper;
+import org.openpdf.text.pdf.PdfTemplate;
+import org.openpdf.text.pdf.PdfWriter;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.StringUtils;
 
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class InvoiceHeaderFooter extends PdfPageEventHelper {
 
     private static final String DOCUMENT_EXCEPTION = "Document exception";
+
     protected Font h1;
     protected Font h2;
     protected Font h3;
 
-    protected Font paragraphNormal;
-    protected Font paragraphBold;
+    protected Font parNormal;
+    protected Font parBold;
 
-    protected Font paragraphSmallNormal;
-    protected Font paragraphSmallBold;
+    protected Font parSmallNormal;
+    protected Font parSmallBold;
 
     protected PdfPTable embeddedTable;
     protected PdfPCell cell1;
@@ -43,26 +43,25 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
     protected PdfPCell cell3;
     protected PdfPCell cell4;
 
-    private final MessageSource messageSource;
-    private final PdfContext pdfContext;
     private final BaseFont baseFont;
     private PdfTemplate total;
     private PdfPTable table;
 
-    public InvoiceHeaderFooter(MessageSource messageSource, PdfContext pdfContext) {
+    private final InvoicePdfHeaderFooterTextContext textContext;
+
+    public InvoiceHeaderFooter(@NonNull InvoicePdfHeaderFooterTextContext textContext) {
+        this.textContext = textContext;
         this.baseFont = PcsPdfFont.getBaseFont();
-        this.messageSource = messageSource;
-        this.pdfContext = pdfContext;
         //Font styles of the pdf
         h1 = new Font(baseFont, 18, Font.BOLD);
         h2 = new Font(baseFont, 14, Font.BOLD);
         h3 = new Font(baseFont, 12, Font.BOLD);
 
-        paragraphNormal = new Font(baseFont, 10, Font.NORMAL);
-        paragraphBold = new Font(baseFont, 10, Font.BOLD);
+        parNormal = new Font(baseFont, 10, Font.NORMAL);
+        parBold = new Font(baseFont, 10, Font.BOLD);
 
-        paragraphSmallNormal = new Font(baseFont, 8, Font.NORMAL);
-        paragraphSmallBold = new Font(baseFont, 8, Font.BOLD);
+        parSmallNormal = new Font(baseFont, 8, Font.NORMAL);
+        parSmallBold = new Font(baseFont, 8, Font.BOLD);
     }
 
     //This callback function will be called when the document will be opened
@@ -75,23 +74,9 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
     //This will give us the opportunity, to insert the header as any other content
     @SuppressWarnings({"MissingJavadocMethod", "MethodLength"})
     public void onStartPage(PdfWriter writer, Document document) {
-        ////////////////////////////
-        //        HEADER          //
-        ////////////////////////////
-
         Paragraph header = new Paragraph();
 
-        String mainTite;
-        if (pdfContext.getStorno()) {
-            mainTite = "invoice.pdf.invoiceStornoCaps";
-        } else {
-            mainTite = switch (pdfContext.getInvoiceType()) {
-                case PRO_FORMA -> "invoice.pdf.proFormaInvoiceCaps";
-                case PREPAYMENT -> "invoice.pdf.prePaymentInvoiceCaps";
-                default -> "invoice.pdf.invoiceCaps";
-            };
-        }
-        Paragraph tempParagraph = new Paragraph(messageSource.getMessage(mainTite, new Object[]{}, pdfContext.getLocale()), h1);
+        Paragraph tempParagraph = new Paragraph(textContext.getMainTitleLabel(), h1);
         tempParagraph.setAlignment(Element.ALIGN_CENTER);
         header.add(tempParagraph);
         addEmptyLine(header, 1); // enters
@@ -109,78 +94,72 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
 
         tempParagraph = new Paragraph();
         tempParagraph.setLeading(11);
-        tempParagraph.add(new Chunk(messageSource.getMessage("invoice.pdf.customer", new Object[]{}, pdfContext.getLocale()), paragraphSmallBold));
+        tempParagraph.add(new Chunk(textContext.getCustomerLabel(), parSmallBold));
         tempParagraph.add(Chunk.NEWLINE);
 
-        if (StringUtils.hasText(pdfContext.getName1())) {
-            tempParagraph.add(new Chunk(pdfContext.getName1(), paragraphSmallBold));
+        if (StringUtils.hasText(textContext.getCustomerName1Value())) {
+            tempParagraph.add(new Chunk(textContext.getCustomerName1Value(), parSmallBold));
             tempParagraph.add(Chunk.NEWLINE);
         }
 
-        if (StringUtils.hasText(pdfContext.getName2())) {
-            tempParagraph.add(new Chunk(pdfContext.getName2(), paragraphSmallBold));
+        if (StringUtils.hasText(textContext.getCustomerName2Value())) {
+            tempParagraph.add(new Chunk(textContext.getCustomerName2Value(), parSmallBold));
             tempParagraph.add(Chunk.NEWLINE);
         }
 
-        if (StringUtils.hasText(pdfContext.getName3())) {
-            tempParagraph.add(new Chunk(pdfContext.getName3(), paragraphSmallBold));
+        if (StringUtils.hasText(textContext.getCustomerName3Value())) {
+            tempParagraph.add(new Chunk(textContext.getCustomerName3Value(), parSmallBold));
             tempParagraph.add(Chunk.NEWLINE);
         }
 
         final String colon = ": ";
-        if (StringUtils.hasText(pdfContext.getVatRegNumber())) {
-            tempParagraph.add(new Chunk(messageSource.getMessage("invoice.pdf.vatNumber", new Object[]{}, pdfContext.getLocale())
-                    + colon + pdfContext.getVatRegNumber(), paragraphSmallNormal));
+        if (StringUtils.hasText(textContext.getCustomerVatRegNumberValue())) {
+            tempParagraph.add(new Chunk(textContext.getCustomerVatRegNumberLabel()
+                    + colon + textContext.getCustomerVatRegNumberValue(), parSmallNormal));
             tempParagraph.add(Chunk.NEWLINE);
         }
 
-        if (pdfContext.getCity() != null) {
-            tempParagraph.add(new Chunk(pdfContext.getCity(), paragraphSmallNormal));
+        if (StringUtils.hasText(textContext.getCustomerCityValue())) {
+            tempParagraph.add(new Chunk(textContext.getCustomerCityValue(), parSmallNormal));
             tempParagraph.add(Chunk.NEWLINE);
         }
 
-        if (pdfContext.getStreet() != null) {
-            tempParagraph.add(new Chunk(pdfContext.getStreet(), paragraphSmallNormal));
+        if (StringUtils.hasText(textContext.getCustomerStreetValue())) {
+            tempParagraph.add(new Chunk(textContext.getCustomerStreetValue(), parSmallNormal));
             tempParagraph.add(Chunk.NEWLINE);
         }
 
-        if (pdfContext.getZipCode() != null) {
-            tempParagraph.add(new Chunk(pdfContext.getZipCode(), paragraphSmallNormal));
+        if (StringUtils.hasText(textContext.getCustomerZipCodeValue())) {
+            tempParagraph.add(new Chunk(textContext.getCustomerZipCodeValue(), parSmallNormal));
             tempParagraph.add(Chunk.NEWLINE);
         }
 
-        if (pdfContext.getCountry() != null) {
-            tempParagraph.add(new Chunk(pdfContext.getCountry(), paragraphSmallNormal));
+        if (StringUtils.hasText(textContext.getCustomerCountryValue())) {
+            tempParagraph.add(new Chunk(textContext.getCustomerCountryValue(), parSmallNormal));
         }
 
         cell1 = new PdfPCell(tempParagraph);
 
         tempParagraph = new Paragraph();
         tempParagraph.setLeading(11);
-        tempParagraph.add(new Chunk(messageSource.getMessage("invoice.pdf.supplier", new Object[]{}, pdfContext.getLocale()), paragraphSmallBold));
+        tempParagraph.add(new Chunk(textContext.getSupplierNameLabel(), parSmallBold));
         tempParagraph.add(Chunk.NEWLINE);
-        tempParagraph.add(new Chunk(pdfContext.getCompany().getName() + (!"hu".equals(pdfContext.getLocale().getLanguage()) ? " (Ltd.)" : ""),
-                paragraphSmallBold));
+        tempParagraph.add(new Chunk(textContext.getSupplierNameValue() + (!"hu".equals(textContext.getLocale().getLanguage()) ? " (Ltd.)" : ""), parSmallBold));
         tempParagraph.add(Chunk.NEWLINE);
-        tempParagraph.add(new Chunk(pdfContext.getCompany().getFullAddress(), paragraphSmallNormal));
+        tempParagraph.add(new Chunk(textContext.getSupplierAddressValue(), parSmallNormal));
         tempParagraph.add(Chunk.NEWLINE);
-        if (pdfContext.getCompany().getAddress2() != null && !pdfContext.getCompany().getAddress2().isEmpty()) {
-            tempParagraph.add(new Chunk(pdfContext.getCompany().getAddress2(), paragraphSmallNormal));
+        if (StringUtils.hasText(textContext.getSupplierAddress2Value())) {
+            tempParagraph.add(new Chunk(textContext.getSupplierAddress2Value(), parSmallNormal));
             tempParagraph.add(Chunk.NEWLINE);
         }
         final String dotAndColon = ".: ";
-        tempParagraph.add(new Chunk(messageSource.getMessage("invoice.pdf.tel", new Object[]{}, pdfContext.getLocale())
-                + dotAndColon + pdfContext.getCompany().getPhone(), paragraphSmallNormal));
+        tempParagraph.add(new Chunk(textContext.getSupplierPhoneLabel() + dotAndColon + textContext.getSupplierPhoneValue(), parSmallNormal));
         tempParagraph.add(Chunk.NEWLINE);
-        tempParagraph.add(new Chunk(messageSource.getMessage("invoice.pdf.fax", new Object[]{}, pdfContext.getLocale())
-                + dotAndColon + pdfContext.getCompany().getFax(), paragraphSmallNormal));
+        tempParagraph.add(new Chunk(textContext.getSupplierFaxLabel() + dotAndColon + textContext.getSupplierFaxValue(), parSmallNormal));
         tempParagraph.add(Chunk.NEWLINE);
-        tempParagraph.add(new Chunk(messageSource.getMessage("invoice.pdf.manager", new Object[]{}, pdfContext.getLocale())
-                + colon + pdfContext.getContactPerson(), paragraphSmallNormal));
+        tempParagraph.add(new Chunk(textContext.getSupplierManagerLabel() + dotAndColon + textContext.getSupplierManagerValue(), parSmallNormal));
         tempParagraph.add(Chunk.NEWLINE);
-        tempParagraph.add(new Chunk(messageSource.getMessage("invoice.pdf.email", new Object[]{}, pdfContext.getLocale())
-                + colon + pdfContext.getContactEmail(), paragraphSmallNormal));
-
+        tempParagraph.add(new Chunk(textContext.getSupplierEmailLabel() + dotAndColon + textContext.getSupplierEmailValue(), parSmallNormal));
         cell2 = new PdfPCell(tempParagraph);
 
         cell1.setBorder(0);
@@ -202,9 +181,6 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
     //This will give us the opportunity, to render the page number, and the total number, or even a complex footer
     @SuppressWarnings("MissingJavadocMethod")
     public void onEndPage(PdfWriter writer, Document document) {
-        //Rendering the page number (without the total page number)
-        String text = String.format(messageSource.getMessage("invoice.pdf.page", new Object[]{}, pdfContext.getLocale()) + " %d /", writer.getPageNumber());
-
         float footerBase = document.bottom() - 25 - 65;
         float textSize = 9;
 
@@ -213,19 +189,17 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         cb.beginText();
         cb.setFontAndSize(baseFont, 6);
         cb.setTextMatrix(document.right() - textSize - 15, footerBase);
-        cb.showText(text);
+        cb.showText(String.format(textContext.getPageNumberLabel() + " %d /", writer.getPageNumber()));
         cb.endText();
         cb.addTemplate(total, document.right(), footerBase);
         //important to control pdf errors
         cb.sanityCheck();
 
-        generateFooterContent(writer, document, footerBase, cb);
+        generateFooterContent(writer, document, footerBase);
     }
 
     @SuppressWarnings({"MethodLength", "ParameterAssignment"})
-    private void generateFooterContent(PdfWriter writer, Document document, float footerBase, PdfContentByte cb) {
-
-        //new table
+    private void generateFooterContent(PdfWriter writer, Document document, float footerBase) {
         table = new PdfPTable(2);
         table.setSpacingBefore(0);
         table.setSpacingAfter(0);
@@ -262,8 +236,8 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         embeddedTable.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("invoice.pdf.bank", new Object[]{}, pdfContext.getLocale()) + ":", paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(pdfContext.getBankName(), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(textContext.getBankNameLabel(), parSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(textContext.getBankNameValue(), parSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -275,8 +249,8 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("invoice.pdf.address", new Object[]{}, pdfContext.getLocale()) + ":", paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(pdfContext.getBankAddress(), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(textContext.getBankAddressLabel(), parSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(textContext.getBankAddressValue(), parSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -288,8 +262,8 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("invoice.pdf.swiftCode", new Object[]{}, pdfContext.getLocale()) + ":", paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(pdfContext.getSwiftCode(), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(textContext.getBankSwiftCodeLabel(), parSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(textContext.getBankSwiftCodeValue(), parSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -301,8 +275,8 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("invoice.pdf.accountNumber", new Object[]{}, pdfContext.getLocale()) + ":", paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(pdfContext.getBankAccount(), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(textContext.getBankAccountLabel(), parSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(textContext.getBankAccountValue(), parSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -314,8 +288,8 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("invoice.pdf.EUTaxNumber", new Object[]{}, pdfContext.getLocale()) + ":", paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(pdfContext.getCompany().getEuTaxNumber(), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(textContext.getEuTaxNoLabel(), parSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(textContext.getEuTaxNoValue(), parSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -327,8 +301,8 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("invoice.pdf.HUNTaxNumber", new Object[]{}, pdfContext.getLocale()) + ":", paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(pdfContext.getCompany().getTaxNumber(), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(textContext.getHuTaxNoLabel(), parSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(textContext.getHuTaxNoValue(), parSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -340,8 +314,8 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("invoice.pdf.admissionNumber", new Object[]{}, pdfContext.getLocale()) + ":", paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(pdfContext.getCompany().getLicenceNumber(), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(textContext.getAdmissionNumberLabel(), parSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(textContext.getAdmissionNumberValue(), parSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -356,28 +330,22 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         cell2.addElement(embeddedTable);
         addTableCell(table, cell2);
 
+        PdfContentByte cb = writer.getDirectContent();
         // write the table to an absolute position
-        cb.beginText();
-        cb = writer.getDirectContent();
-        cb.setTextMatrix(document.left(), footerBase + 7);
         table.setTotalWidth(600);
-        table.writeSelectedRows(0, -1, 0, table.getTotalHeight() + 30, cb);
-        cb.endText();
+        float x = document.left() - 20;
+        float y = footerBase + 85;
+        table.writeSelectedRows(0, -1, x, y, cb);
 
-        //the generator system of the invoice
         cb.beginText();
-        cb.setFontAndSize(baseFont, 6);
-        //cb.setTextMatrix(document.left(), footerBase + 7);
-        cb.setTextMatrix(document.left(), footerBase);
-        cb.showText(messageSource.getMessage("invoice.pdf.invoiceGenerateMsg", new Object[]{}, pdfContext.getLocale()));
-        cb.endText();
-
-        //the generator system of the invoice
-        //cb.beginText();
-        //cb.setFontAndSize(baseFont, 6);
-        //cb.setTextMatrix(document.left(), footerBase);
-        //cb.showText("The invoice has been created by the AAT Development's PCS system.");
-        //cb.endText();
+        try {
+            cb.setFontAndSize(baseFont, 6);
+            cb.setTextMatrix(document.left(), footerBase);
+            cb.showText(textContext.getInvoiceGeneratedMsgLabel());
+        } finally {
+            cb.endText();
+        }
+        cb.sanityCheck();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -385,7 +353,7 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         total.beginText();
         total.setFontAndSize(baseFont, 6);
         total.setTextMatrix(0, 0);
-        total.showText(String.valueOf(writer.getPageNumber()));
+        total.showText(String.valueOf(writer.getPageNumber() - 1)); // bug? show one more page than actually exists
         total.endText();
     }
 

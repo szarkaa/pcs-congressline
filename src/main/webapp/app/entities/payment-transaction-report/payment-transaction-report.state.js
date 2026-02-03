@@ -13,7 +13,7 @@
                 parent: 'maintenance',
                 url: '/payment-transaction-report',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADMIN'],
                     pageTitle: 'pcsApp.paymentTransactionReport.home.title'
                 },
                 views: {
@@ -43,7 +43,7 @@
                 parent: 'payment-transaction-report',
                 url: '/{id}/refund',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -68,7 +68,7 @@
                 parent: 'payment-transaction-report',
                 url: '/{id}/show-payment-refund-transaction',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({

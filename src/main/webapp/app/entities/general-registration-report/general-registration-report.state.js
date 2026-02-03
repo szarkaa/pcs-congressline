@@ -13,7 +13,7 @@
                 parent: 'report',
                 url: '/general-registration-report',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.generalRegistrationReport.home.title'
                 },
                 views: {

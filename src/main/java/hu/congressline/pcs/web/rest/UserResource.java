@@ -27,6 +27,7 @@ import hu.congressline.pcs.domain.User;
 import hu.congressline.pcs.repository.UserRepository;
 import hu.congressline.pcs.security.AuthoritiesConstants;
 import hu.congressline.pcs.service.UserService;
+import hu.congressline.pcs.service.dto.ManagedUserDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.util.PaginationUtil;
 import hu.congressline.pcs.web.rest.vm.ManagedUserVM;
@@ -51,20 +52,20 @@ public class UserResource {
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/users")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<?> create(@RequestBody ManagedUserVM managedUserVM, HttpServletRequest request) throws URISyntaxException {
-        log.debug("REST request to save User : {}", managedUserVM);
+    public ResponseEntity<ManagedUserDTO> create(@RequestBody ManagedUserVM viewModel, HttpServletRequest request) throws URISyntaxException {
+        log.debug("REST request to save user : {}", viewModel);
 
         //Lowercase the user login before comparing with database
-        if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent()) {
+        if (userRepository.findOneByLogin(viewModel.getLogin().toLowerCase()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, USER_EXISTS, LOGIN_ALREADY_IN_USE))
                 .body(null);
-        } else if (userRepository.findOneByEmail(managedUserVM.getEmail()).isPresent()) {
+        } else if (userRepository.findOneByEmail(viewModel.getEmail()).isPresent()) {
             return ResponseEntity.badRequest()
                 .headers(HeaderUtil.createFailureAlert("currency", EMAIL_EXISTS, "Email already in use"))
                 .body(null);
         } else {
-            User newUser = userService.createUser(managedUserVM);
+            User newUser = userService.createUser(viewModel);
             String baseUrl = request.getScheme() // "http"
                 + "://"                              // "://"
                 + request.getServerName()            // "myhost"
@@ -74,53 +75,53 @@ public class UserResource {
             //mailService.sendCreationEmail(newUser, baseUrl);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
-                .body(newUser);
+                .body(new ManagedUserDTO(userService.getUserWithAuthorities(newUser.getId())));
         }
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/users")
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<ManagedUserVM> update(@RequestBody ManagedUserVM managedUserVM) {
-        log.debug("REST request to update User : {}", managedUserVM);
-        Optional<User> existingUser = userRepository.findOneByEmail(managedUserVM.getEmail());
-        if (existingUser.isPresent() && !existingUser.get().getId().equals(managedUserVM.getId())) {
+    public ResponseEntity<ManagedUserDTO> update(@RequestBody ManagedUserVM viewModel) {
+        log.debug("REST request to update user : {}", viewModel);
+        Optional<User> existingUser = userRepository.findOneByEmail(viewModel.getEmail());
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(viewModel.getId())) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, EMAIL_EXISTS, "E-mail already in use"))
                 .body(null);
         }
-        existingUser = userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase());
-        if (existingUser.isPresent() && !existingUser.get().getId().equals(managedUserVM.getId())) {
+        existingUser = userRepository.findOneByLogin(viewModel.getLogin().toLowerCase());
+        if (existingUser.isPresent() && !existingUser.get().getId().equals(viewModel.getId())) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, USER_EXISTS, LOGIN_ALREADY_IN_USE))
                 .body(null);
         }
-        userService.updateUser(managedUserVM.getId(), managedUserVM.getLogin(), managedUserVM.getFirstName(),
-            managedUserVM.getLastName(), managedUserVM.getEmail(), managedUserVM.isActivated(),
-            managedUserVM.getLangKey(), managedUserVM.getAuthorities(), managedUserVM.getCongresses());
+        userService.updateUser(viewModel.getId(), viewModel.getLogin(), viewModel.getFirstName(),
+            viewModel.getLastName(), viewModel.getEmail(), viewModel.isActivated(),
+            viewModel.getLangKey(), viewModel.getAuthorities(), viewModel.getCongressIds());
 
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()))
-            .body(new ManagedUserVM(userService.getUserWithAuthorities(managedUserVM.getId())));
+            .headers(HeaderUtil.createAlert("userManagement.updated", viewModel.getLogin()))
+            .body(new ManagedUserDTO(userService.getUserWithAuthorities(viewModel.getId())));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/users")
-    public ResponseEntity<List<ManagedUserVM>> getAll(Pageable pageable)
+    public ResponseEntity<List<ManagedUserDTO>> getAll(Pageable pageable)
         throws URISyntaxException {
         Page<User> page = userService.findAllEagerly(pageable);
-        List<ManagedUserVM> managedUserVMs = page.getContent().stream()
-            .map(ManagedUserVM::new)
+        List<ManagedUserDTO> dtos = page.getContent().stream()
+            .map(ManagedUserDTO::new)
             .collect(Collectors.toList());
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
-        return new ResponseEntity<>(managedUserVMs, headers, HttpStatus.OK);
+        return new ResponseEntity<>(dtos, headers, HttpStatus.OK);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
-    public ResponseEntity<ManagedUserVM> getByLogin(@PathVariable String login) {
-        log.debug("REST request to get User : {}", login);
+    public ResponseEntity<ManagedUserDTO> getByLogin(@PathVariable String login) {
+        log.debug("REST request to get user : {}", login);
         return userService.getUserWithAuthoritiesByLogin(login)
-                .map(ManagedUserVM::new)
-                .map(managedUserVM -> new ResponseEntity<>(managedUserVM, HttpStatus.OK))
+                .map(ManagedUserDTO::new)
+                .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -128,12 +129,12 @@ public class UserResource {
     @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
     @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<Void> delete(@PathVariable String login) {
-        log.debug("REST request to delete User: {}", login);
+        log.debug("REST request to delete user: {}", login);
         try {
             userService.deleteUser(login);
             return ResponseEntity.ok().headers(HeaderUtil.createAlert("userManagement.deleted", login)).build();
         } catch (DataIntegrityViolationException e) {
-            log.debug("Constration violation exception during delete operation.", e);
+            log.debug("Constraint violation exception during delete operation.", e);
             return ResponseEntity.badRequest().headers(HeaderUtil.createDeleteConstraintViolationAlert(ENTITY_NAME, e)).body(null);
         }
 

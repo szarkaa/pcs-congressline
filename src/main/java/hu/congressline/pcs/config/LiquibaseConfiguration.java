@@ -1,12 +1,10 @@
 package hu.congressline.pcs.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseDataSource;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
+import org.springframework.boot.liquibase.autoconfigure.LiquibaseDataSource;
+import org.springframework.boot.liquibase.autoconfigure.LiquibaseProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -17,14 +15,13 @@ import java.util.concurrent.Executor;
 
 import javax.sql.DataSource;
 
+import hu.congressline.pcs.config.liquibase.LiquibaseUtil;
 import liquibase.integration.spring.SpringLiquibase;
-import tech.jhipster.config.JHipsterConstants;
-import tech.jhipster.config.liquibase.SpringLiquibaseUtil;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Configuration
 public class LiquibaseConfiguration {
-
-    private static final Logger LOG = LoggerFactory.getLogger(LiquibaseConfiguration.class);
 
     private final Environment env;
 
@@ -44,7 +41,7 @@ public class LiquibaseConfiguration {
     ) {
         SpringLiquibase liquibase;
         if (Boolean.TRUE.equals(applicationProperties.getLiquibase().getAsyncStart())) {
-            liquibase = SpringLiquibaseUtil.createAsyncSpringLiquibase(
+            liquibase = LiquibaseUtil.createAsyncSpringLiquibase(
                 this.env,
                 executor,
                 liquibaseDataSource.getIfAvailable(),
@@ -53,7 +50,7 @@ public class LiquibaseConfiguration {
                 dataSourceProperties
             );
         } else {
-            liquibase = SpringLiquibaseUtil.createSpringLiquibase(
+            liquibase = LiquibaseUtil.createSpringLiquibase(
                 liquibaseDataSource.getIfAvailable(),
                 liquibaseProperties,
                 dataSource.getIfUnique(),
@@ -76,11 +73,11 @@ public class LiquibaseConfiguration {
         liquibase.setChangeLogParameters(liquibaseProperties.getParameters());
         liquibase.setRollbackFile(liquibaseProperties.getRollbackFile());
         liquibase.setTestRollbackOnUpdate(liquibaseProperties.isTestRollbackOnUpdate());
-        if (env.matchesProfiles(JHipsterConstants.SPRING_PROFILE_NO_LIQUIBASE)) {
+        if (env.matchesProfiles(Constants.SPRING_PROFILE_NO_LIQUIBASE)) {
             liquibase.setShouldRun(false);
         } else {
             liquibase.setShouldRun(liquibaseProperties.isEnabled());
-            LOG.debug("Configuring Liquibase");
+            log.debug("Configuring Liquibase");
         }
         return liquibase;
     }

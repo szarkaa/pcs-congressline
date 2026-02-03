@@ -16,7 +16,6 @@
 logging:
   level:
     ROOT: INFO
-    tech.jhipster: DEBUG
     hu.congressline.pcs: DEBUG
 
 spring:
@@ -57,12 +56,12 @@ server:
   forward-headers-strategy: native
 
 # ===================================================================
-# JHipster specific properties
+# PCS specific properties
 #
 # Full reference is available at: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-jhipster:
+pcs:
   # CORS is only enabled by default with the "dev" profile
   cors:
     # Allow Ionic for JHipster by default (* no longer allowed in Spring Boot 2.4+)
@@ -80,22 +79,10 @@ jhipster:
       key: 0580c79729b82d83278a3cc08ab4138c95b38f0fceb222ff72f61d5ce615f33b398f47bc1d08345a3ede3688e1535c6ca2d7
   mail: # specific JHipster mail property, for standard properties see MailProperties
     base-url: http://127.0.0.1:8080
-  logging:
-    use-json-format: false # By default, logs are not in Json format
-    logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
-      enabled: false
-      host: localhost
-      port: 5000
-      ring-buffer-size: 512
+
 # ===================================================================
 # Application specific properties
-# Add your own application properties here, see the ApplicationProperties class
-# to have type-safe configuration, like in the JHipsterProperties above
-#
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
-
 application:
   system:
     base-url: http://localhost:8080

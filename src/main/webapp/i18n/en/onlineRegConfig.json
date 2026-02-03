@@ -6,7 +6,7 @@
                 "createLabel": "Create a new Congress",
                 "createOrEditLabel": "Modify online registration configuration"
             },
-            "updated": "Online registration configuration is updated with identifier {{ param }}",
+            "updated": "Online registration configuration has been updated successfully",
             "headerNormal": "Header image",
             "closed": "Closed",
             "noPaymentRequired": "No payment required",

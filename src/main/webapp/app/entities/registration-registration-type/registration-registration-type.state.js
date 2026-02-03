@@ -33,7 +33,7 @@
             parent: 'registration-registration-type',
             url: '/registration-type/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'registrationCurrency', function($stateParams, $state, $uibModal, registration, registrationCurrency) {
                     $uibModal.open({
@@ -45,14 +45,14 @@
                         resolve: {
                             entity: function () {
                                 return {
+                                    id: null,
                                     regFee: null,
                                     currency: null,
                                     createdDate: new Date(),
-                                    dateOfGroupPayment: null,
                                     accPeople: null,
-                                    id: null,
-                                    registration: registration,
-                                    '@class': 'hu.congressline.pcs.domain.RegistrationRegistrationType'
+                                    registrationTypeId: null,
+                                    payingGroupItemId: null,
+                                    registrationId: registration ? registration.id : null
                                 };
                             },
                             registrationCurrency: function () {
@@ -70,7 +70,7 @@
             parent: 'registration-registration-type',
             url: '/registration-type/{regTypeId}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'registrationCurrency', function($stateParams, $state, $uibModal, registration, registrationCurrency) {
                 $uibModal.open({
@@ -98,7 +98,7 @@
             parent: 'registration-registration-type',
             url: '/registration-type/{regTypeId}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', function($stateParams, $state, $uibModal, registration) {
                 $uibModal.open({

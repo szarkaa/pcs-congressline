@@ -10,19 +10,39 @@
     function CongressDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Congress, Country, Currency, BankAccount, User) {
         var vm = this;
 
-        vm.congress = entity;
+        vm.congress = {
+            id: entity.id,
+            meetingCode: entity.meetingCode,
+            name: entity.name,
+            startDate: entity.startDate,
+            endDate: entity.endDate,
+            contactPerson: entity.contactPerson,
+            contactEmail: entity.contactEmail,
+            website: entity.website,
+            programNumber: entity.programNumber,
+            defaultCountryId: entity.defaultCountry ? entity.defaultCountry.id : null,
+            additionalBillingTextHu: entity.additionalBillingTextHu,
+            additionalBillingTextEn: entity.additionalBillingTextEn,
+            archive: entity.archive,
+            migratedFromCongressCode: entity.migratedFromCongressCode,
+            currencies: entity.currencies,
+            onlineRegCurrencies: entity.onlineRegCurrencies,
+            bankAccounts: entity.bankAccounts
+        };
+
         vm.congressFromCopyWp;
-        vm.clear = clear;
         vm.datePickerOpenStatus = {};
-        vm.openCalendar = openCalendar;
-        vm.setCongressEndDate = setCongressEndDate;
-        vm.save = save;
         vm.countries = Country.query();
         vm.currencies = Currency.query();
         vm.congresses = Congress.query();
-        vm.bankaccounts = BankAccount.query();
+        vm.bankAccounts = BankAccount.query();
         vm.users = User.query();
         vm.bankAccountByCurrency = {};
+
+        vm.clear = clear;
+        vm.openCalendar = openCalendar;
+        vm.setCongressEndDate = setCongressEndDate;
+        vm.save = save;
 
         initBankAccountsForCurrencies();
 
@@ -57,6 +77,13 @@
         function save () {
             vm.isSaving = true;
             preProcessBankAccountsForCurrencies();
+
+            vm.congress.currencyIds = vm.congress.currencies ? vm.congress.currencies.map(c => c.id) : [];
+            // delete vm.congress.currencies;
+            vm.congress.onlineRegCurrencyIds = vm.congress.onlineRegCurrencies ? vm.congress.onlineRegCurrencies.map(c => c.id) : [];
+            // delete vm.congress.onlineRegCurrencies;
+            vm.congress.bankAccountIds = vm.congress.bankAccounts ? vm.congress.bankAccounts.map(c => c.id) : [];
+            // delete vm.congress.bankAccounts;
             if (vm.congress.id !== null) {
                 Congress.update(vm.congress, onSaveSuccess, onSaveError);
             } else {

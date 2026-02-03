@@ -9,8 +9,12 @@ import java.util.Optional;
 
 import hu.congressline.pcs.domain.RegistrationRegistrationType;
 import hu.congressline.pcs.domain.RegistrationType;
+import hu.congressline.pcs.repository.CurrencyRepository;
 import hu.congressline.pcs.repository.RegistrationRegistrationTypeRepository;
 import hu.congressline.pcs.repository.RegistrationTypeRepository;
+import hu.congressline.pcs.repository.VatInfoRepository;
+import hu.congressline.pcs.web.rest.vm.RegistrationTypeVM;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,13 +25,16 @@ import lombok.extern.slf4j.Slf4j;
 public class RegistrationTypeService {
 
     private final RegistrationRegistrationTypeRepository rrtRepository;
-    private final RegistrationTypeRepository rtRepository;
+    private final RegistrationTypeRepository repository;
     private final RegistrationRegistrationTypeService rrtService;
+    private final CongressService congressService;
+    private final VatInfoRepository vatInfoRepository;
+    private final CurrencyRepository currencyRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     public RegistrationType save(RegistrationType registrationType) {
-        log.debug("Request to save RegistrationType : {}", registrationType);
-        RegistrationType result = rtRepository.save(registrationType);
+        log.debug("Request to save registration type : {}", registrationType);
+        RegistrationType result = repository.save(registrationType);
         if (registrationType.getId() != null) {
             recalculateRegFeeByRegistrationTypeId(registrationType.getId());
         }
@@ -35,10 +42,22 @@ public class RegistrationTypeService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
+    public RegistrationType save(@NonNull RegistrationTypeVM viewModel) {
+        RegistrationType registrationType = viewModel.getId() != null ? getById(viewModel.getId()) : new RegistrationType();
+        registrationType.update(viewModel);
+        registrationType.setVatInfo(viewModel.getVatInfoId() != null ? vatInfoRepository.findById(viewModel.getVatInfoId()).orElse(null) : null);
+        registrationType.setCurrency(viewModel.getCurrencyId() != null ? currencyRepository.findById(viewModel.getCurrencyId()).orElse(null) : null);
+        if (registrationType.getCongress() == null) {
+            registrationType.setCongress(congressService.getById(viewModel.getCongressId()));
+        }
+        return repository.save(registrationType);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<RegistrationType> findByCongressId(Long id) {
-        log.debug("Request to get all RegistrationType by congress id: {}", id);
-        List<RegistrationType> result = rtRepository.findByCongressId(id);
+        log.debug("Request to get all registration type by congress id: {}", id);
+        List<RegistrationType> result = repository.findByCongressId(id);
         result.sort(Comparator.comparing(RegistrationType::getName));
         return result;
     }
@@ -46,39 +65,39 @@ public class RegistrationTypeService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<RegistrationType> findById(Long id) {
-        log.debug("Request to find Congress : {}", id);
-        return rtRepository.findById(id);
+        log.debug("Request to find registration type by id: {}", id);
+        return repository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public RegistrationType getById(Long id) {
-        log.debug("Request to get Congress : {}", id);
-        return rtRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("RegistrationType not found with id: " + id));
+        log.debug("Request to get registration type by id : {}", id);
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Registration type not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     protected void recalculateRegFeeByRegistrationTypeId(Long id) {
-        log.debug("Request to get calculate reg fee by RegistrationType : {}", id);
+        log.debug("Request to get calculate reg fee by registration type : {}", id);
         List<RegistrationRegistrationType> rrtList = rrtRepository.findAllByRegistrationTypeId(id);
         rrtList.forEach(rrt -> {
             rrt.setRegFee(null);
-            rrtService.setRegFee(rrt);
+            rrtService.calculateRegFee(rrt);
         });
         rrtService.save(rrtList);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long id) {
-        log.debug("Request to delete RegistrationType : {}", id);
-        rtRepository.deleteById(id);
+        log.debug("Request to delete registration type : {}", id);
+        repository.deleteById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<RegistrationType> findOneByCode(String code, Long congressId) {
-        log.debug("Request to get RegistrationType by code: {}", code);
-        return rtRepository.findOneByCodeAndCongressId(code, congressId);
+        log.debug("Request to get registration type by code: {}", code);
+        return repository.findOneByCodeAndCongressId(code, congressId);
     }
 }

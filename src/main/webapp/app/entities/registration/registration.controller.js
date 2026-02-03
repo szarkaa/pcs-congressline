@@ -66,7 +66,11 @@
         }
 
         function nextRegId() {
-            return vm.registration && vm.registrationArray[indexOfRegistrationId(vm.registration.id) + 1] && vm.registrationArray[indexOfRegistrationId(vm.registration.id) + 1].id;
+            if (!vm.registration && vm.registrationArray.length) {
+                return vm.registrationArray[0].id;
+            } else {
+                return vm.registration && vm.registrationArray[indexOfRegistrationId(vm.registration.id) + 1] && vm.registrationArray[indexOfRegistrationId(vm.registration.id) + 1].id;
+            }
         }
 
         function lastRegId() {
@@ -78,7 +82,7 @@
         }
 
         function hasNextRegId() {
-            return vm.registration && indexOfRegistrationId(vm.registration.id) < vm.registrationArray.length - 1;
+            return (!vm.registration && vm.registrationArray.length) || (vm.registration && indexOfRegistrationId(vm.registration.id) < vm.registrationArray.length - 1);
         }
 
         function indexOfRegistrationId(id) {

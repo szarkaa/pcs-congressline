@@ -30,11 +30,11 @@
 
                             <div class="col-xs-3">
                                 <label translate="pcsApp.onlineRegConfig.defaultCountry" for="field_defaultCountry">Default Country</label>
-                                <ui-select ng-model="vm.onlineRegConfig.defaultCountry" name="defaultCountry" id="field_defaultCountry" theme="bootstrap">
+                                <ui-select ng-model="vm.onlineRegConfig.defaultCountryId" name="defaultCountry" id="field_defaultCountry" theme="bootstrap">
                                     <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                                         <span ng-bind="$select.selected.name"></span>
                                     </ui-select-match>
-                                    <ui-select-choices repeat="country in (vm.countries | filter: $select.search) track by country.id">
+                                    <ui-select-choices repeat="country.id as country in (vm.countries | filter: $select.search) track by country.id">
                                         <div ng-bind-html="country.name | highlight: $select.search"></div>
                                     </ui-select-choices>
                                 </ui-select>

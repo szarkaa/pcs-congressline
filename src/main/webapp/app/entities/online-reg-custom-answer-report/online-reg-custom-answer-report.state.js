@@ -13,7 +13,7 @@
                 parent: 'report',
                 url: '/online-reg-custom-answer-report',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.onlineRegCustomAnswerReportController.home.title'
                 },
                 views: {
@@ -40,7 +40,7 @@
                 parent: 'online-reg-custom-answer-report',
                 url: '/{id}/detail',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({

@@ -47,26 +47,6 @@
                     return $translate.refresh();
                 }]
 
-            }        })
-        .state('user-management-detail', {
-            parent: 'system',
-            url: '/user/:login',
-            data: {
-                authorities: ['ROLE_ADMIN'],
-                pageTitle: 'user-management.detail.title'
-            },
-            views: {
-                'content@base': {
-                    templateUrl: 'app/admin/user-management/user-management-detail.html',
-                    controller: 'UserManagementDetailController',
-                    controllerAs: 'vm'
-                }
-            },
-            resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('user-management');
-                    return $translate.refresh();
-                }]
             }
         })
         .state('user-management.new', {
@@ -87,8 +67,7 @@
                             return {
                                 id: null, login: null, firstName: null, lastName: null, email: null,
                                 activated: true, langKey: 'en', createdBy: null, createdDate: null,
-                                lastModifiedBy: null, lastModifiedDate: null, resetDate: null,
-                                resetKey: null, authorities: null, congresses: null
+                                lastModifiedBy: null, lastModifiedDate: null, authorities: null, congresses: null
                             };
                         }
                     }

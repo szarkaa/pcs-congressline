@@ -16,7 +16,7 @@
             DTColumnDefBuilder.newColumnDef(-1).notSortable()
         ];
 
-        vm.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
+        vm.authorities = ['ROLE_ACCOUNTANT', 'ROLE_ADVANCED_USER', 'ROLE_USER', 'ROLE_ADMIN'];
         vm.currentAccount = null;
         vm.languages = null;
         vm.loadAll = loadAll;
@@ -33,7 +33,7 @@
         vm.transition = transition;
 
         vm.loadAll();
-        
+
         JhiLanguageService.getAll().then(function (languages) {
             vm.languages = languages;
         });

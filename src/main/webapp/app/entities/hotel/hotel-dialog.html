@@ -93,22 +93,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="pcsApp.hotel.latitude" for="field_latitude">Latitude</label>
-            <input type="number" class="form-control" name="latitude" id="field_latitude" autocomplete="off"
-                    ng-model="vm.hotel.latitude"
-                     />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="pcsApp.hotel.longitude" for="field_longitude">Longitude</label>
-            <input type="number" class="form-control" name="longitude" id="field_longitude" autocomplete="off"
-                    ng-model="vm.hotel.longitude"
-                     />
-        </div>
-        <div class="form-group">
             <label class="control-label" data-translate="pcsApp.hotel.phone" for="field_phone">Phone</label>
-            <input type="text" class="form-control" name="phone" id="field_phone" autocomplete="off"
-                    ng-model="vm.hotel.phone"
-                    ng-maxlength="64" />
+            <input type="text" class="form-control" name="phone" id="field_phone" autocomplete="off" ng-model="vm.hotel.phone" ng-maxlength="64" />
             <div ng-show="editForm.phone.$invalid">
                 <p class="error-block"
                     ng-show="editForm.phone.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
@@ -118,9 +104,7 @@
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="pcsApp.hotel.fax" for="field_fax">Fax</label>
-            <input type="text" class="form-control" name="fax" id="field_fax" autocomplete="off"
-                    ng-model="vm.hotel.fax"
-                    ng-maxlength="64" />
+            <input type="text" class="form-control" name="fax" id="field_fax" autocomplete="off" ng-model="vm.hotel.fax" ng-maxlength="64" />
             <div ng-show="editForm.fax.$invalid">
                 <p class="error-block"
                     ng-show="editForm.fax.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
@@ -130,9 +114,7 @@
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="pcsApp.hotel.email" for="field_email">Email</label>
-            <input type="email" class="form-control" name="email" id="field_email" autocomplete="off"
-                    ng-model="vm.hotel.email"
-                    ng-maxlength="64" />
+            <input type="email" class="form-control" name="email" id="field_email" autocomplete="off" ng-model="vm.hotel.email" ng-maxlength="64" />
             <div ng-show="editForm.email.$invalid">
                 <p class="error-block"
                     ng-show="editForm.email.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="64">
@@ -148,8 +130,7 @@
         <div class="form-group">
             <label class="control-label" data-translate="pcsApp.hotel.contactName" for="field_contactName">Contact Name</label>
             <input type="text" class="form-control" name="contactName" id="field_contactName" autocomplete="off"
-                    ng-model="vm.hotel.contactName"
-                    ng-maxlength="128" />
+                    ng-model="vm.hotel.contactName" ng-maxlength="128" />
             <div ng-show="editForm.contactName.$invalid">
                 <p class="error-block"
                     ng-show="editForm.contactName.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="128">

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import hu.congressline.pcs.web.rest.vm.MiscServiceVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -58,6 +60,14 @@ public class MiscService implements Serializable {
 
     @ManyToOne
     private Congress congress;
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull MiscServiceVM viewModel) {
+        this.name = viewModel.getName();
+        this.description = viewModel.getDescription();
+        this.measure = viewModel.getMeasure();
+        this.price = viewModel.getPrice();
+    }
 
     @Override
     public boolean equals(Object o) {

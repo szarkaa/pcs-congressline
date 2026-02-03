@@ -3,6 +3,7 @@ package hu.congressline.pcs.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
+import hu.congressline.pcs.web.rest.vm.AccPeopleVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 /**
  * A AccPeople.
@@ -44,6 +46,13 @@ public class AccPeople implements Serializable {
 
     @ManyToOne
     private RegistrationRegistrationType registrationRegistrationType;
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull AccPeopleVM viewModel) {
+        this.title = viewModel.getTitle();
+        this.lastName = viewModel.getLastName();
+        this.firstName = viewModel.getFirstName();
+    }
 
     @Override
     public boolean equals(Object o) {

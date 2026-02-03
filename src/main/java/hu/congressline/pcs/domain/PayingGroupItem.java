@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
+import hu.congressline.pcs.web.rest.vm.PayingGroupItemVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,6 +21,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -61,6 +63,16 @@ public class PayingGroupItem implements Serializable {
 
     @ManyToOne
     private PayingGroup payingGroup;
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull PayingGroupItemVM viewModel) {
+        this.name = viewModel.getName();
+        this.amountPercentage = viewModel.getAmountPercentage();
+        this.amountValue = viewModel.getAmountValue();
+        this.hotelDateFrom = viewModel.getHotelDateFrom();
+        this.hotelDateTo = viewModel.getHotelDateTo();
+        this.chargeableItemType = viewModel.getChargeableItemType();
+    }
 
     @Override
     public boolean equals(Object o) {

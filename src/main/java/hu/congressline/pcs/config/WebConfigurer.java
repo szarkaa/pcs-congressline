@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.server.WebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.boot.web.server.servlet.ConfigurableServletWebServerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
-import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 import jakarta.servlet.ServletContext;
-import tech.jhipster.config.JHipsterProperties;
 
 import static java.net.URLDecoder.decode;
 
@@ -33,9 +32,9 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
 
     private final Environment env;
 
-    private final JHipsterProperties hipsterProperties;
+    private final PcsProperties hipsterProperties;
 
-    public WebConfigurer(Environment env, JHipsterProperties properties) {
+    public WebConfigurer(Environment env, PcsProperties properties) {
         this.env = env;
         this.hipsterProperties = properties;
     }
@@ -59,10 +58,9 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
     }
 
     private void setLocationForStaticAssets(WebServerFactory server) {
-        if (server instanceof ConfigurableServletWebServerFactory) {
+        if (server instanceof ConfigurableServletWebServerFactory serverFactory) {
             File root;
             String prefixPath = resolvePathPrefix();
-            ConfigurableServletWebServerFactory serverFactory = (ConfigurableServletWebServerFactory) server;
             root = Path.of(prefixPath + "target/classes/static/").toFile();
             if (root.exists() && root.isDirectory()) {
                 serverFactory.setDocumentRoot(root);

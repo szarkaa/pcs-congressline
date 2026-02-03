@@ -16,8 +16,10 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import hu.congressline.pcs.domain.AccPeople;
-import hu.congressline.pcs.repository.AccPeopleRepository;
+import hu.congressline.pcs.service.AccPeopleService;
+import hu.congressline.pcs.service.dto.AccPeopleDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.AccPeopleVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,59 +31,59 @@ import lombok.extern.slf4j.Slf4j;
 public class AccPeopleResource {
     private static final String ENTITY_NAME = "accPeople";
 
-    private final AccPeopleRepository accPeopleRepository;
+    private final AccPeopleService service;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/acc-people")
-    public ResponseEntity<AccPeople> create(@Valid @RequestBody AccPeople accPeople) throws URISyntaxException {
-        log.debug("REST request to save AccPeople : {}", accPeople);
-        if (accPeople.getId() != null) {
+    public ResponseEntity<AccPeopleDTO> create(@Valid @RequestBody AccPeopleVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save acc people : {}", viewModel);
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert(ENTITY_NAME, "idexists", "A new accPeople cannot already have an ID"))
+                .createFailureAlert(ENTITY_NAME, "idexists", "A new viewModel cannot already have an ID"))
                 .body(null);
         }
 
-        AccPeople result = accPeopleRepository.save(accPeople);
+        AccPeople result = service.save(viewModel);
         return ResponseEntity.created(new URI("/api/acc-people/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new AccPeopleDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/acc-people")
-    public ResponseEntity<AccPeople> update(@Valid @RequestBody AccPeople accPeople) throws URISyntaxException {
-        log.debug("REST request to update AccPeople : {}", accPeople);
-        if (accPeople.getId() == null) {
-            return create(accPeople);
+    public ResponseEntity<AccPeopleDTO> update(@Valid @RequestBody AccPeopleVM viewModel) throws URISyntaxException {
+        log.debug("REST request to update acc people : {}", viewModel);
+        if (viewModel.getId() == null) {
+            return create(viewModel);
         }
 
-        AccPeople result = accPeopleRepository.save(accPeople);
+        AccPeople result = service.save(viewModel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, accPeople.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
+            .body(new AccPeopleDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registration-registration-type/{registrationRegistrationTypeId}/acc-peoples")
-    public List<AccPeople> getAllByRegistrationRegistrationTypeId(@PathVariable Long registrationRegistrationTypeId) {
-        log.debug("REST request to get all AccPeoples by registrationRegistrationType id {}", registrationRegistrationTypeId);
-        return accPeopleRepository.findAllByRegistrationRegistrationTypeId(registrationRegistrationTypeId);
+    public List<AccPeopleDTO> getAllByRegistrationRegistrationTypeId(@PathVariable Long registrationRegistrationTypeId) {
+        log.debug("REST request to get all acc people by registration registration type id {}", registrationRegistrationTypeId);
+        return service.findAllByRegistrationRegistrationTypeId(registrationRegistrationTypeId).stream().map(AccPeopleDTO::new).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @RequestMapping("/acc-people/{id}")
-    public ResponseEntity<AccPeople> getById(@PathVariable Long id) {
-        log.debug("REST request to get AccPeople : {}", id);
-        return accPeopleRepository.findById(id)
-            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+    public ResponseEntity<AccPeopleDTO> getById(@PathVariable Long id) {
+        log.debug("REST request to get acc people : {}", id);
+        return service.findById(id)
+            .map(result -> new ResponseEntity<>(new AccPeopleDTO(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/acc-people/{id}")
     public ResponseEntity<Void> deleteAccPeople(@PathVariable Long id) {
-        log.debug("REST request to delete AccPeople : {}", id);
-        accPeopleRepository.deleteById(id);
+        log.debug("REST request to delete acc people : {}", id);
+        service.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 

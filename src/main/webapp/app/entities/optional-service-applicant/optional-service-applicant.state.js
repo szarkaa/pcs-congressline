@@ -13,7 +13,7 @@
                 parent: 'report',
                 url: '/optional-service-applicant',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.optionalServiceApplicant.home.title'
                 },
                 views: {
@@ -38,7 +38,7 @@
                 parent: 'optional-service-applicant',
                 url: '/select',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'listFilter', function ($stateParams, $state, $uibModal, listFilter) {
                     $uibModal.open({

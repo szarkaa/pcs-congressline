@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import hu.congressline.pcs.web.rest.vm.CongressVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -111,6 +113,21 @@ public class Congress implements Serializable {
     @ManyToMany(mappedBy = "congresses")
     @JsonIgnore
     private Set<User> users = new HashSet<>();
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull CongressVM viewModel) {
+        this.meetingCode = viewModel.getMeetingCode();
+        this.name = viewModel.getName();
+        this.startDate = viewModel.getStartDate();
+        this.endDate = viewModel.getEndDate();
+        this.contactPerson = viewModel.getContactPerson();
+        this.contactEmail = viewModel.getContactEmail();
+        this.programNumber = viewModel.getProgramNumber();
+        this.website = viewModel.getWebsite();
+        this.additionalBillingTextHu = viewModel.getAdditionalBillingTextHu();
+        this.additionalBillingTextEn = viewModel.getAdditionalBillingTextEn();
+        this.archive = viewModel.getArchive();
+    }
 
     @Override
     public boolean equals(Object o) {

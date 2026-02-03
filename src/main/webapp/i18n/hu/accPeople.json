@@ -2,7 +2,7 @@
     "pcsApp": {
         "accPeople" : {
             "home": {
-                "title": "Acc people of registration type: {{ regType }} for registration id: {{ regId }}",
+                "title": "Acc people of registration type: {{ regType }}",
                 "createLabel": "Create a new acc people",
                 "createOrEditLabel": "Create or edit a acc people",
                 "search": "Search for acc people"

@@ -13,7 +13,7 @@
             parent: 'administration',
             url: '/paying-groups/{payingGroupId}/paying-group-items',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.payingGroupItem.home.title'
             },
             views: {
@@ -42,7 +42,7 @@
             parent: 'paying-group-item',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -54,14 +54,14 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 name: null,
                                 amountPercentage: null,
                                 amountValue: null,
                                 hotelDateFrom: null,
                                 hotelDateTo: null,
                                 chargeableItemType: null,
-                                id: null,
-                                payingGroup: {id: $stateParams.payingGroupId }
+                                payingGroupId: $stateParams.payingGroupId
                             };
                         }
                     }
@@ -76,7 +76,7 @@
             parent: 'paying-group-item',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -101,7 +101,7 @@
             parent: 'paying-group-item',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

@@ -5,8 +5,8 @@
               "save": "Save"
             },
             "message": {
-              "success": "Company profile settings has been saved!",
-                "error": "<strong>An error has occurred!</strong> Settings could not be saved!"
+              "success": "Company profile settings has been saved",
+                "error": "<strong>An error has occurred!</strong> Settings could not be saved"
             },
             "home": {
                 "title": "Settings of the Company profile"
@@ -32,7 +32,7 @@
             "invoiceNumberPrefix": "Invoice number prefix",
             "invoiceNumber": "Invoice number",
             "proFormaInvoiceNumber": "Proforma Invoice number",
-            "updated": "Company profile settings has been saved!"
+            "updated": "Company profile settings has been saved"
         }
     }
 }

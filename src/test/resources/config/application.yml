@@ -47,24 +47,14 @@ server:
   address: localhost
 
 # ===================================================================
-# JHipster specific properties
-#
-# Full reference is available at: https://www.jhipster.tech/common-application-properties/
+# PCS specific properties
 # ===================================================================
-jhipster:
+pcs:
   clientApp:
     name: 'pcsApp'
   mail:
     from: pcs@localhost.com
     base-url: http://127.0.0.1:8080
-  logging:
-    # To test json console appender
-    use-json-format: false
-    logstash:
-      enabled: false
-      host: localhost
-      port: 5000
-      ring-buffer-size: 512
   security:
     remember-me:
       # security key (this key should be unique for your application, and kept secret)
@@ -72,11 +62,6 @@ jhipster:
 
 # ===================================================================
 # Application specific properties
-# Add your own application properties here, see the ApplicationProperties class
-# to have type-safe configuration, like in the JHipsterProperties above
-#
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 # application:

@@ -13,7 +13,7 @@
             parent: 'administration',
             url: '/backend-online-reg',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.backendOnlineReg.home.title'
             },
             views: {

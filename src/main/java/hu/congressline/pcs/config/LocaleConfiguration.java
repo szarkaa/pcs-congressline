@@ -17,12 +17,10 @@ public class LocaleConfiguration implements WebMvcConfigurer {
 
     private final Environment environment;
 
-    @SuppressWarnings("MissingJavadocMethod")
     @Bean(name = "localeResolver")
     public LocaleResolver localeResolver() {
-        AngularCookieLocaleResolver cookieLocaleResolver = new AngularCookieLocaleResolver();
-        cookieLocaleResolver.setCookieName("NG_TRANSLATE_LANG_KEY");
-        return cookieLocaleResolver;
+        // Cookie name must be provided via constructor in Spring 6+/7
+        return new AngularCookieLocaleResolver("NG_TRANSLATE_LANG_KEY");
     }
 
     @Override
@@ -32,3 +30,4 @@ public class LocaleConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(localeChangeInterceptor);
     }
 }
+

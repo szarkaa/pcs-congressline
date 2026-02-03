@@ -1,16 +1,15 @@
 package hu.congressline.pcs.service;
 
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.PageSize;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-
+import org.openpdf.text.Chunk;
+import org.openpdf.text.Document;
+import org.openpdf.text.DocumentException;
+import org.openpdf.text.Element;
+import org.openpdf.text.PageSize;
+import org.openpdf.text.Paragraph;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.PdfPCell;
+import org.openpdf.text.pdf.PdfPTable;
+import org.openpdf.text.pdf.PdfWriter;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -31,6 +30,7 @@ import hu.congressline.pcs.repository.InvoiceChargeRepository;
 import hu.congressline.pcs.repository.InvoiceItemRepository;
 import hu.congressline.pcs.service.pdf.GroupDiscountInvoicePdfContext;
 import hu.congressline.pcs.service.pdf.InvoiceHeaderFooter;
+import hu.congressline.pcs.service.pdf.InvoicePdfHeaderFooterTextContext;
 import hu.congressline.pcs.service.pdf.PcsPdfFont;
 import hu.congressline.pcs.service.pdf.PdfContext;
 import hu.congressline.pcs.service.util.ServiceUtil;
@@ -68,7 +68,7 @@ public class GroupDiscountInvoicePdfService extends AbstractPdfService {
             Document document = new Document(PageSize.A4, 20, 20, 40, 120);
             PdfWriter writer = PdfWriter.getInstance(document, baos);
 
-            InvoiceHeaderFooter event = new InvoiceHeaderFooter(messageSource, pdfContext);
+            InvoiceHeaderFooter event = new InvoiceHeaderFooter(new InvoicePdfHeaderFooterTextContext(messageSource, pdfContext));
             writer.setPageEvent(event);
             writer.setBoxSize("art", new Rectangle(36, 54, 559, 788));
 

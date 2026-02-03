@@ -51,7 +51,7 @@
                         vm.selectedHotels[hotelId.toString()] = true;
                     });
             } else {
-                CongressHotel.save({id: null, congress: { id: CongressSelector.getSelectedCongress().id }, hotel: { id: hotelId }},
+                CongressHotel.save({id: null, congressId: CongressSelector.getSelectedCongress().id, hotelId: hotelId},
                     function (result) {
                         vm.congressHotels.push(result);
                         vm.selectedHotels[hotelId.toString()] = true;
@@ -64,7 +64,7 @@
 
         function getCongressHotel(congressId, hotelId) {
             for (var i = 0; i < vm.congressHotels.length; i++) {
-                if (vm.congressHotels[i].congress.id === congressId && vm.congressHotels[i].hotel.id === hotelId) {
+                if (vm.congressHotels[i].congressId === congressId && vm.congressHotels[i].hotelId === hotelId) {
                     return vm.congressHotels[i];
                 }
             }
@@ -73,7 +73,7 @@
 
         function removeCongressHotel(hotelId) {
             for (var i = 0; i < vm.congressHotels.length; i++) {
-                if (vm.congressHotels[i].hotel.id === hotelId) {
+                if (vm.congressHotels[i].hotelId === hotelId) {
                     vm.congressHotels.splice(i, 1);
                     break;
                 }
@@ -82,7 +82,7 @@
 
         function isHotelIdSelected(hotelId) {
             for (var i = 0; i < vm.congressHotels.length; i++) {
-                if (vm.congressHotels[i].hotel.id === hotelId) {
+                if (vm.congressHotels[i].hotelId === hotelId) {
                     return true;
                 }
             }
@@ -97,7 +97,7 @@
             }
 
             for (i = 0; i < vm.congressHotels.length; i++) {
-                hotelId = vm.congressHotels[i].hotel.id;
+                hotelId = vm.congressHotels[i].hotelId;
                 vm.selectedHotels[hotelId.toString()] = true;
             }
         }

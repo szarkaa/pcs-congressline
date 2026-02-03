@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import hu.congressline.pcs.web.rest.vm.RegistrationVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -139,6 +141,34 @@ public class Registration implements Serializable {
     @ManyToOne
     private Congress congress;
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull RegistrationVM viewModel) {
+        this.title = viewModel.getTitle();
+        this.lastName = viewModel.getLastName();
+        this.firstName = viewModel.getFirstName();
+        this.shortName = viewModel.getShortName();
+        this.position = viewModel.getPosition();
+        this.otherData = viewModel.getOtherData();
+        this.department = viewModel.getDepartment();
+        this.zipCode = viewModel.getZipCode();
+        this.city = viewModel.getCity();
+        this.street = viewModel.getStreet();
+        this.phone = viewModel.getPhone();
+        this.email = viewModel.getEmail();
+        this.fax = viewModel.getFax();
+        this.remark = viewModel.getRemark();
+        this.invoiceName = viewModel.getInvoiceName();
+        this.invoiceZipCode = viewModel.getInvoiceZipCode();
+        this.invoiceCity = viewModel.getInvoiceCity();
+        this.invoiceAddress = viewModel.getInvoiceAddress();
+        this.invoiceTaxNumber = viewModel.getInvoiceTaxNumber();
+        this.onSpot = viewModel.getOnSpot();
+        this.cancelled = viewModel.getCancelled();
+        this.presenter = viewModel.getPresenter();
+        this.closed = viewModel.getClosed();
+        this.etiquette = viewModel.getEtiquette();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -163,4 +193,5 @@ public class Registration implements Serializable {
     public String toString() {
         return "Registration{" + "id=" + id + ", regId='" + regId + "'" + ", lastName='" + lastName + "'" + ", firstName='" + firstName + "'" + "}";
     }
+
 }

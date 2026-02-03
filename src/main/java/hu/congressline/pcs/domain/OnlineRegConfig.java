@@ -54,13 +54,11 @@ public class OnlineRegConfig {
     @Column(name = "header_normal_content_type")
     private String headerNormalContentType;
 
-    @NotNull
     @Column(name = "closed")
-    private boolean closed;
+    private Boolean closed;
 
-    @NotNull
     @Column(name = "no_payment_required")
-    private boolean noPaymentRequired;
+    private Boolean noPaymentRequired;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "payment_supplier")
@@ -92,41 +90,32 @@ public class OnlineRegConfig {
     @Column(name = "browser_remark_pt", columnDefinition = "TEXT", length = 60000)
     private String browserRemarkPt;
 
-    @NotNull
     @Column(name = "last_name_visible")
-    private boolean lastNameVisible;
+    private Boolean lastNameVisible;
 
-    @NotNull
     @Column(name = "last_name_required")
-    private boolean lastNameRequired;
+    private Boolean lastNameRequired;
 
-    @NotNull
     @Column(name = "first_name_visible")
-    private boolean firstNameVisible;
+    private Boolean firstNameVisible;
 
-    @NotNull
     @Column(name = "first_name_required")
-    private boolean firstNameRequired;
+    private Boolean firstNameRequired;
 
-    @NotNull
     @Column(name = "title_visible")
-    private boolean titleVisible;
+    private Boolean titleVisible;
 
-    @NotNull
     @Column(name = "title_required")
-    private boolean titleRequired;
+    private Boolean titleRequired;
 
-    @NotNull
     @Column(name = "title_selectable")
-    private boolean titleSelectable;
+    private Boolean titleSelectable;
 
-    @NotNull
     @Column(name = "position_visible")
-    private boolean positionVisible;
+    private Boolean positionVisible;
 
-    @NotNull
     @Column(name = "position_required")
-    private boolean positionRequired;
+    private Boolean positionRequired;
 
     @Size(max = 200)
     @Column(name = "position_label_hu", columnDefinition = "TEXT", length = 200)
@@ -164,13 +153,11 @@ public class OnlineRegConfig {
     @Column(name = "value")
     private List<String> positionPtValues;
 
-    @NotNull
     @Column(name = "workplace_visible")
-    private boolean workplaceVisible;
+    private Boolean workplaceVisible;
 
-    @NotNull
     @Column(name = "workplace_required")
-    private boolean workplaceRequired;
+    private Boolean workplaceRequired;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "online_reg_config_workplace_hu_values", joinColumns = @JoinColumn(name = "online_reg_config_id"))
@@ -192,77 +179,59 @@ public class OnlineRegConfig {
     @Column(name = "value")
     private List<String> workplacePtValues;
 
-    @NotNull
     @Column(name = "department_visible")
-    private boolean departmentVisible;
+    private Boolean departmentVisible;
 
-    @NotNull
     @Column(name = "department_required")
-    private boolean departmentRequired;
+    private Boolean departmentRequired;
 
-    @NotNull
     @Column(name = "zip_code_visible")
-    private boolean zipCodeVisible;
+    private Boolean zipCodeVisible;
 
-    @NotNull
     @Column(name = "zip_code_required")
-    private boolean zipCodeRequired;
+    private Boolean zipCodeRequired;
 
-    @NotNull
     @Column(name = "country_visible")
-    private boolean countryVisible;
+    private Boolean countryVisible;
 
-    @NotNull
     @Column(name = "country_required")
-    private boolean countryRequired;
+    private Boolean countryRequired;
 
-    @NotNull
     @Column(name = "city_visible")
-    private boolean cityVisible;
+    private Boolean cityVisible;
 
-    @NotNull
     @Column(name = "city_required")
-    private boolean cityRequired;
+    private Boolean cityRequired;
 
-    @NotNull
     @Column(name = "street_visible")
-    private boolean streetVisible;
+    private Boolean streetVisible;
 
-    @NotNull
     @Column(name = "street_required")
-    private boolean streetRequired;
+    private Boolean streetRequired;
 
-    @NotNull
     @Column(name = "phone_visible")
-    private boolean phoneVisible;
+    private Boolean phoneVisible;
 
-    @NotNull
     @Column(name = "phone_required")
-    private boolean phoneRequired;
+    private Boolean phoneRequired;
 
-    @NotNull
     @Column(name = "email_visible")
-    private boolean emailVisible;
+    private Boolean emailVisible;
 
-    @NotNull
     @Column(name = "email_required")
-    private boolean emailRequired;
+    private Boolean emailRequired;
 
-    @NotNull
     @Column(name = "fax_visible")
-    private boolean faxVisible;
+    private Boolean faxVisible;
 
-    @NotNull
     @Column(name = "fax_required")
-    private boolean faxRequired;
+    private Boolean faxRequired;
 
-    @NotNull
     @Column(name = "other_data_visible")
-    private boolean otherDataVisible;
+    private Boolean otherDataVisible;
 
-    @NotNull
     @Column(name = "other_data_required")
-    private boolean otherDataRequired;
+    private Boolean otherDataRequired;
 
     @Size(max = 200)
     @Column(name = "other_data_label_hu", length = 200)
@@ -348,13 +317,11 @@ public class OnlineRegConfig {
     @Column(name = "reg_type_third_fee_label_pt", length = 100)
     private String regTypeThirdFeeLabelPt;
 
-    @NotNull
     @Column(name = "roommate_required_visible")
-    private boolean roommateRequiredVisible;
+    private Boolean roommateRequiredVisible;
 
-    @NotNull
     @Column(name = "special_booking_request_visible")
-    private boolean specialBookingRequiredVisible;
+    private Boolean specialBookingRequiredVisible;
 
     @Size(max = 255)
     @Column(name = "reg_type_extra_title_hu")
@@ -452,17 +419,14 @@ public class OnlineRegConfig {
     @Column(name = "optional_service_remark_pt", columnDefinition = "TEXT", length = 60000)
     private String optionalServiceRemarkPt;
 
-    @NotNull
     @Column(name = "bank_transfer_visible")
-    private boolean bankTransferVisible = true;
+    private Boolean bankTransferVisible = true;
 
-    @NotNull
     @Column(name = "check_visible")
-    private boolean checkVisible = true;
+    private Boolean checkVisible = true;
 
-    @NotNull
     @Column(name = "credit_card_visible")
-    private boolean creditCardVisible = true;
+    private Boolean creditCardVisible = true;
 
     @Size(max = 60000)
     @Column(name = "billing_remark_hu", columnDefinition = "TEXT", length = 60000)

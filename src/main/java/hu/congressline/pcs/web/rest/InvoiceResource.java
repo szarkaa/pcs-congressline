@@ -33,10 +33,9 @@ import hu.congressline.pcs.service.InvoiceService;
 import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.service.MiscInvoicePdfService;
 import hu.congressline.pcs.service.MiscInvoiceService;
-import hu.congressline.pcs.service.NavService;
+import hu.congressline.pcs.service.NavOnlineService;
 import hu.congressline.pcs.service.RegistrationService;
 import hu.congressline.pcs.service.dto.InvoiceDTO;
-import hu.congressline.pcs.service.dto.SetPaymentDateDTO;
 import hu.congressline.pcs.service.pdf.GroupDiscountInvoicePdfContext;
 import hu.congressline.pcs.service.pdf.InvoicePdfContext;
 import hu.congressline.pcs.service.pdf.MiscInvoicePdfContext;
@@ -44,6 +43,7 @@ import hu.congressline.pcs.service.util.ServiceUtil;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.InvoiceVM;
 import hu.congressline.pcs.web.rest.vm.ResendInvoiceVM;
+import hu.congressline.pcs.web.rest.vm.SetPaymentDateVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,25 +65,25 @@ public class InvoiceResource {
     private final GroupDiscountInvoicePdfService groupDiscountInvoicePdfService;
     private final MiscInvoiceService miscInvoiceService;
     private final MiscInvoicePdfService miscInvoicePdfService;
-    private final NavService navOnlineService;
+    private final NavOnlineService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/invoices")
-    public ResponseEntity<Invoice> create(@Valid @RequestBody InvoiceVM invoiceVM) throws URISyntaxException {
-        log.debug("REST request to save Invoice : {}", invoiceVM);
-        InvoiceRegistration result = invoiceService.save(invoiceVM);
+    public ResponseEntity<InvoiceDTO> create(@Valid @RequestBody InvoiceVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save invoice : {}", viewModel);
+        InvoiceRegistration result = invoiceService.save(viewModel);
         if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
             navOnlineService.postInvoiceToNav(result.getInvoice().getId());
         }
         return ResponseEntity.created(new URI(URI + result.getInvoice().getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getInvoice().getId().toString()))
-            .body(result.getInvoice());
+            .body(new InvoiceDTO(result.getInvoice()));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/invoices/save-and-send-email")
-    public ResponseEntity<Invoice> createAndSendEmail(@Valid @RequestBody InvoiceVM invoiceVM) throws URISyntaxException {
-        log.debug("REST request to save Invoice and send it via mail: {}", invoiceVM);
+    public ResponseEntity<InvoiceDTO> createAndSendEmail(@Valid @RequestBody InvoiceVM invoiceVM) throws URISyntaxException {
+        log.debug("REST request to save invoice and send it via mail: {}", invoiceVM);
         InvoiceRegistration result = invoiceService.save(invoiceVM);
         if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
             navOnlineService.postInvoiceToNav(result.getInvoice().getId());
@@ -95,13 +95,13 @@ public class InvoiceResource {
             createInvoiceFilename(invoicePdfContext), Locale.forLanguageTag(invoiceVM.getLanguage()), registration, pdfBytes);
         return ResponseEntity.created(new URI(URI + result.getInvoice().getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getInvoice().getId().toString()))
-                .body(result.getInvoice());
+                .body(new InvoiceDTO(result.getInvoice()));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/invoices/resend-email")
     public ResponseEntity<Void> resendEmail(@Valid @RequestBody ResendInvoiceVM invoiceVM) {
-        log.debug("REST request to resend Invoice mail: {}", invoiceVM);
+        log.debug("REST request to resend invoice mail: {}", invoiceVM);
         InvoiceRegistration invoiceRegistration = invoiceService.getInvoiceRegistrationByInvoiceId(invoiceVM.getInvoiceId());
         if (invoiceRegistration != null) {
             final InvoicePdfContext invoicePdfContext = invoicePdfService.createInvoicePdfContext(invoiceRegistration);
@@ -133,9 +133,9 @@ public class InvoiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/invoices/set-payment-date")
-    public ResponseEntity<InvoiceDTO> setPaymentDate(@Valid @RequestBody SetPaymentDateDTO setPaymentDateDTO) {
-        log.debug("REST request to set payment date of Invoice : {}", setPaymentDateDTO.getId());
-        InvoiceDTO invoice = invoiceService.setPaymentDate(setPaymentDateDTO);
+    public ResponseEntity<InvoiceDTO> setPaymentDate(@Valid @RequestBody SetPaymentDateVM viewModel) {
+        log.debug("REST request to set payment date of invoice : {}", viewModel.getId());
+        InvoiceDTO invoice = invoiceService.setPaymentDate(viewModel);
 
         return Optional.ofNullable(invoice)
                 .map(result -> new ResponseEntity<>(invoice, HttpStatus.OK))
@@ -144,17 +144,17 @@ public class InvoiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/invoices/{id}")
-    public ResponseEntity<Invoice> getById(@PathVariable Long id) {
-        log.debug("REST request to get Invoice : {}", id);
+    public ResponseEntity<InvoiceDTO> getById(@PathVariable Long id) {
+        log.debug("REST request to get invoice : {}", id);
         return invoiceService.findById(id)
-            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+            .map(result -> new ResponseEntity<>(new InvoiceDTO(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/{id}/invoices")
     public List<InvoiceDTO> getAllByRegistrationId(@PathVariable Long id) {
-        log.debug("REST request to get all Invoices by registration id: {}", id);
+        log.debug("REST request to get all invoices by registration id: {}", id);
         return invoiceService.findAllByRegistrationId(id);
     }
 
@@ -173,7 +173,7 @@ public class InvoiceResource {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/invoices/{invoiceId}/pdf")
+    @GetMapping(value = "/invoices/{invoiceId}/pdf", produces = "application/pdf")
     public ResponseEntity<byte[]> getPdf(@PathVariable Long invoiceId) {
         InvoiceRegistration invoice = invoiceService.getInvoiceRegistrationByInvoiceId(invoiceId);
         final InvoicePdfContext invoicePdfContext = invoicePdfService.createInvoicePdfContext(invoice);
@@ -207,7 +207,7 @@ public class InvoiceResource {
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/invoices/{id}/storno")
     public ResponseEntity<Invoice> stornoInvoice(@PathVariable Long id) {
-        log.debug("REST request to storno Invoice : {}", id);
+        log.debug("REST request to storno invoice : {}", id);
         Invoice invoice = invoiceService.stornoInvoice(id);
         if (invoice != null && !InvoiceType.PRO_FORMA.equals(invoice.getInvoiceType())) {
             navOnlineService.postInvoiceToNav(invoice.getId());

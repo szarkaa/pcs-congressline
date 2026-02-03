@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -27,9 +27,8 @@ import hu.congressline.pcs.repository.AuthorityRepository;
 import hu.congressline.pcs.repository.PersistentTokenRepository;
 import hu.congressline.pcs.repository.UserRepository;
 import hu.congressline.pcs.security.AuthoritiesConstants;
+import hu.congressline.pcs.security.RandomUtil;
 import hu.congressline.pcs.security.SecurityUtils;
-import hu.congressline.pcs.service.util.RandomUtil;
-import hu.congressline.pcs.web.rest.vm.CongressVM;
 import hu.congressline.pcs.web.rest.vm.ManagedUserVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -136,33 +135,31 @@ public class UserService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    public User createUser(ManagedUserVM managedUserVM) {
+    public User createUser(ManagedUserVM viewModel) {
         User user = new User();
-        user.setLogin(managedUserVM.getLogin());
-        user.setFirstName(managedUserVM.getFirstName());
-        user.setLastName(managedUserVM.getLastName());
-        user.setEmail(managedUserVM.getEmail());
-        if (managedUserVM.getLangKey() == null) {
+        user.setLogin(viewModel.getLogin());
+        user.setFirstName(viewModel.getFirstName());
+        user.setLastName(viewModel.getLastName());
+        user.setEmail(viewModel.getEmail());
+        if (viewModel.getLangKey() == null) {
             user.setLangKey("en"); // default language
         } else {
-            user.setLangKey(managedUserVM.getLangKey());
+            user.setLangKey(viewModel.getLangKey());
         }
-        if (managedUserVM.getAuthorities() != null) {
+        if (viewModel.getAuthorities() != null) {
             Set<Authority> authorities = new HashSet<>();
-            managedUserVM.getAuthorities().forEach(
+            viewModel.getAuthorities().forEach(
                     authority -> authorities.add(authorityRepository.findById(authority).orElseThrow(() -> new IllegalArgumentException(AUTHORITY_NOT_FOUND + authority)))
             );
             user.setAuthorities(authorities);
         }
 
-        if (managedUserVM.getCongresses() != null) {
+        if (viewModel.getCongressIds() != null) {
             Set<Congress> congresses = new HashSet<>();
-            managedUserVM.getCongresses().forEach(
-                congress -> congresses.add(congressService.getById(congress.getId()))
-            );
+            viewModel.getCongressIds().forEach(congressId -> congresses.add(congressService.getById(congressId)));
             user.setCongresses(congresses);
         }
-        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+        String encryptedPassword = passwordEncoder.encode(viewModel.getPassword());
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
@@ -186,7 +183,7 @@ public class UserService {
 
     @SuppressWarnings({"MissingJavadocMethod", "ParameterNumber"})
     public void updateUser(Long id, String login, String firstName, String lastName, String email,
-        boolean activated, String langKey, Set<String> authorities, Set<CongressVM> congresses) {
+        boolean activated, String langKey, Set<String> authorities, Set<Long> congressIds) {
 
         userRepository.findOneById(id)
             .ifPresent(u -> {
@@ -204,8 +201,7 @@ public class UserService {
                 );
                 Set<Congress> managedCongresses = u.getCongresses();
                 managedCongresses.clear();
-                congresses.forEach(
-                        congress -> managedCongresses.add(congressService.getById(congress.getId()))
+                congressIds.forEach(congressId -> managedCongresses.add(congressService.getById(congressId))
                 );
 
                 log.debug("Changed Information for User: {}", u);
@@ -243,7 +239,7 @@ public class UserService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public User getUserWithAuthorities(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found with id: " + id));
+        User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found by id: " + id));
         user.getAuthorities().size(); // eagerly load the association
         user.getCongresses().size();
         return user;
@@ -278,8 +274,7 @@ public class UserService {
     @SuppressWarnings("MissingJavadocMethod")
     @Scheduled(cron = "0 0 1 * * ?")
     public void removeNotActivatedUsers() {
-        ZonedDateTime now = ZonedDateTime.now();
-        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(now.minusDays(3));
+        List<User> users = userRepository.findAllByActivatedIsFalseAndCreatedDateBefore(Instant.now().minus(3, ChronoUnit.DAYS));
         for (User user : users) {
             log.debug("Deleting not activated user {}", user.getLogin());
             userRepository.delete(user);

@@ -10,13 +10,31 @@
     function OptionalServiceDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, OptionalService, Currency, VatInfo, Congress, CongressSelector) {
         var vm = this;
 
-        vm.optionalService = entity;
-        vm.clear = clear;
+        vm.optionalService = {
+            id: entity.id,
+            code: entity.code,
+            name: entity.name,
+            startDate: entity.startDate,
+            endDate: entity.endDate,
+            price: entity.price,
+            maxPerson: entity.maxPerson,
+            reserved: entity.reserved,
+            onlineLabel: entity.onlineLabel,
+            onlineOrder: entity.onlineOrder,
+            onlineVisibility: entity.onlineVisibility,
+            onlineType: entity.onlineType,
+            currencyId: entity.currency ? entity.currency.id : null,
+            vatInfoId: entity.vatInfo ? entity.vatInfo.id : null,
+            congressId: CongressSelector.getSelectedCongress().id
+        };
+
+        vm.vatInfos = [];
+        vm.currencies = [];
         vm.datePickerOpenStatus = {};
+        vm.clear = clear;
         vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.currencies = [];
-        vm.vatInfos = [];
+        vm.onlineVisibilityChanged = onlineVisibilityChanged;
 
         Congress.get({id: CongressSelector.getSelectedCongress().id}, function(data) {
             vm.currencies = data.currencies;
@@ -29,6 +47,14 @@
         $timeout(function (){
             angular.element('.form-group:eq(0)>input').focus();
         });
+
+        function onlineVisibilityChanged() {
+            if (vm.optionalService.onlineVisibility !== 'VISIBLE') {
+                vm.optionalService.onlineLabel = null;
+                vm.optionalService.onlineOrder = null;
+                vm.optionalService.onlineType = 'NORMAL';
+            }
+        }
 
         function clear () {
             $uibModalInstance.dismiss('cancel');

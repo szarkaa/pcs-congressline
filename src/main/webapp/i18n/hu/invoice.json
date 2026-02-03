@@ -35,6 +35,7 @@
             "lastName": "Family name",
             "firstName": "First name",
             "optionalName": "Optional name",
+            "savePartner": "Save partner to DB",
             "name1": "Name1",
             "name2": "Name2",
             "name3": "Name3",

@@ -45,7 +45,7 @@ public class PaymentRefundService {
     @Transactional(readOnly = true)
     public PaymentRefundTransaction getById(Long id) {
         log.debug("Request to get PaymentRefundTransaction : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("PaymentRefundTransaction not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("PaymentRefundTransaction not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

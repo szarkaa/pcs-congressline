@@ -24,6 +24,7 @@ import hu.congressline.pcs.service.ChargedServiceService;
 import hu.congressline.pcs.service.InvoiceService;
 import hu.congressline.pcs.service.dto.ChargedServiceDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.ChargedServiceVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,37 +41,37 @@ public class ChargedServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/charged-services")
-    public ResponseEntity<ChargedService> create(@Valid @RequestBody ChargedService chargedService) throws URISyntaxException {
-        log.debug("REST request to save ChargedService : {}", chargedService);
-        if (chargedService.getId() != null) {
+    public ResponseEntity<ChargedServiceDTO> create(@Valid @RequestBody ChargedServiceVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save charged service : {}", viewModel);
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert(ENTITY_NAME, "idexists", "A new chargedService cannot already have an ID"))
+                .createFailureAlert(ENTITY_NAME, "idexists", "A new charged service cannot already have an ID"))
                 .body(null);
         }
 
-        ChargedService result = chargedServiceService.save(chargedService);
+        ChargedService result = chargedServiceService.save(viewModel);
         return ResponseEntity.created(new URI("/api/charged-services/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new ChargedServiceDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/charged-services")
-    public ResponseEntity<ChargedService> update(@Valid @RequestBody ChargedService chargedService) throws URISyntaxException {
-        log.debug("REST request to update ChargedService : {}", chargedService);
-        if (chargedService.getId() == null) {
-            return create(chargedService);
+    public ResponseEntity<ChargedServiceDTO> update(@Valid @RequestBody ChargedServiceVM viewModel) throws URISyntaxException {
+        log.debug("REST request to update charged service : {}", viewModel);
+        if (viewModel.getId() == null) {
+            return create(viewModel);
         }
-        ChargedService result = chargedServiceService.save(chargedService);
+        ChargedService result = chargedServiceService.save(viewModel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, chargedService.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
+            .body(new ChargedServiceDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/registrations/{id}/charged-services")
     public List<ChargedServiceDTO> getAllByRegistrationId(@PathVariable Long id) {
-        log.debug("REST request to get all ChargedServices by registration id: {}", id);
+        log.debug("REST request to get all charged service by registration id: {}", id);
         final List<ChargedService> result = chargedServiceService.findAllByRegistrationId(id);
         final Map<Long, Invoice> invoiceMap = invoiceService.getInvoicedChargedServices(id);
         return result.stream().map(cs -> {
@@ -83,17 +84,17 @@ public class ChargedServiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/charged-services/{id}")
-    public ResponseEntity<ChargedService> getById(@PathVariable Long id) {
-        log.debug("REST request to get ChargedService : {}", id);
+    public ResponseEntity<ChargedServiceDTO> getById(@PathVariable Long id) {
+        log.debug("REST request to get charged service : {}", id);
         return chargedServiceService.findById(id)
-            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+            .map(result -> new ResponseEntity<>(new ChargedServiceDTO(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/charged-services/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete ChargedService : {}", id);
+        log.debug("REST request to delete charged service : {}", id);
         try {
             chargedServiceService.delete(id);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

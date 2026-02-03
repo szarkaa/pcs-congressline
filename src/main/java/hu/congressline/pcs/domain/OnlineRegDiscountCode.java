@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
+import hu.congressline.pcs.web.rest.vm.OnlineRegDiscountCodeVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -19,6 +20,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -50,6 +52,13 @@ public class OnlineRegDiscountCode implements Serializable {
     @ManyToOne
     private Congress congress;
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull OnlineRegDiscountCodeVM viewModel) {
+        this.code = viewModel.getCode();
+        this.discountPercentage = viewModel.getDiscountPercentage();
+        this.discountType = viewModel.getDiscountType();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -74,4 +83,5 @@ public class OnlineRegDiscountCode implements Serializable {
     public String toString() {
         return "OnlineRegDiscountCode{" + "id=" + id + "}";
     }
+
 }

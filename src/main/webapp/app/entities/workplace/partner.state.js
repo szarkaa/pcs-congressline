@@ -13,7 +13,7 @@
                 parent: 'maintenance',
                 url: '/partners',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.partner.home.title'
                 },
                 views: {
@@ -36,7 +36,7 @@
                 parent: 'partner',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'CongressSelector', function($stateParams, $state, $uibModal, CongressSelector) {
                     $uibModal.open({
@@ -48,7 +48,9 @@
                         resolve: {
                             entity: function () {
                                 return {
+                                    id: null,
                                     name: null,
+                                    countryId: null,
                                     vatRegNumber: null,
                                     department: null,
                                     zipCode: null,
@@ -57,8 +59,7 @@
                                     phone: null,
                                     fax: null,
                                     email: null,
-                                    id: null,
-                                    congress: null
+                                    congressId: null
                                 };
                             }
                         }
@@ -73,7 +74,7 @@
                 parent: 'partner',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -98,7 +99,7 @@
                 parent: 'partner',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({

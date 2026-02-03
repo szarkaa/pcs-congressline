@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
+import hu.congressline.pcs.web.rest.vm.OnlineRegCustomQuestionVM;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -24,6 +25,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -67,6 +69,15 @@ public class OnlineRegCustomQuestion implements Serializable {
     @Column(name = "value", length = 1000)
     private List<String> questionAnswers;
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull OnlineRegCustomQuestionVM viewModel) {
+        this.question = viewModel.getQuestion();
+        this.required = viewModel.getRequired();
+        this.onlineVisibility = viewModel.getOnlineVisibility();
+        this.questionOrder = viewModel.getQuestionOrder();
+        this.questionAnswers = viewModel.getQuestionAnswers();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -85,4 +96,5 @@ public class OnlineRegCustomQuestion implements Serializable {
     public int hashCode() {
         return Objects.hash(getId());
     }
+
 }

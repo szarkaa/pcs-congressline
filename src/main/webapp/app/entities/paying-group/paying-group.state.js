@@ -13,7 +13,7 @@
             parent: 'administration',
             url: '/paying-group',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.payingGroup.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'paying-group',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'CongressSelector', function($stateParams, $state, $uibModal, CongressSelector) {
                 $uibModal.open({
@@ -47,6 +47,7 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 name: null,
                                 zipCode: null,
                                 city: null,
@@ -56,8 +57,9 @@
                                 phone: null,
                                 fax: null,
                                 taxNumber: null,
-                                id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                countryId: null,
+                                currencyId: null,
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }
@@ -72,7 +74,7 @@
             parent: 'paying-group',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -97,7 +99,7 @@
             parent: 'paying-group',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

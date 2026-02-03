@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.CongressHotel;
 import hu.congressline.pcs.domain.Room;
-import hu.congressline.pcs.repository.CongressHotelRepository;
-import hu.congressline.pcs.repository.RoomRepository;
 import hu.congressline.pcs.repository.RoomReservationEntryRepository;
+import hu.congressline.pcs.service.CongressHotelService;
 import hu.congressline.pcs.service.RoomService;
 import hu.congressline.pcs.service.dto.RoomDTO;
 import hu.congressline.pcs.service.dto.RoomReservationEntryDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.RoomVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,71 +39,59 @@ public class RoomResource {
     private static final String ENTITY_NAME = "room";
     private static final String ROOM_TYPE_EXISTS = "roomtypeexists";
     private static final String ROOM_TYPE_EXISTS_MSG = "Room type already exists";
-    private static final String CONGRESS_HOTEL_NOT_FOUND = "CongressHotel not found with id: ";
+    private static final String CONGRESS_HOTEL_NOT_FOUND = "CongressHotel not found by id: ";
 
-    private final RoomService roomService;
-    private final RoomRepository roomRepository;
-    private final CongressHotelRepository congressHotelRepository;
+    private final RoomService service;
+    private final CongressHotelService congressHotelService;
     private final RoomReservationEntryRepository rreRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/rooms")
-    public ResponseEntity<Room> create(@Valid @RequestBody Room room) throws URISyntaxException {
-        log.debug("REST request to save Room : {}", room);
-        final CongressHotel congressHotel = congressHotelRepository.findById(room.getCongressHotel().getId())
-            .orElseThrow(() -> new IllegalArgumentException(CONGRESS_HOTEL_NOT_FOUND + room.getCongressHotel().getId()));
+    public ResponseEntity<RoomDTO> create(@Valid @RequestBody RoomVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save room : {}", viewModel);
+        final CongressHotel congressHotel = congressHotelService.getById(viewModel.getCongressHotelId());
 
-        if (room.getId() != null) {
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert(ENTITY_NAME, "idexists", "A new room cannot already have an ID"))
+                .createFailureAlert(ENTITY_NAME, "idexists", "A new viewModel cannot already have an ID"))
                 .body(null);
-        } else if (roomRepository.findOneByRoomTypeAndCongressHotelId(room.getRoomType(), congressHotel.getId()).isPresent()) {
+        } else if (service.findOneByRoomTypeAndCongressHotelId(viewModel.getRoomType(), congressHotel.getId()).isPresent()) {
             return ResponseEntity.badRequest()
                     .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, ROOM_TYPE_EXISTS, ROOM_TYPE_EXISTS_MSG))
                     .body(null);
         }
 
-        Room result = roomRepository.save(room);
+        Room result = service.save(viewModel);
         return ResponseEntity.created(new URI("/api/rooms/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new RoomDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/rooms")
-    public ResponseEntity<Room> update(@Valid @RequestBody Room room) throws URISyntaxException {
-        log.debug("REST request to update Room : {}", room);
-        final CongressHotel congressHotel = congressHotelRepository.findById(room.getCongressHotel().getId())
-            .orElseThrow(() -> new IllegalArgumentException(CONGRESS_HOTEL_NOT_FOUND + room.getCongressHotel().getId()));
+    public ResponseEntity<RoomDTO> update(@Valid @RequestBody RoomVM viewModel) throws URISyntaxException {
+        log.debug("REST request to update room : {}", viewModel);
+        final CongressHotel congressHotel = congressHotelService.getById(viewModel.getCongressHotelId());
 
-        if (room.getId() == null) {
-            return create(room);
-        } else if (roomRepository.findOneByRoomTypeAndCongressHotelIdAndIdNot(room.getRoomType(), congressHotel.getId(), room.getId()).isPresent()) {
+        if (viewModel.getId() == null) {
+            return create(viewModel);
+        } else if (service.findOneByRoomTypeAndCongressHotelIdAndIdNot(viewModel.getRoomType(), congressHotel.getId(), viewModel.getId()).isPresent()) {
             return ResponseEntity.badRequest()
                     .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, ROOM_TYPE_EXISTS, ROOM_TYPE_EXISTS_MSG))
                     .body(null);
         }
 
-        Room result = roomRepository.save(room);
+        Room result = service.save(viewModel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, room.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
+            .body(new RoomDTO(result));
     }
-
-    /*
-    @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/rooms")
-    public List<RoomDTO> getAll() {
-        log.debug("REST request to get all Rooms");
-        return roomRepository.findAll().stream().map(RoomDTO::new).collect(Collectors.toList());
-    }
-    */
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congress-hotel/{id}/rooms")
     public List<RoomDTO> getAllByCongressHotelId(@PathVariable Long id) {
         log.debug("REST request to get all Rooms by congressHotel id: {}", id);
-        final List<Room> roomList = roomRepository.findAllByCongressHotelId(id);
+        final List<Room> roomList = service.findAllByCongressHotelId(id);
         final List<RoomDTO> roomDTOList = roomList.stream().map(RoomDTO::new).collect(Collectors.toList());
         roomDTOList.forEach(roomDTO -> {
             roomDTO.setReservations(rreRepository.findAllByRoomId(roomDTO.getId()).stream().map(RoomReservationEntryDTO::new)
@@ -117,8 +105,8 @@ public class RoomResource {
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/congress/{id}/rooms")
     public List<RoomDTO> getAllByCongressId(@PathVariable Long id) {
-        log.debug("REST request to get all Rooms by congress id: {}", id);
-        final List<Room> roomList = roomRepository.findAllByCongressHotelCongressId(id);
+        log.debug("REST request to get all rooms by congress id: {}", id);
+        final List<Room> roomList = service.findAllByCongressId(id);
         final List<RoomDTO> roomDTOList = roomList.stream().map(RoomDTO::new).collect(Collectors.toList());
         roomDTOList.forEach(roomDTO -> {
             roomDTO.setReservations(rreRepository.findAllByRoomId(roomDTO.getId()).stream().map(RoomReservationEntryDTO::new)
@@ -131,8 +119,8 @@ public class RoomResource {
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/rooms/{id}")
     public ResponseEntity<RoomDTO> getById(@PathVariable Long id) {
-        log.debug("REST request to get Room : {}", id);
-        return roomRepository.findById(id)
+        log.debug("REST request to get room : {}", id);
+        return service.findById(id)
             .map(r -> {
                 RoomDTO dto = new RoomDTO(r);
                 dto.setReservations(rreRepository.findAllByRoomId(r.getId()).stream().map(RoomReservationEntryDTO::new)
@@ -146,9 +134,9 @@ public class RoomResource {
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/rooms/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete Room : {}", id);
+        log.debug("REST request to delete room : {}", id);
         try {
-            roomService.delete(id);
+            service.delete(id);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
         } catch (DataIntegrityViolationException e) {
             log.debug("Constraint violation exception during delete operation.", e);

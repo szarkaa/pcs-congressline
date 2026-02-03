@@ -8,8 +8,11 @@ import java.util.Optional;
 
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.Workplace;
+import hu.congressline.pcs.repository.CountryRepository;
 import hu.congressline.pcs.repository.RegistrationRepository;
 import hu.congressline.pcs.repository.WorkplaceRepository;
+import hu.congressline.pcs.web.rest.vm.WorkplaceVM;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,41 +22,63 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class WorkplaceService {
 
-    private final WorkplaceRepository workplaceRepository;
+    private final WorkplaceRepository repository;
     private final RegistrationRepository registrationRepository;
+    private final CountryRepository countryRepository;
     private final CongressService congressService;
 
     @SuppressWarnings("MissingJavadocMethod")
     public Workplace save(Workplace workplace) {
         log.debug("Request to save Workplace : {}", workplace);
-        return workplaceRepository.save(workplace);
+        return repository.save(workplace);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public Workplace save(@NonNull WorkplaceVM viewModel) {
+        Workplace workplace = viewModel.getId() != null ? getById(viewModel.getId()) : new Workplace();
+        workplace.update(viewModel);
+        workplace.setCountry(viewModel.getCountryId() != null ? countryRepository.findById(viewModel.getCountryId()).orElse(null) : null);
+        if (workplace.getCongress() == null && viewModel.getCongressId() != null) {
+            workplace.setCongress(congressService.getById(viewModel.getCongressId()));
+        }
+        return repository.save(workplace);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<Workplace> findAll() {
         log.debug("Request to get all Workplaces");
-        return workplaceRepository.findAll();
+        return repository.findAll();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<Workplace> findById(Long id) {
         log.debug("Request to find Workplace : {}", id);
-        return workplaceRepository.findById(id);
+        return repository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Workplace getById(Long id) {
         log.debug("Request to get Workplace : {}", id);
-        return workplaceRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Workplace not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Workplace not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long id) {
         log.debug("Request to delete Workplace : {}", id);
-        workplaceRepository.deleteById(id);
+        repository.deleteById(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void deleteByRegistrationId(Long registrationId) {
+        log.debug("Request to delete workplace by registration id: {}", registrationId);
+        registrationRepository.findById(registrationId).ifPresent(registration -> {
+            if (registration.getWorkplace() != null && registrationRepository.countByWorkplaceId(registration.getWorkplace().getId(), registrationId) == 0) {
+                repository.deleteById(registration.getWorkplace().getId());
+            }
+        });
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -62,9 +87,9 @@ public class WorkplaceService {
         log.debug("Request to get all Workplaces by congress id: {}", id);
         List<Workplace> result;
         if (id == null || id.equals(0L)) {
-            result = workplaceRepository.findByCongressIsNullOrderByName();
+            result = repository.findByCongressIsNullOrderByName();
         } else {
-            result = workplaceRepository.findByCongressIdOrderByName(id);
+            result = repository.findByCongressIdOrderByName(id);
         }
         return result;
     }
@@ -72,7 +97,7 @@ public class WorkplaceService {
     @SuppressWarnings("MissingJavadocMethod")
     public List<Workplace> findAllForCongressId(Long id) {
         log.debug("Request to get all Workplaces by Congress id and the ones with congress null value");
-        return workplaceRepository.findAllForCongressId(id);
+        return repository.findAllForCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -92,10 +117,10 @@ public class WorkplaceService {
         workplaces.forEach(workplace -> {
             final Workplace copy = Workplace.copy(workplace);
             copy.setCongress(toCongress);
-            workplaceRepository.save(copy);
+            repository.save(copy);
         });
 
         toCongress.setMigratedFromCongressCode(fromCongress.getMeetingCode());
-        congressService.update(toCongress);
+        congressService.save(toCongress);
     }
 }

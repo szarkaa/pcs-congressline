@@ -53,11 +53,11 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 title: null,
                                 lastName: null,
                                 firstName: null,
-                                id: null,
-                                registrationRegistrationType: registrationRegistrationType
+                                registrationRegistrationTypeId: registrationRegistrationType.id
                             };
                         }
                     }

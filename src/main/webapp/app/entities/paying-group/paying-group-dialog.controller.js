@@ -10,7 +10,21 @@
     function PayingGroupDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, PayingGroup, Country, Congress, CongressSelector) {
         var vm = this;
 
-        vm.payingGroup = entity;
+        vm.payingGroup = {
+            id: entity.id,
+            name: entity.name,
+            zipCode: entity.zipCode,
+            city: entity.city,
+            street: entity.street,
+            contactName: entity.contactName,
+            email: entity.email,
+            phone: entity.phone,
+            fax: entity.fax,
+            taxNumber: entity.taxNumber,
+            countryId: entity.country ? entity.country.id : (CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null),
+            currencyId: entity.currency ? entity.currency.id : null,
+            congressId: CongressSelector.getSelectedCongress().id
+        };;
         vm.clear = clear;
         vm.save = save;
         vm.countries = Country.query();

@@ -13,7 +13,7 @@
                 parent: 'group-discount',
                 url: '/group-discount-item',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                     pageTitle: 'pcsApp.groupDiscountItem.home.title'
                 },
                 views: {
@@ -39,7 +39,7 @@
                 parent: 'group-discount-item',
                 url: '/select',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'groupDiscountItemFilter', function ($stateParams, $state, $uibModal, groupDiscountItemFilter) {
                     $uibModal.open({
@@ -60,7 +60,7 @@
                 parent: 'group-discount-item',
                 url: '/invoice/setup',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 views: {
                     'content@base': {
@@ -105,7 +105,7 @@
                 parent: 'group-discount-item',
                 url: '/optional-text/new',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'CongressSelector', function ($stateParams, $state, $uibModal, CongressSelector) {
                     $uibModal.open({

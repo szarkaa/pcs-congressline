@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
+import hu.congressline.pcs.web.rest.vm.WorkplaceVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -68,6 +70,20 @@ public class Workplace implements Serializable {
 
     @ManyToOne
     private Congress congress;
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull WorkplaceVM viewModel) {
+        this.id = viewModel.getId();
+        this.name = viewModel.getName();
+        this.vatRegNumber = viewModel.getVatRegNumber();
+        this.department = viewModel.getDepartment();
+        this.zipCode = viewModel.getZipCode();
+        this.city = viewModel.getCity();
+        this.street = viewModel.getStreet();
+        this.phone = viewModel.getPhone();
+        this.fax = viewModel.getFax();
+        this.email = viewModel.getEmail();
+    }
 
     @SuppressWarnings("MissingJavadocMethod")
     public static Workplace copy(Workplace workplace) {

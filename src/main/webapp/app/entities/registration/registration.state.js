@@ -15,7 +15,7 @@
             parent: 'administration',
             url: '/registrations/{registrationId}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.registration.detail.title'
             },
             onEnter: ['$stateParams', 'RegIdStorage', function($stateParams, RegIdStorage) {
@@ -41,13 +41,13 @@
                     }
                 }],
                 registrationRegistrationTypes: ['$stateParams', 'RegistrationRegistrationType', function ($stateParams, RegistrationRegistrationType) {
-                    return RegistrationRegistrationType.queryVMByRegistrationId({id: $stateParams.registrationId}).$promise;
+                    return RegistrationRegistrationType.queryByRegistrationId({id: $stateParams.registrationId}).$promise;
                 }],
                 roomReservations: ['$stateParams', 'RoomReservation', function ($stateParams, RoomReservation) {
-                    return RoomReservation.queryVMByRegistrationId({id: $stateParams.registrationId}).$promise;
+                    return RoomReservation.queryByRegistrationId({id: $stateParams.registrationId}).$promise;
                 }],
                 orderedOptionalServices: ['$stateParams', 'OrderedOptionalService', function ($stateParams, OrderedOptionalService) {
-                    return OrderedOptionalService.queryVMByRegistrationId({id: $stateParams.registrationId}).$promise;
+                    return OrderedOptionalService.queryByRegistrationId({id: $stateParams.registrationId}).$promise;
                 }],
                 chargedServices: ['$stateParams', 'ChargedService', function ($stateParams, ChargedService) {
                     return ChargedService.queryByRegistrationId({id: $stateParams.registrationId}).$promise;
@@ -57,7 +57,6 @@
                     $translatePartialLoader.addPart('global');
                     $translatePartialLoader.addPart('registrationRegistrationType');
                     $translatePartialLoader.addPart('roomReservation');
-                    $translatePartialLoader.addPart('roomReservationRegistration');
                     $translatePartialLoader.addPart('chargedService');
                     $translatePartialLoader.addPart('orderedOptionalService');
                     $translatePartialLoader.addPart('workplace');
@@ -72,7 +71,7 @@
             parent: 'registration',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             views: {
                 'content@base': {
@@ -84,6 +83,7 @@
             resolve: {
                 registration: ['CongressSelector', function (CongressSelector) {
                     return {
+                        id: null,
                         regId: null,
                         lastName: null,
                         firstName: null,
@@ -92,13 +92,19 @@
                         position: null,
                         otherData: null,
                         department: null,
-                        country: CongressSelector.getSelectedCongress().defaultCountry,
+                        countryId: null,
                         zipCode: null,
                         city: null,
                         street: null,
                         phone: null,
                         email: null,
                         fax: null,
+                        invoiceName: null,
+                        invoiceCountryId: null,
+                        invoiceZipCode: null,
+                        invoiceCity: null,
+                        invoiceAddress: null,
+                        invoiceTaxNumber: null,
                         dateOfApp: new Date(),
                         remark: null,
                         onSpot: null,
@@ -106,8 +112,8 @@
                         presenter: null,
                         closed: null,
                         etiquette: null,
-                        id: null,
-                        congress: CongressSelector.getSelectedCongress()
+                        workplaceId: null,
+                        congressId: CongressSelector.getSelectedCongress().id
                     };
                 }],
                 workplaces: ['Workplace', 'CongressSelector', function(Workplace, CongressSelector) {
@@ -122,7 +128,7 @@
             parent: 'registration',
             url: '/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             views: {
                 'content@base': {
@@ -147,7 +153,7 @@
             parent: 'registration',
             url: '/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'RegIdStorage', function($stateParams, $state, $uibModal, RegIdStorage) {
                 $uibModal.open({
@@ -175,7 +181,7 @@
             parent: 'registration',
             url: '/upload',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             views: {
                 'content@base': {
@@ -194,7 +200,7 @@
             parent: 'registration',
             url: '/search',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'RegIdStorage', 'registrationArray', function($stateParams, $state, $uibModal, RegIdStorage, registrationArray) {
                 $uibModal.open({
@@ -218,7 +224,7 @@
             parent: 'registration.new',
             url: '/workplace/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'workplaces', 'CongressSelector', function($stateParams, $state, $uibModal, registration, workplaces, CongressSelector) {
                 $uibModal.open({
@@ -264,7 +270,7 @@
             parent: 'registration.edit',
             url: '/workplace/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'workplaces', 'CongressSelector', function($stateParams, $state, $uibModal, registration, workplaces, CongressSelector) {
                 $uibModal.open({
@@ -310,7 +316,7 @@
             parent: 'registration.new',
             url: '/country/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'countries', function($stateParams, $state, $uibModal, registration, countries) {
                 $uibModal.open({
@@ -341,7 +347,7 @@
             parent: 'registration.edit',
             url: '/country/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', 'countries', function($stateParams, $state, $uibModal, registration, countries) {
                 $uibModal.open({
@@ -372,7 +378,7 @@
             parent: 'registration',
             url: '/summary',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'registration', function($stateParams, $state, $uibModal, registration) {
                 $uibModal.open({

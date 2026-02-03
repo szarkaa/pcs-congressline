@@ -1,27 +1,23 @@
 package hu.congressline.pcs.service.pdf;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.Image;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfPageEventHelper;
-import com.lowagie.text.pdf.PdfTemplate;
-import com.lowagie.text.pdf.PdfWriter;
-
 import org.apache.commons.io.IOUtils;
-import org.springframework.context.MessageSource;
+import org.openpdf.text.Document;
+import org.openpdf.text.DocumentException;
+import org.openpdf.text.Element;
+import org.openpdf.text.Font;
+import org.openpdf.text.Image;
+import org.openpdf.text.Paragraph;
+import org.openpdf.text.Rectangle;
+import org.openpdf.text.pdf.BaseFont;
+import org.openpdf.text.pdf.PdfContentByte;
+import org.openpdf.text.pdf.PdfPCell;
+import org.openpdf.text.pdf.PdfPTable;
+import org.openpdf.text.pdf.PdfPageEventHelper;
+import org.openpdf.text.pdf.PdfTemplate;
+import org.openpdf.text.pdf.PdfWriter;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
-import java.util.Locale;
-import java.util.Objects;
-
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -43,18 +39,14 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
     protected PdfPCell cell3;
     protected PdfPCell cell4;
 
-    private final MessageSource messageSource;
-    private final PdfContext pdfContext;
-    private final Locale locale;
+    private final ConfirmationPdfHeaderFooterTextContext footerTextContext;
     private final BaseFont baseFont;
     private PdfTemplate total;
 
     @SuppressWarnings("MissingJavadocMethod")
-    public ConfirmationHeaderFooter(MessageSource messageSource, PdfContext pdfContext) {
+    public ConfirmationHeaderFooter(@NonNull ConfirmationPdfHeaderFooterTextContext footerTextContext) {
+        this.footerTextContext = footerTextContext;
         this.baseFont = PcsPdfFont.getBaseFont();
-        this.messageSource = messageSource;
-        this.pdfContext = pdfContext;
-        this.locale = pdfContext.getLocale();
 
         h1 = new Font(baseFont, 18, Font.BOLD);
         h2 = new Font(baseFont, 14, Font.BOLD);
@@ -75,7 +67,7 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
 
     @SuppressWarnings("MissingJavadocMethod")
     public void onEndPage(PdfWriter writer, Document document) {
-        String text = String.format(messageSource.getMessage("confirmation.pdf.page", null, locale) + " %d /", writer.getPageNumber());
+        String text = String.format(footerTextContext.getPageNumberLabel() + " %d /", writer.getPageNumber());
 
         float footerBase = document.bottom() - 25 - 65;
         float textSize = 9;
@@ -97,7 +89,7 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
         total.beginText();
         total.setFontAndSize(baseFont, 6);
         total.setTextMatrix(0, 0);
-        total.showText(String.valueOf(writer.getPageNumber()));
+        total.showText(String.valueOf(writer.getPageNumber() - 1));
         total.endText();
     }
 
@@ -110,7 +102,7 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
         try {
             table.setWidths(new float[]{0.5F, 2});
         } catch (DocumentException e) {
-            log.error("Document exception", e);
+            log.error("Document exzeption", e);
         }
 
         //new row
@@ -134,13 +126,13 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
         try {
             embeddedTable.setWidths(new float[]{2, 3});
         } catch (DocumentException e) {
-            log.error("Document expception", e);
+            log.error("Document exception", e);
         }
         embeddedTable.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.companyName", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.bankName", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(footerTextContext.getCompanyNameLabel(), paragraphSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(footerTextContext.getBankNameLabel(), paragraphSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -152,8 +144,8 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.address1", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.bankAddress", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(footerTextContext.getCompanyAddress1Label(), paragraphSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(footerTextContext.getBankAddressLabel(), paragraphSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -165,8 +157,8 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.address2", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.swiftCode", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(footerTextContext.getCompanyAddress2Label(), paragraphSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(footerTextContext.getBankSwiftCodeLabel(), paragraphSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -178,9 +170,8 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.email", new Object[]{}, pdfContext.getLocale())
-                + " " + Objects.toString(pdfContext.getContactEmail(), ""), paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.bankAccountHuf", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(footerTextContext.getCompanyEmailLabel() + " " + footerTextContext.getContactEmailValue(), paragraphSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(footerTextContext.getBankAccountHufLabel(), paragraphSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -192,8 +183,8 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.phone", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.bankAccountEur", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(footerTextContext.getCompanyPhoneLabel(), paragraphSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(footerTextContext.getBankAccountEurLabel(), paragraphSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);
@@ -205,8 +196,8 @@ public class ConfirmationHeaderFooter extends PdfPageEventHelper {
         addTableCell(embeddedTable, cell3, cell4);
 
         //new row for embedded table
-        cell3 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.website", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
-        cell4 = new PdfPCell(new Paragraph(messageSource.getMessage("confirmation.pdf.footer.taxNo", new Object[]{}, pdfContext.getLocale()), paragraphSmallNormal));
+        cell3 = new PdfPCell(new Paragraph(footerTextContext.getCompanyWebsiteLabel(), paragraphSmallNormal));
+        cell4 = new PdfPCell(new Paragraph(footerTextContext.getCompanyTaxNumberLabel(), paragraphSmallNormal));
 
         cell3.setBorder(0);
         cell3.setPaddingBottom(0);

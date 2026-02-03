@@ -20,6 +20,9 @@ public interface RegistrationRepository extends JpaRepository<Registration, Long
 
     Long countByCongressIdAndOnSpot(Long id, Boolean onSpot);
 
+    @Query("select count(e) from Registration e where e.workplace.id = :workplaceId and e.id <> :id")
+    Long countByWorkplaceId(@Param("workplaceId") Long workplaceId, @Param("id") Long registrationId);
+
     @Query("select sum(e.accPeople) from RegistrationRegistrationType e where e.registration.congress.id = :congressId and "
             + "e.registrationType.registrationType = :regType")
     Long countAccPeopleByCongressId(@Param("congressId")Long id, @Param("regType") RegistrationTypeType regType);

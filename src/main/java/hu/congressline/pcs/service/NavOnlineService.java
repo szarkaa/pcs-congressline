@@ -5,11 +5,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.net.URL;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,7 +22,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.XMLGregorianCalendar;
 
@@ -87,7 +90,12 @@ import hu.gov.nav.schemas.osa._3_0.data.VatRateNetDataType;
 import hu.gov.nav.schemas.osa._3_0.data.VatRateType;
 import hu.gov.nav.schemas.osa._3_0.data.VatRateVatDataType;
 import jakarta.annotation.PostConstruct;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.Marshaller;
+import jakarta.xml.bind.Unmarshaller;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import static hu.congressline.pcs.domain.enumeration.Currency.HUF;
@@ -103,9 +111,8 @@ import static hu.congressline.pcs.service.util.NavOnlineUtil.getXmlUtcDate;
 import static hu.congressline.pcs.service.util.NavOnlineUtil.hashWithSHA3_512;
 import static hu.congressline.pcs.service.util.NavOnlineUtil.logXmlAsString;
 import static hu.congressline.pcs.service.util.NavOnlineUtil.marsallInvoice;
-import static hu.congressline.pcs.service.util.NavOnlineUtil.marshallXml;
-import static hu.congressline.pcs.service.util.NavOnlineUtil.unmarshallXml;
 import static java.math.BigDecimal.ZERO;
+import static java.util.Objects.nonNull;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -372,7 +379,7 @@ public class NavOnlineService implements MonetaryService {
     }
 
     private void createCustomerVatData(Invoice invoice, CustomerInfoType customerInfo) {
-        String[] taxNumberArray = invoice.getVatRegNumber().split("-");
+        String[] taxNumberArray = nonNull(invoice.getVatRegNumber()) ? invoice.getVatRegNumber().split("-") : new String[0];
         CustomerTaxNumberType customerTaxNumberType = dataFactory.createCustomerTaxNumberType();
         CustomerVatDataType vatDataType = dataFactory.createCustomerVatDataType();
         switch (invoice.getNavVatCategory()) {
@@ -569,21 +576,16 @@ public class NavOnlineService implements MonetaryService {
     private TokenExchangeResponse postExchangeToken(TokenExchangeRequest tokenExchangeRequest) {
         TokenExchangeResponse response = null;
         try {
-            HttpsURLConnection request = createHttpRequest("/tokenExchange");
-            logXmlAsString(tokenExchangeRequest, TokenExchangeRequest.class);
-            marshallXml(tokenExchangeRequest, TokenExchangeRequest.class, request.getOutputStream());
-
-            if (request.getResponseCode() == 200) {
-                log.info(SUCCESSFUL_NAV_ONLINE_POST_REQUEST, request.getResponseCode(), request.getResponseMessage());
-                final TokenExchangeResponse ter = unmarshallXml(TokenExchangeResponse.class, request.getInputStream());
-                logXmlAsString(ter, TokenExchangeResponse.class);
+            HttpResponse<String> httpResponse = sendHttpPostRequest("/tokenExchange", getNavObjectAsString(tokenExchangeRequest, TokenExchangeRequest.class));
+            if (httpResponse.statusCode() == 200) {
+                log.info(SUCCESSFUL_NAV_ONLINE_POST_REQUEST, httpResponse.statusCode(), httpResponse.body());
+                final TokenExchangeResponse ter = createNavObjectFromString(TokenExchangeResponse.class, httpResponse.body());
                 if (OK.equals(ter.getResult().getFuncCode().value())) {
                     response = ter;
                 }
             } else {
-                log.warn(ERROR_NAV_ONLINE_POST_REQUEST, request.getResponseCode(), request.getResponseMessage());
-                GeneralErrorResponse exceptionResponse = unmarshallXml(GeneralErrorResponse.class, request.getErrorStream());
-                logXmlAsString(exceptionResponse, GeneralErrorResponse.class);
+                log.warn(ERROR_NAV_ONLINE_POST_REQUEST, httpResponse.statusCode(), httpResponse.body());
+                GeneralErrorResponse exceptionResponse = createNavObjectFromString(GeneralErrorResponse.class, httpResponse.body());
             }
         } catch (Exception e) {
             log.error(ERROR_NAV_ONLINE_EXCHANGE_TOKEN_POST, e);
@@ -595,21 +597,17 @@ public class NavOnlineService implements MonetaryService {
     private QueryTransactionStatusResponse postQueryTransactionStatusRequest(QueryTransactionStatusRequest transactionStatusRequest) {
         QueryTransactionStatusResponse response = null;
         try {
-            HttpsURLConnection request = createHttpRequest("/queryTransactionStatus");
-            logXmlAsString(transactionStatusRequest, QueryTransactionStatusRequest.class);
-            marshallXml(transactionStatusRequest, QueryTransactionStatusRequest.class, request.getOutputStream());
-
-            if (request.getResponseCode() == 200) {
-                log.info(SUCCESSFUL_NAV_ONLINE_POST_REQUEST, request.getResponseCode(), request.getResponseMessage());
-                final QueryTransactionStatusResponse qtsr = unmarshallXml(QueryTransactionStatusResponse.class, request.getInputStream());
+            HttpResponse<String> httpResponse = sendHttpPostRequest("/queryTransactionStatus", getNavObjectAsString(transactionStatusRequest, QueryTransactionStatusRequest.class));
+            if (httpResponse.statusCode() == 200) {
+                log.info(SUCCESSFUL_NAV_ONLINE_POST_REQUEST, httpResponse.statusCode(), httpResponse.body());
+                final QueryTransactionStatusResponse qtsr = createNavObjectFromString(QueryTransactionStatusResponse.class, httpResponse.body());
                 logXmlAsString(qtsr, TokenExchangeResponse.class);
                 if (OK.equals(qtsr.getResult().getFuncCode().value())) {
                     response = qtsr;
                 }
             } else {
-                log.warn("Error during nav online query transaction status request processing, response code: {} {}", request.getResponseCode(), request.getResponseMessage());
-                GeneralErrorResponse exceptionResponse = unmarshallXml(GeneralErrorResponse.class, request.getErrorStream());
-                logXmlAsString(exceptionResponse, GeneralErrorResponse.class);
+                log.warn("Error during nav online query transaction status request processing, response code: {} {}", httpResponse.statusCode(), httpResponse.body());
+                GeneralErrorResponse exceptionResponse = createNavObjectFromString(GeneralErrorResponse.class, httpResponse.body());
             }
         } catch (Exception e) {
             log.error(ERROR_NAV_ONLINE_EXCHANGE_TOKEN_POST, e);
@@ -621,21 +619,17 @@ public class NavOnlineService implements MonetaryService {
     private ManageInvoiceResponse postManageInvoice(ManageInvoiceRequest manageInvoiceRequest) {
         ManageInvoiceResponse response = null;
         try {
-            HttpsURLConnection request = createHttpRequest("/manageInvoice");
-            logXmlAsString(manageInvoiceRequest, ManageInvoiceRequest.class);
-            marshallXml(manageInvoiceRequest, ManageInvoiceRequest.class, request.getOutputStream());
+            final HttpResponse<String> httpResponse = sendHttpPostRequest("/manageInvoice", getNavObjectAsString(manageInvoiceRequest, ManageInvoiceRequest.class));
 
-            if (request.getResponseCode() == 200) {
-                log.info(SUCCESSFUL_NAV_ONLINE_POST_REQUEST, request.getResponseCode(), request.getResponseMessage());
-                final ManageInvoiceResponse mer = unmarshallXml(ManageInvoiceResponse.class, request.getInputStream());
-                logXmlAsString(mer, ManageInvoiceResponse.class);
+            if (httpResponse.statusCode() == 200) {
+                log.info(SUCCESSFUL_NAV_ONLINE_POST_REQUEST, httpResponse.statusCode(), httpResponse.body());
+                final ManageInvoiceResponse mer = createNavObjectFromString(ManageInvoiceResponse.class, httpResponse.body());
                 if (OK.equals(mer.getResult().getFuncCode().value())) {
                     response = mer;
                 }
             } else {
-                log.warn(ERROR_NAV_ONLINE_POST_REQUEST, request.getResponseCode(), request.getResponseMessage());
-                GeneralErrorResponse exceptionResponse = unmarshallXml(GeneralErrorResponse.class, request.getErrorStream());
-                logXmlAsString(exceptionResponse, GeneralErrorResponse.class);
+                log.warn(ERROR_NAV_ONLINE_POST_REQUEST, httpResponse.statusCode(), httpResponse.body());
+                GeneralErrorResponse exceptionResponse = createNavObjectFromString(GeneralErrorResponse.class, httpResponse.body());
             }
         } catch (Exception e) {
             log.error(ERROR_NAV_ONLINE_EXCHANGE_TOKEN_POST, e);
@@ -643,30 +637,40 @@ public class NavOnlineService implements MonetaryService {
         return response;
     }
 
-    /*
-    private HttpsURLConnection createHttpPostRequest(String uri) throws IOException {
+    @SneakyThrows
+    private HttpResponse<String> sendHttpPostRequest(String uri, String body) {
         URI requestUri = URI.create(properties.getNav().getUrl() + uri);
-        HttpRequest request = HttpRequest.newBuilder()
-            .uri(requestUri)
-            .POST()
-            .header("Content-Type", "application/xml")
-            .header("Accept", "application/xml")
-            .build();
-        return request;
+        try (HttpClient httpClient = HttpClient.newHttpClient()) {
+            final String contentType = "application/xml";
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(requestUri)
+                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .header("Content-Type", contentType)
+                .header("Accept", contentType)
+                .build();
+            return httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        }
     }
-    */
 
-    private HttpsURLConnection createHttpRequest(String uri) throws IOException {
-        URL url = new URL(properties.getNav().getUrl() + uri);
-        HttpsURLConnection request = (HttpsURLConnection) url.openConnection();
-        request.setDoOutput(true);
-        final String post = "POST";
-        request.setRequestMethod(post);
-        final String contentType = "application/xml";
-        request.setRequestProperty("Content-Type", contentType);
-        request.setRequestProperty("Accept", contentType);
-        request.setRequestProperty("Method", post);
-        return request;
+    @SneakyThrows
+    private String getNavObjectAsString(@NonNull Object xmlObject, @NonNull Class<?> clazz) {
+        JAXBContext requestCtx = JAXBContext.newInstance(clazz);
+        Marshaller m = requestCtx.createMarshaller();
+        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+        StringWriter sw = new StringWriter();
+        m.marshal(xmlObject, sw);
+        log.debug(sw.toString());
+        return sw.toString();
+    }
+
+    @SneakyThrows
+    private <T> T createNavObjectFromString(@NonNull Class<T> clazz, @NonNull String xml) {
+        log.debug(xml);
+        JAXBContext context = JAXBContext.newInstance(clazz);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+        try (StringReader reader = new StringReader(xml)) {
+            return clazz.cast(unmarshaller.unmarshal(reader));
+        }
     }
 
     private void generateRequestSignature(BasicRequestType brt) {

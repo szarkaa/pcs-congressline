@@ -17,9 +17,10 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import hu.congressline.pcs.domain.PayingGroup;
-import hu.congressline.pcs.repository.PayingGroupItemRepository;
-import hu.congressline.pcs.repository.PayingGroupRepository;
+import hu.congressline.pcs.service.PayingGroupService;
+import hu.congressline.pcs.service.dto.PayingGroupDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.PayingGroupVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,70 +32,59 @@ import lombok.extern.slf4j.Slf4j;
 public class PayingGroupResource {
     private static final String ENTITY_NAME = "payingGroup";
 
-    private final PayingGroupRepository payingGroupRepository;
-    private final PayingGroupItemRepository payingGroupItemRepository;
+    private final PayingGroupService service;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/paying-groups")
-    public ResponseEntity<PayingGroup> create(@Valid @RequestBody PayingGroup payingGroup) throws URISyntaxException {
-        log.debug("REST request to save PayingGroup : {}", payingGroup);
-        if (payingGroup.getId() != null) {
+    public ResponseEntity<PayingGroupDTO> create(@Valid @RequestBody PayingGroupVM viewModel) throws URISyntaxException {
+        log.debug("REST request to save paying group : {}", viewModel);
+        if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert(ENTITY_NAME, "idexists", "A new payingGroup cannot already have an ID"))
+                .createFailureAlert(ENTITY_NAME, "idexists", "A new paying group cannot already have an ID"))
                 .body(null);
         }
 
-        PayingGroup result = payingGroupRepository.save(payingGroup);
+        PayingGroup result = service.save(viewModel);
         return ResponseEntity.created(new URI("/api/paying-groups/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(new PayingGroupDTO(result));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/paying-groups")
-    public ResponseEntity<PayingGroup> update(@Valid @RequestBody PayingGroup payingGroup) throws URISyntaxException {
-        log.debug("REST request to update PayingGroup : {}", payingGroup);
-        if (payingGroup.getId() == null) {
-            return create(payingGroup);
+    public ResponseEntity<PayingGroupDTO> update(@Valid @RequestBody PayingGroupVM viewModel) throws URISyntaxException {
+        log.debug("REST request to update paying group : {}", viewModel);
+        if (viewModel.getId() == null) {
+            return create(viewModel);
         }
-        PayingGroup result = payingGroupRepository.save(payingGroup);
+        PayingGroup result = service.save(viewModel);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, payingGroup.getId().toString()))
-            .body(result);
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
+            .body(new PayingGroupDTO(result));
     }
-
-    /*
-    @SuppressWarnings("MissingJavadocMethod")
-    @GetMapping("/paying-groups")
-    public List<PayingGroup> getAllPayingGroups() {
-        log.debug("REST request to get all PayingGroups");
-        return payingGroupRepository.findAll();
-    }
-    */
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/paying-groups/congress/{id}")
-    public List<PayingGroup> getAllByCongressId(@PathVariable Long id) {
-        log.debug("REST request to get all PayingGroups by congress id: {}", id);
-        return payingGroupRepository.findByCongressIdOrderByName(id);
+    public List<PayingGroupDTO> getAllByCongressId(@PathVariable Long id) {
+        log.debug("REST request to get all paying groups by congress id: {}", id);
+        return service.findAllForCongressId(id).stream().map(PayingGroupDTO::new).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/paying-groups/{id}")
-    public ResponseEntity<PayingGroup> getById(@PathVariable Long id) {
-        log.debug("REST request to get PayingGroup : {}", id);
-        return payingGroupRepository.findById(id)
-            .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
+    public ResponseEntity<PayingGroupDTO> getById(@PathVariable Long id) {
+        log.debug("REST request to get paying group : {}", id);
+        return service.findById(id)
+            .map(result -> new ResponseEntity<>(new PayingGroupDTO(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/paying-groups/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        log.debug("REST request to delete PayingGroup : {}", id);
+        log.debug("REST request to delete paying group : {}", id);
         try {
-            payingGroupItemRepository.deleteAllByPayingGroupId(id);
-            payingGroupRepository.deleteById(id);
+            service.delete(id);
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
         } catch (DataIntegrityViolationException e) {
             log.debug("Constraint violation exception during delete operation.", e);

@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -30,18 +31,17 @@ import hu.congressline.pcs.domain.RoomReservationRegistration;
 import hu.congressline.pcs.domain.Workplace;
 import hu.congressline.pcs.domain.enumeration.RegistrationTypeType;
 import hu.congressline.pcs.repository.AccPeopleRepository;
-import hu.congressline.pcs.repository.ChargedServiceRepository;
 import hu.congressline.pcs.repository.CountryRepository;
 import hu.congressline.pcs.repository.OnlineRegistrationCustomAnswerRepository;
 import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
 import hu.congressline.pcs.repository.RegistrationRegistrationTypeRepository;
 import hu.congressline.pcs.repository.RegistrationRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
-import hu.congressline.pcs.repository.WorkplaceRepository;
+import hu.congressline.pcs.service.dto.RegistrationSummaryDTO;
 import hu.congressline.pcs.service.util.RegistrationUploadHeader;
 import hu.congressline.pcs.web.rest.vm.PcsBatchUploadVm;
-import hu.congressline.pcs.web.rest.vm.RegistrationSummaryVM;
 import hu.congressline.pcs.web.rest.vm.RegistrationVM;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,86 +51,94 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class RegistrationService {
 
-    private final RegistrationRepository registrationRepository;
+    private final RegistrationRepository repository;
     private final RegistrationRegistrationTypeRepository rrtRepository;
     private final RoomReservationRegistrationRepository rrrRepository;
     private final OrderedOptionalServiceRepository oosRepository;
     private final AccPeopleRepository accPeopleRepository;
     private final OrderedOptionalServiceService oosService;
-    private final ChargedServiceRepository chargedServiceRepository;
+    private final ChargedServiceService chargedServiceService;
     private final RoomReservationService roomReservationService;
     private final CongressService congressService;
     private final CountryRepository countryRepository;
-    private final WorkplaceRepository workplaceRepository;
+    private final WorkplaceService workplaceService;
     private final OnlineRegistrationCustomAnswerRepository orcaRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     public Registration save(Registration registration) {
-        log.debug("Request to save Registration : {}", registration);
+        log.debug("Request to save registration : {}", registration);
         injectRegId(registration);
         if (registration.getDateOfApp() == null) {
             registration.setDateOfApp(LocalDate.now());
         }
-        return registrationRepository.save(registration);
+        return repository.save(registration);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @Transactional(readOnly = true)
-    public List<RegistrationVM> findAllRegistrationVMByCongressId(Long congressId) {
-        log.debug("Request to get all Registration ids");
-        return registrationRepository.findAllByCongressId(congressId).stream().map(RegistrationVM::new).collect(Collectors.toList());
+    public Registration save(@NonNull RegistrationVM viewModel) {
+        log.debug("Request to save registration from view model: {}", viewModel);
+        Registration registration = viewModel.getId() != null ? getById(viewModel.getId()) : new Registration();
+        registration.update(viewModel);
+        registration.setInvoiceCountry(viewModel.getInvoiceCountryId() != null ? countryRepository.findById(viewModel.getInvoiceCountryId()).orElse(null) : null);
+        registration.setWorkplace(viewModel.getWorkplaceId() != null ? workplaceService.findById(viewModel.getWorkplaceId()).orElse(null) : null);
+        registration.setCountry(viewModel.getCountryId() != null ? countryRepository.findById(viewModel.getCountryId()).orElse(null) : null);
+        if (registration.getCongress() == null) {
+            final Congress congress = congressService.getById(viewModel.getCongressId());
+            registration.setCongress(congress);
+        }
+        return save(registration);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<Registration> findAllByCongressId(Long id) {
         log.debug("Request to get all Registrations by congress id: {}", id);
-        return registrationRepository.findAllByCongressId(id);
+        return repository.findAllByCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
     public Optional<Registration> findTheFirstOneByCongressId(Long id) {
-        return registrationRepository.findFirstRegistrationByCongressId(id);
+        return repository.findFirstRegistrationByCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<Registration> findById(Long id) {
         log.debug("Request to find Registration : {}", id);
-        return registrationRepository.findById(id);
+        return repository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Registration getById(Long id) {
         log.debug("Request to get Registration : {}", id);
-        return registrationRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Registration not found with id: " + id));
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Registration not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Long findNextIdAfterDeletedId(Long id, Long congressId) {
         Long nextId = null;
-        List<Long> list = registrationRepository.findNextIdAfterDeletedId(id, congressId);
+        List<Long> list = repository.findNextIdAfterDeletedId(id, congressId);
         if (list.isEmpty()) {
-            list = registrationRepository.findPreviousIdAfterDeletedId(id, congressId);
+            list = repository.findPreviousIdAfterDeletedId(id, congressId);
             if (!list.isEmpty()) {
-                nextId = list.get(0);
+                nextId = list.getFirst();
             }
         } else {
-            nextId = list.get(0);
+            nextId = list.getFirst();
         }
         return nextId;
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public RegistrationSummaryVM getRegistrationSummaryByCongressId(Long id) {
-        RegistrationSummaryVM dto = new RegistrationSummaryVM();
-        dto.setRegistered(registrationRepository.countByCongressId(id));
-        dto.setOnSpot(registrationRepository.countByCongressIdAndOnSpot(id, Boolean.TRUE));
-        dto.setAccPeople(registrationRepository.countAccPeopleByCongressId(id, RegistrationTypeType.ACCOMPANYING_FEE));
+    public RegistrationSummaryDTO getRegistrationSummaryByCongressId(Long id) {
+        RegistrationSummaryDTO dto = new RegistrationSummaryDTO();
+        dto.setRegistered(repository.countByCongressId(id));
+        dto.setOnSpot(repository.countByCongressIdAndOnSpot(id, Boolean.TRUE));
+        dto.setAccPeople(repository.countAccPeopleByCongressId(id, RegistrationTypeType.ACCOMPANYING_FEE));
         return dto;
     }
 
@@ -148,12 +156,13 @@ public class RegistrationService {
     public void delete(Long id) {
         log.debug("Request to delete Registration : {}", id);
         orcaRepository.deleteAllByRegistrationId(id);
+        chargedServiceService.deleteAllByRegistrationId(id);
         accPeopleRepository.deleteAllByRegistrationRegistrationTypeRegistrationId(id);
         rrtRepository.deleteAllByRegistrationId(id);
         roomReservationService.deleteAllByRegistrationId(id);
         oosService.deleteAllByRegistrationId(id);
-        chargedServiceRepository.deleteAllByRegistrationId(id);
-        registrationRepository.deleteById(id);
+        workplaceService.deleteByRegistrationId(id);
+        repository.deleteById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -168,7 +177,7 @@ public class RegistrationService {
             final Map<RegistrationUploadHeader, Integer> headerNameIndexMap = collectBatchUploadHeaderNames(sheet.getRow(0), messageList);
             if (!messageList.isEmpty()) {
                 String message = "First row must be header row with the following possible headers: title, family_name, first_name, position, "
-                        + "other_data, workplace, department, country, zip_code, city, street, phone, email, fax, invoice_name,"
+                        + "other_data, department, country, zip_code, city, street, phone, email, fax, invoice_name,"
                         + "invoice_country, invoice_zip_code, invoice_city, invoice_address, invoice_tax_number,"
                         + "workplace_name, workplace_vat_reg_number, workplace_department, workplace_zip_code, workplace_city,"
                         + "workplace_street, workplace_phone, workplace_fax, workplace_email, workplace_country";
@@ -185,7 +194,9 @@ public class RegistrationService {
                 List<Registration> list = new ArrayList<>();
                 for (int rowIdx = 1; rowIdx <= sheet.getLastRowNum(); rowIdx++) {
                     final XSSFRow row = sheet.getRow(rowIdx);
-                    list.add(createRegistrationFromBatchUploadRow(congress, row, headerNameIndexMap));
+                    if (!isRowEmpty(row)) {
+                        list.add(createRegistrationFromBatchUploadRow(congress, row, headerNameIndexMap));
+                    }
                 }
 
                 list.forEach(registration -> {
@@ -201,6 +212,7 @@ public class RegistrationService {
         return messageList;
     }
 
+    @SafeVarargs
     private String getCurrency(List<? extends ChargeableItem>... items) {
         String currency = null;
         for (List<? extends ChargeableItem> itemList : items) {
@@ -264,11 +276,13 @@ public class RegistrationService {
     }
 
     private Workplace getWorkplaceFromCellValue(Congress congress, XSSFRow row, Map<RegistrationUploadHeader, Integer> headerNameIndexMap) {
-        if (headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_NAME) == null) {
+        DataFormatter formatter = new DataFormatter();
+        String workplaceName = Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_NAME))
+            .flatMap(idx -> Optional.ofNullable(row.getCell(idx))).map(formatter::formatCellValue).orElse(null);
+        if (!StringUtils.hasText(workplaceName)) {
             return null;
         }
 
-        DataFormatter formatter = new DataFormatter();
         Workplace workplace = new Workplace();
         workplace.setCongress(congress);
         Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_NAME))
@@ -289,7 +303,9 @@ public class RegistrationService {
                 .flatMap(idx -> Optional.ofNullable(row.getCell(idx))).ifPresent(cell -> workplace.setPhone(formatter.formatCellValue(cell)));
         Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_FAX))
                 .flatMap(idx -> Optional.ofNullable(row.getCell(idx))).ifPresent(cell -> workplace.setFax(formatter.formatCellValue(cell)));
-        return workplaceRepository.save(workplace);
+        Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_EMAIL))
+                .flatMap(idx -> Optional.ofNullable(row.getCell(idx))).ifPresent(cell -> workplace.setEmail(formatter.formatCellValue(cell)));
+        return workplaceService.save(workplace);
     }
 
     private Country getCountryFromCellValue(XSSFCell cell) {
@@ -300,12 +316,36 @@ public class RegistrationService {
         return countryRepository.findOneByName(formatter.formatCellValue(cell)).orElse(null);
     }
 
+    private boolean isRowEmpty(XSSFRow row) {
+        if (row == null) {
+            return true;
+        }
+
+        DataFormatter formatter = new DataFormatter();
+
+        for (int colIdx = 0; colIdx < Math.min(RegistrationUploadHeader.values().length, row.getLastCellNum()); colIdx++) {
+            XSSFCell cell = row.getCell(colIdx);
+            if (cell == null) {
+                continue;
+            }
+
+            String value = formatter.formatCellValue(cell);
+
+            if (value != null && !value.trim().isEmpty()) {
+                return false; // found non-empty cell
+            }
+        }
+
+        return true; // all cells empty
+    }
+
     private void validateBatchUploadRow(XSSFRow row, int rowIdx, Map<RegistrationUploadHeader, Integer> headerNameIndexMap, List<String> messageList) {
+        if (isRowEmpty(row)) {
+            return;
+        }
+
         int xlsRowIdx = rowIdx + 1;
         int cellIdx = Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_FAMILY_NAME)).orElse(Integer.MAX_VALUE);
-        if (row == null) {
-            messageList.add(xlsRowIdx + ". row can not be empty. Fill it properly or delete it.");
-        }
 
         XSSFCell cell = row.getCell(cellIdx);
         if (cell == null || cell.getStringCellValue().isEmpty()) {
@@ -381,7 +421,7 @@ public class RegistrationService {
 
     private void injectRegId(Registration registration) {
         if (registration.getRegId() == null) {
-            Integer regId = registrationRepository.findLastRegistrationId(registration.getCongress().getId());
+            Integer regId = repository.findLastRegistrationId(registration.getCongress().getId());
             registration.setRegId(regId == null ? Integer.valueOf(1) : Integer.valueOf(regId + 1));
         }
     }

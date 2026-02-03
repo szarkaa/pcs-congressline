@@ -10,10 +10,15 @@
     function AccPeopleDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, AccPeople) {
         var vm = this;
 
-        vm.accPeople = entity;
+        vm.accPeople = {
+            id: entity.id,
+            title: entity.title,
+            lastName: entity.lastName,
+            firstName: entity.firstName,
+            registrationRegistrationTypeId: entity.registrationRegistrationTypeId
+        };
         vm.clear = clear;
         vm.save = save;
-        // vm.registrationregistrationtypes = RegistrationRegistrationType.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(0)>input').focus();

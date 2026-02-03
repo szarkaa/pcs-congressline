@@ -74,13 +74,11 @@ gulp.task('inject', function() {
     runSequence('inject:dep', 'inject:app');
 });
 
-gulp.task('inject:dep', ['inject:test', 'inject:vendor']);
+gulp.task('inject:dep', ['inject:vendor']);
 
 gulp.task('inject:app', inject.app);
 
 gulp.task('inject:vendor', inject.vendor);
-
-gulp.task('inject:test', inject.test);
 
 gulp.task('inject:troubleshoot', inject.troubleshoot);
 
@@ -144,14 +142,6 @@ gulp.task('eslint:fix', function () {
         .pipe(eslint.format())
         .pipe(gulpIf(util.isLintFixed, gulp.dest(config.app + 'app')));
 });
-
-gulp.task('test', ['inject:test', 'ngconstant:dev'], function (done) {
-    new KarmaServer({
-        configFile: __dirname + '/' + config.test + 'karma.conf.js',
-        singleRun: true
-    }, done).start();
-});
-
 
 gulp.task('watch', function () {
     gulp.watch('bower.json', ['install']);

@@ -13,7 +13,7 @@
             parent: 'congress-hotel',
             url: '/{congressHotelId}/rooms',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 pageTitle: 'pcsApp.room.home.title'
             },
             views: {
@@ -42,7 +42,7 @@
             parent: 'room',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'congressHotel', function($stateParams, $state, $uibModal, congressHotel) {
                 $uibModal.open({
@@ -54,15 +54,19 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 roomType: null,
                                 bed: null,
                                 quantity: null,
                                 reserved: 0,
                                 price: null,
-                                id: null,
                                 onlineLabel: null,
                                 onlineVisibility: 'VISIBLE',
-                                congressHotel: {id: $stateParams.congressHotelId }
+                                onlineExternalLink: null,
+                                onlineExternalEmail: null,
+                                vatInfoId: null,
+                                currencyId: null,
+                                congressHotelId: $stateParams.congressHotelId
                             };
                         },
                         congressHotel: function () {
@@ -80,7 +84,7 @@
             parent: 'room',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'congressHotel', function($stateParams, $state, $uibModal, congressHotel) {
                 $uibModal.open({
@@ -108,7 +112,7 @@
             parent: 'room',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

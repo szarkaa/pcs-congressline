@@ -1,10 +1,11 @@
 package hu.congressline.pcs.web.rest.vm;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
-import hu.congressline.pcs.domain.Congress;
-import hu.congressline.pcs.domain.Country;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,27 +13,51 @@ import lombok.NoArgsConstructor;
 @Data
 public class CongressVM {
 
-    @NotNull
     private Long id;
+
     @NotNull
+    @Size(min = 3, max = 15)
     private String meetingCode;
+
     @NotNull
+    @Size(max = 100)
     private String name;
+
     @NotNull
     private LocalDate startDate;
+
     @NotNull
     private LocalDate endDate;
-    @NotNull
-    private Country defaultCountry;
 
-    public CongressVM(Congress congress) {
-        this.id = congress.getId();
-        this.meetingCode = congress.getMeetingCode();
-        this.name = congress.getName();
-        this.startDate = congress.getStartDate();
-        this.endDate = congress.getEndDate();
-        this.defaultCountry = congress.getDefaultCountry();
-    }
+    @Size(max = 128)
+    private String contactPerson;
+
+    @Size(max = 64)
+    private String contactEmail;
+
+    @Size(max = 64)
+    private String programNumber;
+
+    @Size(max = 1000)
+    private String website;
+
+    @Size(max = 1000)
+    private String additionalBillingTextHu;
+
+    @Size(max = 1000)
+    private String additionalBillingTextEn;
+
+    private Long defaultCountryId;
+
+    private Long migrateCongressId;
+
+    private Boolean archive = Boolean.FALSE;
+
+    private Set<Long> currencyIds = new HashSet<>();
+
+    private Set<Long> onlineRegCurrencyIds = new HashSet<>();
+
+    private Set<Long> bankAccountIds = new HashSet<>();
 
     @Override
     public String toString() {

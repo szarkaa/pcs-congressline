@@ -1,4 +1,5 @@
 
+
 <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
 
     <div class="modal-header">
@@ -10,12 +11,12 @@
         <jhi-alert-error></jhi-alert-error>
         <div class="form-group">
             <label translate="pcsApp.orderedOptionalService.optionalService" for="field_optionalService">Optional service</label>
-            <ui-select ng-model="vm.orderedOptionalService.optionalService"
-                       ng-change="vm.resetParticipantsField()" ng-disabled="vm.orderedOptionalService.id" name="optionalService" id="field_optionalService" theme="bootstrap">
+            <ui-select ng-model="vm.orderedOptionalService.optionalServiceId"
+                       ng-change="vm.optionalServiceSelectionChanged()" ng-disabled="vm.orderedOptionalService.id" name="optionalService" id="field_optionalService" theme="bootstrap">
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.name"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="optionalService in (vm.optionalServices | filterChargeableItemsByCurrency : {searchText: $select.search, registrationCurrency: vm.registrationCurrency }) track by optionalService.id">
+                <ui-select-choices repeat="optionalService.id as optionalService in (vm.optionalServices | filterChargeableItemsByCurrency : {searchText: $select.search, registrationCurrency: vm.registrationCurrency }) track by optionalService.id">
                     <div ng-bind-html="optionalService.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
@@ -23,7 +24,7 @@
         <div class="form-group">
             <label class="control-label" data-translate="pcsApp.orderedOptionalService.participant" for="field_participant">Participant</label>
             <input type="number" class="form-control" name="participant" id="field_participant" autocomplete="off" ng-disabled="vm.orderedOptionalService.id"
-                    ng-model="vm.orderedOptionalService.participant" oos-reserved-validation optionalservice="vm.orderedOptionalService.optionalService"
+                    ng-model="vm.orderedOptionalService.participant" oos-reserved-validation optionalservice="vm.selectedOptionalService"
                     required min="1" max="100" />
             <div ng-show="editForm.participant.$invalid">
                 <p class="error-block"
@@ -51,12 +52,12 @@
 
         <div class="form-group">
             <label translate="pcsApp.orderedOptionalService.payingGroupItem" for="field_payingGroupItem">Discount</label>
-            <ui-select ng-model="vm.orderedOptionalService.payingGroupItem" name="payingGroupItem" id="field_payingGroupItem" theme="bootstrap">
+            <ui-select ng-model="vm.orderedOptionalService.payingGroupItemId" name="payingGroupItem" id="field_payingGroupItem" theme="bootstrap">
                 <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
-                    <span ng-bind="$select.selected.payingGroup.name + '/' + $select.selected.name"></span>
+                    <span ng-bind="$select.selected.payingGroupName + '/' + $select.selected.name"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="payingGroupItem in (vm.payingGroupItems | filter: { payingGroup: { currency: { currency: vm.orderedOptionalService.optionalService.currency.currency }}} | filter: $select.search) track by payingGroupItem.id">
-                    <div ng-bind-html="payingGroupItem.payingGroup.name + '/' + payingGroupItem.name | highlight: $select.search"></div>
+                <ui-select-choices repeat="payingGroupItem.id as payingGroupItem in (vm.payingGroupItems | filter: { currency: { currency: vm.orderedOptionalService.optionalService.currency.currency }} | filter: $select.search) track by payingGroupItem.id">
+                    <div ng-bind-html="payingGroupItem.payingGroupName + '/' + payingGroupItem.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
         </div>

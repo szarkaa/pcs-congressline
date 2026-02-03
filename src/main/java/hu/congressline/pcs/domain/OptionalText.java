@@ -4,6 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
+import hu.congressline.pcs.web.rest.vm.OptionalTextVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -39,6 +40,11 @@ public class OptionalText implements Serializable {
 
     @ManyToOne
     private Congress congress;
+
+    public void update(OptionalTextVM viewModel) {
+        this.name = viewModel.getName();
+        this.optionalText = viewModel.getOptionalText();
+    }
 
     @Override
     public boolean equals(Object o) {

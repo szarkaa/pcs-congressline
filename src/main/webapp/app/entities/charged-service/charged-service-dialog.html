@@ -26,7 +26,7 @@
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="pcsApp.chargedService.paymentType" for="field_paymentType">Payment Type</label>
-            <select class="form-control" name="paymentType" ng-model="vm.chargedService.paymentType" ng-change="vm.chargeableItemTypeOnChanged()" id="field_paymentType" required>
+            <select class="form-control" name="paymentType" ng-model="vm.chargedService.paymentType" ng-change="vm.paymentTypeChanged()" id="field_paymentType" required>
                 <option value="" data-translate="global.form.please.select">Please select</option>
                 <option value="REGISTRATION" data-translate="pcsApp.ChargeableItemType.REGISTRATION">REGISTRATION</option>
                 <option value="HOTEL" data-translate="pcsApp.ChargeableItemType.HOTEL">HOTEL</option>
@@ -40,16 +40,16 @@
                 </p>
             </div>
         </div>
-        
+
         <div class="form-group" ng-show="vm.chargedService.paymentType === 'REGISTRATION'">
             <label translate="pcsApp.chargedService.chargeableItem" for="field_rrt_for_chargeableItem">Chargeable item</label>
-            <ui-select ng-model="vm.chargedService.chargeableItem" name="rrtForChargeableItem" id="field_rrt_for_chargeableItem" ng-change="vm.setDefaultPrice()"
+            <ui-select ng-model="vm.chargedService.chargeableItemId" name="rrtForChargeableItem" id="field_rrt_for_chargeableItem" ng-change="vm.chargeableItemTypeChanged()"
                        theme="bootstrap" ng-required="vm.chargedService.paymentType === 'REGISTRATION'">
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
-                    <span ng-bind="$select.selected.chargeableItemName"></span>
+                    <span ng-bind="$select.selected.registrationTypeName"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="registrationRegistrationType in (vm.registrationRegistrationTypes | filter: $select.search) track by registrationRegistrationType.id">
-                    <div ng-bind-html="registrationRegistrationType.chargeableItemName | highlight: $select.search"></div>
+                <ui-select-choices repeat="registrationRegistrationType.id as registrationRegistrationType in (vm.registrationRegistrationTypes | filter: $select.search) track by registrationRegistrationType.id">
+                    <div ng-bind-html="registrationRegistrationType.registrationTypeName | highlight: $select.search"></div>
                 </ui-select-choices>
 
             </ui-select>
@@ -62,12 +62,12 @@
 
         <div class="form-group" ng-show="vm.chargedService.paymentType === 'HOTEL'">
             <label translate="pcsApp.chargedService.chargeableItem" for="field_rr_for_chargeableItem">Chargeable item</label>
-            <ui-select ng-model="vm.chargedService.chargeableItem" name="rrForChargeableItem" id="field_rr_for_chargeableItem" ng-change="vm.setDefaultPrice()"
+            <ui-select ng-model="vm.chargedService.chargeableItemId" name="rrForChargeableItem" id="field_rr_for_chargeableItem" ng-change="vm.chargeableItemTypeChanged()"
                        theme="bootstrap" ng-required="vm.chargedService.paymentType === 'HOTEL'">
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.chargeableItemName"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="rr in (vm.roomReservations | filter: $select.search) track by rr.id">
+                <ui-select-choices repeat="rr.id as rr in (vm.roomReservations | filter: $select.search) track by rr.id">
                     <div ng-bind-html="rr.chargeableItemName | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
@@ -80,12 +80,12 @@
 
         <div class="form-group" ng-show="vm.chargedService.paymentType === 'OPTIONAL_SERVICE'">
             <label translate="pcsApp.chargedService.chargeableItem" for="field_oos_for_chargeableItem">Chargeable item</label>
-            <ui-select ng-model="vm.chargedService.chargeableItem" name="oosForChargeableItem" id="field_oos_for_chargeableItem" ng-change="vm.setDefaultPrice()"
+            <ui-select ng-model="vm.chargedService.chargeableItemId" name="oosForChargeableItem" id="field_oos_for_chargeableItem" ng-change="vm.chargeableItemTypeChanged()"
                        theme="bootstrap" ng-required="vm.chargedService.paymentType === 'OPTIONAL_SERVICE'">
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.chargeableItemName"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="orderedOptionalService in (vm.orderedOptionalServices | filter: $select.search) track by orderedOptionalService.id">
+                <ui-select-choices repeat="orderedOptionalService.id as orderedOptionalService in (vm.orderedOptionalServices | filter: $select.search) track by orderedOptionalService.id">
                     <div ng-bind-html="orderedOptionalService.chargeableItemName | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>

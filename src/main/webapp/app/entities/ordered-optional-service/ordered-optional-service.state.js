@@ -33,7 +33,7 @@
                 parent: 'ordered-optional-service',
                 url: '/optional-service/new',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 },
                 onEnter: ['$stateParams', '$state', 'registration', '$uibModal', 'registrationCurrency', function($stateParams, $state, registration, $uibModal, registrationCurrency) {
                     $uibModal.open({
@@ -44,12 +44,11 @@
                         resolve: {
                             entity: function () {
                                 return {
-                                    participant: null,
-                                    dateOfGroupPayment: null,
-                                    createdDate: null,
                                     id: null,
-                                    registration: {id: registration.id},
-                                    '@class': 'hu.congressline.pcs.domain.OrderedOptionalService'
+                                    participant: null,
+                                    optionalServiceId: null,
+                                    payingGroupItemId: null,
+                                    registrationId: registration.id
                                 };
                             },
                             registrationCurrency: function () {
@@ -67,7 +66,7 @@
                 parent: 'ordered-optional-service',
                 url: '/optional-service/{optionalServiceId}/edit',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 },
                 onEnter: ['$stateParams', '$state', 'registration', '$uibModal', 'registrationCurrency', function($stateParams, $state, registration, $uibModal, registrationCurrency) {
                     $uibModal.open({
@@ -94,7 +93,7 @@
                 parent: 'ordered-optional-service',
                 url: '/optional-service/{optionalServiceId}/delete',
                 data: {
-                    authorities: ['ROLE_USER'],
+                    authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN'],
                 },
                 onEnter: ['$stateParams', '$state', 'registration', '$uibModal', function($stateParams, $state, registration, $uibModal) {
                     $uibModal.open({

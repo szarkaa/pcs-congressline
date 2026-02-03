@@ -16,12 +16,7 @@
                 url: 'api/registrations/:id/registration-registration-types',
                 isArray: true
             },
-            'queryVMByRegistrationId' : {
-                method: 'GET',
-                url: 'api/registrations/:id/registration-registration-type-vms',
-                isArray: true
-            },
-            'queryRegFeeVMByRegistrationTypeId' : {
+            'queryRegFeeByRegistrationTypeId' : {
                 method: 'GET',
                 url: 'api/registrations/:registrationId/registration-types/:registrationTypeId/calculate-reg-fee'
             },
