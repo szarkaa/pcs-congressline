@@ -104,9 +104,9 @@ public class MiscInvoicePdfService extends AbstractPdfService {
         createSecondContentBlock(document, pdfContext);
         createThirdContentBlock(document, pdfContext);
         createChargeableItemDetailsContentBlock(document, pdfContext);
-        createPayableDetailsContentBlock(document,  pdfContext);
+        createPayableDetailsContentBlock(document, pdfContext);
         createOptionalTextContentBlock(document, pdfContext);
-        createVatSummaryContentBlock( document, pdfContext);
+        createVatSummaryContentBlock(document, pdfContext);
         createAdditionalBillingTextContentBlock(document, pdfContext);
     }
 
@@ -350,7 +350,7 @@ public class MiscInvoicePdfService extends AbstractPdfService {
             cell4 = createCell(createRightParagraph(formatter.format(formatter.formatByCurrency(grandTotal, pdfContext.getCurrency()), pdfContext.getLocale()) + " "
                 + pdfContext.getCurrency(), PcsPdfFont.P_SMALL_BOLD));
 
-            setBorder(Rectangle.TOP,  cell1, cell2, cell3, cell4);
+            setBorder(Rectangle.TOP, cell1, cell2, cell3, cell4);
             addTableCell(table, cell1, cell2, cell3, cell4);
 
             if (!HUF.toString().equalsIgnoreCase(pdfContext.getCurrency())) {

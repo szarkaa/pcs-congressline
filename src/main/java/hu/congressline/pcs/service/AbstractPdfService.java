@@ -223,7 +223,6 @@ public abstract class AbstractPdfService {
         return sepCell;
     }
 
-
     protected BigDecimal getInvoiceItemsSumAmount(List<InvoiceItem> list) {
         return list.stream().map(InvoiceItem::getTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
     }

@@ -200,9 +200,6 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
 
     @SuppressWarnings({"MethodLength", "ParameterAssignment"})
     private void generateFooterContent(PdfWriter writer, Document document, float footerBase) {
-        PdfContentByte cb = writer.getDirectContent();
-
-        //new table
         table = new PdfPTable(2);
         table.setSpacingBefore(0);
         table.setSpacingAfter(0);
@@ -333,6 +330,7 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         cell2.addElement(embeddedTable);
         addTableCell(table, cell2);
 
+        PdfContentByte cb = writer.getDirectContent();
         // write the table to an absolute position
         table.setTotalWidth(600);
         float x = document.left() - 20;

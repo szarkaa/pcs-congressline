@@ -7,6 +7,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -176,7 +177,7 @@ public class RegistrationService {
             final Map<RegistrationUploadHeader, Integer> headerNameIndexMap = collectBatchUploadHeaderNames(sheet.getRow(0), messageList);
             if (!messageList.isEmpty()) {
                 String message = "First row must be header row with the following possible headers: title, family_name, first_name, position, "
-                        + "other_data, workplace, department, country, zip_code, city, street, phone, email, fax, invoice_name,"
+                        + "other_data, department, country, zip_code, city, street, phone, email, fax, invoice_name,"
                         + "invoice_country, invoice_zip_code, invoice_city, invoice_address, invoice_tax_number,"
                         + "workplace_name, workplace_vat_reg_number, workplace_department, workplace_zip_code, workplace_city,"
                         + "workplace_street, workplace_phone, workplace_fax, workplace_email, workplace_country";
@@ -193,7 +194,9 @@ public class RegistrationService {
                 List<Registration> list = new ArrayList<>();
                 for (int rowIdx = 1; rowIdx <= sheet.getLastRowNum(); rowIdx++) {
                     final XSSFRow row = sheet.getRow(rowIdx);
-                    list.add(createRegistrationFromBatchUploadRow(congress, row, headerNameIndexMap));
+                    if (!isRowEmpty(row)) {
+                        list.add(createRegistrationFromBatchUploadRow(congress, row, headerNameIndexMap));
+                    }
                 }
 
                 list.forEach(registration -> {
@@ -273,11 +276,13 @@ public class RegistrationService {
     }
 
     private Workplace getWorkplaceFromCellValue(Congress congress, XSSFRow row, Map<RegistrationUploadHeader, Integer> headerNameIndexMap) {
-        if (headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_NAME) == null) {
+        DataFormatter formatter = new DataFormatter();
+        String workplaceName = Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_NAME))
+            .flatMap(idx -> Optional.ofNullable(row.getCell(idx))).map(formatter::formatCellValue).orElse(null);
+        if (!StringUtils.hasText(workplaceName)) {
             return null;
         }
 
-        DataFormatter formatter = new DataFormatter();
         Workplace workplace = new Workplace();
         workplace.setCongress(congress);
         Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_NAME))
@@ -298,6 +303,8 @@ public class RegistrationService {
                 .flatMap(idx -> Optional.ofNullable(row.getCell(idx))).ifPresent(cell -> workplace.setPhone(formatter.formatCellValue(cell)));
         Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_FAX))
                 .flatMap(idx -> Optional.ofNullable(row.getCell(idx))).ifPresent(cell -> workplace.setFax(formatter.formatCellValue(cell)));
+        Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_WORKPLACE_EMAIL))
+                .flatMap(idx -> Optional.ofNullable(row.getCell(idx))).ifPresent(cell -> workplace.setEmail(formatter.formatCellValue(cell)));
         return workplaceService.save(workplace);
     }
 
@@ -309,12 +316,36 @@ public class RegistrationService {
         return countryRepository.findOneByName(formatter.formatCellValue(cell)).orElse(null);
     }
 
+    private boolean isRowEmpty(XSSFRow row) {
+        if (row == null) {
+            return true;
+        }
+
+        DataFormatter formatter = new DataFormatter();
+
+        for (int colIdx = 0; colIdx < Math.min(RegistrationUploadHeader.values().length, row.getLastCellNum()); colIdx++) {
+            XSSFCell cell = row.getCell(colIdx);
+            if (cell == null) {
+                continue;
+            }
+
+            String value = formatter.formatCellValue(cell);
+
+            if (value != null && !value.trim().isEmpty()) {
+                return false; // found non-empty cell
+            }
+        }
+
+        return true; // all cells empty
+    }
+
     private void validateBatchUploadRow(XSSFRow row, int rowIdx, Map<RegistrationUploadHeader, Integer> headerNameIndexMap, List<String> messageList) {
+        if (isRowEmpty(row)) {
+            return;
+        }
+
         int xlsRowIdx = rowIdx + 1;
         int cellIdx = Optional.ofNullable(headerNameIndexMap.get(RegistrationUploadHeader.REG_UPLOAD_FAMILY_NAME)).orElse(Integer.MAX_VALUE);
-        if (row == null) {
-            messageList.add(xlsRowIdx + ". row can not be empty. Fill it properly or delete it.");
-        }
 
         XSSFCell cell = row.getCell(cellIdx);
         if (cell == null || cell.getStringCellValue().isEmpty()) {
