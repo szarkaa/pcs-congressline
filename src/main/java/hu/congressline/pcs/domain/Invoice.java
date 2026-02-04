@@ -17,7 +17,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -134,7 +134,7 @@ public class Invoice implements Serializable {
     @Column(name = "created_date")
     private LocalDate createdDate;
 
-    @DecimalMax("0")
+    @DecimalMin("0")
     @Column(name = "exchange_rate", precision = 10, scale = 2)
     private BigDecimal exchangeRate;
 

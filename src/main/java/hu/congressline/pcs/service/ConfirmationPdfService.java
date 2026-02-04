@@ -505,8 +505,10 @@ public class ConfirmationPdfService extends AbstractPdfService {
             titleKey = "payable";
         }
         PdfPCell cell1 = createCell(createParagraph(getStaticMessage(titleKey, locale), PcsPdfFont.P_BOLD));
-        PdfPCell cell2 = createCell(createRightParagraph(formatter.format(formatter.formatByCurrency(sumAmount, pdfContext.getCurrency()), locale)
-            + " " + pdfContext.getCurrency(), PcsPdfFont.P_BOLD));
+
+        final String totalText = total > 0 && StringUtils.hasText(pdfContext.getCurrency())
+            ? formatter.format(formatter.formatByCurrency(sumAmount, pdfContext.getCurrency()), locale) + " " + pdfContext.getCurrency() : "";
+        PdfPCell cell2 = createCell(createRightParagraph(totalText, PcsPdfFont.P_BOLD));
 
         cell1.setBorder(1);
         cell2.setBorder(1);
