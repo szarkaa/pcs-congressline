@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -125,10 +125,9 @@ public class RoomReservationByRoomsReportService extends XlsReportService {
         bean.setName((String) row[2]);
         bean.setCountry((String) row[3]);
         bean.setRoomType((String) row[4]);
-        bean.setArrivalDate(row[5] != null ? ((java.sql.Date) row[5]).toLocalDate() : null);
-        bean.setDepartureDate(row[6] != null ? ((java.sql.Date) row[6]).toLocalDate() : null);
-        //mariadb vs. mysql difference!!!
-        bean.setNights(row[7] instanceof BigInteger ? ((BigInteger) row[7]).intValue() : (Integer) row[7]);
+        bean.setArrivalDate(row[5] != null ? (LocalDate) row[5] : null);
+        bean.setDepartureDate(row[6] != null ? (LocalDate) row[6] : null);
+        bean.setNights(row[7] != null ? (Integer) row[7] : null);
         bean.setPersonCost(ConverterUtil.getBigDecimalValue(row[8]));
         bean.setPersonPaid(ConverterUtil.getBigDecimalValue(row[9]));
         bean.setPersonToPay(ConverterUtil.getBigDecimalValue(row[10]));

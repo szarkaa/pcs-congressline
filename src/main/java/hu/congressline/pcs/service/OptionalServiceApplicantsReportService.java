@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -52,7 +51,7 @@ public class OptionalServiceApplicantsReportService extends XlsReportService {
 
     protected OptionalServiceApplicantsDTO getBeanFromRow(Object[] row) {
         OptionalServiceApplicantsDTO bean = new OptionalServiceApplicantsDTO();
-        bean.setId(((BigInteger) row[0]).longValue());
+        bean.setId((Long) row[0]);
         bean.setRegId((Integer) row[1]);
         bean.setLastName((String) row[2]);
         bean.setFirstName((String) row[3]);

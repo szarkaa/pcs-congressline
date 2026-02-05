@@ -28,13 +28,13 @@
 
         function clear() {
             vm.reportList = [];
-            vm.reportFilter.regType = null;
+            vm.reportFilter.registrationTypeId = null;
         }
 
         function buildReportFilter(reportFilter) {
             return {
                 congressId: CongressSelector.getSelectedCongress().id,
-                registrationType: reportFilter.regType
+                registrationTypeId: reportFilter.regType.id
             };
         }
 

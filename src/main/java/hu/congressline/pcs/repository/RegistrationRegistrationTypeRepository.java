@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 import hu.congressline.pcs.domain.RegistrationRegistrationType;
-import hu.congressline.pcs.domain.RegistrationType;
 
 public interface RegistrationRegistrationTypeRepository extends JpaRepository<RegistrationRegistrationType, Long> {
 
@@ -13,7 +12,7 @@ public interface RegistrationRegistrationTypeRepository extends JpaRepository<Re
 
     List<RegistrationRegistrationType> findAllByRegistrationCongressId(Long id);
 
-    List<RegistrationRegistrationType> findAllByRegistrationCongressIdAndRegistrationType(Long id, RegistrationType registrationType);
+    List<RegistrationRegistrationType> findAllByRegistrationCongressIdAndRegistrationTypeId(Long id, Long registrationTypeId);
 
     List<RegistrationRegistrationType> findAllByRegistrationTypeId(Long id);
 

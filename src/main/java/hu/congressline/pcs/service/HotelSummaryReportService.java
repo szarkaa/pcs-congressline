@@ -32,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class HotelSummaryReportService extends XlsReportService {
 
-    private RoomReservationService roomReservationService;
+    private final RoomReservationService roomReservationService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
@@ -40,7 +40,7 @@ public class HotelSummaryReportService extends XlsReportService {
         log.debug("Request to get all HotelSummaryCellDTOs");
 
         List<HotelSummaryCellDTO> cellList = new ArrayList<>();
-        roomReservationService.findAllRoomReservationByHotelAndCongress(congress, hotel).stream().forEach(rr -> {
+        roomReservationService.findAllRoomReservationByHotelAndCongress(congress, hotel).forEach(rr -> {
             LocalDate startDate = rr.getArrivalDate();
             while (!startDate.isEqual(rr.getDepartureDate())) {
                 HotelSummaryCellDTO cell = getCell(cellList, startDate, rr.getRoom().getId());
@@ -62,7 +62,7 @@ public class HotelSummaryReportService extends XlsReportService {
         final XSSFWorkbook workbook = new XSSFWorkbook();
         Map<String, Integer> columns = new LinkedHashMap<>();
         columns.put("Reservation date", 100);
-        summaryDTO.getColumns().stream().forEach(column -> columns.put(column.getRoomType(), 200));
+        summaryDTO.getColumns().forEach(column -> columns.put(column.getRoomType(), 200));
         columns.put("Total", 100);
 
         final XSSFSheet sheet = createXlsxTab(workbook, "Hotel reservation summary", hotel.getName(), congress.getName(), getColumnWidthsAsArray(columns));

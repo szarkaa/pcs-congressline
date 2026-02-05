@@ -18,7 +18,7 @@
                     <button class="btn btn-primary" type="submit" ng-show="vm.listFilter.congressHotel" ng-click="vm.downloadReportXls()">
                         <i class="fa fa-download"></i>
                     </button>&nbsp;&nbsp;
-                    <span ng-show="vm.listFilter.congressHotel">Hotel: <strong>{{vm.listFilter.congressHotel.hotel.name}}</strong>&nbsp;&nbsp;</span>
+                    <span ng-show="vm.listFilter.congressHotel">Hotel: <strong>{{vm.listFilter.congressHotel.name}}</strong>&nbsp;&nbsp;</span>
                 </div>
                 <div class="ibox-content" ng-show="vm.roomReservationByParticipants.length">
                     <table datatable="ng" id="room-reservation-by-participant-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover">

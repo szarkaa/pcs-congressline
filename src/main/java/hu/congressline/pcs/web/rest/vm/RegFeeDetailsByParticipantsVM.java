@@ -1,6 +1,5 @@
 package hu.congressline.pcs.web.rest.vm;
 
-import hu.congressline.pcs.domain.RegistrationType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +8,6 @@ import lombok.NoArgsConstructor;
 public class RegFeeDetailsByParticipantsVM {
 
     private Long congressId;
-    private RegistrationType registrationType;
+    private Long registrationTypeId;
 
 }

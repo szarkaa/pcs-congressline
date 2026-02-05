@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -79,7 +79,7 @@ public class HotelGeneralReportService extends XlsReportService {
 
     private HotelGeneralReportDTO getBeanFromRow(Object[] row) {
         HotelGeneralReportDTO bean = new HotelGeneralReportDTO();
-        bean.setId(((BigInteger) row[0]).longValue());
+        bean.setId((Long) row[0]);
         bean.setRegId((Integer) row[1]);
         bean.setName(row[2] + " " + row[3]);
         bean.setRegTypes((String) row[4]);
@@ -90,8 +90,8 @@ public class HotelGeneralReportService extends XlsReportService {
         bean.setEmail((String) row[9]);
         bean.setHotelName((String) row[10]);
         bean.setRoomType((String) row[11]);
-        bean.setArrivalDate(row[12] != null ? ((java.sql.Date) row[12]).toLocalDate() : null);
-        bean.setDepartureDate(row[13] != null ? ((java.sql.Date) row[13]).toLocalDate() : null);
+        bean.setArrivalDate(row[12] != null ? (LocalDate) row[12] : null);
+        bean.setDepartureDate(row[13] != null ? (LocalDate) row[13] : null);
         bean.setRoomMates((String) row[14]);
         return bean;
     }

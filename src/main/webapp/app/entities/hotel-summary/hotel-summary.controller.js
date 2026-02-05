@@ -28,7 +28,7 @@
             if (vm.listFilter.congressHotel) {
                 HotelSummary.get({
                         meetingCode: CongressSelector.getSelectedCongress().meetingCode,
-                        hotelId: listFilter.congressHotel.hotel.id
+                        hotelId: listFilter.congressHotel.hotelId
                     },
                     function (result) {
                         vm.hotelSummary = result;
@@ -39,7 +39,7 @@
 
         function downloadReportXls () {
             window.location.href = '/api/hotel-summary/' + CongressSelector.getSelectedCongress().meetingCode
-                + '/' + listFilter.congressHotel.hotel.id.toString() + '/download-report';
+                + '/' + listFilter.congressHotel.hotelId.toString() + '/download-report';
         }
 
         function getNightFromCell (reservationDate, roomId) {

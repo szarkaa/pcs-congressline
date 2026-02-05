@@ -12,10 +12,10 @@
             <label data-translate="pcsApp.roomReservationByParticipant.hotel" for="field_hotel">Hotel</label>
             <ui-select ng-model="vm.listFilter.congressHotel" name="hotel" id="field_hotel" theme="bootstrap" required>
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
-                    <span ng-bind="$select.selected.hotel.name"></span>
+                    <span ng-bind="$select.selected.name"></span>
                 </ui-select-match>
                 <ui-select-choices repeat="congressHotel in (vm.congressHotels | filter: $select.search) track by congressHotel.id">
-                    <div ng-bind-html="congressHotel.hotel.name | highlight: $select.search"></div>
+                    <div ng-bind-html="congressHotel.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
             <div ng-show="editForm.hotel.$invalid">

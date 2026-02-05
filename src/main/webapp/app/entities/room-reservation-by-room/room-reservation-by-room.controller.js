@@ -27,7 +27,7 @@
             if (vm.listFilter.congressHotel) {
                 RoomReservationByRoom.query({
                         meetingCode: CongressSelector.getSelectedCongress().meetingCode,
-                        hotelId: listFilter.congressHotel.hotel.id
+                        hotelId: listFilter.congressHotel.hotelId
                     },
                     function (result) {
                         vm.roomReservationByRooms = result;
@@ -38,7 +38,7 @@
 
         function downloadReportXls () {
             window.location.href = '/api/room-reservation-by-rooms/' + CongressSelector.getSelectedCongress().meetingCode
-                + '/' + listFilter.congressHotel.hotel.id.toString() + '/download-report';
+                + '/' + listFilter.congressHotel.hotelId.toString() + '/download-report';
         }
     }
 })();

@@ -48,6 +48,7 @@ public class MailService {
     private final MessageSource messageSource;
     private final SpringTemplateEngine templateEngine;
 
+    @SuppressWarnings("ParameterNumber")
     @Async
     public void sendEmail(String from, String fromName, String to, String cc, String subject, String content, boolean isMultipart, boolean isHtml) {
         sendEmailSync(from, fromName, to, cc, subject, content, isMultipart, isHtml);

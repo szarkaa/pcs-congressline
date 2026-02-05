@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class HotelSummaryDTO implements Serializable {
     private List<HotelSummaryCellDTO> cells;
     private List<HotelSummaryColumnDTO> columns;
-    private List<LocalDate> rows;
+    private Set<LocalDate> rows;
 
     public HotelSummaryDTO(List<HotelSummaryCellDTO> cells) {
         this.cells = cells;
@@ -26,11 +27,9 @@ public class HotelSummaryDTO implements Serializable {
             columnSet.add(new HotelSummaryColumnDTO(cell));
         });
 
-        columnSet.stream().sorted(Comparator.comparing(HotelSummaryColumnDTO::getRoomType));
         columns = new ArrayList<>(columnSet.size());
         columns.addAll(columnSet);
-
-        this.rows = cells.stream().map(HotelSummaryCellDTO::getReservationDate).toList();
-        this.rows.stream().sorted();
+        columns.sort(Comparator.comparing(HotelSummaryColumnDTO::getRoomType));
+        this.rows = new TreeSet<>(cells.stream().map(HotelSummaryCellDTO::getReservationDate).toList());
     }
 }

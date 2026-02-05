@@ -1,6 +1,5 @@
 package hu.congressline.pcs.web.rest;
 
-import hu.congressline.pcs.service.MailService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +10,7 @@ import java.net.URISyntaxException;
 
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.service.CongressService;
+import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.EmailVM;
 import jakarta.validation.Valid;

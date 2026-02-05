@@ -27,6 +27,7 @@ import hu.congressline.pcs.domain.Invoice;
 import hu.congressline.pcs.domain.InvoicePayingGroup;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.RegistrationRegistrationType;
+import hu.congressline.pcs.domain.RegistrationType;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.repository.ChargedServiceRepository;
 import hu.congressline.pcs.repository.GroupDiscountInvoiceHistoryRepository;
@@ -49,6 +50,7 @@ public class RegFeeDetailsByParticipantReportService extends XlsReportService {
     private final GroupDiscountInvoiceHistoryRepository gdihRepository;
     private final ChargedServiceRepository csRepository;
     private final CongressService congressService;
+    private final RegistrationTypeService registrationTypeService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
@@ -57,8 +59,8 @@ public class RegFeeDetailsByParticipantReportService extends XlsReportService {
         Congress congress = congressService.getById(reportFilter.getCongressId());
         Set<RegFeeDetailsByParticipantDTO> dtos = new HashSet<>();
         List<RegistrationRegistrationType> rrtList;
-        if (reportFilter.getRegistrationType() != null) {
-            rrtList = rrtRepository.findAllByRegistrationCongressIdAndRegistrationType(congress.getId(), reportFilter.getRegistrationType());
+        if (reportFilter.getRegistrationTypeId() != null) {
+            rrtList = rrtRepository.findAllByRegistrationCongressIdAndRegistrationTypeId(congress.getId(), reportFilter.getRegistrationTypeId());
         } else {
             rrtList = rrtRepository.findAllByRegistrationCongressId(congress.getId());
         }
@@ -83,7 +85,7 @@ public class RegFeeDetailsByParticipantReportService extends XlsReportService {
 
         //Paid by person
         List<ChargedService> chargedServices;
-        if (reportFilter.getRegistrationType() != null) {
+        if (reportFilter.getRegistrationTypeId() != null) {
             chargedServices = csRepository.findAllByRegistrationCongressAndRegistrationIdIn(congress,
                 rrtList.stream().map(RegistrationRegistrationType::getRegistration).map(Registration::getId).collect(Collectors.toList()));
         } else {
@@ -92,7 +94,7 @@ public class RegFeeDetailsByParticipantReportService extends XlsReportService {
 
         chargedServices.stream()
             .filter(o -> o.getChargeableItem() != null && o.getChargeableItem().getChargeableItemType().equals(ChargeableItemType.REGISTRATION))
-            .filter(o -> ((RegistrationRegistrationType) o.getChargeableItem()).getRegistrationType().getId().equals(reportFilter.getRegistrationType().getId()))
+            .filter(o -> ((RegistrationRegistrationType) o.getChargeableItem()).getRegistrationType().getId().equals(reportFilter.getRegistrationTypeId()))
             .forEach(cs -> {
                 final RegFeeDetailsByParticipantDTO dto = dtos.stream()
                     .filter(o -> cs.getRegistration().getRegId().equals(o.getRegId()))
@@ -108,8 +110,8 @@ public class RegFeeDetailsByParticipantReportService extends XlsReportService {
         final Set<ChargeableItem> chargeableItems = discountInvoiceHistories.stream().map(GroupDiscountInvoiceHistory::getChargeableItem)
                 .filter(o -> o.getDateOfGroupPayment() != null)
                 .filter(o -> o.getChargeableItemType().equals(ChargeableItemType.REGISTRATION))
-                .filter(reportFilter.getRegistrationType() != null ? o -> ((RegistrationRegistrationType) o).getRegistrationType().getId()
-                        .equals(reportFilter.getRegistrationType().getId()) : o -> true)
+                .filter(reportFilter.getRegistrationTypeId() != null ? o -> ((RegistrationRegistrationType) o).getRegistrationType().getId()
+                        .equals(reportFilter.getRegistrationTypeId()) : o -> true)
                 .collect(Collectors.toSet());
 
         chargeableItems.forEach(item -> {
@@ -129,6 +131,7 @@ public class RegFeeDetailsByParticipantReportService extends XlsReportService {
     @Transactional(readOnly = true)
     public byte[] downloadReportXls(RegFeeDetailsByParticipantsVM reportFilter) throws IOException {
         Congress congress = congressService.getById(reportFilter.getCongressId());
+        RegistrationType registrationType = registrationTypeService.getById(reportFilter.getRegistrationTypeId());
         final List<RegFeeDetailsByParticipantDTO> dtos = findAll(reportFilter);
         final XSSFWorkbook workbook = new XSSFWorkbook();
         Map<String, Integer> columns = new LinkedHashMap<>();
@@ -138,9 +141,10 @@ public class RegFeeDetailsByParticipantReportService extends XlsReportService {
         columns.put("Order (2nd d.)", 200);
         columns.put("Order (3rd d.)", 100);
         columns.put("Paid by person", 100);
+        columns.put("Group name", 100);
         columns.put("Paid by group", 100);
 
-        final XSSFSheet sheet = createXlsxTab(workbook, "Registration fee details by type by participant", reportFilter.getRegistrationType().getName()
+        final XSSFSheet sheet = createXlsxTab(workbook, "Registration fee details by type by participant", registrationType.getName()
                 + " registration fees for Individual", congress.getName(), getColumnWidthsAsArray(columns));
         addSubHeader(sheet, columns);
 
@@ -161,7 +165,8 @@ public class RegFeeDetailsByParticipantReportService extends XlsReportService {
             addCell(row, wrappingCellStyle, 3, dto.getSecondFee());
             addCell(row, wrappingCellStyle, 4, dto.getThirdFee());
             addCell(row, wrappingCellStyle, 5, dto.getPaidByPerson());
-            addCell(row, wrappingCellStyle, 6, dto.getPaidByGroup());
+            addCell(row, wrappingCellStyle, 6, dto.getPayingGroupName());
+            addCell(row, wrappingCellStyle, 7, dto.getPaidByGroup());
             firstFeeTotal = firstFeeTotal.add(dto.getFirstFee());
             secondFeeTotal = secondFeeTotal.add(dto.getSecondFee());
             thirdFeeTotal = thirdFeeTotal.add(dto.getThirdFee());
@@ -179,7 +184,8 @@ public class RegFeeDetailsByParticipantReportService extends XlsReportService {
         addCell(row, totalRowStyle, 3, secondFeeTotal);
         addCell(row, totalRowStyle, 4, thirdFeeTotal);
         addCell(row, totalRowStyle, 5, paidByPersonTotal);
-        addCell(row, totalRowStyle, 6, paidByGroupTotal);
+        addCell(row, totalRowStyle, 6, "");
+        addCell(row, totalRowStyle, 7, paidByGroupTotal);
 
         addListedItemsCountRow(sheet, getTotalRowStyle(workbook), rowIndex, dtos.size());
 
