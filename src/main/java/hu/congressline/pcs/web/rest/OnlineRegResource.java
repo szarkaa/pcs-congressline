@@ -26,17 +26,16 @@ import hu.congressline.pcs.domain.OnlineRegistration;
 import hu.congressline.pcs.domain.enumeration.Currency;
 import hu.congressline.pcs.domain.enumeration.PaymentSupplier;
 import hu.congressline.pcs.repository.CountryRepository;
-import hu.congressline.pcs.repository.OnlineRegConfigRepository;
 import hu.congressline.pcs.repository.OnlineRegistrationRepository;
 import hu.congressline.pcs.service.OnlinePaymentService;
 import hu.congressline.pcs.service.OnlineRegPdfService;
 import hu.congressline.pcs.service.OnlineRegService;
 import hu.congressline.pcs.service.dto.OnlineRegDiscountCodeDTO;
-import hu.congressline.pcs.service.dto.kh.PaymentInitResult;
 import hu.congressline.pcs.service.dto.kh.PaymentStatus;
 import hu.congressline.pcs.service.dto.online.CongressDTO;
 import hu.congressline.pcs.service.dto.online.HotelDTO;
 import hu.congressline.pcs.service.dto.online.OnlineRegCustomQuestionDTO;
+import hu.congressline.pcs.service.dto.online.OnlineRegistrationDTO;
 import hu.congressline.pcs.service.dto.online.OptionalServiceDTO;
 import hu.congressline.pcs.service.dto.online.PaymentResultDTO;
 import hu.congressline.pcs.service.dto.online.RegistrationTypeDTO;
@@ -46,6 +45,8 @@ import hu.congressline.pcs.web.rest.vm.StripePaymentStatusVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+import static java.lang.Boolean.FALSE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -58,48 +59,37 @@ public class OnlineRegResource {
     private final OnlineRegService onlineRegService;
     private final OnlinePaymentService onlinePaymentService;
     private final CountryRepository countryRepository;
-    private final OnlineRegConfigRepository onlineRegConfigRepository;
     private final OnlineRegistrationRepository onlineRegistrationRepository;
     private final OnlineRegPdfService onlineRegPdfService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping
-    public ResponseEntity create(@Valid @RequestBody OnlineRegistrationVM vm) throws URISyntaxException {
-        log.debug("REST request to save OnlineRegistration");
-        final OnlineRegistration onlineReg = onlineRegService.save(vm);
-        OnlineRegConfig onlineRegConfig = onlineRegConfigRepository.findOneByCongressId(onlineReg.getCongress().getId())
-            .orElseThrow(() -> new IllegalArgumentException("OnlineRegConfig not found by id: " + onlineReg.getCongress().getId()));
-
+    public ResponseEntity<?> create(@Valid @RequestBody OnlineRegistrationVM vm) throws URISyntaxException {
+        log.debug("REST request to save online registration");
+        final OnlineRegistrationDTO dto = onlineRegService.save(vm);
+        OnlineRegConfig onlineRegConfig = onlineRegService.findConfigForOnline(dto.getCongress().getUuid());
         HttpHeaders headers = new HttpHeaders();
-        if (PaymentSupplier.STRIPE.equals(onlineRegConfig.getPaymentSupplier())) {
-            if (onlineRegService.getTotalAmountOfOnlineReg(onlineReg).compareTo(BigDecimal.ZERO) > 0) {
-                final String paymentTrxId = onlinePaymentService.getNextPaymentTrxId().toString();
-                onlineReg.setPaymentTrxId(paymentTrxId);
-                OnlineRegistration result = onlineRegistrationRepository.save(onlineReg);
-                final String paymentCheckout = onlinePaymentService.makeStripePaymentCheckout(result);
-                return ResponseEntity.created(new URI(ENTITY_NAME + result.getId())).headers(headers).body(paymentCheckout);
-            }
-        } else {
-            if ("CARD".equals(onlineReg.getPaymentMethod()) && !"AMEX".equals(onlineReg.getCardType())) {
-                if (!Currency.HUF.toString().equalsIgnoreCase(vm.getCurrency()) && !Currency.EUR.toString().equalsIgnoreCase(vm.getCurrency())) {
-                    throw new IllegalArgumentException("Payment currency has to be HUF or EUR!");
+        if (FALSE.equals(onlineRegConfig.getNoPaymentRequired())) {
+            var onlineReg = onlineRegService.getById(dto.getId());
+            if (PaymentSupplier.STRIPE.equals(onlineRegConfig.getPaymentSupplier())) {
+                if (onlineRegService.getTotalAmountOfOnlineReg(onlineReg).compareTo(BigDecimal.ZERO) > 0) {
+                    var result = onlinePaymentService.preProcessStripePayment(onlineReg);
+                    final String paymentCheckout = onlinePaymentService.makeStripePaymentCheckout(result);
+                    return ResponseEntity.created(new URI(ENTITY_NAME + result.getId())).headers(headers).body(paymentCheckout);
                 }
+            } else {
+                if ("CARD".equals(onlineReg.getPaymentMethod()) && !"AMEX".equals(onlineReg.getCardType())) {
+                    if (!Currency.HUF.toString().equalsIgnoreCase(vm.getCurrency()) && !Currency.EUR.toString().equalsIgnoreCase(vm.getCurrency())) {
+                        throw new IllegalArgumentException("Payment currency has to be HUF or EUR!");
+                    }
 
-                Currency currency = Currency.parse(vm.getCurrency());
-                final String orderNo = onlinePaymentService.getNextPaymentTrxId().toString();
-                final PaymentInitResult initResult = onlinePaymentService.sendKHPaymentInitRequest(orderNo,
-                    onlineRegService.getTotalAmountOfOnlineReg(onlineReg), currency);
-                onlineReg.setPaymentOrderNumber(orderNo);
-                onlineReg.setPaymentTrxId(initResult.getPayId());
-                onlineReg.setPaymentTrxStatus(PaymentStatus.PAYMENT_INITIATED.toString());
-                onlineReg.setPaymentTrxDate(ZonedDateTime.now());
-                onlineRegistrationRepository.save(onlineReg);
-
-                String processUrl = onlinePaymentService.createKHPaymentProcessRequestUrl(initResult.getPayId(), currency);
-                headers.set("X-pcsApp-payment-redirect", processUrl);
+                    var payId = onlinePaymentService.preProcessKHPayment(onlineReg);
+                    String processUrl = onlinePaymentService.createKHPaymentProcessRequestUrl(payId, Currency.parse(vm.getCurrency()));
+                    headers.set("X-pcsApp-payment-redirect", processUrl);
+                }
             }
         }
-        return ResponseEntity.created(new URI(ENTITY_NAME + onlineReg.getId())).headers(headers).body(onlineReg);
+        return ResponseEntity.created(new URI(ENTITY_NAME + dto.getId())).headers(headers).body(dto);
     }
 
     @SuppressWarnings("MissingJavadocMethod")

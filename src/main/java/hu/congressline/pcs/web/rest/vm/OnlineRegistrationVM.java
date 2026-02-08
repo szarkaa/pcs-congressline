@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
-import hu.congressline.pcs.domain.Country;
-import hu.congressline.pcs.domain.RegistrationType;
-import hu.congressline.pcs.domain.Room;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -28,8 +25,8 @@ public class OnlineRegistrationVM implements Serializable {
     private String street;
     private String phone;
     private String email;
-    private RegistrationType registrationType;
-    private Room room;
+    private Long registrationTypeId;
+    private Long roomId;
     private LocalDate arrivalDate;
     private LocalDate departureDate;
     private String roommate;
@@ -44,14 +41,14 @@ public class OnlineRegistrationVM implements Serializable {
     private String cardExpiryMonth;
     private String cardExpiryYear;
     private String invoiceName;
-    private Country invoiceCountry;
+    private Long invoiceCountryId;
     private String invoiceZipCode;
     private String invoiceCity;
     private String invoiceAddress;
     private String invoiceReferenceNumber;
     private String invoiceTaxNumber;
     private Boolean newsletter;
-    private Country country;
+    private Long countryId;
     private String discountCode;
     private Integer discountPercentage;
     private ChargeableItemType discountType;

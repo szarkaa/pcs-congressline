@@ -98,7 +98,6 @@ public class CongressService {
     @SuppressWarnings("MissingJavadocMethod")
     public Congress update(CongressVM viewModel) {
         Congress congress = getById(viewModel.getId());
-        congress.setUuid(RandomUtil.generateRandomAlphanumericString());
         congress.update(viewModel);
         congress.setDefaultCountry(viewModel.getDefaultCountryId() != null ? countryRepository.findById(viewModel.getDefaultCountryId()).orElse(null) : null);
         congress.setCurrencies(currencyService.getAllByIds(viewModel.getCurrencyIds()));

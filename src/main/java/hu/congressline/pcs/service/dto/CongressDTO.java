@@ -36,6 +36,7 @@ public class CongressDTO {
 
     public CongressDTO(@NonNull Congress congress) {
         this.id = congress.getId();
+        this.uuid = congress.getUuid();
         this.meetingCode = congress.getMeetingCode();
         this.name = congress.getName();
         this.startDate = congress.getStartDate();

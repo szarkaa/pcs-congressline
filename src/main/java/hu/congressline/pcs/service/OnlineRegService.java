@@ -45,6 +45,7 @@ import hu.congressline.pcs.domain.enumeration.PaymentSupplier;
 import hu.congressline.pcs.repository.AccPeopleOnlineRepository;
 import hu.congressline.pcs.repository.AccPeopleRepository;
 import hu.congressline.pcs.repository.CongressRepository;
+import hu.congressline.pcs.repository.CountryRepository;
 import hu.congressline.pcs.repository.OnlineRegCustomQuestionRepository;
 import hu.congressline.pcs.repository.OnlineRegDiscountCodeRepository;
 import hu.congressline.pcs.repository.OnlineRegistrationCustomAnswerRepository;
@@ -64,6 +65,7 @@ import hu.congressline.pcs.service.dto.online.CongressDTO;
 import hu.congressline.pcs.service.dto.online.HotelDTO;
 import hu.congressline.pcs.service.dto.online.OnlineRegConfigDTO;
 import hu.congressline.pcs.service.dto.online.OnlineRegCustomQuestionDTO;
+import hu.congressline.pcs.service.dto.online.OnlineRegistrationDTO;
 import hu.congressline.pcs.service.dto.online.OptionalServiceDTO;
 import hu.congressline.pcs.service.dto.online.PaymentResultDTO;
 import hu.congressline.pcs.service.dto.online.RegistrationTypeDTO;
@@ -109,45 +111,47 @@ public class OnlineRegService {
     private final OrderedOptionalServiceService oosService;
     //private final MailService mailService;
 
+    private final CountryRepository countryRepository;
     private final OnlineRegistrationRepository onlineRegistrationRepository;
     private final RoomReservationEntryRepository rreRepository;
     private final WorkplaceService workplaceService;
     private final ApplicationProperties applicationProperties;
     private final OnlineRegDiscountCodeRepository discountCodeRepository;
     private final PaymentTransactionService paymentTransactionService;
+    private final RegistrationTypeService registrationTypeService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<OnlineRegistration> findById(Long id) {
-        log.debug("Request to find OnlineRegistration : {}", id);
+        log.debug("Request to find online registration : {}", id);
         return repository.findById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public OnlineRegistration getById(Long id) {
-        log.debug("Request to get OnlineRegistration : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OnlineRegistration not found by id: " + id));
+        log.debug("Request to get online registrations : {}", id);
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Online registration not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<OnlineRegistration> findAllByPaymentTrxStatus() {
-        log.debug("Request to find all OnlineRegistration by payment trx status");
+        log.debug("Request to find all online registration by payment trx status");
         return repository.findByPaymentTrxStatusIn(Stream.of(PAYMENT_WAITING_FOR_SETTLEMENT).map(PaymentStatus::toString).collect(Collectors.toList()));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<OnlineRegistration> findAllByIds(List<Long> onlineRegIds) {
-        log.debug("Request to find all OnlineRegistration by ids {}", onlineRegIds);
+        log.debug("Request to find all online registration by ids {}", onlineRegIds);
         return repository.findByIdInOrderByDateOfAppDesc(onlineRegIds);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<OnlineRegistration> findAllByCongressId(Long congressId) {
-        log.debug("Request to find all OnlineRegistration by congress id {}", congressId);
+        log.debug("Request to find all online registration by congress id {}", congressId);
         return repository.findByCongressIdOrderByDateOfAppDesc(congressId);
     }
 
@@ -188,14 +192,14 @@ public class OnlineRegService {
     public void handleKHPaymentProcessResponse(String payId, String resultCode, String resultMessage, Integer paymentStatus, String authCode) {
         OnlineRegistration onlineReg = onlineRegistrationRepository.findOneByPaymentTrxId(payId)
                 .orElseThrow(() -> new IllegalArgumentException(ONLINE_REGISTRATION_NOT_FOUND + payId));
-        log.debug("handleKHPaymentProcessResponse online reg found by payId: {}", payId);
+        log.debug("Handle KH payment process response online reg found by payId: {}", payId);
         onlineReg.setPaymentTrxResultCode(resultCode);
         onlineReg.setPaymentTrxStatus(paymentStatus != null ? PaymentStatus.getByCode(paymentStatus).toString() : null);
         onlineReg.setPaymentTrxAuthCode(authCode);
         onlineReg.setBankAuthNumber(BANK_AUTH_NUMBER);
         onlineReg.setPaymentTrxResultMessage(resultMessage);
         onlineReg = onlineRegistrationRepository.save(onlineReg);
-        log.debug("handleKHPaymentProcessResponse online reg updated with payment info");
+        log.debug("Handle KH payment process response online reg updated with payment info");
         if (PAYMENT_WAITING_FOR_SETTLEMENT.toString().equals(onlineReg.getPaymentTrxStatus())) {
             paymentTransactionService.createPaymentTransaction(onlineReg);
         }
@@ -222,7 +226,8 @@ public class OnlineRegService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public OnlineRegConfig findConfigForOnline(String uuid) {
-        Congress congress = congressRepository.findOneByUuid(uuid).orElse(null);
+        Congress congress = congressRepository.findOneByUuid(uuid)
+            .orElseThrow(() -> new IllegalArgumentException("Online reg config not found by uuid: " + uuid));
         if (congress == null) {
             return null;
         }
@@ -294,7 +299,7 @@ public class OnlineRegService {
     }
 
     @SuppressWarnings({"MissingJavadocMethod", "MethodLength"})
-    public OnlineRegistration save(OnlineRegistrationVM vm) {
+    public OnlineRegistrationDTO save(OnlineRegistrationVM vm) {
         final Congress congress = congressRepository.findOneByUuid(vm.getUuid()).orElseThrow(() -> new IllegalStateException("Unidentified congress uuid:" + vm.getUuid()));
         final OnlineRegConfig onlineRegConfig = congressService.getConfigByCongressId(congress.getId());
         OnlineRegistration or = new OnlineRegistration();
@@ -309,11 +314,11 @@ public class OnlineRegService {
         or.setZipCode(vm.getZipCode());
         or.setCity(vm.getCity());
         or.setStreet(vm.getStreet());
-        or.setCountry(vm.getCountry());
+        countryRepository.findById(vm.getCountryId()).ifPresent(or::setCountry);
         or.setPhone(vm.getPhone());
         or.setEmail(vm.getEmail());
-        or.setRegistrationType(vm.getRegistrationType());
-        or.setRoom(vm.getRoom());
+        registrationTypeService.findById(vm.getRegistrationTypeId()).ifPresent(or::setRegistrationType);
+        roomService.findById(vm.getRoomId()).ifPresent(or::setRoom);
         or.setArrivalDate(vm.getArrivalDate());
         or.setDepartureDate(vm.getDepartureDate());
         or.setRoommate(vm.getRoommate());
@@ -328,7 +333,7 @@ public class OnlineRegService {
         or.setCardExpiryMonth(vm.getCardExpiryMonth());
         or.setCardExpiryYear(vm.getCardExpiryYear());
         or.setInvoiceName(vm.getInvoiceName());
-        or.setInvoiceCountry(vm.getInvoiceCountry());
+        countryRepository.findById(vm.getInvoiceCountryId()).ifPresent(or::setInvoiceCountry);
         or.setInvoiceZipCode(vm.getInvoiceZipCode());
         or.setInvoiceCity(vm.getInvoiceCity());
         or.setInvoiceAddress(vm.getInvoiceAddress());
@@ -390,7 +395,7 @@ public class OnlineRegService {
             //mailService.sendOnlineRegNotificationEmail(result.getEmail(), properties.getMail().getFrom(), congress.getMeetingCode(), result.getEmail(), locale);
         }
 
-        return result;
+        return new OnlineRegistrationDTO(result);
     }
 
     @SuppressWarnings({"MissingJavadocMethod", "MethodLength"})
@@ -516,11 +521,11 @@ public class OnlineRegService {
         vm.setZipCode(onlineReg.getZipCode());
         vm.setCity(onlineReg.getCity());
         vm.setStreet(onlineReg.getStreet());
-        vm.setCountry(onlineReg.getCountry());
+        vm.setCountryId(onlineReg.getCountry() != null ? onlineReg.getCountry().getId() : null);
         vm.setPhone(onlineReg.getPhone());
         vm.setEmail(onlineReg.getEmail());
-        vm.setRegistrationType(onlineReg.getRegistrationType());
-        vm.setRoom(onlineReg.getRoom());
+        vm.setRegistrationTypeId(onlineReg.getRegistrationType() != null ? onlineReg.getRegistrationType().getId() : null);
+        vm.setRoomId(onlineReg.getRoom() != null ? onlineReg.getRoom().getId() : null);
         vm.setArrivalDate(onlineReg.getArrivalDate());
         vm.setDepartureDate(onlineReg.getDepartureDate());
         vm.setRoommate(onlineReg.getRoommate());
@@ -528,7 +533,7 @@ public class OnlineRegService {
         vm.setUuid(onlineReg.getCongress().getUuid());
         vm.setPaymentMethod(onlineReg.getPaymentMethod());
         vm.setInvoiceName(onlineReg.getInvoiceName());
-        vm.setInvoiceCountry(onlineReg.getInvoiceCountry());
+        vm.setInvoiceCountryId(onlineReg.getInvoiceCountry() != null ? onlineReg.getInvoiceCountry().getId() : null);
         vm.setInvoiceZipCode(onlineReg.getInvoiceZipCode());
         vm.setInvoiceCity(onlineReg.getInvoiceCity());
         vm.setInvoiceAddress(onlineReg.getInvoiceAddress());
@@ -689,10 +694,10 @@ public class OnlineRegService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    public BigDecimal getTotalAmountOfOnlineReg(OnlineRegistration registration) {
-        return getRegistrationTypeSubTotalAmountOfOnlineReg(registration)
-                .add(getHotelAmountOfOnlineReg(registration))
-                .add(getOptionalServiceTotalAmountOfOnlineReg(registration));
+    public BigDecimal getTotalAmountOfOnlineReg(OnlineRegistration onlineRegistration) {
+        return getRegistrationTypeSubTotalAmountOfOnlineReg(onlineRegistration)
+                .add(getHotelAmountOfOnlineReg(onlineRegistration))
+                .add(getOptionalServiceTotalAmountOfOnlineReg(onlineRegistration));
     }
 
     @SuppressWarnings("MissingJavadocMethod")

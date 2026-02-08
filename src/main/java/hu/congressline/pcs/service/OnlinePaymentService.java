@@ -22,6 +22,7 @@ import java.math.RoundingMode;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -74,6 +75,25 @@ public class OnlinePaymentService {
     private final CongressService congressService;
     private final OnlineRegService onlineRegService;
     private final PaymentCryptoService paymentCryptoService;
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public OnlineRegistration preProcessStripePayment(OnlineRegistration onlineReg) {
+        final String paymentTrxId = getNextPaymentTrxId().toString();
+        onlineReg.setPaymentTrxId(paymentTrxId);
+        return onlineRegService.save(onlineReg);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public String preProcessKHPayment(OnlineRegistration onlineReg) {
+        final String orderNo = getNextPaymentTrxId().toString();
+        final PaymentInitResult initResult = sendKHPaymentInitRequest(orderNo, onlineRegService.getTotalAmountOfOnlineReg(onlineReg), Currency.parse(onlineReg.getCurrency()));
+        onlineReg.setPaymentOrderNumber(orderNo);
+        onlineReg.setPaymentTrxId(initResult.getPayId());
+        onlineReg.setPaymentTrxStatus(PaymentStatus.PAYMENT_INITIATED.toString());
+        onlineReg.setPaymentTrxDate(ZonedDateTime.now());
+        onlineRegService.save(onlineReg);
+        return initResult.getPayId();
+    }
 
     @SuppressWarnings("MissingJavadocMethod")
     public void checkPendingPaymentResults() {

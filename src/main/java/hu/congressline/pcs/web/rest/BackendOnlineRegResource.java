@@ -53,7 +53,7 @@ public class BackendOnlineRegResource {
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/backend-online-regs")
     public ResponseEntity<Registration> acceptOnlineReg(@Valid @RequestBody OnlineRegistrationVM onlineReg) {
-        log.debug("REST request to accept OnlineRegistration : {}", onlineReg);
+        log.debug("REST request to accept online registrations : {}", onlineReg);
         Registration result = onlineRegService.accept(onlineReg);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getRegId().toString()))
@@ -63,7 +63,7 @@ public class BackendOnlineRegResource {
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/backend-online-regs/confirmation/all")
     public ResponseEntity<Void> acceptAllOnlineReg(@Valid @RequestBody OnlineRegFilterVM onlineRegFilter) {
-        log.debug("REST request to accept all selected OnlineRegistration");
+        log.debug("REST request to accept all selected online registrations");
         onlineRegService.acceptAll(onlineRegFilter);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, String.valueOf(onlineRegFilter.getOnlineRegIdList().size())))
@@ -73,7 +73,7 @@ public class BackendOnlineRegResource {
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/backend-online-regs/delete/all")
     public ResponseEntity<Void> deleteAllOnlineReg(@Valid @RequestBody OnlineRegFilterVM onlineRegFilter) {
-        log.debug("REST request to delete all selected OnlineRegistration");
+        log.debug("REST request to delete all selected online registrations");
         onlineRegService.deleteAll(onlineRegFilter);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createAlert("pcsApp.backendOnlineReg.deletedAll", String.valueOf(onlineRegFilter.getOnlineRegIdList().size())))
@@ -105,7 +105,7 @@ public class BackendOnlineRegResource {
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/backend-online-regs/congress/{id}")
     public List<OnlineRegistration> getAllOnlineRegsById(@PathVariable Long id) {
-        log.debug("REST request to get all OnlineRegistrations by congress id: {}", id);
+        log.debug("REST request to get all online registrations by congress id: {}", id);
         return onlineRegService.findAllByCongressId(id);
     }
 
@@ -119,7 +119,7 @@ public class BackendOnlineRegResource {
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/backend-online-regs/{id}")
     public ResponseEntity<OnlineRegistrationVM> getOnlineReg(@PathVariable Long id) {
-        log.debug("REST request to get OnlineReg : {}", id);
+        log.debug("REST request to get online registrations by id : {}", id);
         return onlineRegService.findById(id)
             .map(result -> new ResponseEntity<>(onlineRegService.createVM(result), HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -128,7 +128,7 @@ public class BackendOnlineRegResource {
     @SuppressWarnings("MissingJavadocMethod")
     @DeleteMapping("/backend-online-regs/{id}")
     public ResponseEntity<Void> deleteOnlineReg(@PathVariable Long id) {
-        log.debug("REST request to delete OnlineReg : {}", id);
+        log.debug("REST request to delete online registrations by id : {}", id);
         try {
             OnlineRegistration onlineRegistration = onlineRegService.getById(id);
             if (onlineRegistration.getRoom() != null) {
