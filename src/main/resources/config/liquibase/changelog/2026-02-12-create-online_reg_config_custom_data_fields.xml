@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2026-02-12-create-online_reg_config_custom_data_fields" author="aszarka">
+
+        <addColumn tableName="online_reg_config">
+            <column name="custom1_data_required" type="BIT(1)"/>
+            <column name="custom1_data_visible" type="BIT(1)"/>
+            <column name="custom1_data_label_hu" type="VARCHAR(200)"/>
+            <column name="custom1_data_label_en" type="VARCHAR(200)"/>
+            <column name="custom1_data_label_es" type="VARCHAR(200)"/>
+            <column name="custom1_data_label_pt" type="VARCHAR(200)"/>
+            <column name="custom2_data_required" type="BIT(1)"/>
+            <column name="custom2_data_visible" type="BIT(1)"/>
+            <column name="custom2_data_label_hu" type="VARCHAR(200)"/>
+            <column name="custom2_data_label_en" type="VARCHAR(200)"/>
+            <column name="custom2_data_label_es" type="VARCHAR(200)"/>
+            <column name="custom2_data_label_pt" type="VARCHAR(200)"/>
+        </addColumn>
+
+        <createTable tableName="online_reg_config_custom1_data_hu_values">
+            <column name="online_reg_config_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="value" type="VARCHAR(265)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="online_reg_config_custom1_data_en_values">
+            <column name="online_reg_config_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="value" type="VARCHAR(265)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="online_reg_config_custom1_data_es_values">
+            <column name="online_reg_config_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="value" type="VARCHAR(265)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="online_reg_config_custom1_data_pt_values">
+            <column name="online_reg_config_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="value" type="VARCHAR(265)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="online_reg_config_custom2_data_hu_values">
+            <column name="online_reg_config_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="value" type="VARCHAR(265)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="online_reg_config_custom2_data_en_values">
+            <column name="online_reg_config_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="value" type="VARCHAR(265)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="online_reg_config_custom2_data_es_values">
+            <column name="online_reg_config_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="value" type="VARCHAR(265)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="online_reg_config_custom2_data_pt_values">
+            <column name="online_reg_config_id" type="BIGINT(20)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="value" type="VARCHAR(265)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

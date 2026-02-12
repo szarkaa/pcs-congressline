@@ -70,6 +70,8 @@
                             email: null,
                             email2: null,
                             otherData: null,
+                            custom1Data: null,
+                            custom2Data: null,
                             room: null,
                             arrivalDate: null,
                             departureDate: null,

@@ -38,7 +38,7 @@ public class PaymentRefundService {
     @Transactional(readOnly = true)
     public Optional<PaymentRefundTransaction> findById(Long id) {
         log.debug("Request to find PaymentRefundTransaction : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

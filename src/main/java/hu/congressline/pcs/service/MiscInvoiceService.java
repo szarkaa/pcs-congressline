@@ -247,7 +247,7 @@ public class MiscInvoiceService {
     @Transactional(readOnly = true)
     public Optional<InvoiceCongress> findById(Long id) {
         log.debug("Request to find invoice congress : {}", id);
-        return invoiceCongressRepository.findById(id);
+        return id != null ? invoiceCongressRepository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

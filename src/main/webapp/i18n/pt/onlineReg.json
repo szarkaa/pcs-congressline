@@ -2,7 +2,6 @@
     "pcsApp": {
         "onlineReg" : {
             "home": {
-
                 "title": "Inscrição online",
                 "titleOnlinePayment": "Inscrição online",
                 "errorTitle": "Erro no pagamento da inscrição online",
@@ -104,6 +103,8 @@
             "roommate": "Colega de quarto",
             "roomRemark": "Observação",
             "otherData": "Outros dados",
+            "custom1Data": "Custom data(1)",
+            "custom2Data": "Custom data(2)",
             "osName": "Nome",
             "osPricePerPerson": "Preço/Pessoa",
             "osPax": "Pessoa(s)",

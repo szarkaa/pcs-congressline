@@ -41,7 +41,7 @@ public class OptionalTextService {
     @Transactional(readOnly = true)
     public Optional<OptionalText> findById(Long id) {
         log.debug("Request to find Optional text : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

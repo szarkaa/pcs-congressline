@@ -136,7 +136,7 @@ public class InvoiceService {
     @Transactional(readOnly = true)
     public Optional<Invoice> findById(Long id) {
         log.debug("Request to find invoice : {}", id);
-        return invoiceRepository.findById(id);
+        return id != null ? invoiceRepository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

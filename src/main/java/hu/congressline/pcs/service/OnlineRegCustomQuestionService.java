@@ -44,7 +44,7 @@ public class OnlineRegCustomQuestionService {
     @Transactional(readOnly = true)
     public Optional<OnlineRegCustomQuestion> findById(Long id) {
         log.debug("Request to find OnlineRegCustomQuestion : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

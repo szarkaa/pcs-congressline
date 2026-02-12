@@ -269,6 +269,90 @@ public class OnlineRegConfig {
     @Column(name = "value")
     private List<String> otherDataPtValues;
 
+    @Column(name = "custom1_data_visible")
+    private Boolean custom1DataVisible;
+
+    @Column(name = "custom1_data_required")
+    private Boolean custom1DataRequired;
+
+    @Size(max = 200)
+    @Column(name = "custom1_data_label_hu", length = 200)
+    private String custom1DataLabelHu;
+
+    @Size(max = 200)
+    @Column(name = "custom1_data_label_en", length = 200)
+    private String custom1DataLabelEn;
+
+    @Size(max = 200)
+    @Column(name = "custom1_data_label_es", length = 200)
+    private String custom1DataLabelEs;
+
+    @Size(max = 200)
+    @Column(name = "custom1_data_label_pt", length = 200)
+    private String custom1DataLabelPt;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "online_reg_config_custom1_data_hu_values", joinColumns = @JoinColumn(name = "online_reg_config_id"))
+    @Column(name = "value")
+    private List<String> custom1DataHuValues;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "online_reg_config_custom1_data_en_values", joinColumns = @JoinColumn(name = "online_reg_config_id"))
+    @Column(name = "value")
+    private List<String> custom1DataEnValues;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "online_reg_config_custom1_data_es_values", joinColumns = @JoinColumn(name = "online_reg_config_id"))
+    @Column(name = "value")
+    private List<String> custom1DataEsValues;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "online_reg_config_custom1_data_pt_values", joinColumns = @JoinColumn(name = "online_reg_config_id"))
+    @Column(name = "value")
+    private List<String> custom1DataPtValues;
+
+    @Column(name = "custom2_data_visible")
+    private Boolean custom2DataVisible;
+
+    @Column(name = "custom2_data_required")
+    private Boolean custom2DataRequired;
+
+    @Size(max = 200)
+    @Column(name = "custom2_data_label_hu", length = 200)
+    private String custom2DataLabelHu;
+
+    @Size(max = 200)
+    @Column(name = "custom2_data_label_en", length = 200)
+    private String custom2DataLabelEn;
+
+    @Size(max = 200)
+    @Column(name = "custom2_data_label_es", length = 200)
+    private String custom2DataLabelEs;
+
+    @Size(max = 200)
+    @Column(name = "custom2_data_label_pt", length = 200)
+    private String custom2DataLabelPt;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "online_reg_config_custom2_data_hu_values", joinColumns = @JoinColumn(name = "online_reg_config_id"))
+    @Column(name = "value")
+    private List<String> custom2DataHuValues;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "online_reg_config_custom2_data_en_values", joinColumns = @JoinColumn(name = "online_reg_config_id"))
+    @Column(name = "value")
+    private List<String> custom2DataEnValues;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "online_reg_config_custom2_data_es_values", joinColumns = @JoinColumn(name = "online_reg_config_id"))
+    @Column(name = "value")
+    private List<String> custom2DataEsValues;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "online_reg_config_custom2_data_pt_values", joinColumns = @JoinColumn(name = "online_reg_config_id"))
+    @Column(name = "value")
+    private List<String> custom2DataPtValues;
+
     @Size(max = 100)
     @Column(name = "reg_type_first_fee_label_hu", length = 100)
     private String regTypeFirstFeeLabelHu;

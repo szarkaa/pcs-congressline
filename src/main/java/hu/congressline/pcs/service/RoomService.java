@@ -51,14 +51,14 @@ public class RoomService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<Room> findById(Long id) {
-        log.debug("Request to find Room : {}", id);
-        return repository.findById(id);
+        log.debug("Request to find Room by id: {}", id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Room getById(Long id) {
-        log.debug("Request to get Room : {}", id);
+        log.debug("Request to get Room by id: {}", id);
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Room not found by id: " + id));
     }
 

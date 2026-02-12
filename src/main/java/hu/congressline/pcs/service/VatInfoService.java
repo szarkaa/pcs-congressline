@@ -37,7 +37,7 @@ public class VatInfoService {
     @Transactional(readOnly = true)
     public Optional<VatInfo> findById(Long id) {
         log.debug("Request to find VatInfo : {}", id);
-        return vatInfoRepository.findById(id);
+        return id != null ? vatInfoRepository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

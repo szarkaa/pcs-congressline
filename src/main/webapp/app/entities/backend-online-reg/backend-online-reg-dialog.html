@@ -45,6 +45,16 @@
                         </div>
                     </div>
                     <div class="row m-b-sm">
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.custom1Data" for="field_custom1Data">Custom data1</label>
+                            <input type="text" class="form-control" name="custom1Data" id="field_custom1Data" autocomplete="off" disabled ng-value="vm.backendOnlineReg.custom1Data" />
+                        </div>
+                        <div class="col-xs-6">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.custom2Data" for="field_custom2Data">Custom data1</label>
+                            <input type="text" class="form-control" name="custom2Data" id="field_custom2Data" autocomplete="off" disabled ng-value="vm.backendOnlineReg.custom2Data" />
+                        </div>
+                    </div>
+                    <div class="row m-b-sm">
                         <div class="col-xs-2">
                             <label class="control-label" data-translate="pcsApp.onlineReg.zipCode" for="field_zipCode">Zip code</label>
                             <input type="text" class="form-control" name="zipCode" id="field_zipCode" autocomplete="off" disabled ng-value="vm.backendOnlineReg.zipCode" />
@@ -107,7 +117,7 @@
                     <div class="row m-b-sm">
                         <div class="col-xs-8">
                             <label class="control-label" data-translate="pcsApp.onlineReg.room" for="field_room">Room</label>
-                            <input type="text" class="form-control" name="room" id="field_room" autocomplete="off" disabled ng-value="vm.backendOnlineReg.roomType + ' - ' + vm.backendOnlineReg.hotelName" />
+                            <input type="text" class="form-control" name="room" id="field_room" autocomplete="off" disabled ng-value="vm.backendOnlineReg.roomType ? vm.backendOnlineReg.roomType + ' - ' + vm.backendOnlineReg.hotelName : null" />
                         </div>
                         <div class="col-xs-2">
                             <label class="control-label" data-translate="pcsApp.onlineReg.arrivalDate" for="field_arrivalDate">Arrival date</label>

@@ -41,7 +41,7 @@ public class GroupDiscountPaymentService {
     @Transactional(readOnly = true)
     public Optional<GroupDiscountPayment> findById(Long id) {
         log.debug("Request to find GroupDiscountPayment : {}", id);
-        return groupDiscountPaymentRepository.findById(id);
+        return id != null ? groupDiscountPaymentRepository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

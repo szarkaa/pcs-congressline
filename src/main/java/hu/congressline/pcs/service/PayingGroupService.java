@@ -50,7 +50,7 @@ public class PayingGroupService {
     @Transactional(readOnly = true)
     public Optional<PayingGroup> findById(Long id) {
         log.debug("Request to find paying group : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

@@ -74,6 +74,10 @@
         vm.hasExtraSecondRegFeeValue = hasExtraSecondRegFeeValue;
         vm.openCongressWebsite = openCongressWebsite;
         vm.isEmailIdentical = isEmailIdentical;
+        vm.hasCustom1DataSelectableValues = hasCustom1DataSelectableValues;
+        vm.hasCustom2DataSelectableValues = hasCustom2DataSelectableValues;
+        vm.getCustom1DataSelectableValues = getCustom1DataSelectableValues;
+        vm.getCustom2DataSelectableValues = getCustom2DataSelectableValues;
         vm.hasOtherDataSelectableValues = hasOtherDataSelectableValues;
         vm.getOtherDataSelectableValues = getOtherDataSelectableValues;
         vm.hasPositionSelectableValues = hasPositionSelectableValues;
@@ -122,6 +126,8 @@
                 phone: vm.registration.phone,
                 email: vm.registration.email,
                 otherData: vm.registration.otherData,
+                custom1Data: vm.registration.custom1Data,
+                custom2Data: vm.registration.custom2Data,
                 roomId: vm.registration.room ? vm.registration.room : null,
                 arrivalDate: vm.registration.arrivalDate,
                 departureDate: vm.registration.departureDate,
@@ -578,6 +584,8 @@
             vm.registration.email = null;
             vm.registration.email2 = null;
             vm.registration.otherData = null;
+            vm.registration.custom1Data = null;
+            vm.registration.custom2Data = null;
             vm.registration.room = null;
             vm.registration.arrivalDate = null;
             vm.registration.departureDate = null;
@@ -750,6 +758,22 @@
                     text = 'Hu';
             }
             return vm.config[fieldName + text + 'Values'];
+        }
+
+        function hasCustom1DataSelectableValues() {
+            return hasSelectableValuesByLanguage('custom1Data');
+        }
+
+        function getCustom1DataSelectableValues() {
+            return getSelectableValuesByLanguage('custom1Data');
+        }
+
+        function hasCustom2DataSelectableValues() {
+            return hasSelectableValuesByLanguage('custom2Data');
+        }
+
+        function getCustom2DataSelectableValues() {
+            return getSelectableValuesByLanguage('custom2Data');
         }
 
         function hasOtherDataSelectableValues() {

@@ -47,7 +47,7 @@ public class CongressService {
     @Transactional(readOnly = true)
     public Optional<Congress> findById(Long id) {
         log.debug("Request to find Congress by id: {}", id);
-        return congressRepository.findById(id);
+        return id != null ? congressRepository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -189,6 +189,26 @@ public class CongressService {
         onlineRegConfig.setOtherDataEnValues(viewModel.getOtherDataEnValues());
         onlineRegConfig.setOtherDataEsValues(viewModel.getOtherDataEsValues());
         onlineRegConfig.setOtherDataPtValues(viewModel.getOtherDataPtValues());
+        onlineRegConfig.setCustom1DataVisible(viewModel.isCustom1DataVisible());
+        onlineRegConfig.setCustom1DataRequired(viewModel.isCustom1DataRequired());
+        onlineRegConfig.setCustom1DataLabelHu(viewModel.getCustom1DataLabelHu());
+        onlineRegConfig.setCustom1DataLabelEn(viewModel.getCustom1DataLabelEn());
+        onlineRegConfig.setCustom1DataLabelEs(viewModel.getCustom1DataLabelEs());
+        onlineRegConfig.setCustom1DataLabelPt(viewModel.getCustom1DataLabelPt());
+        onlineRegConfig.setCustom1DataHuValues(viewModel.getCustom1DataHuValues());
+        onlineRegConfig.setCustom1DataEnValues(viewModel.getCustom1DataEnValues());
+        onlineRegConfig.setCustom1DataEsValues(viewModel.getCustom1DataEsValues());
+        onlineRegConfig.setCustom1DataPtValues(viewModel.getCustom1DataPtValues());
+        onlineRegConfig.setCustom2DataVisible(viewModel.isCustom2DataVisible());
+        onlineRegConfig.setCustom2DataRequired(viewModel.isCustom2DataRequired());
+        onlineRegConfig.setCustom2DataLabelHu(viewModel.getCustom2DataLabelHu());
+        onlineRegConfig.setCustom2DataLabelEn(viewModel.getCustom2DataLabelEn());
+        onlineRegConfig.setCustom2DataLabelEs(viewModel.getCustom2DataLabelEs());
+        onlineRegConfig.setCustom2DataLabelPt(viewModel.getCustom2DataLabelPt());
+        onlineRegConfig.setCustom2DataHuValues(viewModel.getCustom2DataHuValues());
+        onlineRegConfig.setCustom2DataEnValues(viewModel.getCustom2DataEnValues());
+        onlineRegConfig.setCustom2DataEsValues(viewModel.getCustom2DataEsValues());
+        onlineRegConfig.setCustom2DataPtValues(viewModel.getCustom2DataPtValues());
         onlineRegConfig.setRegTypeFirstFeeLabelHu(viewModel.getRegTypeFirstFeeLabelHu());
         onlineRegConfig.setRegTypeFirstFeeLabelEn(viewModel.getRegTypeFirstFeeLabelEn());
         onlineRegConfig.setRegTypeFirstFeeLabelEs(viewModel.getRegTypeFirstFeeLabelEs());

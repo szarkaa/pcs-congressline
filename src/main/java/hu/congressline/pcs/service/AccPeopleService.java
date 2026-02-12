@@ -41,7 +41,7 @@ public class AccPeopleService {
     @Transactional(readOnly = true)
     public Optional<AccPeople> findById(Long id) {
         log.debug("Request to find acc people : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

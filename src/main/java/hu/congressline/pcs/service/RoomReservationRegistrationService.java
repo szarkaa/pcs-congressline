@@ -42,7 +42,7 @@ public class RoomReservationRegistrationService {
     @Transactional(readOnly = true)
     public Optional<RoomReservationRegistration> findById(Long id) {
         log.debug("Request to find room reservation registration by id: {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

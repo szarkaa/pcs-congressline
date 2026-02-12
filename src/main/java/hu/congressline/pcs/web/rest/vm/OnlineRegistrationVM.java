@@ -19,6 +19,8 @@ public class OnlineRegistrationVM implements Serializable {
     private String position;
     private String workplace;
     private String otherData;
+    private String custom1Data;
+    private String custom2Data;
     private String department;
     private String zipCode;
     private String city;

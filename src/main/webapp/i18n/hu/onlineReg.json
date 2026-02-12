@@ -111,6 +111,8 @@
             "roommate": "Szobatárs",
             "roomRemark": "Megjegyzés",
             "otherData": "Egyéb kérés",
+            "custom1Data": "Custom data(1)",
+            "custom2Data": "Custom data(2)",
             "osName": "Név",
             "osPricePerPerson": "Ár/fő",
             "osPax": "Létszám",

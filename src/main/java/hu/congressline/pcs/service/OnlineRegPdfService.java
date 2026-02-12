@@ -174,6 +174,8 @@ public class OnlineRegPdfService extends AbstractPdfService {
         addRow("position", onlineReg.getPosition(), locale, table);
         addRow("department", onlineReg.getDepartment(), locale, table);
         addRow("otherData", onlineReg.getOtherData(), locale, table);
+        addRow("custom1Data", onlineReg.getCustom1Data(), locale, table);
+        addRow("custom2Data", onlineReg.getCustom2Data(), locale, table);
         addRow("zipCode", onlineReg.getZipCode(), locale, table);
         addRow("city", onlineReg.getCity(), locale, table);
         addRow("street", onlineReg.getStreet(), locale, table);

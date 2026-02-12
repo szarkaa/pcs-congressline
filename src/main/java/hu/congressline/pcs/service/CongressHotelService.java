@@ -44,7 +44,7 @@ public class CongressHotelService {
     @Transactional(readOnly = true)
     public Optional<CongressHotel> findById(Long id) {
         log.debug("Request to find congress hotel : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

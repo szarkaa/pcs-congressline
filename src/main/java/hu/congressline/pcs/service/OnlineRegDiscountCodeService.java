@@ -42,7 +42,7 @@ public class OnlineRegDiscountCodeService {
     @Transactional(readOnly = true)
     public Optional<OnlineRegDiscountCode> findById(Long id) {
         log.debug("Request to find online reg discount code : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

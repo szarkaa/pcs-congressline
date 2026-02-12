@@ -61,6 +61,14 @@ public class OnlineRegistration implements Serializable {
     @Column(name = "other_data", length = 255)
     private String otherData;
 
+    @Size(max = 255)
+    @Column(name = "custom1_data", length = 255)
+    private String custom1Data;
+
+    @Size(max = 255)
+    @Column(name = "custom2_data", length = 255)
+    private String custom2Data;
+
     @Size(max = 128)
     @Column(name = "department", length = 128)
     private String department;

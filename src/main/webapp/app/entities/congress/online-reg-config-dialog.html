@@ -1064,6 +1064,406 @@
                         <div class="hr-line-dashed"></div>
 
                         <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom1DataVisible">Custom1 data visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="custom1DataVisible" id="field_custom1DataVisible"
+                                               ng-model="vm.onlineRegConfig.custom1DataVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_custom1DataVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-9">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom1DataRequired">Custom1 data required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="custom1DataRequired" id="field_custom1DataRequired"
+                                               ng-model="vm.onlineRegConfig.custom1DataRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_custom1DataRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom1DataLabelHu">Custom1 data label(hu)</label>
+                                <input type="text" class="form-control" name="custom1DataLabelHu" id="field_custom1DataLabelHu"
+                                       ng-model="vm.onlineRegConfig.custom1DataLabelHu" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.custom1DataLabelHu.$invalid">
+                                    <p class="error-block" ng-show="editForm.custom1DataLabelHu.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.custom1DataLabelHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom1DataLabelEn">Custom1 data label(en)</label>
+                                <input type="text" class="form-control" name="custom1DataLabelEn" id="field_custom1DataLabelEn"
+                                       ng-model="vm.onlineRegConfig.custom1DataLabelEn" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.custom1DataLabelEn.$invalid">
+                                    <p class="error-block" ng-show="editForm.custom1DataLabelEn.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.custom1DataLabelEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom1DataLabelEs">Custom1 data label(es)</label>
+                                <input type="text" class="form-control" name="custom1DataLabelEs" id="field_custom1DataLabelEs"
+                                       ng-model="vm.onlineRegConfig.custom1DataLabelEs" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.custom1DataLabelEs.$invalid">
+                                    <p class="error-block" ng-show="editForm.custom1DataLabelEs.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.custom1DataLabelEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom1DataLabelPt">Custom1 data label(pt)</label>
+                                <input type="text" class="form-control" name="custom1DataLabelPt" id="field_custom1DataLabelPt"
+                                       ng-model="vm.onlineRegConfig.custom1DataLabelPt" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.custom1DataLabelPt.$invalid">
+                                    <p class="error-block" ng-show="editForm.custom1DataLabelPt.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.custom1DataLabelPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 m-t-xs">
+                                <table id="custom1-data-selectable-hu-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Custom1 data selectable values(hu)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom1DataHuValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="custom1DataValue in vm.onlineRegConfig.custom1DataHuValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.custom1DataHuValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom1DataHuValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.custom1DataHuValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="custom1-data-selectable-en-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Custom1 data selectable values(en)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom1DataEnValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="custom1DataValue in vm.onlineRegConfig.custom1DataEnValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.custom1DataEnValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom1DataEnValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.custom1DataEnValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="custom1-data-selectable-es-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Custom1 data selectable values(es)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom1DataEsValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="custom1DataValue in vm.onlineRegConfig.custom1DataEsValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.custom1DataEsValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom1DataEsValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.custom1DataEsValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="custom1-data-selectable-pt-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Custom1 data selectable values(pt)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom1DataPtValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="custom1DataValue in vm.onlineRegConfig.custom1DataPtValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.custom1DataPtValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom1DataPtValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.custom1DataPtValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom2DataVisible">Custom2 data visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="custom2DataVisible" id="field_custom2DataVisible"
+                                               ng-model="vm.onlineRegConfig.custom2DataVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_custom2DataVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-9">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom2DataRequired">Custom2 data required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="custom2DataRequired" id="field_custom2DataRequired"
+                                               ng-model="vm.onlineRegConfig.custom2DataRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_custom2DataRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom2DataLabelHu">Custom2 data label(hu)</label>
+                                <input type="text" class="form-control" name="custom2DataLabelHu" id="field_custom2DataLabelHu"
+                                       ng-model="vm.onlineRegConfig.custom2DataLabelHu" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.custom2DataLabelHu.$invalid">
+                                    <p class="error-block" ng-show="editForm.custom2DataLabelHu.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.custom2DataLabelHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom2DataLabelEn">Custom2 data label(en)</label>
+                                <input type="text" class="form-control" name="custom2DataLabelEn" id="field_custom2DataLabelEn"
+                                       ng-model="vm.onlineRegConfig.custom2DataLabelEn" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.custom2DataLabelEn.$invalid">
+                                    <p class="error-block" ng-show="editForm.custom2DataLabelEn.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.custom2DataLabelEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom2DataLabelEs">Custom2 data label(es)</label>
+                                <input type="text" class="form-control" name="custom2DataLabelEs" id="field_custom2DataLabelEs"
+                                       ng-model="vm.onlineRegConfig.custom2DataLabelEs" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.custom2DataLabelEs.$invalid">
+                                    <p class="error-block" ng-show="editForm.custom2DataLabelEs.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.custom2DataLabelEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.custom2DataLabelPt">Custom2 data label(pt)</label>
+                                <input type="text" class="form-control" name="custom2DataLabelPt" id="field_custom2DataLabelPt"
+                                       ng-model="vm.onlineRegConfig.custom2DataLabelPt" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.custom2DataLabelPt.$invalid">
+                                    <p class="error-block" ng-show="editForm.custom2DataLabelPt.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.custom2DataLabelPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12 m-t-xs">
+                                <table id="custom2-data-selectable-hu-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Custom2 data selectable values(hu)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom2DataHuValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="custom2DataValue in vm.onlineRegConfig.custom2DataHuValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.custom2DataHuValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom2DataHuValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.custom2DataHuValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="custom2-data-selectable-en-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Custom2 data selectable values(en)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom2DataEnValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="custom2DataValue in vm.onlineRegConfig.custom2DataEnValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.custom2DataEnValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom2DataEnValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.custom2DataEnValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="custom2-data-selectable-es-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Custom2 data selectable values(es)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom2DataEsValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="custom2DataValue in vm.onlineRegConfig.custom2DataEsValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.custom2DataEsValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom2DataEsValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.custom2DataEsValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
+                                <table id="custom2-data-selectable-pt-datatable" class="table table-striped table-bordered table-hover datatable-with-operations">
+                                    <thead>
+                                    <tr>
+                                        <th><span>Custom2 data selectable values(pt)</span></th>
+                                        <th>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom2DataPtValues, 0)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="custom2DataValue in vm.onlineRegConfig.custom2DataPtValues track by $index">
+                                        <td editable-text-value-cell editable-text-list="vm.onlineRegConfig.custom2DataPtValues" editable-text-idx="{{$index}}"></td>
+                                        <td>
+                                            <button class="btn btn-primary btn-xs" type="button" ng-click="vm.appendSelectableValue(vm.onlineRegConfig.custom2DataPtValues, $index + 1)">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                            <button class="btn btn-danger btn-xs" type="button"
+                                                    ng-click="vm.deleteFromSelectableValues(vm.onlineRegConfig.custom2DataPtValues, $index)">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
                             <label class="control-label" data-translate="pcsApp.onlineRegConfig.personalDataRemarkHu" for="field_personalDataRemarkHu">Personal data remark</label>
                             <summernote id="field_personalDataRemarkHu" name="personalDataRemarkHu" ng-model="vm.onlineRegConfig.personalDataRemarkHu" config="vm.summerNoteConfig"></summernote>
                             <div ng-show="editForm.personalDataRemarkHu.$invalid">

@@ -125,7 +125,7 @@ public class OnlineRegService {
     @Transactional(readOnly = true)
     public Optional<OnlineRegistration> findById(Long id) {
         log.debug("Request to find online registration by id: {}", id);
-        return repository.findEagerById(id);
+        return id != null ? repository.findEagerById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -311,6 +311,8 @@ public class OnlineRegService {
         or.setPosition(vm.getPosition());
         or.setWorkplace(vm.getWorkplace());
         or.setOtherData(vm.getOtherData());
+        or.setCustom1Data(vm.getCustom1Data());
+        or.setCustom2Data(vm.getCustom2Data());
         or.setDepartment(vm.getDepartment());
         or.setZipCode(vm.getZipCode());
         or.setCity(vm.getCity());
@@ -516,6 +518,8 @@ public class OnlineRegService {
         vm.setFirstName(onlineReg.getFirstName());
         vm.setPosition(onlineReg.getPosition());
         vm.setOtherData(onlineReg.getOtherData());
+        vm.setCustom1Data(onlineReg.getCustom1Data());
+        vm.setCustom2Data(onlineReg.getCustom2Data());
         vm.setWorkplace(onlineReg.getWorkplace());
         vm.setDepartment(onlineReg.getDepartment());
         vm.setZipCode(onlineReg.getZipCode());

@@ -48,7 +48,7 @@ public class MiscServiceService {
     @Transactional(readOnly = true)
     public Optional<MiscService> findById(Long id) {
         log.debug("Request to find misc service : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

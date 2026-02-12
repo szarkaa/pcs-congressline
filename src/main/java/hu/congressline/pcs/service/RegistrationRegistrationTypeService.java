@@ -83,7 +83,7 @@ public class RegistrationRegistrationTypeService {
     @Transactional(readOnly = true)
     public Optional<RegistrationRegistrationType> findById(Long id) {
         log.debug("Request to find registration registration type : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

@@ -55,7 +55,7 @@ public class WorkplaceService {
     @Transactional(readOnly = true)
     public Optional<Workplace> findById(Long id) {
         log.debug("Request to find Workplace : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

@@ -68,7 +68,7 @@ public class ChargedServiceService {
     @Transactional(readOnly = true)
     public Optional<ChargedService> findById(Long id) {
         log.debug("Request to find charged service : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

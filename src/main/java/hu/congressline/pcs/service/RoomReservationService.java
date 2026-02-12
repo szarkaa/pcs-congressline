@@ -104,7 +104,7 @@ public class RoomReservationService {
     @Transactional(readOnly = true)
     public Optional<RoomReservation> findById(Long id) {
         log.debug("Request to find room reservation : {}", id);
-        return rrRepository.findById(id);
+        return id != null ? rrRepository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")

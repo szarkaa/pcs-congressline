@@ -284,6 +284,47 @@
                                 </p>
                             </div>
                         </div>
+
+                        <div class="form-group" ng-if="vm.config.custom1DataVisible">
+                            <label class="control-label" ng-class="{'required-field': vm.config.custom1DataRequired}" for="field_custom1Data">{{vm.getValueByLanguage('custom1DataLabel')}}</label>
+                            <input ng-if="!vm.hasCustom1DataSelectableValues()" type="text" class="form-control online-form-control" name="custom1Data" id="field_custom1Data" autocomplete="off"
+                                   ng-model="vm.registration.custom1Data" ng-required="vm.config.custom1DataRequired" ng-maxlength="255" />
+                            <select ng-if="vm.hasCustom1DataSelectableValues()" class="form-control" name="custom1Data" id="field_custom1Data"
+                                    ng-model="vm.registration.custom1Data" ng-required="vm.config.custom1DataRequired" >
+                                <option value="" data-translate="pcsApp.onlineReg.form.please.select">Please select</option>
+                                <option ng-repeat="opt in vm.getCustom1DataSelectableValues() track by opt" value="{{opt}}">{{opt}}</option>
+                            </select>
+
+                            <div ng-show="editForm.custom1Data.$invalid">
+                                <p class="error-block" ng-show="editForm.custom1Data.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block" ng-show="editForm.custom1Data.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="255">
+                                    This field cannot be longer than 255 characters.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-if="vm.config.custom2DataVisible">
+                            <label class="control-label" ng-class="{'required-field': vm.config.custom2DataRequired}" for="field_custom2Data">{{vm.getValueByLanguage('custom2DataLabel')}}</label>
+                            <input ng-if="!vm.hasCustom2DataSelectableValues()" type="text" class="form-control online-form-control" name="custom2Data" id="field_custom2Data" autocomplete="off"
+                                   ng-model="vm.registration.custom2Data" ng-required="vm.config.custom2DataRequired" ng-maxlength="255" />
+                            <select ng-if="vm.hasCustom2DataSelectableValues()" class="form-control" name="custom2Data" id="field_custom2Data"
+                                    ng-model="vm.registration.custom2Data" ng-required="vm.config.custom2DataRequired" >
+                                <option value="" data-translate="pcsApp.onlineReg.form.please.select">Please select</option>
+                                <option ng-repeat="opt in vm.getCustom2DataSelectableValues() track by opt" value="{{opt}}">{{opt}}</option>
+                            </select>
+
+                            <div ng-show="editForm.custom2Data.$invalid">
+                                <p class="error-block" ng-show="editForm.custom2Data.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                    This field is required.
+                                </p>
+                                <p class="error-block" ng-show="editForm.custom2Data.$error.maxlength" data-translate="pcsApp.onlineReg.form.validation.maxlength" translate-value-max="255">
+                                    This field cannot be longer than 255 characters.
+                                </p>
+                            </div>
+                        </div>
+
                         <div ng-if="vm.getValueByLanguage('personalDataRemark')">
                             <div ng-bind-html="vm.getValueByLanguage('personalDataRemark')"></div>
                         </div>

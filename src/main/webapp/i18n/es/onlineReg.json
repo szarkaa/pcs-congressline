@@ -103,6 +103,8 @@
             "roommate": "Compañero de habitación",
             "roomRemark": "Observación",
             "otherData": "Otros datos",
+            "custom1Data": "Custom data(1)",
+            "custom2Data": "Custom data(2)",
             "osName": "Nombre",
             "osPricePerPerson": "Precio/Persona",
             "osPax": "Persona(s)",

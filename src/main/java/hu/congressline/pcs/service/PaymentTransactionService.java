@@ -113,7 +113,7 @@ public class PaymentTransactionService extends XlsReportService {
     @Transactional(readOnly = true)
     public Optional<PaymentTransaction> findById(Long id) {
         log.debug("Request to find PaymentTransaction : {}", id);
-        return repository.findById(id);
+        return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
