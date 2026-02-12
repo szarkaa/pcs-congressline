@@ -26,7 +26,10 @@ public class OnlineRegistrationVM implements Serializable {
     private String phone;
     private String email;
     private Long registrationTypeId;
+    private String registrationTypeName;
     private Long roomId;
+    private String roomType;
+    private String hotelName;
     private LocalDate arrivalDate;
     private LocalDate departureDate;
     private String roommate;

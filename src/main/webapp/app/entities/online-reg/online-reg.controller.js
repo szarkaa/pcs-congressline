@@ -160,7 +160,7 @@
             var erts = vm.registration.extraRegTypes;
             for (var prop in erts) {
                 if (erts.hasOwnProperty(prop) && erts[prop]) {
-                    var regTypeVM = { registrationType: { id: prop}, accompanies: []};
+                    var regTypeVM = { registrationTypeId: prop, accompanies: []};
 
                     for (var j = 0; j < erts[prop].length; j++) {
                         regTypeVM.accompanies.push(erts[prop][j]);
@@ -172,7 +172,7 @@
             var oss = vm.registration.optionalServices;
             for (var prop in oss) {
                 if (oss.hasOwnProperty(prop) && oss[prop]) {
-                    var optionalServiceVM = { optionalService: { id: prop}, participants: oss[prop]};
+                    var optionalServiceVM = { optionalServiceId: prop, participants: oss[prop]};
                     reg.optionalServices.push(optionalServiceVM);
                 }
             }

@@ -76,7 +76,7 @@
                     <div class="row m-b-sm">
                         <div class="col-xs-12">
                             <label class="control-label" data-translate="pcsApp.onlineReg.registration" for="field_regType">Registration</label>
-                            <input type="text" class="form-control" name="regType" id="field_regType" autocomplete="off" disabled ng-value="vm.backendOnlineReg.registrationType.name" />
+                            <input type="text" class="form-control" name="regType" id="field_regType" autocomplete="off" disabled ng-value="vm.backendOnlineReg.registrationTypeName" />
                         </div>
                     </div>
 
@@ -93,7 +93,7 @@
                                 <tbody>
                                 <tr ng-repeat="rt in vm.backendOnlineReg.extraRegTypes track by $index">
                                     <td>
-                                        {{rt.registrationType.name}}
+                                        {{rt.registrationTypeName}}
                                     </td>
                                     <td>
                                         <small ng-repeat="acc in rt.accompanies">{{!$first ? ', ' : ''}}{{acc.lastName + ' ' + acc.firstName}}</small>
@@ -107,7 +107,7 @@
                     <div class="row m-b-sm">
                         <div class="col-xs-8">
                             <label class="control-label" data-translate="pcsApp.onlineReg.room" for="field_room">Room</label>
-                            <input type="text" class="form-control" name="room" id="field_room" autocomplete="off" disabled ng-value="vm.backendOnlineReg.room.roomType + ' ' + vm.backendOnlineReg.room.hotelName" />
+                            <input type="text" class="form-control" name="room" id="field_room" autocomplete="off" disabled ng-value="vm.backendOnlineReg.roomType + ' - ' + vm.backendOnlineReg.hotelName" />
                         </div>
                         <div class="col-xs-2">
                             <label class="control-label" data-translate="pcsApp.onlineReg.arrivalDate" for="field_arrivalDate">Arrival date</label>
@@ -146,7 +146,7 @@
                                 <tbody>
                                 <tr ng-repeat="os in vm.backendOnlineReg.optionalServices track by $index">
                                     <td>
-                                        {{os.optionalService.name}} <small>{{os.optionalService.startDate | date: 'longDate'}}</small>
+                                        {{os.optionalServiceName}} <small>{{os.optionalService.startDate | date: 'longDate'}}</small>
                                     </td>
                                     <td>
                                         {{os.participants}}

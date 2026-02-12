@@ -41,7 +41,7 @@
             parent: 'backend-online-reg',
             url: '/{id}/accept',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             views: {
                 'content@base': {
@@ -60,7 +60,7 @@
             parent: 'backend-online-reg.accept',
             url: '/{id}/accept/confirmation',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'entity', function($stateParams, $state, $uibModal, entity) {
                 $uibModal.open({
@@ -85,7 +85,7 @@
             parent: 'backend-online-reg',
             url: '/accept-all/confirmation',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'onlineRegFilter', function($stateParams, $state, $uibModal, onlineRegFilter) {
                 $uibModal.open({
@@ -110,7 +110,7 @@
             parent: 'backend-online-reg',
             url: '/delete-all/confirmation',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', 'onlineRegFilter', function($stateParams, $state, $uibModal, onlineRegFilter) {
                 $uibModal.open({
@@ -135,7 +135,7 @@
             parent: 'backend-online-reg',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_ADVANCED_USER','ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

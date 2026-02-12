@@ -21,9 +21,47 @@ public interface OnlineRegistrationRepository extends JpaRepository<OnlineRegist
     )
     List<OnlineRegistration> findByCongressIdOrderByDateOfAppDesc(Long id);
 
+    @EntityGraph(
+        type = EntityGraph.EntityGraphType.LOAD,
+        attributePaths = {
+            "congress",
+            "congress.bankAccounts",
+            "congress.currencies",
+            "congress.onlineRegCurrencies"
+        }
+    )
     List<OnlineRegistration> findByPaymentTrxStatusIn(List<String> statusCodes);
 
+    @EntityGraph(
+        type = EntityGraph.EntityGraphType.LOAD,
+        attributePaths = {
+            "congress",
+            "congress.bankAccounts",
+            "congress.currencies",
+            "congress.onlineRegCurrencies"
+        }
+    )
     Optional<OnlineRegistration> findOneByPaymentTrxId(String txId);
 
+    @EntityGraph(
+        type = EntityGraph.EntityGraphType.LOAD,
+        attributePaths = {
+            "congress",
+            "congress.bankAccounts",
+            "congress.currencies",
+            "congress.onlineRegCurrencies"
+        }
+    )
+    Optional<OnlineRegistration> findEagerById(Long id);
+
+    @EntityGraph(
+        type = EntityGraph.EntityGraphType.LOAD,
+        attributePaths = {
+            "congress",
+            "congress.bankAccounts",
+            "congress.currencies",
+            "congress.onlineRegCurrencies"
+        }
+    )
     List<OnlineRegistration> findByIdInOrderByDateOfAppDesc(List<Long> onlineRegIdList);
 }

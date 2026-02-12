@@ -109,6 +109,7 @@ public class OnlineRegService {
     private final RoomReservationRegistrationRepository rrrRepository;
     private final RoomReservationService rrService;
     private final OrderedOptionalServiceService oosService;
+    private final OptionalServiceService osService;
     //private final MailService mailService;
 
     private final CountryRepository countryRepository;
@@ -123,15 +124,15 @@ public class OnlineRegService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<OnlineRegistration> findById(Long id) {
-        log.debug("Request to find online registration : {}", id);
-        return repository.findById(id);
+        log.debug("Request to find online registration by id: {}", id);
+        return repository.findEagerById(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public OnlineRegistration getById(Long id) {
         log.debug("Request to get online registrations : {}", id);
-        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Online registration not found by id: " + id));
+        return repository.findEagerById(id).orElseThrow(() -> new IllegalArgumentException("Online registration not found by id: " + id));
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -350,7 +351,7 @@ public class OnlineRegService {
         vm.getExtraRegTypes().forEach(ert -> {
             OnlineRegistrationRegistrationType orrt = new OnlineRegistrationRegistrationType();
             orrt.setRegistration(result);
-            orrt.setRegistrationType(ert.getRegistrationType());
+            registrationTypeService.findById(vm.getRegistrationTypeId()).ifPresent(orrt::setRegistrationType);
             final OnlineRegistrationRegistrationType orrtResult = orrtRepository.save(orrt);
             ert.getAccompanies().forEach(acc -> {
                 AccPeopleOnline apo = new AccPeopleOnline();
@@ -362,13 +363,12 @@ public class OnlineRegService {
         });
 
         vm.getOptionalServices().forEach(os -> {
+            final OptionalService optionalService = osService.getById(os.getOptionalServiceId());
             OnlineRegistrationOptionalService oros = new OnlineRegistrationOptionalService();
             oros.setRegistration(result);
-            oros.setOptionalService(os.getOptionalService());
+            oros.setOptionalService(optionalService);
             oros.setParticipant(os.getParticipants());
             final OnlineRegistrationOptionalService oos = orosRepository.save(oros);
-            final OptionalService optionalService = osRepository.findById(oos.getOptionalService().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Optional service not found by id: " + oos.getOptionalService().getId()));
             oosService.increaseOptionalServiceReservedNumber(optionalService, oos.getParticipant());
         });
 
@@ -525,7 +525,10 @@ public class OnlineRegService {
         vm.setPhone(onlineReg.getPhone());
         vm.setEmail(onlineReg.getEmail());
         vm.setRegistrationTypeId(onlineReg.getRegistrationType() != null ? onlineReg.getRegistrationType().getId() : null);
+        vm.setRegistrationTypeName(onlineReg.getRegistrationType() != null ? onlineReg.getRegistrationType().getName() : null);
         vm.setRoomId(onlineReg.getRoom() != null ? onlineReg.getRoom().getId() : null);
+        vm.setRoomType(onlineReg.getRoom() != null ? onlineReg.getRoom().getRoomType() : null);
+        vm.setHotelName(onlineReg.getRoom() != null ? onlineReg.getRoom().getCongressHotel().getHotel().getName() : null);
         vm.setArrivalDate(onlineReg.getArrivalDate());
         vm.setDepartureDate(onlineReg.getDepartureDate());
         vm.setRoommate(onlineReg.getRoommate());
@@ -547,7 +550,8 @@ public class OnlineRegService {
         List<OnlineRegistrationRegistrationType> orrtList = orrtRepository.findAllByRegistration(onlineReg);
         orrtList.forEach(orrt -> {
             final OnlineRegRegTypeVM orrtVM = new OnlineRegRegTypeVM();
-            orrtVM.setRegistrationType(orrt.getRegistrationType());
+            orrtVM.setRegistrationTypeId(orrt.getRegistrationType().getId());
+            orrtVM.setRegistrationTypeName(orrt.getRegistrationType().getName());
             final List<AccPeopleOnline> accPeopleOnlineList = accPeopleOnlineRepository.findAllByOnlineRegistrationRegistrationType(orrt);
             orrtVM.setAccompanies(accPeopleOnlineList.stream().map(accPeopleOnline -> {
                 OnlineAccPeopleVM accPeople = new OnlineAccPeopleVM();
@@ -562,7 +566,8 @@ public class OnlineRegService {
         List<OnlineRegistrationOptionalService> orosList = orosRepository.findAllByRegistration(onlineReg);
         vm.setOptionalServices(orosList.stream().map(oros -> {
             OnlineRegOptionalServiceVM orosVM = new OnlineRegOptionalServiceVM();
-            orosVM.setOptionalService(oros.getOptionalService());
+            orosVM.setOptionalServiceId(oros.getOptionalService().getId());
+            orosVM.setOptionalServiceName(oros.getOptionalService().getName());
             orosVM.setParticipants(oros.getParticipant());
             return orosVM;
         }).collect(Collectors.toList()));
