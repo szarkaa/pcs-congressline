@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class GroupDiscountInvoiceXlsService extends XlsReportService {
 
-    private static final String[] TITLES = new String[]{"Registration ID", "Name", "Registration Discount", "Accomodation Discount", "Ordered Services Discount"};
+    private static final String[] TITLES = new String[]{"Registration ID", "Name", "Registration Support", "Accomodation Support", "Ordered Services Support"};
 
     private final DiscountService discountService;
     private final GroupDiscountInvoiceHistoryRepository groupDiscountInvoiceHistoryRepository;
@@ -71,6 +71,9 @@ public class GroupDiscountInvoiceXlsService extends XlsReportService {
         columns.put("Amount", 100);
         columns.put("Date of payment", 200);
         columns.put("Invoice number", 200);
+        columns.put("Hotel name", 200);
+        columns.put("Room type", 200);
+        columns.put("Room mates", 200);
 
         Congress congress = congressRepository.findOneByMeetingCode(meetingCode).orElse(null);
         final XSSFSheet sheet = createXlsxTab(workbook, "Group invoice report", null, congress.getName(), getColumnWidthsAsArray(columns));
@@ -91,6 +94,9 @@ public class GroupDiscountInvoiceXlsService extends XlsReportService {
             addCell(row, wrappingCellStyle, 6, dto.getAmount());
             addCell(row, wrappingCellStyle, 7, dto.getDateOfPayment());
             addCell(row, wrappingCellStyle, 8, dto.getInvoiceNumber());
+            addCell(row, wrappingCellStyle, 9, dto.getHotelName());
+            addCell(row, wrappingCellStyle, 10, dto.getRoomType());
+            addCell(row, wrappingCellStyle, 11, dto.getRoomMates());
 
             rowIndex++;
         }
@@ -210,7 +216,7 @@ public class GroupDiscountInvoiceXlsService extends XlsReportService {
             workbook.write(baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            log.error("An error occured while creating the group invoice report XLSX file", e);
+            log.error("An error occurred while creating the group invoice report XLSX file", e);
             throw e;
         }
     }

@@ -91,11 +91,11 @@
         function copyWorkplace() {
             if (vm.registration.workplaceId) {
                 var workplace = getSelectedWorkplace();
-                console.log('workplace:', workplace);
                 vm.registration.countryId = workplace.country ? workplace.country.id : null;
                 vm.registration.zipCode = workplace.zipCode;
                 vm.registration.city = workplace.city;
                 vm.registration.street = workplace.street;
+                vm.registration.email = workplace.email;
             }
         }
 

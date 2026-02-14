@@ -13,7 +13,7 @@
             setOptionalServiceApplicantFilter: function (filter) {
                 if (filter) {
                     optionalServiceApplicantFilter = {
-                        optionalService: filter.optionalService
+                        optionalServices: filter.optionalServices
                     };
                     $cookies.putObject('optional-service-applicant-filter', optionalServiceApplicantFilter);
                 }
@@ -28,7 +28,7 @@
                     optionalServiceApplicantFilter = $cookies.getObject('optional-service-applicant-filter');
                     if (!optionalServiceApplicantFilter) {
                         return {
-                            optionalService: null
+                            optionalServices: []
                         };
                     }
                 }

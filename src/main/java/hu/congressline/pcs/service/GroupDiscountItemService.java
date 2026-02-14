@@ -4,14 +4,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.repository.PayingGroupRepository;
 import hu.congressline.pcs.service.dto.GroupDiscountItemDTO;
+import hu.congressline.pcs.service.dto.PayingGroupDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class GroupDiscountItemService extends XlsReportService {
 
+    private final PayingGroupService payingGroupService;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -32,11 +34,11 @@ public class GroupDiscountItemService extends XlsReportService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<GroupDiscountItemDTO> findAll(String meetingCode, Long payingGroupId, String chargeableItemType) {
-        log.debug("Request to get all GroupDiscountItems");
+        log.debug("Request to get all group discount items");
         final Query query = entityManager.createNativeQuery(composeQuery(meetingCode, payingGroupId, chargeableItemType));
-        query.setHint("javax.persistence.cache.storeMode", "REFRESH");
-        query.setHint("javax.persistence.cache.retrieveMode", "BYPASS");
-        List result = query.getResultList();
+        query.setHint("jakarta.persistence.cache.storeMode", "REFRESH");
+        query.setHint("jakarta.persistence.cache.retrieveMode", "BYPASS");
+        List<?> result = query.getResultList();
         List<GroupDiscountItemDTO> groupDiscountItems = new ArrayList<>();
         for (Object item : result) {
             GroupDiscountItemDTO groupDiscountItem = getBeanFromRow((Object[]) item);
@@ -49,17 +51,20 @@ public class GroupDiscountItemService extends XlsReportService {
         GroupDiscountItemDTO bean = new GroupDiscountItemDTO();
         bean.setId(((BigDecimal) row[0]).longValue());
         bean.setRegId((Integer) row[1]);
-        bean.setChargeableItemId(((BigInteger) row[2]).intValue());
+        bean.setChargeableItemId(((Long) row[2]).intValue());
         bean.setFirstName((String) row[3]);
         bean.setLastName((String) row[4]);
         bean.setChargeableItemType(ChargeableItemType.valueOf((String) row[5]));
-        bean.setPayingGroup(payingGroupRepository.findById(row[6] != null ? ((BigInteger) row[6]).longValue() : null).orElse(null));
+        bean.setPayingGroup(row[6] != null ? new PayingGroupDTO(payingGroupService.getById((Long) row[6])) : null);
         bean.setPayingGroupItemName((String) row[7]);
-        bean.setDateOfPayment(row[8] != null ? ((java.sql.Date) row[8]).toLocalDate() : null);
+        bean.setDateOfPayment(row[8] != null ? (LocalDate) row[8] : null);
         BigDecimal amount = (BigDecimal) row[9];
         amount = amount.setScale(2, RoundingMode.HALF_UP);
         bean.setAmount(amount);
         bean.setInvoiceNumber((String) row[11]);
+        bean.setHotelName((String) row[12]);
+        bean.setRoomType((String) row[13]);
+        bean.setRoomMates((String) row[14]);
         return bean;
     }
 
@@ -78,7 +83,10 @@ public class GroupDiscountItemService extends XlsReportService {
         stringBuilder.append("q.c8,\n");
         stringBuilder.append("q.c9,\n");
         stringBuilder.append("q.c10,\n");
-        stringBuilder.append("q.c11\n");
+        stringBuilder.append("q.c11,\n");
+        stringBuilder.append("q.c12,\n");
+        stringBuilder.append("q.c13,\n");
+        stringBuilder.append("q.c14\n");
         stringBuilder.append("from (\n");
         stringBuilder.append("select\n");
         stringBuilder.append("r.reg_id c1,\n");
@@ -94,7 +102,10 @@ public class GroupDiscountItemService extends XlsReportService {
         stringBuilder.append("(select if(i.storno = 0, i.invoice_number, NULL) from invoice i\n");
         stringBuilder.append("join invoice_paying_group ipg on ipg.invoice_id = i.id\n");
         stringBuilder.append("join group_discount_invoice_history gdih on gdih.invoice_id = i.id\n");
-        stringBuilder.append("where gdih.chargeable_item_id = c2 and ipg.paying_group_id = c6 order by i.id desc limit 1) c11\n");
+        stringBuilder.append("where gdih.chargeable_item_id = c2 and ipg.paying_group_id = c6 order by i.id desc limit 1) c11,\n");
+        stringBuilder.append("'' c12,\n");
+        stringBuilder.append("'' c13,\n");
+        stringBuilder.append("'' c14\n");
         stringBuilder.append("from\n");
         stringBuilder.append("registration r\n");
         stringBuilder.append("inner join congress c on r.congress_id = c.id\n");
@@ -127,7 +138,11 @@ public class GroupDiscountItemService extends XlsReportService {
         stringBuilder.append("(select if(i.storno = 0, i.invoice_number, NULL) from invoice i\n");
         stringBuilder.append("join invoice_paying_group ipg on ipg.invoice_id = i.id\n");
         stringBuilder.append("join group_discount_invoice_history gdih on gdih.invoice_id = i.id\n");
-        stringBuilder.append("where gdih.chargeable_item_id = c2 and ipg.paying_group_id = c6 order by i.id desc limit 1) c11\n");
+        stringBuilder.append("where gdih.chargeable_item_id = c2 and ipg.paying_group_id = c6 order by i.id desc limit 1) c11,\n");
+        stringBuilder.append("h.name c12,\n");
+        stringBuilder.append("rm.room_type c13,\n");
+        stringBuilder.append("(select group_concat(concat_ws(',', concat(r.last_name, ' ', r.first_name))) from registration r\n");
+        stringBuilder.append("join room_reservation_registration rrr on rrr.registration_id = r.id where rrr.room_reservation_id = rr.id and rrr.registration_id <> r.id) c14\n");
         stringBuilder.append("from\n");
         stringBuilder.append("registration r\n");
         stringBuilder.append("inner join congress c on r.congress_id = c.id\n");
@@ -135,6 +150,8 @@ public class GroupDiscountItemService extends XlsReportService {
         stringBuilder.append("inner join chargeable_item ci on ci.id = rrr.id\n");
         stringBuilder.append("inner join room_reservation rr on rrr.room_reservation_id = rr.id\n");
         stringBuilder.append("inner join room rm on rr.room_id = rm.id\n");
+        stringBuilder.append("inner join congress_hotel ch on rm.congress_hotel_id = ch.id\n");
+        stringBuilder.append("inner join hotel h on ch.hotel_id = h.id\n");
         stringBuilder.append("inner join paying_group_item pgi on pgi.id = rrr.paying_group_item_id\n");
         stringBuilder.append("inner join paying_group pg on pgi.paying_group_id = pg.id\n");
         stringBuilder.append("where\n");
@@ -156,7 +173,10 @@ public class GroupDiscountItemService extends XlsReportService {
         stringBuilder.append("(select if(i.storno = 0, i.invoice_number, NULL) from invoice i\n");
         stringBuilder.append("join invoice_paying_group ipg on ipg.invoice_id = i.id\n");
         stringBuilder.append("join group_discount_invoice_history gdih on gdih.invoice_id = i.id\n");
-        stringBuilder.append("where gdih.chargeable_item_id = c2 and ipg.paying_group_id = c6 order by i.id desc limit 1) c11\n");
+        stringBuilder.append("where gdih.chargeable_item_id = c2 and ipg.paying_group_id = c6 order by i.id desc limit 1) c11,\n");
+        stringBuilder.append("'' c12,\n");
+        stringBuilder.append("'' c13,\n");
+        stringBuilder.append("'' c14\n");
         stringBuilder.append("from\n");
         stringBuilder.append("registration r\n");
         stringBuilder.append("inner join congress c on r.congress_id = c.id\n");
@@ -177,9 +197,9 @@ public class GroupDiscountItemService extends XlsReportService {
             }
 
             if (payingGroupId != null) {
-                sb.append(sb.length() > 0 ? " and " : "").append(" c6 = ").append(payingGroupId);
+                sb.append(!sb.isEmpty() ? " and " : "").append(" c6 = ").append(payingGroupId);
             }
-            stringBuilder.append(sb.toString());
+            stringBuilder.append(sb);
         }
 
         return stringBuilder.toString();

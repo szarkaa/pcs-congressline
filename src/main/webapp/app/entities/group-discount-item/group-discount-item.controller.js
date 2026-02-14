@@ -179,7 +179,7 @@
                 CongressSelector.getSelectedCongress().meetingCode + '/' +
                 groupDiscountItemFilter.payingGroup.id + '/' +
                 groupDiscountItemFilter.chargeableItemType + '/' +
-                '/download-report';
+                'download-report';
         }
 
         function downloadProFormaGroupInvoiceReportXls () {
@@ -187,7 +187,7 @@
                 CongressSelector.getSelectedCongress().meetingCode + '/' +
                 groupDiscountItemFilter.payingGroup.id + '/' +
                 groupDiscountItemFilter.chargeableItemType + '/' +
-                '/download-pro-forma-group-invoice-report';
+                'download-pro-forma-group-invoice-report';
         }
 
     }

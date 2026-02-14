@@ -22,7 +22,10 @@
             "amount": "Amount",
             "dateOfPayment": "Date of payment",
             "invoiceNumber": "Invoice number",
-            "payingGroup": "Paying group"
+            "payingGroup": "Paying group",
+            "hotelName": "Hotel name",
+            "roomType": "Room type",
+            "roomMates": "Room mates"
         }
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import hu.congressline.pcs.domain.OptionalService;
 import hu.congressline.pcs.repository.CurrencyRepository;
@@ -57,6 +58,13 @@ public class OptionalServiceService {
     public OptionalService getById(Long id) {
         log.debug("Request to get optional service : {}", id);
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Optional service not found by id: " + id));
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public List<OptionalService> findAllByIds(Set<Long> ids) {
+        log.debug("Request to find all optional service by ids : {}", ids);
+        return repository.findAllByIdIn(ids);
     }
 
     @SuppressWarnings("MissingJavadocMethod")

@@ -7,7 +7,7 @@
     OptionalServiceApplicant.$inject = ['$resource', 'DateUtils'];
 
     function OptionalServiceApplicant ($resource, DateUtils) {
-        var resourceUrl =  'api/optional-service-applicants/:optionalServiceId';
+        var resourceUrl =  'api/optional-service-applicants/:optionalServiceIds';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true}

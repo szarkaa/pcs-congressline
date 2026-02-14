@@ -8,11 +8,9 @@
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
         <div class="form-group">
-            <label data-translate="pcsApp.optionalServiceApplicant.optionalService" for="field_optionalService">Optional Service</label>
-            <ui-select ng-model="vm.listFilter.optionalService" name="optionalService" id="field_optionalService" theme="bootstrap" required>
-                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
-                    <span ng-bind="$select.selected.name"></span>
-                </ui-select-match>
+            <label data-translate="pcsApp.optionalServiceApplicant.optionalService" for="field_optionalServices">Optional Service</label>
+            <ui-select multiple ng-model="vm.listFilter.optionalServices" name="optionalServices" id="field_optionalServices" theme="bootstrap" required>
+                <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">{{$item.name}}</ui-select-match>
                 <ui-select-choices repeat="optionalService in (vm.optionalServices | filter: $select.search) track by optionalService.id">
                     <div ng-bind-html="optionalService.name | highlight: $select.search"></div>
                 </ui-select-choices>

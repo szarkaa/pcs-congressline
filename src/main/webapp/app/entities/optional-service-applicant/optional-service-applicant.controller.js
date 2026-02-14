@@ -26,9 +26,9 @@
         loadAll();
 
         function loadAll() {
-            if (vm.listFilter.optionalService) {
+            if (vm.listFilter.optionalServices) {
                 OptionalServiceApplicant.query({
-                        optionalServiceId: listFilter.optionalService.id
+                        optionalServiceIds: listFilter.optionalServices.map(u => u.id).join(',')
                     },
                     function (result) {
                         vm.optionalServiceApplicants = result;
@@ -38,8 +38,7 @@
         }
 
         function downloadReportXls () {
-            window.location.href = '/api/optional-service-applicants' +
-                '/' + listFilter.optionalService.id.toString() + '/download-report';
+            window.location.href = '/api/optional-service-applicants' + '/' + listFilter.optionalServices.map(u => u.id).join(',') + '/download-report';
         }
     }
 })();

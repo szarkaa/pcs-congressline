@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import hu.congressline.pcs.domain.PayingGroup;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,7 +27,10 @@ public class GroupDiscountItemDTO implements Serializable {
     private BigDecimal amount;
     private LocalDate dateOfPayment;
     private String invoiceNumber;
-    private PayingGroup payingGroup;
+    private PayingGroupDTO payingGroup;
+    private String hotelName;
+    private String roomType;
+    private String roomMates;
 
     @Override
     public boolean equals(Object o) {

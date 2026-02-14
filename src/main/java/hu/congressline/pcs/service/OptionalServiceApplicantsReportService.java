@@ -4,6 +4,7 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.OptionalService;
 import hu.congressline.pcs.service.dto.OptionalServiceApplicantsDTO;
@@ -33,14 +36,16 @@ public class OptionalServiceApplicantsReportService extends XlsReportService {
 
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    private OptionalServiceService service;
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public List<OptionalServiceApplicantsDTO> findAll(OptionalService optionalService) {
+    public List<OptionalServiceApplicantsDTO> findAll(Set<Long> optionalServiceIds) {
         log.debug("Request to get all OptionalServiceApplicantDTOs");
 
-        final Query query = entityManager.createNativeQuery(composeQuery(optionalService));
-        List result = query.getResultList();
+        final Query query = entityManager.createNativeQuery(composeQuery(optionalServiceIds));
+        List<?> result = query.getResultList();
         List<OptionalServiceApplicantsDTO> rrbpList = new ArrayList<>();
         for (Object item : result) {
             OptionalServiceApplicantsDTO dto = getBeanFromRow((Object[]) item);
@@ -75,7 +80,7 @@ public class OptionalServiceApplicantsReportService extends XlsReportService {
         return bean;
     }
 
-    protected String composeQuery(OptionalService optionalService) {
+    protected String composeQuery(Set<Long> optionalServiceIds) {
         return "select oos.id e0, r.reg_id e1,\n"
                 + "r.last_name e2,\n"
                 + "r.first_name e3,\n"
@@ -102,14 +107,15 @@ public class OptionalServiceApplicantsReportService extends XlsReportService {
                 + "left join country c on r.country_id = c.id\n"
                 + "left join paying_group_item pgi on pgi.id = oos.paying_group_item_id\n"
                 + "left join paying_group pg on pg.id = pgi.paying_group_id\n"
-                + "where oos.optional_service_id = " + optionalService.getId() + "\n"
+                + "where oos.optional_service_id in (" + optionalServiceIds.stream().map(String::valueOf).collect(Collectors.joining(",")) + ")\n"
                 + "order by r.last_name, r.first_name";
     }
 
-    @SuppressWarnings("MissingJavadocMethod")
+    @SuppressWarnings({"MissingJavadocMethod", "MethodLength"})
     @Transactional(readOnly = true)
-    public byte[] downloadReportXls(OptionalService optionalService) throws IOException {
-        final List<OptionalServiceApplicantsDTO> resultList = findAll(optionalService);
+    public byte[] downloadReportXls(Set<Long> optionalServiceIds) throws IOException {
+        final List<OptionalService> optionalServices = service.findAllByIds(optionalServiceIds);
+        final List<OptionalServiceApplicantsDTO> resultList = findAll(optionalServiceIds);
         final XSSFWorkbook workbook = new XSSFWorkbook();
         Map<String, Integer> columns = new LinkedHashMap<>();
         columns.put("Reg no.", 100);
@@ -125,7 +131,9 @@ public class OptionalServiceApplicantsReportService extends XlsReportService {
         columns.put("Group cost", 100);
         columns.put("Paid by group", 100);
 
-        final XSSFSheet sheet = createXlsxTab(workbook, "Optional services by applicants", optionalService.getName(), optionalService.getCongress().getName(),
+        final XSSFSheet sheet = createXlsxTab(workbook, "Optional services by applicants",
+            optionalServices.stream().map(OptionalService::getName).collect(Collectors.joining(",")),
+            optionalServices.stream().findFirst().map(optionalService -> optionalService.getCongress().getName()).orElse(""),
                 getColumnWidthsAsArray(columns));
         addSubHeader(sheet, columns);
 
