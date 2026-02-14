@@ -1135,35 +1135,35 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <div ng-bind-html="vm.getValueByLanguage('termsAndConditionsRemark')"></div>
-                                </td>
-                                <td>
                                     <div class="checkbox checkbox-success">
                                         <input type="checkbox" name="termsAndConditions" ng-model="vm.registration.termsAndConditions" required ng-value="true"/>
                                         <label style="cursor: default"></label>
                                     </div>
                                 </td>
+                                <td>
+                                    <div ng-bind-html="vm.getValueByLanguage('termsAndConditionsRemark')"></div>
+                                </td>
                             </tr>
                             <tr>
-                                <td>
-                                    <div ng-bind-html="vm.getValueByLanguage('gdprRemark')"></div>
-                                </td>
                                 <td>
                                     <div class="checkbox checkbox-success">
                                         <input type="checkbox" name="gdpr" ng-model="vm.registration.gdpr" required ng-value="true"/>
                                         <label style="cursor: default"></label>
                                     </div>
                                 </td>
+                                <td>
+                                    <div ng-bind-html="vm.getValueByLanguage('gdprRemark')"></div>
+                                </td>
                             </tr>
                             <tr ng-if="vm.getValueByLanguage('marketingRemark')">
-                                <td>
-                                    <div ng-bind-html="vm.getValueByLanguage('marketingRemark')"></div>
-                                </td>
                                 <td>
                                     <div class="checkbox checkbox-success">
                                         <input type="checkbox" name="newsletter" ng-model="vm.registration.newsletter" ng-value="true" />
                                         <label style="cursor: default"></label>
                                     </div>
+                                </td>
+                                <td>
+                                    <div ng-bind-html="vm.getValueByLanguage('marketingRemark')"></div>
                                 </td>
                             </tr>
                             </tbody>

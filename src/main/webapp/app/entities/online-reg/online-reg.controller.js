@@ -412,7 +412,12 @@
             return '';
         }
 
-        function calculateRTSubTotal() {
+        function calculateNormalRTSubTotal() {
+            var rt = getRegTypeById(vm.registration.regType);
+            return rt ? rt.currentRegFee : 0;
+        }
+
+        function calculateExtraRTSubTotal() {
             var subTotal = 0;
             var selectedRegType = vm.registration.extraRegTypes;
             for (var prop in selectedRegType) {
@@ -421,16 +426,25 @@
                     subTotal += rt.currentRegFee * Math.max(1, selectedRegType[prop].length);
                 }
             }
-            var rt = getRegTypeById(vm.registration.regType);
-            subTotal += rt ? rt.currentRegFee : 0;
             return subTotal;
+        }
+
+        function calculateRTSubTotal() {
+            return calculateNormalRTSubTotal() + calculateExtraRTSubTotal();
         }
 
         function calculateRTSubTotalDiscount() {
             if (vm.registration.discountCode && vm.registration.discountPercentage &&
-                (!vm.registration.discountType || vm.registration.discountType === 'REGISTRATION')) {
-                var subTotal = calculateRTSubTotal();
-                return Math.round(subTotal * (vm.registration.discountPercentage / 100));
+                (!vm.registration.discountType || vm.registration.discountType === 'REGISTRATION' || vm.registration.discountType === 'NORMAL_REGISTRATION' || vm.registration.discountType === 'EXTRA_REGISTRATION')) {
+                var normalSubTotal = calculateNormalRTSubTotal();
+                var extraSubTotal = calculateExtraRTSubTotal();
+                if (vm.registration.discountType === 'NORMAL_REGISTRATION') {
+                    return Math.round(normalSubTotal * (vm.registration.discountPercentage / 100));
+                } else if (vm.registration.discountType === 'EXTRA_REGISTRATION') {
+                    return Math.round(extraSubTotal * (vm.registration.discountPercentage / 100));
+                } else {
+                    return Math.round((normalSubTotal + extraSubTotal) * (vm.registration.discountPercentage / 100));
+                }
             }
             return 0;
         }

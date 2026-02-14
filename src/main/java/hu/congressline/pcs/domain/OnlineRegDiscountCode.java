@@ -4,7 +4,7 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
+import hu.congressline.pcs.domain.enumeration.OnlineDiscountCodeType;
 import hu.congressline.pcs.web.rest.vm.OnlineRegDiscountCodeVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,7 +47,7 @@ public class OnlineRegDiscountCode implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "discount_type", nullable = false)
-    private ChargeableItemType discountType;
+    private OnlineDiscountCodeType discountType;
 
     @ManyToOne
     private Congress congress;

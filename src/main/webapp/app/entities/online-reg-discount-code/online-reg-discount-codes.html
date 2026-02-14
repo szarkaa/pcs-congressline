@@ -35,7 +35,7 @@
                         <tr ng-repeat="discountCode in vm.discountCodes track by discountCode.id">
                             <td>{{discountCode.code}}</td>
                             <td>{{discountCode.discountPercentage}}</td>
-                            <td data-translate="{{'pcsApp.ChargeableItemType.' + discountCode.discountType}}">{{discountCode.discountType}}</td>
+                            <td data-translate="{{'pcsApp.OnlineDiscountCodeType.' + discountCode.discountType}}">{{discountCode.discountType}}</td>
                             <td>
                                 <button class="btn btn-info" type="submit"
                                         ui-sref="online-reg-discount-code.edit({id: discountCode.id})"><i class="fa fa-pencil-square-o"></i></button>

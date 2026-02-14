@@ -1,0 +1,12 @@
+{
+    "pcsApp": {
+        "OnlineDiscountCodeType" : {
+            "null": "",
+            "REGISTRATION": "Registration",
+            "NORMAL_REGISTRATION": "Normal registration",
+            "EXTRA_REGISTRATION": "Extra registration",
+            "HOTEL": "Hotel",
+            "OPTIONAL_SERVICE": "Optional service"
+        }
+    }
+}

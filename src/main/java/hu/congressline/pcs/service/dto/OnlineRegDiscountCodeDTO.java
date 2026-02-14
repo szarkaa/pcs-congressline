@@ -1,7 +1,7 @@
 package hu.congressline.pcs.service.dto;
 
 import hu.congressline.pcs.domain.OnlineRegDiscountCode;
-import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
+import hu.congressline.pcs.domain.enumeration.OnlineDiscountCodeType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -12,7 +12,7 @@ public class OnlineRegDiscountCodeDTO {
     private Long id;
     private String code;
     private Integer discountPercentage;
-    private ChargeableItemType discountType;
+    private OnlineDiscountCodeType discountType;
     private Long congressId;
 
     public OnlineRegDiscountCodeDTO(@NonNull OnlineRegDiscountCode discountCode) {

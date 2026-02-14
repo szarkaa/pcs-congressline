@@ -56,9 +56,11 @@
             <label class="control-label" data-translate="pcsApp.onlineRegDiscountCode.discountType" for="field_discountType">Discount Type</label>
             <select class="form-control" name="discountType" ng-model="vm.discountCode.discountType" ng-change="vm.onDiscountTypeChanged()" id="field_discountType">
                 <option value="" data-translate="global.form.please.select">Please select</option>
-                <option value="REGISTRATION" data-translate="pcsApp.ChargeableItemType.REGISTRATION">REGISTRATION</option>
-                <option value="HOTEL" data-translate="pcsApp.ChargeableItemType.HOTEL">HOTEL</option>
-                <option value="OPTIONAL_SERVICE" data-translate="pcsApp.ChargeableItemType.OPTIONAL_SERVICE">OPTIONAL_SERVICE</option>
+                <option value="REGISTRATION" data-translate="pcsApp.OnlineDiscountCodeType.REGISTRATION">REGISTRATION</option>
+                <option value="NORMAL_REGISTRATION" data-translate="pcsApp.OnlineDiscountCodeType.NORMAL_REGISTRATION">NORMAL_REGISTRATION</option>
+                <option value="EXTRA_REGISTRATION" data-translate="pcsApp.OnlineDiscountCodeType.EXTRA_REGISTRATION">EXTRA_REGISTRATION</option>
+                <option value="HOTEL" data-translate="pcsApp.OnlineDiscountCodeType.HOTEL">HOTEL</option>
+                <option value="OPTIONAL_SERVICE" data-translate="pcsApp.OnlineDiscountCodeType.OPTIONAL_SERVICE">OPTIONAL_SERVICE</option>
             </select>
             <div ng-show="editForm.discountType.$invalid">
                 <p class="error-block" ng-show="editForm.discountType.$error.required" data-translate="entity.validation.required">
