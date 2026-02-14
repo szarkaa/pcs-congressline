@@ -37,7 +37,7 @@
                             registrationType: null,
                             workplace: null,
                             payingGroup: null,
-                            optionalService: null,
+                            optionalServices: [],
                             congressHotel: null,
                             countryNegation: false,
                             presenter: null,

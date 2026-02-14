@@ -69,7 +69,7 @@
             vm.reportFilter.workplace = null;
             vm.reportFilter.country = null;
             vm.reportFilter.payingGroup = null;
-            vm.reportFilter.optionalService = null;
+            vm.reportFilter.optionalServices = [];
             vm.reportFilter.congressHotel = null;
             vm.reportFilter.countryNegation = false;
             vm.reportFilter.presenter = null;
@@ -94,7 +94,7 @@
                 registrationType: reportFilter.registrationType ? reportFilter.registrationType.id : null,
                 workplace: reportFilter.workplace ? reportFilter.workplace.id : null,
                 payingGroup: reportFilter.payingGroup ? reportFilter.payingGroup.id : null,
-                optionalService: reportFilter.optionalService ? reportFilter.optionalService.id : null,
+                optionalServices: reportFilter.optionalServices && reportFilter.optionalServices.length ? reportFilter.optionalServices.map(o => o.id) : [],
                 hotelId: reportFilter.congressHotel ? reportFilter.congressHotel.hotel.id : null,
                 country: reportFilter.country ? reportFilter.country.id : null,
                 countryNegation: reportFilter.countryNegation,
@@ -203,7 +203,7 @@
             vm.reportFilter.workplace ||
             vm.reportFilter.country ||
             vm.reportFilter.payingGroup ||
-            vm.reportFilter.optionalService ||
+            vm.reportFilter.optionalServices ||
             vm.reportFilter.congressHotel ||
             vm.reportFilter.presenter ||
             vm.reportFilter.etiquette ||

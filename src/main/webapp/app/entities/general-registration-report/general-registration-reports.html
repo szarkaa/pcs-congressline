@@ -73,7 +73,7 @@
                                 <div class="form-group full-width">
                                     <label class="control-label control-label" data-translate="pcsApp.generalRegistrationReport.workplace"
                                            for="workplace"></label>
-                                    <ui-select ng-model="vm.reportFilter.workplace" name="workplace" id="workplace" theme="bootstrap" required>
+                                    <ui-select ng-model="vm.reportFilter.workplace" name="workplace" id="workplace" theme="bootstrap">
                                         <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                                             <span ng-bind="$select.selected.name"></span>
                                         </ui-select-match>
@@ -86,7 +86,7 @@
                                 <div class="form-group full-width">
                                     <label class="control-label control-label" data-translate="pcsApp.generalRegistrationReport.registrationType"
                                            for="registrationType"></label>
-                                    <ui-select ng-model="vm.reportFilter.registrationType" name="registrationType" id="registrationType" theme="bootstrap" required>
+                                    <ui-select ng-model="vm.reportFilter.registrationType" name="registrationType" id="registrationType" theme="bootstrap">
                                         <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                                             <span ng-bind="$select.selected.name"></span>
                                         </ui-select-match>
@@ -98,7 +98,7 @@
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group full-width">
                                     <label class="control-label" data-translate="pcsApp.generalRegistrationReport.position"></label>
-                                    <ui-select ng-model="vm.reportFilter.position" name="position" id="position" theme="bootstrap" required>
+                                    <ui-select ng-model="vm.reportFilter.position" name="position" id="position" theme="bootstrap">
                                         <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                                             <span ng-bind="$select.selected"></span>
                                         </ui-select-match>
@@ -133,7 +133,7 @@
                                 <div class="form-group full-width">
                                     <label class="control-label" data-translate="pcsApp.generalRegistrationReport.payingGroup"
                                            for="payingGroup"></label>
-                                    <ui-select ng-model="vm.reportFilter.payingGroup" name="payingGroup" id="payingGroup" theme="bootstrap" required>
+                                    <ui-select ng-model="vm.reportFilter.payingGroup" name="payingGroup" id="payingGroup" theme="bootstrap">
                                         <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                                             <span ng-bind="$select.selected.name"></span>
                                         </ui-select-match>
@@ -151,7 +151,7 @@
                                         <span class="input-group-addon">
                                             <input type="checkbox" name="countryNegation" id="countryNegation" ng-model="vm.reportFilter.countryNegation" class="ng-valid ng-dirty ng-valid-parse ng-empty ng-touched">
                                         </span>
-                                        <ui-select ng-model="vm.reportFilter.country" name="country" id="country" theme="bootstrap" required>
+                                        <ui-select ng-model="vm.reportFilter.country" name="country" id="country" theme="bootstrap">
                                             <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                                                 <span ng-bind="$select.selected.name"></span>
                                             </ui-select-match>
@@ -164,7 +164,7 @@
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group full-width">
                                     <label class="control-label" data-translate="pcsApp.generalRegistrationReport.otherData"></label>
-                                    <ui-select ng-model="vm.reportFilter.otherData" name="otherData" id="otherData" theme="bootstrap" required>
+                                    <ui-select ng-model="vm.reportFilter.otherData" name="otherData" id="otherData" theme="bootstrap">
                                         <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                                             <span ng-bind="$select.selected"></span>
                                         </ui-select-match>
@@ -199,23 +199,18 @@
                             </div>
                             <div class="col-lg-4 col-md-6 col-sm-4">
                                 <div class="form-group full-width">
-                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.optionalService"
-                                           for="optionalService"></label>
-                                    <ui-select ng-model="vm.reportFilter.optionalService" name="optionalService" id="optionalService" theme="bootstrap" required>
-                                        <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
-                                            <span ng-bind="$select.selected.name"></span>
-                                        </ui-select-match>
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.optionalService" for="optionalServices"></label>
+                                    <ui-select multiple ng-model="vm.reportFilter.optionalServices" name="optionalService" id="optionalService" theme="bootstrap">
+                                        <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">{{$item.name}}</ui-select-match>
                                         <ui-select-choices repeat="optionalService in (vm.optionalServices | filter: $select.search) track by optionalService.id">
                                             <div ng-bind-html="optionalService.name | highlight: $select.search"></div>
                                         </ui-select-choices>
                                     </ui-select>
-
                                 </div>
                                 <div class="hr-line-dashed"></div>
                                 <div class="form-group full-width">
-                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.hotelNames"
-                                           for="optionalService"></label>
-                                    <ui-select ng-model="vm.reportFilter.congressHotel" name="hotel" id="hotel" theme="bootstrap" required>
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.hotelNames" for="hotel"></label>
+                                    <ui-select ng-model="vm.reportFilter.congressHotel" name="hotel" id="hotel" theme="bootstrap">
                                         <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                                             <span ng-bind="$select.selected.hotel.name"></span>
                                         </ui-select-match>

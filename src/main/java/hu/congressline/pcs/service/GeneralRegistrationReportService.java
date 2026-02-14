@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
@@ -178,9 +180,9 @@ public class GeneralRegistrationReportService extends XlsReportService {
             stringBuilder.append("where pgi.paying_group_id = ").append(id).append(")\n");
         }
 
-        if (reportFilter.getOptionalService() != null) {
-            final String id = reportFilter.getOptionalService().toString();
-            stringBuilder.append("and oos.optional_service_id = ").append(id).append(endline);
+        if (!reportFilter.getOptionalServices().isEmpty()) {
+            final String ids = reportFilter.getOptionalServices().stream().map(Objects::toString).collect(Collectors.joining(","));
+            stringBuilder.append("and oos.optional_service_id in (").append(ids).append(")").append(endline);
         }
 
         if (reportFilter.getHotelId() != null) {

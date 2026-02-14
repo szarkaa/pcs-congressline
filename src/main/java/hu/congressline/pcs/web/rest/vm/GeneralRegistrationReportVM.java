@@ -1,5 +1,8 @@
 package hu.congressline.pcs.web.rest.vm;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +23,7 @@ public class GeneralRegistrationReportVM extends GeneralReportVM {
     private Long registrationType;
     private Long workplace;
     private Long payingGroup;
-    private Long optionalService;
+    private Set<Long> optionalServices = new HashSet<>();
     private Long hotelId;
     private Long country;
     private Boolean countryNegation;
