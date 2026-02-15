@@ -83,7 +83,7 @@ public class GeneralRegistrationReportResource {
                 String fileName = ServiceUtil.normalizeForFilename(congress.getMeetingCode()) + FILENAME_SUFFIX;
                 return new ResponseEntity<>(reportXlsx, createHeader(fileName), HttpStatus.OK);
             } catch (IOException | WriterException e) {
-                log.error("An error occured while creating general report XLSX", e);
+                log.error("An error occurred while creating general report XLSX", e);
                 return new ResponseEntity<>(reportXlsx, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
@@ -106,7 +106,7 @@ public class GeneralRegistrationReportResource {
                 String fileName = ServiceUtil.normalizeForFilename(congress.getMeetingCode()) + FILENAME_SUFFIX;
                 return new ResponseEntity<>(reportXlsx, createHeader(fileName), HttpStatus.OK);
             } catch (IOException | WriterException e) {
-                log.error("An error occured while creating general report XLSX with qr code", e);
+                log.error("An error occurred while creating general report XLSX with qr code", e);
                 return new ResponseEntity<>(reportXlsx, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }

@@ -13,6 +13,7 @@ public class OptionalServiceApplicantsDTO implements Serializable {
     private Integer regId;
     private String firstName;
     private String lastName;
+    private String email;
     private Integer numOfApplicants;
     private String country;
     private String currency;

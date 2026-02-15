@@ -26,6 +26,7 @@
                         <tr>
                             <th><span data-translate="pcsApp.roomReservationByParticipant.regId">Reg Id</span></th>
                             <th><span data-translate="pcsApp.roomReservationByParticipant.name">Name</span></th>
+                            <th><span data-translate="pcsApp.roomReservationByParticipant.email">Email</span></th>
                             <th><span data-translate="pcsApp.roomReservationByParticipant.roomType">Room type</span></th>
                             <th><span data-translate="pcsApp.roomReservationByParticipant.arrivalDate">Arrival date</span></th>
                             <th><span data-translate="pcsApp.roomReservationByParticipant.departureDate">Departure date</span></th>
@@ -48,6 +49,7 @@
                         <tr ng-repeat="roomReservationByParticipant in vm.roomReservationByParticipants track by roomReservationByParticipant.id">
                             <td>{{roomReservationByParticipant.regId}}</td>
                             <td>{{roomReservationByParticipant.lastName}} {{roomReservationByParticipant.firstName}}</td>
+                            <td>{{roomReservationByParticipant.email}}</td>
                             <td>{{roomReservationByParticipant.roomType}}</td>
                             <td>{{roomReservationByParticipant.arrivalDate}}</td>
                             <td>{{roomReservationByParticipant.departureDate}}</td>

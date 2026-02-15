@@ -60,7 +60,7 @@ public class HotelSummaryReportResource {
             headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", filename));
             return new ResponseEntity<>(reportXlsx, headers, HttpStatus.OK);
         } catch (IOException e) {
-            log.error("An error occured while creating room reservation by rooms report XLSX", e);
+            log.error("An error occurred while creating room reservation by rooms report XLSX", e);
             return new ResponseEntity<>(reportXlsx, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

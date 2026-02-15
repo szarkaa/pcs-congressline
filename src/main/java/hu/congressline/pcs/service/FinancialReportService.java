@@ -157,7 +157,7 @@ public class FinancialReportService extends XlsReportService {
             workbook.write(baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            log.error("An error occured while creating the financial report XLSX file", e);
+            log.error("An error occurred while creating the financial report XLSX file", e);
             throw e;
         }
     }

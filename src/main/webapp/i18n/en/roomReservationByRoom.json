@@ -8,6 +8,7 @@
             },
             "regId": "Reg Id",
             "name": "Name",
+            "email": "Email",
             "roomType": "Room type",
             "country": "Country",
             "date": "Date",

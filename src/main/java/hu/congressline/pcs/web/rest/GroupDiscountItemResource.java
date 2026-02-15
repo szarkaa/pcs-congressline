@@ -54,7 +54,7 @@ public class GroupDiscountItemResource {
             String fileName = ServiceUtil.normalizeForFilename(meetingCode) + "-group-discount-report.xlsx";
             return new ResponseEntity<>(reportXlsx, createHeaders(fileName), HttpStatus.OK);
         } catch (IOException e) {
-            log.error("An error occured while creating group invoice report XLSX", e);
+            log.error("An error occurred while creating group invoice report XLSX", e);
             return new ResponseEntity<>(reportXlsx, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -70,7 +70,7 @@ public class GroupDiscountItemResource {
             String fileName = ServiceUtil.normalizeForFilename(meetingCode) + "-pro-forma-group-invoice-report.xlsx";
             return new ResponseEntity<>(reportXlsx, createHeaders(fileName), HttpStatus.OK);
         } catch (IOException e) {
-            log.error("An error occured while creating pro forma group invoice report XLSX", e);
+            log.error("An error occurred while creating pro forma group invoice report XLSX", e);
             return new ResponseEntity<>(reportXlsx, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

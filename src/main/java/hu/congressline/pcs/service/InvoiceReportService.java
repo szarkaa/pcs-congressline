@@ -468,7 +468,7 @@ public class InvoiceReportService extends XlsReportService implements MonetarySe
             workbook.write(baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            log.error("An error occured while creating the invoice report XLSX file", e);
+            log.error("An error occurred while creating the invoice report XLSX file", e);
             throw e;
         }
     }
@@ -563,7 +563,7 @@ public class InvoiceReportService extends XlsReportService implements MonetarySe
             workbook.write(baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            log.error("An error occured while creating the invoice accountant report XLSX file", e);
+            log.error("An error occurred while creating the invoice accountant report XLSX file", e);
             throw e;
         }
     }

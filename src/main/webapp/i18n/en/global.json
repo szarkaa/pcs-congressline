@@ -228,7 +228,7 @@
         }
     },
     "error": {
-        "internalServerError": "Internal server error occured!",
+        "internalServerError": "Internal server error occurred!",
         "server.not.reachable": "Server not reachable",
         "url.not.found": "Not found",
         "NotNull": "Field {{ fieldName }} cannot be empty!",

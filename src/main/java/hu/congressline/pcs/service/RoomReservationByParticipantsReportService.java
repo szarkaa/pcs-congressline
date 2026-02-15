@@ -38,7 +38,7 @@ public class RoomReservationByParticipantsReportService extends XlsReportService
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<RoomReservationByParticipantsDTO> findAll(Congress congress, Hotel hotel) {
-        log.debug("Request to get all RoomReservationByParticipantsDTOs");
+        log.debug("Request to get all room reservation by participants");
         final Query query = entityManager.createNativeQuery(composeQuery(congress, hotel));
         List result = query.getResultList();
         List<RoomReservationByParticipantsDTO> rrbpList = new ArrayList<>();
@@ -58,6 +58,7 @@ public class RoomReservationByParticipantsReportService extends XlsReportService
         columns.put("Room type", 200);
         columns.put("Reg no.", 100);
         columns.put("Name", 200);
+        columns.put("Email", 200);
         columns.put("Arrival", 100);
         columns.put("Departure", 100);
         columns.put("Nights", 100);
@@ -86,21 +87,22 @@ public class RoomReservationByParticipantsReportService extends XlsReportService
             addCell(row, wrappingCellStyle, 0, dto.getRoomType());
             addCell(row, wrappingCellStyle, 1, dto.getRegId());
             addCell(row, wrappingCellStyle, 2, String.format("%s %s", dto.getLastName(), dto.getFirstName()));
-            addCell(row, wrappingCellStyle, 3, dto.getArrivalDate());
-            addCell(row, wrappingCellStyle, 4, dto.getDepartureDate());
-            addCell(row, wrappingCellStyle, 5, dto.getNights());
-            addCell(row, wrappingCellStyle, 6, dto.getTotalCost());
-            addCell(row, wrappingCellStyle, 7, dto.getTotalPaid());
-            addCell(row, wrappingCellStyle, 8, dto.getTotalToPay());
-            addCell(row, wrappingCellStyle, 9, dto.getPersonCost());
-            addCell(row, wrappingCellStyle, 10, dto.getPersonPaid());
-            addCell(row, wrappingCellStyle, 11, dto.getPersonToPay());
-            addCell(row, wrappingCellStyle, 12, dto.getGroupCost());
-            addCell(row, wrappingCellStyle, 13, dto.getGroupPaid());
-            addCell(row, wrappingCellStyle, 14, dto.getGroupToPay());
-            addCell(row, wrappingCellStyle, 15, dto.getPayingGroupName());
-            addCell(row, wrappingCellStyle, 16, dto.getCurrency());
-            addCell(row, wrappingCellStyle, 17, dto.getComment());
+            addCell(row, wrappingCellStyle, 3, dto.getEmail());
+            addCell(row, wrappingCellStyle, 4, dto.getArrivalDate());
+            addCell(row, wrappingCellStyle, 5, dto.getDepartureDate());
+            addCell(row, wrappingCellStyle, 6, dto.getNights());
+            addCell(row, wrappingCellStyle, 7, dto.getTotalCost());
+            addCell(row, wrappingCellStyle, 8, dto.getTotalPaid());
+            addCell(row, wrappingCellStyle, 9, dto.getTotalToPay());
+            addCell(row, wrappingCellStyle, 10, dto.getPersonCost());
+            addCell(row, wrappingCellStyle, 11, dto.getPersonPaid());
+            addCell(row, wrappingCellStyle, 12, dto.getPersonToPay());
+            addCell(row, wrappingCellStyle, 13, dto.getGroupCost());
+            addCell(row, wrappingCellStyle, 14, dto.getGroupPaid());
+            addCell(row, wrappingCellStyle, 15, dto.getGroupToPay());
+            addCell(row, wrappingCellStyle, 16, dto.getPayingGroupName());
+            addCell(row, wrappingCellStyle, 17, dto.getCurrency());
+            addCell(row, wrappingCellStyle, 18, dto.getComment());
 
             rowIndex++;
         }
@@ -111,7 +113,7 @@ public class RoomReservationByParticipantsReportService extends XlsReportService
             workbook.write(baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            log.error("An error occured while creating the room reservation by participants report XLSX file", e);
+            log.error("An error occurred while creating the room reservation by participants report XLSX file", e);
             throw e;
         }
     }
@@ -122,22 +124,23 @@ public class RoomReservationByParticipantsReportService extends XlsReportService
         bean.setRegId((Integer) row[1]);
         bean.setLastName((String) row[2]);
         bean.setFirstName((String) row[3]);
-        bean.setRoomType((String) row[4]);
-        bean.setArrivalDate(row[5] != null ? (LocalDate) row[5] : null);
-        bean.setDepartureDate(row[6] != null ? (LocalDate) row[6] : null);
-        bean.setNights(row[7] != null ? (Integer) row[7] : null);
-        bean.setPersonCost(ConverterUtil.getBigDecimalValue(row[8]));
-        bean.setPersonPaid(ConverterUtil.getBigDecimalValue(row[9]));
-        bean.setPersonToPay(ConverterUtil.getBigDecimalValue(row[10]));
-        bean.setGroupCost(ConverterUtil.getBigDecimalValue(row[11]));
-        bean.setGroupPaid(ConverterUtil.getBigDecimalValue(row[12]));
-        bean.setGroupToPay(ConverterUtil.getBigDecimalValue(row[13]));
-        bean.setTotalCost(ConverterUtil.getBigDecimalValue(row[14]));
-        bean.setTotalPaid(ConverterUtil.getBigDecimalValue(row[15]));
-        bean.setTotalToPay(ConverterUtil.getBigDecimalValue(row[16]));
-        bean.setCurrency((String) row[17]);
-        bean.setPayingGroupName((String) row[18]);
-        bean.setComment((String) row[19]);
+        bean.setEmail((String) row[4]);
+        bean.setRoomType((String) row[5]);
+        bean.setArrivalDate(row[6] != null ? (LocalDate) row[6] : null);
+        bean.setDepartureDate(row[7] != null ? (LocalDate) row[7] : null);
+        bean.setNights(row[8] != null ? (Integer) row[8] : null);
+        bean.setPersonCost(ConverterUtil.getBigDecimalValue(row[9]));
+        bean.setPersonPaid(ConverterUtil.getBigDecimalValue(row[10]));
+        bean.setPersonToPay(ConverterUtil.getBigDecimalValue(row[11]));
+        bean.setGroupCost(ConverterUtil.getBigDecimalValue(row[12]));
+        bean.setGroupPaid(ConverterUtil.getBigDecimalValue(row[13]));
+        bean.setGroupToPay(ConverterUtil.getBigDecimalValue(row[14]));
+        bean.setTotalCost(ConverterUtil.getBigDecimalValue(row[15]));
+        bean.setTotalPaid(ConverterUtil.getBigDecimalValue(row[16]));
+        bean.setTotalToPay(ConverterUtil.getBigDecimalValue(row[17]));
+        bean.setCurrency((String) row[18]);
+        bean.setPayingGroupName((String) row[19]);
+        bean.setComment((String) row[20]);
         return bean;
     }
 
@@ -148,6 +151,7 @@ public class RoomReservationByParticipantsReportService extends XlsReportService
                 + "q.reg_id,\n"
                 + "q.last_name,\n"
                 + "q.first_name,\n"
+                + "q.email,\n"
                 + "q.room_type,\n"
                 + "q.arrival_date,\n"
                 + "q.departure_date,\n"
@@ -169,6 +173,7 @@ public class RoomReservationByParticipantsReportService extends XlsReportService
                 + "r.reg_id,\n"
                 + "r.last_name,\n"
                 + "r.first_name,\n"
+                + "r.email,\n"
                 + "rm.room_type,\n"
                 + "rr.arrival_date,\n"
                 + "rr.departure_date,\n"

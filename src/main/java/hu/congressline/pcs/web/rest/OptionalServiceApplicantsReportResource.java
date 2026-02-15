@@ -10,11 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import hu.congressline.pcs.repository.OptionalServiceRepository;
 import hu.congressline.pcs.service.OptionalServiceApplicantsReportService;
 import hu.congressline.pcs.service.dto.OptionalServiceApplicantsDTO;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 public class OptionalServiceApplicantsReportResource {
 
     private final OptionalServiceApplicantsReportService service;
-    private final OptionalServiceRepository optionalServiceRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-service-applicants/{optionalServiceIds}")
     public List<OptionalServiceApplicantsDTO> getAllBy(@PathVariable Set<Long> optionalServiceIds) {
         log.debug("REST request to get all OptionalServiceApplicantsReports");
-        List<OptionalServiceApplicantsDTO> result = new ArrayList<>();
         return service.findAll(optionalServiceIds);
     }
 
@@ -54,7 +50,7 @@ public class OptionalServiceApplicantsReportResource {
                 headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", "optional-service-applicants-report.xlsx"));
                 return new ResponseEntity<>(reportXlsx, headers, HttpStatus.OK);
             } catch (IOException e) {
-                log.error("An error occured while creating optional service by applicants report XLSX", e);
+                log.error("An error occurred while creating optional service by applicants report XLSX", e);
                 return new ResponseEntity<>(reportXlsx, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }

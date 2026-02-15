@@ -9,6 +9,7 @@
             "regId": "Reg Id",
             "lastName": "Family name",
             "firstName": "First name",
+            "email": "Email",
             "applicants": "Applicants",
             "country": "Country",
             "currency": "Currency",

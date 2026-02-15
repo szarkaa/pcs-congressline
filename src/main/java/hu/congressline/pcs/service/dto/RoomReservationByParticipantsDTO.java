@@ -14,6 +14,7 @@ public class RoomReservationByParticipantsDTO implements Serializable {
     private Integer regId;
     private String lastName;
     private String firstName;
+    private String email;
     private String roomType;
     private LocalDate arrivalDate;
     private LocalDate departureDate;

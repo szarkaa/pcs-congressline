@@ -49,7 +49,7 @@ public class RegFeeDetailsReportResource {
             headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));
             return new ResponseEntity<>(reportXlsx, headers, HttpStatus.OK);
         } catch (IOException e) {
-            log.error("An error occured while creating Regfee details report XLSX", e);
+            log.error("An error occurred while creating Regfee details report XLSX", e);
             return new ResponseEntity<>(reportXlsx, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

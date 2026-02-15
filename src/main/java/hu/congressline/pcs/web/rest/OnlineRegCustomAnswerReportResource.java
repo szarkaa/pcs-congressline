@@ -59,7 +59,7 @@ public class OnlineRegCustomAnswerReportResource {
             headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", filename));
             return new ResponseEntity<>(reportXlsx, headers, HttpStatus.OK);
         } catch (IOException e) {
-            log.error("An error occured while creating hotel general report XLSX", e);
+            log.error("An error occurred while creating hotel general report XLSX", e);
             return new ResponseEntity<>(reportXlsx, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

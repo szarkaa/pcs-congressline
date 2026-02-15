@@ -416,7 +416,7 @@ public class GeneralRegistrationReportService extends XlsReportService {
             workbook.write(baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            log.error("An error occured while creating the general registration report XLSX file", e);
+            log.error("An error occurred while creating the general registration report XLSX file", e);
             throw e;
         }
     }

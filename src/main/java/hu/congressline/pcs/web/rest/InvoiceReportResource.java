@@ -92,7 +92,7 @@ public class InvoiceReportResource {
                 String fileName = "invoice-report-" + timestamp() + XLSX_SUFFIX;
                 return new ResponseEntity<>(reportXlsx, createXlsHeader(fileName), HttpStatus.OK);
             } catch (IOException e) {
-                log.error("An error occured while creating general report XLSX", e);
+                log.error("An error occurred while creating general report XLSX", e);
                 return new ResponseEntity<>(reportXlsx, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
@@ -114,7 +114,7 @@ public class InvoiceReportResource {
                 String fileName = "invoice-accountant-report-" + timestamp() + XLSX_SUFFIX;
                 return new ResponseEntity<>(reportXlsx, createXlsHeader(fileName), HttpStatus.OK);
             } catch (IOException e) {
-                log.error("An error occured while creating accountant report XLSX", e);
+                log.error("An error occurred while creating accountant report XLSX", e);
                 return new ResponseEntity<>(reportXlsx, HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }

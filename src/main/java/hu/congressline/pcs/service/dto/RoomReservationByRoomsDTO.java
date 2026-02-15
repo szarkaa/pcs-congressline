@@ -13,6 +13,7 @@ public class RoomReservationByRoomsDTO implements Serializable {
     private Long id;
     private String regId;
     private String name;
+    private String email;
     private String country;
     private String roomType;
     private LocalDate arrivalDate;

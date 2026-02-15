@@ -105,7 +105,7 @@ public class GroupDiscountInvoiceXlsService extends XlsReportService {
             workbook.write(baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            log.error("An error occured while creating the room reservation by participants report XLSX file", e);
+            log.error("An error occurred while creating the room reservation by participants report XLSX file", e);
             throw e;
         }
     }
@@ -159,7 +159,7 @@ public class GroupDiscountInvoiceXlsService extends XlsReportService {
             workbook.write(baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            log.error("An error occured while creating the group invoice report XLSX file", e);
+            log.error("An error occurred while creating the group invoice report XLSX file", e);
             throw e;
         }
     }

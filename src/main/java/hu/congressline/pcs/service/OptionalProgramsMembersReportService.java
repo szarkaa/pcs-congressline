@@ -105,7 +105,7 @@ public class OptionalProgramsMembersReportService extends XlsReportService {
             workbook.write(baos);
             return baos.toByteArray();
         } catch (IOException e) {
-            log.error("An error occured while creating the optional service by applicants report XLSX file", e);
+            log.error("An error occurred while creating the optional service by applicants report XLSX file", e);
             throw e;
         }
     }
