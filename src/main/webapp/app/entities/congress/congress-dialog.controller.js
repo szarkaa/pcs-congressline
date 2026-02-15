@@ -94,7 +94,7 @@
         function onSaveSuccess (result) {
             $scope.$emit('pcsApp:congressUpdate', result);
             if (vm.congressFromCopyWp) {
-                Congress.migrateWorkplaces({from: vm.congressFromCopyWp.id, to: result.id},
+                Congress.migrateItems({from: vm.congressFromCopyWp.id, to: result.id},
                     function () {
                         vm.congressFromCopyWp = null;
                     }, function () {

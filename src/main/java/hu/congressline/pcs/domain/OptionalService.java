@@ -96,6 +96,41 @@ public class OptionalService implements Serializable {
     @ManyToOne
     private Congress congress;
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(@NonNull OptionalServiceVM viewModel) {
+        this.code = viewModel.getCode();
+        this.name = viewModel.getName();
+        this.startDate = viewModel.getStartDate();
+        this.endDate = viewModel.getEndDate();
+        this.price = viewModel.getPrice();
+        this.maxPerson = viewModel.getMaxPerson();
+        this.reserved = viewModel.getReserved();
+        this.onlineType = viewModel.getOnlineType();
+        this.onlineVisibility = viewModel.getOnlineVisibility();
+        this.onlineLabel = viewModel.getOnlineLabel();
+        this.onlineOrder = viewModel.getOnlineOrder();
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public static OptionalService copy(OptionalService optionalService) {
+        OptionalService copy = new OptionalService();
+        copy.setCode(optionalService.getCode());
+        copy.setName(optionalService.getName());
+        copy.setStartDate(optionalService.getStartDate());
+        copy.setEndDate(optionalService.getEndDate());
+        copy.setPrice(optionalService.getPrice());
+        copy.setMaxPerson(optionalService.getMaxPerson());
+        copy.setReserved(0);
+        copy.setVatInfo(optionalService.getVatInfo());
+        copy.setCurrency(optionalService.getCurrency());
+        copy.setOnlineType(optionalService.getOnlineType());
+        copy.setOnlineVisibility(optionalService.getOnlineVisibility());
+        copy.setOnlineLabel(optionalService.getOnlineLabel());
+        copy.setOnlineOrder(optionalService.getOnlineOrder());
+        copy.setCongress(optionalService.getCongress());
+        return copy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -119,20 +154,5 @@ public class OptionalService implements Serializable {
     @Override
     public String toString() {
         return "OptionalService{" + "id=" + id + "}";
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    public void update(@NonNull OptionalServiceVM viewModel) {
-        this.code = viewModel.getCode();
-        this.name = viewModel.getName();
-        this.startDate = viewModel.getStartDate();
-        this.endDate = viewModel.getEndDate();
-        this.price = viewModel.getPrice();
-        this.maxPerson = viewModel.getMaxPerson();
-        this.reserved = viewModel.getReserved();
-        this.onlineType = viewModel.getOnlineType();
-        this.onlineVisibility = viewModel.getOnlineVisibility();
-        this.onlineLabel = viewModel.getOnlineLabel();
-        this.onlineOrder = viewModel.getOnlineOrder();
     }
 }

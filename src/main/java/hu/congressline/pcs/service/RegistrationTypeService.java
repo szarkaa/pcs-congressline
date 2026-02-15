@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.RegistrationRegistrationType;
 import hu.congressline.pcs.domain.RegistrationType;
 import hu.congressline.pcs.repository.CurrencyRepository;
@@ -99,5 +100,17 @@ public class RegistrationTypeService {
     public Optional<RegistrationType> findOneByCode(String code, Long congressId) {
         log.debug("Request to get registration type by code: {}", code);
         return repository.findOneByCodeAndCongressId(code, congressId);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional
+    public void migrate(Long fromCongressId, Long toCongressId) {
+        Congress toCongress = congressService.getById(toCongressId);
+        final List<RegistrationType> regTypes = repository.findByCongressId(fromCongressId);
+        regTypes.forEach(regType -> {
+            final RegistrationType copy = RegistrationType.copy(regType);
+            copy.setCongress(toCongress);
+            repository.save(copy);
+        });
     }
 }

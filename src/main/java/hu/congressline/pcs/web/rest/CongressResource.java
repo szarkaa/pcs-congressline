@@ -22,14 +22,18 @@ import java.util.stream.Collectors;
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.OnlineRegConfig;
 import hu.congressline.pcs.repository.CongressRepository;
+import hu.congressline.pcs.service.CongressHotelService;
 import hu.congressline.pcs.service.CongressService;
+import hu.congressline.pcs.service.OptionalServiceService;
+import hu.congressline.pcs.service.OptionalTextService;
+import hu.congressline.pcs.service.RegistrationTypeService;
 import hu.congressline.pcs.service.WorkplaceService;
 import hu.congressline.pcs.service.dto.CongressDTO;
 import hu.congressline.pcs.service.dto.CurrencyDTO;
 import hu.congressline.pcs.service.dto.OnlineRegConfigDTO;
 import hu.congressline.pcs.service.dto.StrippedCongressDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
-import hu.congressline.pcs.web.rest.vm.CongressMigrateWorkplaceVM;
+import hu.congressline.pcs.web.rest.vm.CongressMigrateItemVM;
 import hu.congressline.pcs.web.rest.vm.CongressVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +50,11 @@ public class CongressResource {
 
     private final CongressRepository congressRepository;
     private final CongressService congressService;
+    private final CongressHotelService congressHotelService;
     private final WorkplaceService workplaceService;
+    private final RegistrationTypeService registrationTypeService;
+    private final OptionalServiceService optionalServiceService;
+    private final OptionalTextService optionalTextService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/congresses")
@@ -90,11 +98,18 @@ public class CongressResource {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @PostMapping("/congresses/migrate-workplaces")
-    public ResponseEntity<Void> migrateWorkplaces(@Valid @RequestBody CongressMigrateWorkplaceVM cmw) {
-        log.debug("REST request to migrate congress workplaces from: {} to: {}", cmw.getFrom(), cmw.getTo());
-        Congress from = congressService.getById(cmw.getFrom());
+    @PostMapping("/congresses/migrate-items")
+    public ResponseEntity<Void> migrateItems(@Valid @RequestBody CongressMigrateItemVM cmw) {
+        log.debug("REST request to migrate congress items from: {} to: {}", cmw.getFrom(), cmw.getTo());
         workplaceService.migrate(cmw.getFrom(), cmw.getTo());
+        registrationTypeService.migrate(cmw.getFrom(), cmw.getTo());
+        congressHotelService.migrate(cmw.getFrom(), cmw.getTo());
+        optionalServiceService.migrate(cmw.getFrom(), cmw.getTo());
+        optionalTextService.migrate(cmw.getFrom(), cmw.getTo());
+        Congress from = congressService.getById(cmw.getFrom());
+        Congress to = congressService.getById(cmw.getTo());
+        to.setMigratedFromCongressCode(from.getMeetingCode());
+        congressService.save(to);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityCreationAlert("congress.migrate", from.getName())).build();
     }
 

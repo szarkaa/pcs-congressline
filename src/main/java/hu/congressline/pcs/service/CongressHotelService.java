@@ -6,9 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.CongressHotel;
+import hu.congressline.pcs.domain.Room;
 import hu.congressline.pcs.repository.CongressHotelRepository;
 import hu.congressline.pcs.repository.HotelRepository;
+import hu.congressline.pcs.repository.RoomRepository;
 import hu.congressline.pcs.web.rest.vm.CongressHotelVM;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +25,7 @@ public class CongressHotelService {
 
     private final CongressHotelRepository repository;
     private final HotelRepository hotelRepository;
+    private final RoomRepository roomRepository;
     private final CongressService congressService;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -67,4 +71,21 @@ public class CongressHotelService {
         return repository.findByCongressId(id);
     }
 
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional
+    public void migrate(Long fromCongressId, Long toCongressId) {
+        Congress toCongress = congressService.getById(toCongressId);
+        final List<CongressHotel> congressHotels = repository.findByCongressId(fromCongressId);
+        congressHotels.forEach(congressHotel -> {
+            CongressHotel copyCongressHotel = new CongressHotel();
+            copyCongressHotel.setCongress(toCongress);
+            copyCongressHotel.setHotel(congressHotel.getHotel());
+            final CongressHotel resultCongressHotel = repository.save(copyCongressHotel);
+            roomRepository.findAllByCongressHotelCongressId(resultCongressHotel.getId()).forEach(room -> {
+                Room copyRoom = Room.copy(room);
+                copyRoom.setCongressHotel(resultCongressHotel);
+                roomRepository.save(copyRoom);
+            });
+        });
+    }
 }

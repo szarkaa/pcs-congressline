@@ -46,6 +46,15 @@ public class OptionalText implements Serializable {
         this.optionalText = viewModel.getOptionalText();
     }
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public static OptionalText copy(OptionalText optionalText) {
+        OptionalText copy = new OptionalText();
+        copy.setName(optionalText.getName());
+        copy.setOptionalText(optionalText.getOptionalText());
+        copy.setCongress(optionalText.getCongress());
+        return copy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

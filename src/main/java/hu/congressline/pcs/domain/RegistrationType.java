@@ -121,6 +121,27 @@ public class RegistrationType implements Serializable {
         this.onlineOrder = viewModel.getOnlineOrder();
     }
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public static RegistrationType copy(RegistrationType registrationType) {
+        RegistrationType copy = new RegistrationType();
+        copy.setCode(registrationType.getCode());
+        copy.setName(registrationType.getName());
+        copy.setFirstRegFee(registrationType.getFirstRegFee());
+        copy.setFirstDeadline(registrationType.getFirstDeadline());
+        copy.setSecondRegFee(registrationType.getSecondRegFee());
+        copy.setSecondDeadline(registrationType.getSecondDeadline());
+        copy.setThirdRegFee(registrationType.getThirdRegFee());
+        copy.setRegistrationType(registrationType.getRegistrationType());
+        copy.setVatInfo(registrationType.getVatInfo());
+        copy.setCurrency(registrationType.getCurrency());
+        copy.setOnlineType(registrationType.getOnlineType());
+        copy.setOnlineVisibility(registrationType.getOnlineVisibility());
+        copy.setOnlineLabel(registrationType.getOnlineLabel());
+        copy.setOnlineOrder(registrationType.getOnlineOrder());
+        copy.setCongress(registrationType.getCongress());
+        return copy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

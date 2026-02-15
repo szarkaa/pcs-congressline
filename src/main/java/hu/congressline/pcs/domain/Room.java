@@ -97,6 +97,23 @@ public class Room implements Serializable {
         this.onlineExternalLink = viewModel.getOnlineExternalLink();
     }
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public static Room copy(Room room) {
+        Room copy = new Room();
+        copy.setRoomType(room.getRoomType());
+        copy.setBed(room.getBed());
+        copy.setQuantity(room.getQuantity());
+        copy.setPrice(room.getPrice());
+        copy.setCurrency(room.getCurrency());
+        copy.setVatInfo(room.getVatInfo());
+        copy.setOnlineVisibility(room.getOnlineVisibility());
+        copy.setOnlineLabel(room.getOnlineLabel());
+        copy.setOnlineExternalLink(room.getOnlineExternalLink());
+        copy.setOnlineExternalEmail(room.getOnlineExternalEmail());
+        copy.setCongressHotel(room.getCongressHotel());
+        return copy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

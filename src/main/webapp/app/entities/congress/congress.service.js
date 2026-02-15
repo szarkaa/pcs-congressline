@@ -74,9 +74,9 @@
                     return angular.toJson(copy);
                 }
             },
-            'migrateWorkplaces': {
+            'migrateItems': {
                 method: 'POST',
-                url: 'api/congresses/migrate-workplaces'
+                url: 'api/congresses/migrate-items'
             }
         });
     }

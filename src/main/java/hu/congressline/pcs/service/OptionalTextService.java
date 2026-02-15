@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.OptionalText;
 import hu.congressline.pcs.repository.OptionalTextRepository;
 import hu.congressline.pcs.web.rest.vm.OptionalTextVM;
@@ -60,4 +61,17 @@ public class OptionalTextService {
     public List<OptionalText> findAllByCongressId(Long id) {
         return repository.findAllByCongressId(id);
     }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional
+    public void migrate(Long fromCongressId, Long toCongressId) {
+        Congress toCongress = congressService.getById(toCongressId);
+        final List<OptionalText> optionalTexts = repository.findAllByCongressId(fromCongressId);
+        optionalTexts.forEach(optionalText -> {
+            final OptionalText copy = OptionalText.copy(optionalText);
+            copy.setCongress(toCongress);
+            repository.save(copy);
+        });
+    }
+
 }

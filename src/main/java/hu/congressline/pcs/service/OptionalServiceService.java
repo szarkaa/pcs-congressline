@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.OptionalService;
 import hu.congressline.pcs.repository.CurrencyRepository;
 import hu.congressline.pcs.repository.OptionalServiceRepository;
@@ -84,4 +85,17 @@ public class OptionalServiceService {
     public Optional<OptionalService> findByCodeAndCongressId(@NotNull String code, @NotNull Long congressId) {
         return repository.findOneByCodeAndCongressId(code, congressId);
     }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional
+    public void migrate(Long fromCongressId, Long toCongressId) {
+        Congress toCongress = congressService.getById(toCongressId);
+        final List<OptionalService> optionalServices = repository.findByCongressIdOrderByName(fromCongressId);
+        optionalServices.forEach(optionalService -> {
+            final OptionalService copy = OptionalService.copy(optionalService);
+            copy.setCongress(toCongress);
+            repository.save(copy);
+        });
+    }
+
 }

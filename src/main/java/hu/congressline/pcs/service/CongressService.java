@@ -89,7 +89,14 @@ public class CongressService {
         congress.setOnlineRegCurrencies(currencyService.getAllByIds(viewModel.getOnlineRegCurrencyIds()));
         congress.setBankAccounts(new HashSet<>(bankAccountRepository.findAllById(viewModel.getBankAccountIds())));
         Congress result = congressRepository.save(congress);
-        OnlineRegConfig config = new OnlineRegConfig();
+        OnlineRegConfig config;
+        if (viewModel.getMigrateCongressId() != null) {
+            config = onlineRegConfigRepository.findOneByCongressId(viewModel.getMigrateCongressId())
+                .map(OnlineRegConfig::copy)
+                .orElseThrow(() -> new IllegalArgumentException("Online reg config not found by congress id: " + viewModel.getMigrateCongressId()));
+        } else {
+            config = new OnlineRegConfig();
+        }
         config.setCongress(result);
         onlineRegConfigRepository.save(config);
         return result;

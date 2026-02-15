@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Data
-public class CongressMigrateWorkplaceVM {
+public class CongressMigrateItemVM {
     private Long from;
     private Long to;
 }

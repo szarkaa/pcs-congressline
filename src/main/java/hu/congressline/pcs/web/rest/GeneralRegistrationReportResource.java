@@ -22,6 +22,7 @@ import java.util.List;
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.service.CongressService;
 import hu.congressline.pcs.service.GeneralRegistrationReportService;
+import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.service.dto.GeneralRegistrationReportDTO;
 import hu.congressline.pcs.service.util.ServiceUtil;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
@@ -39,7 +40,7 @@ public class GeneralRegistrationReportResource {
 
     private final GeneralRegistrationReportService service;
     private final CongressService congressService;
-    //private final MailService mailService;
+    private final MailService mailService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/general-registration-report/send-general-email-to-all")
@@ -60,7 +61,7 @@ public class GeneralRegistrationReportResource {
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/general-registration-report")
     public List<GeneralRegistrationReportDTO> get(@RequestParam String query) throws IOException {
-        log.debug("REST request to get all GeneralRegistrationReportDTO");
+        log.debug("REST request to get all general registration report rows");
         ObjectMapper mapper = new ObjectMapper();
         GeneralRegistrationReportVM reportFilter = mapper.readValue(new String(Base64.getDecoder().decode(query)), GeneralRegistrationReportVM.class);
         return service.findAll(reportFilter);
@@ -69,7 +70,7 @@ public class GeneralRegistrationReportResource {
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/general-registration-report/download-report")
     public ResponseEntity<byte[]> download(@RequestParam String query) throws IOException {
-        log.debug("REST request to download RoomReservationByRoomsReport");
+        log.debug("REST request to download general registration report rows");
         byte[] reportXlsx = new byte[0];
         ObjectMapper mapper = new ObjectMapper();
         GeneralRegistrationReportVM reportFilter = mapper.readValue(new String(Base64.getDecoder().decode(query)), GeneralRegistrationReportVM.class);
@@ -92,7 +93,7 @@ public class GeneralRegistrationReportResource {
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/general-registration-report/download-report-with-qrcode")
     public ResponseEntity<byte[]> downloadWithQRCode(@RequestParam String query) throws IOException {
-        log.debug("REST request to download RoomReservationByRoomsReport with qr code");
+        log.debug("REST request to download general registration report rows with qr code");
         byte[] reportXlsx = new byte[0];
         ObjectMapper mapper = new ObjectMapper();
         GeneralRegistrationReportVM reportFilter = mapper.readValue(new String(Base64.getDecoder().decode(query)), GeneralRegistrationReportVM.class);

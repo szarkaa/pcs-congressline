@@ -111,7 +111,6 @@ public class WorkplaceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
     public void migrate(Long fromCongressId, Long toCongressId) {
-        Congress fromCongress = congressService.getById(fromCongressId);
         Congress toCongress = congressService.getById(toCongressId);
         final List<Workplace> workplaces = findByCongressId(fromCongressId);
         workplaces.forEach(workplace -> {
@@ -119,8 +118,5 @@ public class WorkplaceService {
             copy.setCongress(toCongress);
             repository.save(copy);
         });
-
-        toCongress.setMigratedFromCongressCode(fromCongress.getMeetingCode());
-        congressService.save(toCongress);
     }
 }
