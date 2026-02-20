@@ -56,6 +56,7 @@
                     }],
                     registration: ['$stateParams', function ($stateParams) {
                         return { // in clear function as well!!!
+                            attachment: {file: null, fileContentType: null, name: null},
                             title: null,
                             lastName: null,
                             firstName: null,

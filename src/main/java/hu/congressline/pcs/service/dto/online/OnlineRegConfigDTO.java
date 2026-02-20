@@ -28,6 +28,12 @@ public class OnlineRegConfigDTO {
     private String browserRemarkEn;
     private String browserRemarkEs;
     private String browserRemarkPt;
+    private boolean attachmentVisible;
+    private boolean attachmentRequired;
+    private String attachmentLabelEn;
+    private String attachmentLabelHu;
+    private String attachmentLabelEs;
+    private String attachmentLabelPt;
     private boolean lastNameVisible;
     private boolean lastNameRequired;
     private boolean firstNameVisible;
@@ -180,6 +186,12 @@ public class OnlineRegConfigDTO {
         this.browserRemarkEn = RichTextHtmlCodec.decodeFromDb(config.getBrowserRemarkEn());
         this.browserRemarkEs = RichTextHtmlCodec.decodeFromDb(config.getBrowserRemarkEs());
         this.browserRemarkPt = RichTextHtmlCodec.decodeFromDb(config.getBrowserRemarkPt());
+        this.attachmentVisible = TRUE.equals(config.getAttachmentVisible());
+        this.attachmentRequired = TRUE.equals(config.getAttachmentRequired());
+        this.attachmentLabelEn = config.getAttachmentLabelEn();
+        this.attachmentLabelHu = config.getAttachmentLabelHu();
+        this.attachmentLabelEs = config.getAttachmentLabelEs();
+        this.attachmentLabelPt = config.getAttachmentLabelPt();
         this.lastNameVisible = TRUE.equals(config.getLastNameVisible());
         this.lastNameRequired = TRUE.equals(config.getLastNameRequired());
         this.firstNameVisible = TRUE.equals(config.getFirstNameVisible());

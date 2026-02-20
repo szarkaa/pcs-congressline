@@ -5,9 +5,9 @@
         .module('pcsApp')
         .controller('OnlineRegController', OnlineRegController);
 
-    OnlineRegController.$inject = ['$timeout', '$filter', '$scope', '$state', '$stateParams', '$translate', 'tmhDynamicLocale', 'congress', 'registration', 'OnlineReg'];
+    OnlineRegController.$inject = ['$timeout', '$filter', '$scope', '$state', '$stateParams', '$translate', 'tmhDynamicLocale', 'congress', 'registration', 'OnlineReg', 'DataUtils'];
 
-    function OnlineRegController ($timeout, $filter, $scope, $state, $stateParams, $translate, tmhDynamicLocale, congress, registration, OnlineReg) {
+    function OnlineRegController ($timeout, $filter, $scope, $state, $stateParams, $translate, tmhDynamicLocale, congress, registration, OnlineReg, DataUtils) {
         var vm = this;
         vm.isSending = false;
         vm.isSubmitSuccess = false;
@@ -25,6 +25,7 @@
 
         vm.discountCodeText = null;
         vm.discountCode = null;
+        vm.fileUploadDisplay = null;
 
         initDefaultCountry();
 
@@ -32,6 +33,10 @@
         tmhDynamicLocale.set(vm.language);
 
         vm.headerStyle = headerStyle;
+        vm.setFile = setFile;
+        vm.clearFile = clearFile;
+        vm.openFile = DataUtils.openFile;
+        vm.byteSize = DataUtils.byteSize;
         vm.submit = submit;
         vm.clear = clear;
         vm.getCurrency = getCurrency;
@@ -113,6 +118,9 @@
 
         function buildOnlineReg() {
             var reg = { // in clear and state resolve function as well!!!
+                attachmentName: vm.registration.attachment.name,
+                attachmentContentType: vm.registration.attachment.fileContentType,
+                attachmentFile: vm.registration.attachment.file,
                 title: vm.registration.title,
                 lastName: vm.registration.lastName,
                 firstName: vm.registration.firstName,
@@ -583,7 +591,26 @@
             window.open(room.onlineExternalLink, '_blank');
         }
 
+        function setFile($file, pcsFile) {
+            if ($file) {
+                DataUtils.toBase64($file, function(base64Data) {
+                    $scope.$apply(function() {
+                        pcsFile.name = $file.name;
+                        pcsFile.file = base64Data;
+                        pcsFile.fileContentType = $file.type ? $file.type : 'application/octet-stream';
+                    });
+                });
+            }
+        }
+
+        function clearFile(file) {
+            file.name = null;
+            file.fileContentType = null;
+            file.file = null;
+        }
+
         function clear() { // in state resolve as well!!!
+            vm.registration.attachment = {file: null, fileContentType: null, name: null};
             vm.registration.title = null;
             vm.registration.lastName = null;
             vm.registration.firstName = null;

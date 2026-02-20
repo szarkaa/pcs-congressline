@@ -605,4 +605,11 @@ PCS custom classes
 .bold-option {
     font-weight: 700;
 }
+
+.file-upload[readonly], .file-upload {
+    background-color: #fff !important;
+    cursor: not-allowed;
+    opacity: 1;
+}
+
 /* jhipster-needle-css-add-main JHipster will add new css style */

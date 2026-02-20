@@ -137,6 +137,91 @@
                         <div class="hr-line-dashed"></div>
 
                         <div class="form-group">
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.attachmentVisible">Attachment visible</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="attachmentVisible" id="field_attachmentVisible"
+                                               ng-model="vm.onlineRegConfig.attachmentVisible" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_attachmentVisible">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-9">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.attachmentRequired">Attachment required</label>
+
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" name="attachmentRequired" id="field_attachmentRequired"
+                                               ng-model="vm.onlineRegConfig.attachmentRequired" class="onoffswitch-checkbox"/>
+                                        <label class="onoffswitch-label" for="field_attachmentRequired">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.attachmentLabelHu"  for="field_attachmentLabelHu">Attachment label(hu)</label>
+                                <input type="text" class="form-control" name="attachmentLabelHu" id="field_attachmentLabelHu"
+                                       ng-model="vm.onlineRegConfig.attachmentLabelHu" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.attachmentLabelHu.$invalid">
+                                    <p class="error-block" ng-show="editForm.attachmentLabelHu.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.attachmentLabelHu.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.attachmentLabelEn" for="field_attachmentLabelEn">Attachment label(en)</label>
+                                <input type="text" class="form-control" name="attachmentLabelEn" id="field_attachmentLabelEn"
+                                       ng-model="vm.onlineRegConfig.attachmentLabelEn" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.attachmentLabelEn.$invalid">
+                                    <p class="error-block" ng-show="editForm.attachmentLabelEn.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.attachmentLabelEn.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.attachmentLabelEs" for="field_attachmentLabelEs">Attachment label(es)</label>
+                                <input type="text" class="form-control" name="attachmentLabelEs" id="field_attachmentLabelEs"
+                                       ng-model="vm.onlineRegConfig.attachmentLabelEs" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.attachmentLabelEs.$invalid">
+                                    <p class="error-block" ng-show="editForm.attachmentLabelEs.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.attachmentLabelEs.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.attachmentLabelPt" for="field_attachmentLabelPt">Attachment label(pt)</label>
+                                <input type="text" class="form-control" name="attachmentLabelPt" id="field_attachmentLabelPt"
+                                       ng-model="vm.onlineRegConfig.attachmentLabelPt" autocomplete="off" ng-maxlength="200"/>
+                                <div ng-show="editForm.attachmentLabelPt.$invalid">
+                                    <p class="error-block" ng-show="editForm.attachmentLabelPt.$error.required" data-translate="entity.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.attachmentLabelPt.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="200">
+                                        This field cannot be longer than 200 characters.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hr-line-dashed"></div>
+
+                        <div class="form-group">
                             <label class="control-label" data-translate="pcsApp.onlineRegConfig.browserRemarkHu" for="field_browserRemarkHu">Browser remark(hu)</label>
                             <summernote id="field_browserRemarkHu" name="browserRemarkHu" ng-model="vm.onlineRegConfig.browserRemarkHu" config="vm.summerNoteConfig"></summernote>
                             <div ng-show="editForm.browserRemarkHu.$invalid">

@@ -147,6 +147,12 @@ public class CongressService {
         onlineRegConfig.setBrowserRemarkEn(RichTextHtmlCodec.encodeForDb(viewModel.getBrowserRemarkEn()));
         onlineRegConfig.setBrowserRemarkEs(RichTextHtmlCodec.encodeForDb(viewModel.getBrowserRemarkEs()));
         onlineRegConfig.setBrowserRemarkPt(RichTextHtmlCodec.encodeForDb(viewModel.getBrowserRemarkPt()));
+        onlineRegConfig.setAttachmentVisible(viewModel.isAttachmentVisible());
+        onlineRegConfig.setAttachmentRequired(viewModel.isAttachmentRequired());
+        onlineRegConfig.setAttachmentLabelEn(viewModel.getAttachmentLabelEn());
+        onlineRegConfig.setAttachmentLabelHu(viewModel.getAttachmentLabelHu());
+        onlineRegConfig.setAttachmentLabelEs(viewModel.getAttachmentLabelEs());
+        onlineRegConfig.setAttachmentLabelPt(viewModel.getAttachmentLabelPt());
         onlineRegConfig.setLastNameVisible(viewModel.isLastNameVisible());
         onlineRegConfig.setLastNameRequired(viewModel.isLastNameRequired());
         onlineRegConfig.setFirstNameVisible(viewModel.isFirstNameVisible());

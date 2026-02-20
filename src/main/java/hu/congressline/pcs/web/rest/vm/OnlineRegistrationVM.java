@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 @Data
 public class OnlineRegistrationVM implements Serializable {
     private Long id;
+    private String attachmentName;
+    private String attachmentContentType;
+    private byte[] attachmentFile;
     private String lastName;
     private String firstName;
     private String title;

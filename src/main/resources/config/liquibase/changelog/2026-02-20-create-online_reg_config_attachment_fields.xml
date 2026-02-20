@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2026-02-20-create-online_reg_config_attachment_fields" author="aszarka">
+
+        <addColumn tableName="online_reg_config">
+            <column name="attachment_required" type="BIT(1)"/>
+            <column name="attachment_visible" type="BIT(1)"/>
+            <column name="attachment_label_hu" type="VARCHAR(200)"/>
+            <column name="attachment_label_en" type="VARCHAR(200)"/>
+            <column name="attachment_label_es" type="VARCHAR(200)"/>
+            <column name="attachment_label_pt" type="VARCHAR(200)"/>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>

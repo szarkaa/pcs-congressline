@@ -90,6 +90,28 @@ public class OnlineRegConfig {
     @Column(name = "browser_remark_pt", columnDefinition = "TEXT", length = 60000)
     private String browserRemarkPt;
 
+    @Column(name = "attachment_visible")
+    private Boolean attachmentVisible;
+
+    @Column(name = "attachment_required")
+    private Boolean attachmentRequired;
+
+    @Size(max = 200)
+    @Column(name = "attachment_label_hu", length = 200)
+    private String attachmentLabelHu;
+
+    @Size(max = 200)
+    @Column(name = "attachment_label_en", length = 200)
+    private String attachmentLabelEn;
+
+    @Size(max = 200)
+    @Column(name = "attachment_label_es", length = 200)
+    private String attachmentLabelEs;
+
+    @Size(max = 200)
+    @Column(name = "attachment_label_pt", length = 200)
+    private String attachmentLabelPt;
+
     @Column(name = "last_name_visible")
     private Boolean lastNameVisible;
 
@@ -626,6 +648,12 @@ public class OnlineRegConfig {
         copy.setBrowserRemarkEn(onlineRegConfig.getBrowserRemarkEn());
         copy.setBrowserRemarkEs(onlineRegConfig.getBrowserRemarkEs());
         copy.setBrowserRemarkPt(onlineRegConfig.getBrowserRemarkPt());
+        copy.setAttachmentVisible(onlineRegConfig.getAttachmentVisible());
+        copy.setAttachmentRequired(onlineRegConfig.getAttachmentRequired());
+        copy.setAttachmentLabelEn(onlineRegConfig.getAttachmentLabelEn());
+        copy.setAttachmentLabelHu(onlineRegConfig.getAttachmentLabelHu());
+        copy.setAttachmentLabelEs(onlineRegConfig.getAttachmentLabelEs());
+        copy.setAttachmentLabelPt(onlineRegConfig.getAttachmentLabelPt());
         copy.setLastNameVisible(onlineRegConfig.getLastNameVisible());
         copy.setLastNameRequired(onlineRegConfig.getLastNameRequired());
         copy.setFirstNameVisible(onlineRegConfig.getFirstNameVisible());

@@ -85,4 +85,6 @@
     <include file="/config/liquibase/changelog/2026-01-27-add-authorities.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2026-02-12-create-online_reg_config_custom_data_fields.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2026-02-12-create-online_reg_custom_data_fields.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2026-02-20-create-online_reg_config_attachment_fields.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2026-02-20-create-pcs-file.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

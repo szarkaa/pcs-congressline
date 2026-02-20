@@ -31,6 +31,7 @@ import hu.congressline.pcs.domain.OnlineRegistrationOptionalService;
 import hu.congressline.pcs.domain.OnlineRegistrationRegistrationType;
 import hu.congressline.pcs.domain.OptionalService;
 import hu.congressline.pcs.domain.OrderedOptionalService;
+import hu.congressline.pcs.domain.PcsFile;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.RegistrationRegistrationType;
 import hu.congressline.pcs.domain.RegistrationType;
@@ -110,6 +111,7 @@ public class OnlineRegService {
     private final RoomReservationService rrService;
     private final OrderedOptionalServiceService oosService;
     private final OptionalServiceService osService;
+    private final PcsFileService pcsFileService;
     //private final MailService mailService;
 
     private final CountryRepository countryRepository;
@@ -389,6 +391,15 @@ public class OnlineRegService {
             final Stream<LocalDate> range = Stream.iterate(result.getArrivalDate(), d -> d.plusDays(1))
                     .limit(ChronoUnit.DAYS.between(result.getArrivalDate(), result.getDepartureDate()));
             range.forEach(localDate -> rrService.increaseRoomReservedNumber(room, localDate));
+        }
+
+        if (vm.getAttachmentFile() != null && vm.getAttachmentFile().length > 0) {
+            PcsFile attachmentFile = new PcsFile();
+            attachmentFile.setName(vm.getAttachmentName());
+            attachmentFile.setFileContentType(vm.getAttachmentContentType());
+            attachmentFile.setFile(vm.getAttachmentFile());
+            attachmentFile.setOnlineRegistrationId(result.getId());
+            pcsFileService.save(attachmentFile);
         }
 
         Locale locale = Locale.forLanguageTag(Currency.HUF.toString().equalsIgnoreCase(vm.getCurrency()) ? "hu" : "en");
