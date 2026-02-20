@@ -71,10 +71,14 @@
                 <div class="ibox-content">
                     <ui-select ng-model="dummyvalue" ng-change="vm.selectPartner($select.selected)" name="partner-search" id="partner-search" theme="bootstrap">
                         <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
-                            <span ng-bind="$select.selected.name"></span>
+                            <span ng-class="{'bold-option': $select.selected.congressId}">
+                                {{$select.selected.name}}
+                            </span>
                         </ui-select-match>
                         <ui-select-choices repeat="partner in (vm.partners | filter: $select.search) track by partner.id">
-                            <div ng-bind-html="partner.name | highlight: $select.search"></div>
+                            <div ng-class="{'bold-option': partner.congressId}">
+                                <span ng-bind-html="partner.name | highlight: $select.search"></span>
+                            </div>
                         </ui-select-choices>
                     </ui-select>
                 </div>

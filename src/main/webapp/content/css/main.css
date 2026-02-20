@@ -602,4 +602,7 @@ PCS custom classes
     cursor: default;
 }
 
+.bold-option {
+    font-weight: 700;
+}
 /* jhipster-needle-css-add-main JHipster will add new css style */

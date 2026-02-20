@@ -6,15 +6,16 @@
         .controller('InvoiceSetupDialogController', InvoiceSetupDialogController);
 
     InvoiceSetupDialogController.$inject = ['$timeout', '$scope', '$state', '$stateParams', 'registration', 'invoice', 'Invoice',
-        'OptionalText', 'CongressSelector', 'BankAccount', 'Country', 'InvoiceUtils', 'registrationRegistrationTypes', 'roomReservations', 'orderedOptionalServices'];
+        'OptionalText', 'CongressSelector', 'BankAccount', 'Country', 'Workplace', 'InvoiceUtils', 'registrationRegistrationTypes', 'roomReservations', 'orderedOptionalServices'];
 
     function InvoiceSetupDialogController($timeout, $scope, $state, $stateParams, registration, invoice, Invoice,
-              OptionalText, CongressSelector, BankAccount, Country, InvoiceUtils, registrationRegistrationTypes, roomReservations, orderedOptionalServices) {
+              OptionalText, CongressSelector, BankAccount, Country, Workplace, InvoiceUtils, registrationRegistrationTypes, roomReservations, orderedOptionalServices) {
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.isShowInvoicePanel = false;
         vm.invoice = invoice;
         vm.bankAccounts = [];
+        vm.partners = [];
         vm.registration = registration;
         vm.registrationRegistrationTypes = registrationRegistrationTypes;
         vm.roomReservations = roomReservations;
@@ -23,6 +24,7 @@
         vm.openCalendar = openCalendar;
         vm.createInvoiceForPrinting = createInvoiceForPrinting;
         vm.setOptionalTextMessage = setOptionalTextMessage;
+        vm.selectPartner = selectPartner;
         vm.getRegistrationCurrency = getRegistrationCurrency;
         vm.showConfirmationPanel = showConfirmationPanel;
         vm.printInvoice = printInvoice;
@@ -43,9 +45,22 @@
             vm.optionalTexts = result;
         });
 
+        Workplace.queryForCongress({ id: CongressSelector.getSelectedCongress().id }, function(result) {
+            vm.partners = result;
+        });
+
         $timeout(function (){
             angular.element('.form-group:eq(0)>input').focus();
         });
+
+        function selectPartner(partner) {
+            vm.invoice.name1 = partner.name;
+            vm.invoice.vatRegNumber = partner.vatRegNumber;
+            vm.invoice.country = partner.country ? partner.country.code : null;
+            vm.invoice.zipCode = partner.zipCode;
+            vm.invoice.city = partner.city;
+            vm.invoice.street = partner.street;
+        }
 
         function setOptionalTextMessage(text) {
             vm.invoice.optionalText = text;
