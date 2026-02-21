@@ -45,7 +45,7 @@
             </div>
         </div>
 <!-- Attachment -->
-        <div ng-if="!vm.isSubmitSuccess" class="row">
+        <div ng-if="!vm.isSubmitSuccess && vm.config.attachmentVisible" class="row">
             <div class="col-md-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title" ng-style="vm.headerStyle()">
@@ -53,24 +53,26 @@
                     </div>
                     <div class="ibox-content">
                         <div class="form-group row">
-                            <label class="control-label" ng-class="{'required-field': vm.config.attachmentRequired}" for="field_attachment_display">{{vm.getValueByLanguage('attachmentLabel')}}</label>
-                            <div class="input-group">
-                                <input type="text" value="{{vm.registration.attachment.name}} {{vm.registration.attachment.fileContentType}} {{vm.byteSize(vm.registration.attachment.file)}}"
-                                       autocomplete="off" class="file-upload form-control" name="attachment_display" id="field_attachment_display" readonly />
-                                <input type="hidden" class="form-control" name="attachment" id="field_attachment" ng-model="vm.registration.attachment.file"
-                                       ng-required="vm.config.attachmentRequired" maxbytes="2000000"/>
-                                <span class="input-group-btn">
-                                    <button type="file" class="btn btn-white" ngf-select ngf-change="vm.setFile($file, vm.registration.attachment)" ng-if="!vm.registration.attachment.file">Select file</button>
-                                    <button type="button" class="btn btn-white" ng-if="vm.registration.attachment.file" ng-click="vm.clearFile(vm.registration.attachment)">Remove</button>
-                                </span>
-                            </div>
-                            <div ng-show="editForm.attachment.$invalid">
-                                <p class="error-block" ng-show="editForm.attachment.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
-                                    This field is required.
-                                </p>
-                                <p class="error-block" ng-show="editForm.attachment.$error.maxbytes" translate="pcsApp.onlineReg.form.validation.maxbytes" translate-value-max="20">
-                                    This field cannot be more than 20MB.
-                                </p>
+                            <div class="col-md-12">
+                                <label class="control-label" ng-class="{'required-field': vm.config.attachmentRequired}" for="field_attachment_display">{{vm.getValueByLanguage('attachmentLabel')}}</label>
+                                <div class="input-group">
+                                    <input type="text" value="{{vm.registration.attachment.name}} {{vm.registration.attachment.fileContentType}} {{vm.byteSize(vm.registration.attachment.file)}}"
+                                           autocomplete="off" class="file-upload form-control online-form-control" name="attachment_display" id="field_attachment_display" readonly />
+                                    <input type="hidden" class="form-control" name="attachment" id="field_attachment" ng-model="vm.registration.attachment.file"
+                                           ng-required="vm.config.attachmentRequired" maxbytes="2000000"/>
+                                    <span class="input-group-btn" style="padding-left: 1px">
+                                        <button type="file" class="btn btn-default" ngf-select ngf-change="vm.setFile($file, vm.registration.attachment)" ng-if="!vm.registration.attachment.file">Select file</button>
+                                        <button type="button" class="btn btn-default" ng-if="vm.registration.attachment.file" ng-click="vm.clearFile(vm.registration.attachment)">Remove</button>
+                                    </span>
+                                </div>
+                                <div ng-show="editForm.attachment.$invalid">
+                                    <p class="error-block" ng-show="editForm.attachment.$error.required" data-translate="pcsApp.onlineReg.form.validation.required">
+                                        This field is required.
+                                    </p>
+                                    <p class="error-block" ng-show="editForm.attachment.$error.maxbytes" translate="pcsApp.onlineReg.form.validation.maxbytes" translate-value-max="20">
+                                        This field cannot be more than 20MB.
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
