@@ -61,7 +61,8 @@
                                     <input type="hidden" class="form-control" name="attachment" id="field_attachment" ng-model="vm.registration.attachment.file"
                                            ng-required="vm.config.attachmentRequired" maxbytes="2000000"/>
                                     <span class="input-group-btn" style="padding-left: 1px">
-                                        <button type="file" class="btn btn-default" ngf-select ngf-change="vm.setFile($file, vm.registration.attachment)" ng-if="!vm.registration.attachment.file">Select file</button>
+                                        <button type="file" class="btn btn-default" ngf-select ngf-change="vm.setFile($file, vm.registration.attachment)"
+                                                ng-if="!vm.registration.attachment.file" ngf-multiple="false" ngf-accept="'application/pdf,image/*'">Select file</button>
                                         <button type="button" class="btn btn-default" ng-if="vm.registration.attachment.file" ng-click="vm.clearFile(vm.registration.attachment)">Remove</button>
                                     </span>
                                 </div>

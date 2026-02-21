@@ -112,7 +112,7 @@ public class OnlineRegService {
     private final OrderedOptionalServiceService oosService;
     private final OptionalServiceService osService;
     private final PcsFileService pcsFileService;
-    //private final MailService mailService;
+    private final MailService mailService;
 
     private final CountryRepository countryRepository;
     private final OnlineRegistrationRepository onlineRegistrationRepository;
@@ -404,8 +404,7 @@ public class OnlineRegService {
 
         Locale locale = Locale.forLanguageTag(Currency.HUF.toString().equalsIgnoreCase(vm.getCurrency()) ? "hu" : "en");
         if (result.getEmail() != null) {
-            int i = 0; //dummy shit for checkstyle
-            //mailService.sendOnlineRegNotificationEmail(result.getEmail(), properties.getMail().getFrom(), congress.getMeetingCode(), result.getEmail(), locale);
+            mailService.sendOnlineRegNotificationEmail(result.getEmail(), null, congress.getMeetingCode(), locale);
         }
 
         return new OnlineRegistrationDTO(result);

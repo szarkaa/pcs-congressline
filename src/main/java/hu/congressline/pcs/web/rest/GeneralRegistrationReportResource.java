@@ -50,7 +50,8 @@ public class GeneralRegistrationReportResource {
 
         final List<GeneralRegistrationReportDTO> reportDTOList = service.findAll(vm);
         reportDTOList.stream().filter(dto -> StringUtils.hasText(dto.getEmail())).forEach(dto -> {
-            //mailService.sendEmail(congress.getContactEmail(), dto.getEmail(), vm.getTopic(), vm.getEmailBody(), false, true);
+            mailService.sendEmail(congress.getContactEmail(), null, dto.getEmail(), congress.getContactEmail(), "Congressline - " + congress.getMeetingCode(),
+                vm.getEmailBody(), false, true);
         });
 
         return ResponseEntity.ok()

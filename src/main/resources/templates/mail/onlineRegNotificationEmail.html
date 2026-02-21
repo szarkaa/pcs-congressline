@@ -1,0 +1,18 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+<head>
+    <title th:text="#{online.reg.notification.email.subject(${congressName ?: ''})}">Online registration notification</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}"/>
+</head>
+<body>
+    <b th:text="#{online.reg.notification.email.header}">Successful registration.</b>
+    <br/>
+    <p th:text="#{online.reg.notification.email.content}">Official confirmation on your e-mail address will be sent shortly.</p>
+    <p>
+        <span th:text="#{online.reg.notification.email.regards}">Sincerely,</span>
+        <br/>
+        <em th:text="#{online.reg.notification.email.signature}">CongressLine Ltd.</em>
+    </p>
+</body>
+</html>

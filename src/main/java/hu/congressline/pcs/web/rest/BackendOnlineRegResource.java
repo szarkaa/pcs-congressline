@@ -1,7 +1,5 @@
 package hu.congressline.pcs.web.rest;
 
-import hu.congressline.pcs.domain.PcsFile;
-import hu.congressline.pcs.service.PcsFileService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,24 +13,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import hu.congressline.pcs.domain.OnlineRegistration;
 import hu.congressline.pcs.domain.OnlineRegistrationCustomAnswer;
 import hu.congressline.pcs.domain.OnlineRegistrationOptionalService;
+import hu.congressline.pcs.domain.PcsFile;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.repository.OnlineRegistrationCustomAnswerRepository;
 import hu.congressline.pcs.repository.OnlineRegistrationOptionalServiceRepository;
 import hu.congressline.pcs.service.OnlineRegPdfService;
 import hu.congressline.pcs.service.OnlineRegService;
 import hu.congressline.pcs.service.OrderedOptionalServiceService;
+import hu.congressline.pcs.service.PcsFileService;
 import hu.congressline.pcs.service.RoomReservationService;
-import hu.congressline.pcs.service.util.ServiceUtil;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.OnlineRegFilterVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegistrationVM;
@@ -87,7 +84,7 @@ public class BackendOnlineRegResource {
             .build();
     }
 
-    @SuppressWarnings("MissingJavadocMethod")
+    @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
     @PostMapping(value = "/backend-online-regs/pdf/all", produces = "application/zip")
     public ResponseEntity<byte[]> getAllOnlineRegPdf(@RequestBody OnlineRegFilterVM onlineRegFilter) {
         List<OnlineRegistration> onlineRegs = onlineRegService.findAllByIds(onlineRegFilter.getOnlineRegIdList());
@@ -140,8 +137,9 @@ public class BackendOnlineRegResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
     @GetMapping("/backend-online-regs/{id}/download")
-    public ResponseEntity<byte[]> downloadAttachment(@PathVariable Long id) throws IOException {
+    public ResponseEntity<byte[]> downloadAttachment(@PathVariable Long id) {
         log.debug("REST request to get GdqsFile : {}", id);
         PcsFile pcsFile = pcsFileService.findAllByOnlineRegistrationId(id).stream().findFirst().orElse(null);
         if (pcsFile == null) {
@@ -154,7 +152,8 @@ public class BackendOnlineRegResource {
         headers.add("Expires", "0");
         String fileName = normalizeForFilename(pcsFile.getName());
 
-        headers.add("Content-Disposition", "attachment; filename=" + fileName + "." + pcsFile.getFileContentType().substring(Math.max(0, pcsFile.getFileContentType().lastIndexOf("/") + 1)));
+        headers.add("Content-Disposition", "attachment; filename=" + fileName + "."
+            + pcsFile.getFileContentType().substring(Math.max(0, pcsFile.getFileContentType().lastIndexOf("/") + 1)));
 
         return ResponseEntity.ok().headers(headers).contentLength(pcsFile.getFile().length)
             .contentType(MediaType.parseMediaType(pcsFile.getFileContentType())).body(pcsFile.getFile());

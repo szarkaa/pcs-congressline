@@ -137,6 +137,17 @@ public class MailService {
         sendEmailFromTemplateSync(from, null, to, from, subject, "mail/miscInvoiceEmail", locale, contextVariables, mailAttachment);
     }
 
+    @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
+    @Async
+    public void sendOnlineRegNotificationEmail(String to, String ccEmail, String congressName, Locale locale) {
+        log.debug("Send online reg notification e-mail[ to '{}']", to);
+        Map<String, Object> contextVariables = new HashMap<>();
+        contextVariables.put("locale", locale);
+        contextVariables.put("congressName", congressName);
+        String subject = messageSource.getMessage("online.reg.notification.email.subject", new Object[]{congressName}, locale);
+        sendEmailFromTemplateSync(null, null, to, ccEmail, subject, "mail/onlineRegNotificationEmail", locale, contextVariables);
+    }
+
     @SuppressWarnings("MultipleStringLiterals")
     @Async
     public void sendActivationEmail(User user) {

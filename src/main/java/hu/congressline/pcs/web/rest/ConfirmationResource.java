@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -79,7 +78,7 @@ public class ConfirmationResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/send-to-all")
-    public ResponseEntity<Void> sendConfirmationToAll(@RequestBody SendAllConfirmationVM vm) throws URISyntaxException {
+    public ResponseEntity<Void> sendConfirmationToAll(@RequestBody SendAllConfirmationVM vm) {
         log.debug("REST request to send confirmation to all");
         final Congress congress = congressService.getById(Long.valueOf(vm.getCongressId()));
         final List<GeneralRegistrationReportDTO> reportDTOList = reportService.findAll(vm);
@@ -104,7 +103,7 @@ public class ConfirmationResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/notice-to-all")
-    public ResponseEntity<Void> sendFinancialNoticeToAll(@RequestBody SendAllConfirmationVM vm) throws URISyntaxException {
+    public ResponseEntity<Void> sendFinancialNoticeToAll(@RequestBody SendAllConfirmationVM vm) {
         log.debug("REST request to send financial notice to all");
         final Congress congress = congressService.getById(Long.valueOf(vm.getCongressId()));
 
@@ -152,7 +151,7 @@ public class ConfirmationResource {
             byte[] pdfBytes = service.generatePdf(context);
             pdfList.add(new SendAllConfirmationPdfToEmailDTO(dto.getRegId(), pdfBytes));
         });
-        //mailService.sendAllConfirmationPdfToEmail(new Locale(vm.getLanguage()), congress.getContactEmail(), vm.getSendAllEmail(), pdfList);
+        mailService.sendAllConfirmationPdfToEmail(congress.getContactEmail(), vm.getSendAllEmail(), Locale.forLanguageTag(vm.getLanguage()), pdfList);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert("sendAllConfirmationToEmailDialog", String.valueOf(reportDTOList.size()))).build();
     }

@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import hu.congressline.pcs.domain.Invoice;
@@ -24,6 +25,7 @@ import hu.congressline.pcs.domain.enumeration.InvoiceType;
 import hu.congressline.pcs.service.GroupDiscountInvoicePdfService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceXlsService;
+import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.service.NavOnlineService;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.GroupDiscountInvoiceVM;
@@ -43,7 +45,7 @@ public class GroupDiscountInvoiceResource {
     private final GroupDiscountInvoiceService invoiceService;
     private final GroupDiscountInvoiceXlsService groupDiscountInvoiceXlsService;
     private final GroupDiscountInvoicePdfService invoicePdfService;
-    //private final MailService mailService;
+    private final MailService mailService;
     private final NavOnlineService navOnlineService;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -69,7 +71,7 @@ public class GroupDiscountInvoiceResource {
         }
         String from = result.getPayingGroup().getCongress().getContactEmail();
         byte[] pdfBytes = invoicePdfService.generatePdf(invoicePdfService.createInvoicePdfContext(result));
-        //mailService.sendGroupDiscountInvoicePdfEmail(new Locale(invoiceVM.getLanguage()), from, invoiceVM.getCustomInvoiceEmail(), invoiceVM.getPayingGroup(), pdfBytes);
+        mailService.sendGroupDiscountInvoicePdfEmail(from, invoiceVM.getCustomInvoiceEmail(), invoiceVM.getPayingGroup(), Locale.forLanguageTag(invoiceVM.getLanguage()), pdfBytes);
         return ResponseEntity.created(new URI(URI + result.getId()))
                 .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
                 .body(result);
