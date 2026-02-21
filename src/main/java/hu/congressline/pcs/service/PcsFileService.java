@@ -3,6 +3,7 @@ package hu.congressline.pcs.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import hu.congressline.pcs.domain.PcsFile;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class PcsFileService {
 
@@ -38,8 +40,21 @@ public class PcsFileService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public List<PcsFile> findAllByOnlineRegistrationId(Long id) {
+        log.debug("Request to find all pcs files by online registration id: {}", id);
+        return repository.findAllByOnlineRegistrationId(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long id) {
         log.debug("Request to delete pcs files : {}", id);
         repository.deleteById(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void deleteAllByOnlineRegistrationId(Long id) {
+        log.debug("Request to delete all pcs files by online registration id: {}", id);
+        repository.deleteAllByOnlineRegistrationId(id);
     }
 }

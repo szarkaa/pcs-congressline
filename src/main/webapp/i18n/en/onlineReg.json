@@ -78,6 +78,7 @@
                 }
             },
             "id": "ID",
+            "attachment": "Attachment",
             "title": "Title",
             "lastName": "Last name/Family name",
             "firstName": "First name/Given name",

@@ -9,6 +9,19 @@
         <div class="col-lg-12">
             <div class="ibox">
                 <div class="ibox-content">
+                    <div class="row m-b-sm" ng-if="vm.backendOnlineReg.attachmentFile">
+                        <div class="col-xs-12">
+                            <label class="control-label" data-translate="pcsApp.onlineReg.attachment" for="field_attachment">Attachment</label>
+                            <div class="input-group">
+                                <input type="text" ng-value="vm.backendOnlineReg.attachmentName + ' ' + vm.backendOnlineReg.attachmentContentType + ' ' + vm.byteSize(vm.backendOnlineReg.attachmentFile)"
+                                       autocomplete="off"  name="field_attachment" id="field_attachment" disabled class="form-control"/>
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-white" ng-click="vm.downloadAttachment(vm.backendOnlineReg.id)">Download</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="row m-b-sm">
                         <div class="col-xs-2">
                             <label class="control-label" data-translate="pcsApp.onlineReg.title" for="field_title">Title</label>

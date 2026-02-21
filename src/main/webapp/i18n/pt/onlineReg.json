@@ -78,6 +78,7 @@
                 }
             },
             "id": "ID",
+            "attachment": "Anexo",
             "title": "Título",
             "lastName": "Sobrenome",
             "firstName": "Nome",

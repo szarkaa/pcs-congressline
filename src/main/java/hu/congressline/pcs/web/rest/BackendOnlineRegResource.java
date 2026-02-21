@@ -1,5 +1,7 @@
 package hu.congressline.pcs.web.rest;
 
+import hu.congressline.pcs.domain.PcsFile;
+import hu.congressline.pcs.service.PcsFileService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import hu.congressline.pcs.domain.OnlineRegistration;
@@ -36,6 +40,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import static hu.congressline.pcs.service.util.ServiceUtil.normalizeForFilename;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -43,6 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BackendOnlineRegResource {
     private static final String ENTITY_NAME = "backendOnlineReg";
 
+    private final PcsFileService pcsFileService;
     private final OnlineRegService onlineRegService;
     private final OnlineRegPdfService onlineRegPdfService;
     private final RoomReservationService rrService;
@@ -91,7 +98,7 @@ public class BackendOnlineRegResource {
         headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
         headers.add("Pragma", "no-cache");
         headers.add("Expires", "0");
-        String fileName = ServiceUtil.normalizeForFilename(congressCode + "all-online-reg") + ".pdf";
+        String fileName = normalizeForFilename(congressCode + "all-online-reg") + ".pdf";
         headers.add("Content-Disposition", "inline; filename=" + fileName);
 
         return ResponseEntity
@@ -121,8 +128,36 @@ public class BackendOnlineRegResource {
     public ResponseEntity<OnlineRegistrationVM> getOnlineReg(@PathVariable Long id) {
         log.debug("REST request to get online registrations by id : {}", id);
         return onlineRegService.findById(id)
-            .map(result -> new ResponseEntity<>(onlineRegService.createVM(result), HttpStatus.OK))
+            .map(result -> {
+                final OnlineRegistrationVM vm = onlineRegService.createVM(result);
+                pcsFileService.findAllByOnlineRegistrationId(id).stream().findFirst().ifPresent(pcsFile -> {
+                    vm.setAttachmentName(pcsFile.getName());
+                    vm.setAttachmentContentType(pcsFile.getFileContentType());
+                    vm.setAttachmentFile(pcsFile.getFile());
+                });
+                return new ResponseEntity<>(vm, HttpStatus.OK);
+            })
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/backend-online-regs/{id}/download")
+    public ResponseEntity<byte[]> downloadAttachment(@PathVariable Long id) throws IOException {
+        log.debug("REST request to get GdqsFile : {}", id);
+        PcsFile pcsFile = pcsFileService.findAllByOnlineRegistrationId(id).stream().findFirst().orElse(null);
+        if (pcsFile == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+        String fileName = normalizeForFilename(pcsFile.getName());
+
+        headers.add("Content-Disposition", "attachment; filename=" + fileName + "." + pcsFile.getFileContentType().substring(Math.max(0, pcsFile.getFileContentType().lastIndexOf("/") + 1)));
+
+        return ResponseEntity.ok().headers(headers).contentLength(pcsFile.getFile().length)
+            .contentType(MediaType.parseMediaType(pcsFile.getFileContentType())).body(pcsFile.getFile());
     }
 
     @SuppressWarnings("MissingJavadocMethod")

@@ -597,6 +597,7 @@ public class OnlineRegService {
         orrtList.forEach(orrt -> accPeopleOnlineRepository.deleteAll(accPeopleOnlineRepository.findAllByOnlineRegistrationRegistrationType(orrt)));
         orrtRepository.deleteAll(orrtList);
         orosRepository.deleteAll(orosRepository.findAllByRegistration(or));
+        pcsFileService.deleteAllByOnlineRegistrationId(or.getId());
         repository.delete(or);
     }
 

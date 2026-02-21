@@ -78,6 +78,7 @@
                 }
             },
             "id": "ID",
+            "attachment": "Adjunto",
             "title": "Título",
             "lastName": "Apellido",
             "firstName": "Nombre de pila",
