@@ -20,9 +20,11 @@ import java.util.Base64;
 import java.util.List;
 
 import hu.congressline.pcs.domain.Congress;
+import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.service.CongressService;
 import hu.congressline.pcs.service.GeneralRegistrationReportService;
 import hu.congressline.pcs.service.MailService;
+import hu.congressline.pcs.service.RegistrationService;
 import hu.congressline.pcs.service.dto.GeneralRegistrationReportDTO;
 import hu.congressline.pcs.service.util.ServiceUtil;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
@@ -39,23 +41,24 @@ public class GeneralRegistrationReportResource {
     private static final String FILENAME_SUFFIX = "-general-report.xlsx";
 
     private final GeneralRegistrationReportService service;
+    private final RegistrationService registrationService;
     private final CongressService congressService;
     private final MailService mailService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/general-registration-report/send-general-email-to-all")
-    public ResponseEntity<Void> sendGeneralEmailToAll(@RequestBody SendGeneralEmailToAllVM vm) throws IOException {
+    public ResponseEntity<Void> sendGeneralEmailToAll(@RequestBody SendGeneralEmailToAllVM vm) {
         log.debug("REST request to send email to all registered in the filtered list");
-        final Congress congress = congressService.getById(Long.valueOf(vm.getCongressId()));
+        final Congress congress = congressService.getById(vm.getCongressId());
 
-        final List<GeneralRegistrationReportDTO> reportDTOList = service.findAll(vm);
-        reportDTOList.stream().filter(dto -> StringUtils.hasText(dto.getEmail())).forEach(dto -> {
+        final List<Registration> registrations = registrationService.findAllByCongressIdAndIds(vm.getCongressId(), vm.getRegistrationIds());
+        registrations.stream().filter(dto -> StringUtils.hasText(dto.getEmail())).forEach(dto -> {
             mailService.sendEmail(congress.getContactEmail(), null, dto.getEmail(), congress.getContactEmail(), "Congressline - " + congress.getMeetingCode(),
                 vm.getEmailBody(), false, true);
         });
 
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityCreationAlert("sendGeneralEmailToAllDialog", String.valueOf(reportDTOList.size()))).build();
+            .headers(HeaderUtil.createEntityCreationAlert("sendGeneralEmailToAllDialog", String.valueOf(registrations.size()))).build();
 
     }
 

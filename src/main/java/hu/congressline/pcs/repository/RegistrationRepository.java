@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.Workplace;
@@ -15,6 +16,8 @@ import hu.congressline.pcs.domain.enumeration.RegistrationTypeType;
 public interface RegistrationRepository extends JpaRepository<Registration, Long> {
 
     List<Registration> findAllByCongressId(Long id);
+
+    List<Registration> findAllByCongressIdAndIdIn(Long id, Set<Long> ids);
 
     Long countByCongressId(Long id);
 

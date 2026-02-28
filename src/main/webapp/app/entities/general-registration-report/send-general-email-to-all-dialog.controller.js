@@ -5,12 +5,13 @@
         .module('pcsApp')
         .controller('SendGeneralEmailToAllDialogController', SendGeneralEmailToAllDialogController);
 
-    SendGeneralEmailToAllDialogController.$inject = ['$timeout', '$scope', '$uibModalInstance', 'GeneralRegistrationReport', 'registrationSettings'];
+    SendGeneralEmailToAllDialogController.$inject = ['$timeout', '$scope', '$uibModalInstance', 'GeneralRegistrationReport', 'CongressSelector', 'registrationSettings'];
 
-    function SendGeneralEmailToAllDialogController ($timeout, $scope, $uibModalInstance, GeneralRegistrationReport, registrationSettings) {
+    function SendGeneralEmailToAllDialogController ($timeout, $scope, $uibModalInstance, GeneralRegistrationReport, CongressSelector, registrationSettings) {
         var vm = this;
 
-        vm.registrationSettings = registrationSettings.filter;
+        vm.registrationSettings = registrationSettings;
+        vm.registrationSettings.congressId = CongressSelector.getSelectedCongress().id;
         vm.registrationSettings.topic = null;
         vm.registrationSettings.emailBody = null;
 
@@ -42,24 +43,7 @@
 
         function createGeneralEmailToAllFilter() {
             return {
-                regId: vm.registrationSettings.regId,
-                lastName: vm.registrationSettings.lastName,
-                firstName: vm.registrationSettings.firstName,
-                email: vm.registrationSettings.email,
-                accPeopleLastName: vm.registrationSettings.accPeopleLastName,
-                accPeopleFirstName: vm.registrationSettings.accPeopleFirstName,
-                registrationType: vm.registrationSettings.registrationType ? vm.registrationSettings.registrationType.id : null,
-                workplace: vm.registrationSettings.workplace ? vm.registrationSettings.workplace.id : null,
-                payingGroup: vm.registrationSettings.payingGroup ? vm.registrationSettings.payingGroup.id : null,
-                optionalService: vm.registrationSettings.optionalService ? vm.registrationSettings.optionalService.id : null,
-                hotelId: vm.registrationSettings.congressHotel ? vm.registrationSettings.congressHotel.hotel.id : null,
-                country: vm.registrationSettings.country ? vm.registrationSettings.country.id : null,
-                countryNegation: vm.registrationSettings.countryNegation,
-                presenter: vm.registrationSettings.presenter,
-                etiquette: vm.registrationSettings.etiquette,
-                closed: vm.registrationSettings.closed,
-                onSpot: vm.registrationSettings.onSpot,
-                cancelled: vm.registrationSettings.cancelled,
+                registrationIds: vm.registrationSettings.registrationIds,
                 congressId: vm.registrationSettings.congressId,
                 topic: vm.registrationSettings.topic,
                 emailBody: vm.registrationSettings.emailBody

@@ -13,7 +13,7 @@
             restrict: 'EA',
             template: '<a ng-click="open()" ng-transclude>{{email}}</a>',
             scope: {
-                filter: "="
+                ids: "&"
             },
             link: linkFunc
         };
@@ -29,7 +29,7 @@
                     size: 'md',
                     resolve: {
                         registrationSettings: function() {
-                            return {filter: scope.filter};
+                            return {registrationIds: scope.ids()};
                         },
                         translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                             $translatePartialLoader.addPart('sendGeneralEmailToAllDialog');

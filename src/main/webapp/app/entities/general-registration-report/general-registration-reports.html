@@ -1,4 +1,4 @@
-<script>
+    <script>
     $('.advanced_search_box__more').click(function(){
         $(this).find('i').toggleClass('fa-chevron-down');
         $('#advanced_search_box').toggleClass('hide');
@@ -250,13 +250,13 @@
                                 <div class="col-sm-8 col-sm-offset-2">
                                     <button class="btn btn-primary m-r-sm" ng-click="vm.search()" type="button" data-translate="entity.action.search">Search</button>
                                     <send-confirmation-to-all-dialog filter="vm.reportFilter">
-                                        <button class="btn btn-info m-r-sm" type="button" data-translate="pcsApp.generalRegistrationReport.sendConfirmationToAll">Send confirmation to all</button>
+                                        <button class="btn btn-info m-r-sm" type="button" ng-disabled="!vm.isAnyRegIdSelected()" data-translate="pcsApp.generalRegistrationReport.sendConfirmationToAll">Send confirmation to all</button>
                                     </send-confirmation-to-all-dialog>
                                     <send-all-confirmation-to-email-dialog filter="vm.reportFilter">
-                                        <button class="btn btn-info m-r-sm" type="button" data-translate="pcsApp.generalRegistrationReport.sendAllConfirmationToEmail">Send selected confirmations to email</button>
+                                        <button class="btn btn-info m-r-sm" type="button" ng-disabled="!vm.isAnyRegIdSelected()" data-translate="pcsApp.generalRegistrationReport.sendAllConfirmationToEmail">Send selected confirmations to email</button>
                                     </send-all-confirmation-to-email-dialog>
-                                    <send-general-email-to-all-dialog filter="vm.reportFilter">
-                                        <button class="btn btn-info" type="button" data-translate="pcsApp.generalRegistrationReport.sendGeneralEmailToAll">Send email to all</button>
+                                    <send-general-email-to-all-dialog ids="vm.getSelectedRegIds()">
+                                        <button class="btn btn-info" type="button" ng-disabled="!vm.isAnyRegIdSelected()" data-translate="pcsApp.generalRegistrationReport.sendGeneralEmailToAll">Send email to all</button>
                                     </send-general-email-to-all-dialog>
                                 </div>
                             </div>
@@ -268,6 +268,7 @@
                         <thead>
                         <tr>
                             <th></th>
+                            <th><input ng-model="vm.allRegIdSelected" ng-change="vm.toggleAllRegIdSelection()" type="checkbox" /></th>
                             <th><span data-translate="pcsApp.generalRegistrationReport.regId">Reg ID</span></th>
                             <th><span data-translate="pcsApp.generalRegistrationReport.lastName">Family Name</span></th>
                             <th><span data-translate="pcsApp.generalRegistrationReport.firstName">First Name</span></th>
@@ -311,6 +312,9 @@
                                         <i class="fa fa-envelope-square email-icon"></i>
                                     </button>
                                 </send-confirmation-dialog>
+                            </td>
+                            <td>
+                                <input ng-model="vm.selectedRegIds[grr.id.toString()]" ng-change="vm.toggleRegIdSelection(grr.id)" type="checkbox" />
                             </td>
                             <td>{{grr.regId}}</td>
                             <td>{{grr.lastName}}</td>

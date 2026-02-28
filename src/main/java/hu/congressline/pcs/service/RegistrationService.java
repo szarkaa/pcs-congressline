@@ -92,8 +92,15 @@ public class RegistrationService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<Registration> findAllByCongressId(Long id) {
-        log.debug("Request to get all Registrations by congress id: {}", id);
+        log.debug("Request to get all registrations by congress id: {}", id);
         return repository.findAllByCongressId(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public List<Registration> findAllByCongressIdAndIds(Long congressId, Set<Long> ids) {
+        log.debug("Request to get all registrations by congress congress id: {} and ids: {}", congressId, ids);
+        return repository.findAllByCongressIdAndIdIn(congressId, ids);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -105,14 +112,14 @@ public class RegistrationService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Optional<Registration> findById(Long id) {
-        log.debug("Request to find Registration : {}", id);
+        log.debug("Request to find registration by id: {}", id);
         return id != null ? repository.findById(id) : Optional.empty();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public Registration getById(Long id) {
-        log.debug("Request to get Registration : {}", id);
+        log.debug("Request to get registration by id: {}", id);
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("Registration not found by id: " + id));
     }
 

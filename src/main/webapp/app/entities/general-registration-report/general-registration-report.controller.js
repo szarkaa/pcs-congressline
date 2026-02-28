@@ -12,12 +12,13 @@
         DTColumnDefBuilder, CongressSelector, RegistrationType, Workplace, PayingGroup, OptionalService, Country, CongressHotel, B64Encoder) {
         var vm = this;
         vm.dtOptions = DTOptionsBuilder.newOptions();
-        vm.dtOptions.withOption('order', [2, 'asc']);
+        vm.dtOptions.withOption('order', [3, 'asc']);
         vm.dtOptions.withOption('stateSave', true);
         vm.dtOptions.withOption('scrollY', '500px');
         vm.dtOptions.withOption('scrollX', true);
         vm.dtColumnDefs = [
-            DTColumnDefBuilder.newColumnDef(0).notSortable()
+            DTColumnDefBuilder.newColumnDef(0).notSortable(),
+            DTColumnDefBuilder.newColumnDef(1).notSortable()
         ];
 
         RegistrationType.queryByCongress({id: CongressSelector.getSelectedCongress().id}, function(result) {
@@ -40,10 +41,16 @@
         vm.otherDatas = null;
         vm.countries = Country.query();
         vm.reportFilter = reportFilter;
+        vm.isFiltered = false;
+        vm.selectedRegIds = {};
+        vm.allRegIdSelected = false;
 
         vm.search = search;
         vm.clear = clear;
-        vm.isFiltered = false;
+        vm.toggleRegIdSelection = toggleRegIdSelection;
+        vm.toggleAllRegIdSelection = toggleAllRegIdSelection;
+        vm.isAnyRegIdSelected = isAnyRegIdSelected;
+        vm.getSelectedRegIds = getSelectedRegIds;
         vm.downloadReportXls = downloadReportXls;
         vm.downloadReportXlsWithQRCode = downloadReportXlsWithQRCode;
         vm.getAvailableRegType = getAvailableRegType;
@@ -116,6 +123,7 @@
                     createFiltersFromReportList();
                     createRegTypeColumns();
                     checkListIsFiltered();
+                    clearRegIdSelection();
                 }
             );
         }
@@ -211,6 +219,58 @@
             vm.reportFilter.onSpot ||
             vm.reportFilter.cancelled;
         }
+
+        function toggleRegIdSelection(regId) {
+            // vm.selectedRegIds[regId.toString()] = !isOnlineRegIdSelected(regId);
+        }
+
+        function getSelectedRegIds() {
+            var regIdList = [];
+            console.log(vm.selectedRegIds);
+            for (var prop in vm.selectedRegIds) {
+                if (vm.selectedRegIds.hasOwnProperty(prop) && vm.selectedRegIds[prop]) {
+                    regIdList.push(parseInt(prop, 10));
+                }
+            }
+            console.log(regIdList);
+            return regIdList;
+        }
+
+        function clearRegIdSelection() {
+            vm.selectedRegIds = {};
+            vm.allRegIdSelected = false;
+        }
+
+        function toggleAllRegIdSelection() {
+            if (!vm.allRegIdSelected) {
+                vm.selectedRegIds = {};
+            }
+            else {
+                vm.selectedRegIds = {};
+                for (var i = 0; i < vm.reportList.length; i++) {
+                    vm.selectedRegIds[vm.reportList[i].id.toString()] = true;
+                }
+            }
+        }
+
+        function isRegIdSelected(regId) {
+            for (var prop in vm.selectedRegIds) {
+                if (vm.selectedRegIds.hasOwnProperty(prop) && prop === regId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function isAnyRegIdSelected() {
+            for (var prop in vm.selectedRegIds) {
+                if (vm.selectedRegIds.hasOwnProperty(prop) && vm.selectedRegIds[prop]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
     }
 })();
