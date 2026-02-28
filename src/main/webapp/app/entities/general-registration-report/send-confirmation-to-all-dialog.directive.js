@@ -13,7 +13,7 @@
             restrict: 'EA',
             template: '<a ng-click="open()" ng-transclude>{{email}}</a>',
             scope: {
-                filter: "="
+                ids: "&"
             },
             link: linkFunc
         };
@@ -28,8 +28,8 @@
                     controllerAs: 'vm',
                     size: 'md',
                     resolve: {
-                        confirmationSettings: function() {
-                            return {filter: scope.filter};
+                        confirmationSettings: function(){
+                            return {registrationIds: scope.ids()};
                         },
                         translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                             $translatePartialLoader.addPart('sendConfirmationToAllDialog');

@@ -13,13 +13,14 @@ import java.util.List;
 import java.util.Locale;
 
 import hu.congressline.pcs.domain.Congress;
+import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.service.ConfirmationPdfService;
 import hu.congressline.pcs.service.CongressService;
 import hu.congressline.pcs.service.FinancialReportService;
 import hu.congressline.pcs.service.GeneralRegistrationReportService;
 import hu.congressline.pcs.service.MailService;
+import hu.congressline.pcs.service.RegistrationService;
 import hu.congressline.pcs.service.dto.FinancialReportDTO;
-import hu.congressline.pcs.service.dto.GeneralRegistrationReportDTO;
 import hu.congressline.pcs.service.dto.SendAllConfirmationPdfToEmailDTO;
 import hu.congressline.pcs.service.pdf.ConfirmationPdfContext;
 import hu.congressline.pcs.service.util.ServiceUtil;
@@ -28,6 +29,7 @@ import hu.congressline.pcs.web.rest.vm.ConfirmationPdfVM;
 import hu.congressline.pcs.web.rest.vm.ConfirmationTitleType;
 import hu.congressline.pcs.web.rest.vm.FinancialReportVM;
 import hu.congressline.pcs.web.rest.vm.SendAllConfirmationVM;
+import hu.congressline.pcs.web.rest.vm.SendFinancialNoticeToAllVM;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +45,7 @@ public class ConfirmationResource {
     private final FinancialReportService financialReportService;
     private final MailService mailService;
     private final CongressService congressService;
+    private final RegistrationService registrationService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping(value = "/pdf", consumes = MediaType.APPLICATION_JSON_VALUE, produces = "application/pdf")
@@ -80,15 +83,15 @@ public class ConfirmationResource {
     @PostMapping("/send-to-all")
     public ResponseEntity<Void> sendConfirmationToAll(@RequestBody SendAllConfirmationVM vm) {
         log.debug("REST request to send confirmation to all");
-        final Congress congress = congressService.getById(Long.valueOf(vm.getCongressId()));
-        final List<GeneralRegistrationReportDTO> reportDTOList = reportService.findAll(vm);
-        reportDTOList.forEach(dto -> {
+        final Congress congress = congressService.getById(vm.getCongressId());
+        final List<Registration> registrations = registrationService.findAllByCongressIdAndIds(vm.getCongressId(), vm.getRegistrationIds());
+        registrations.forEach(registration -> {
             ConfirmationPdfVM pdfVM = new ConfirmationPdfVM();
             pdfVM.setLanguage(vm.getLanguage());
             pdfVM.setConfirmationTitleType(ConfirmationTitleType.CONFIRMATION);
-            pdfVM.setRegistrationId(dto.getId());
+            pdfVM.setRegistrationId(registration.getId());
             pdfVM.setOptionalText(vm.getOptionalText());
-            pdfVM.setCustomConfirmationEmail(dto.getEmail());
+            pdfVM.setCustomConfirmationEmail(registration.getEmail());
             pdfVM.setIgnoredChargeableItemIdList(new ArrayList<>());
             pdfVM.setIgnoredChargedServiceIdList(new ArrayList<>());
             ConfirmationPdfContext context = service.createContext(pdfVM);
@@ -98,12 +101,12 @@ public class ConfirmationResource {
         });
 
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityCreationAlert("sendConfirmationToAllDialog", String.valueOf(reportDTOList.size()))).build();
+            .headers(HeaderUtil.createEntityCreationAlert("sendConfirmationToAllDialog", String.valueOf(registrations.size()))).build();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/notice-to-all")
-    public ResponseEntity<Void> sendFinancialNoticeToAll(@RequestBody SendAllConfirmationVM vm) {
+    public ResponseEntity<Void> sendFinancialNoticeToAll(@RequestBody SendFinancialNoticeToAllVM vm) {
         log.debug("REST request to send financial notice to all");
         final Congress congress = congressService.getById(Long.valueOf(vm.getCongressId()));
 
@@ -134,26 +137,25 @@ public class ConfirmationResource {
     @PostMapping("/send-all-to-email")
     public ResponseEntity<Void> sendAllConfirmationToEmail(@RequestBody SendAllConfirmationVM vm) {
         log.debug("REST request to send all confirmation to email: {}", vm.getSendAllEmail());
-        final Congress congress = congressService.getById(Long.valueOf(vm.getCongressId()));
-
-        final List<GeneralRegistrationReportDTO> reportDTOList = reportService.findAll(vm);
-        List<SendAllConfirmationPdfToEmailDTO> pdfList = new ArrayList<>(reportDTOList.size());
-        reportDTOList.forEach(dto -> {
+        List<SendAllConfirmationPdfToEmailDTO> pdfList = new ArrayList<>();
+        final Congress congress = congressService.getById(vm.getCongressId());
+        final List<Registration> registrations = registrationService.findAllByCongressIdAndIds(vm.getCongressId(), vm.getRegistrationIds());
+        registrations.forEach(registration -> {
             ConfirmationPdfVM pdfVM = new ConfirmationPdfVM();
             pdfVM.setLanguage(vm.getLanguage());
             pdfVM.setConfirmationTitleType(ConfirmationTitleType.CONFIRMATION);
-            pdfVM.setRegistrationId(dto.getId());
+            pdfVM.setRegistrationId(registration.getId());
             pdfVM.setOptionalText(vm.getOptionalText());
-            pdfVM.setCustomConfirmationEmail(dto.getEmail());
+            pdfVM.setCustomConfirmationEmail(registration.getEmail());
             pdfVM.setIgnoredChargeableItemIdList(new ArrayList<>());
             pdfVM.setIgnoredChargedServiceIdList(new ArrayList<>());
             ConfirmationPdfContext context = service.createContext(pdfVM);
             byte[] pdfBytes = service.generatePdf(context);
-            pdfList.add(new SendAllConfirmationPdfToEmailDTO(dto.getRegId(), pdfBytes));
+            pdfList.add(new SendAllConfirmationPdfToEmailDTO(registration.getRegId(), pdfBytes));
         });
         mailService.sendAllConfirmationPdfToEmail(congress.getContactEmail(), vm.getSendAllEmail(), Locale.forLanguageTag(vm.getLanguage()), pdfList);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityCreationAlert("sendAllConfirmationToEmailDialog", String.valueOf(reportDTOList.size()))).build();
+            .headers(HeaderUtil.createEntityCreationAlert("sendAllConfirmationToEmailDialog", String.valueOf(registrations.size()))).build();
     }
 
     private HttpHeaders createHttpHeader(String fileName) {

@@ -1,7 +1,5 @@
 package hu.congressline.pcs.web.rest.vm;
 
-import java.util.Set;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,9 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class SendAllConfirmationVM {
-    private Long congressId;
-    private Set<Long> registrationIds;
+public class SendFinancialNoticeToAllVM extends GeneralRegistrationReportVM {
     private String sendAllEmail;
     private String language;
     private String optionalText;

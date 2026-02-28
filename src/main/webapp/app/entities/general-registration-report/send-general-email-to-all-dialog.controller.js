@@ -28,7 +28,7 @@
 
         function send () {
             vm.isSaving = true;
-            GeneralRegistrationReport.sendGeneralEmailToAll(createGeneralEmailToAllFilter(), onSaveSuccess, onSaveError);
+            GeneralRegistrationReport.sendGeneralEmailToAll(createVM(), onSaveSuccess, onSaveError);
         }
 
         function onSaveSuccess (result) {
@@ -41,7 +41,7 @@
             vm.isSaving = false;
         }
 
-        function createGeneralEmailToAllFilter() {
+        function createVM() {
             return {
                 registrationIds: vm.registrationSettings.registrationIds,
                 congressId: vm.registrationSettings.congressId,

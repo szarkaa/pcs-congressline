@@ -226,13 +226,11 @@
 
         function getSelectedRegIds() {
             var regIdList = [];
-            console.log(vm.selectedRegIds);
             for (var prop in vm.selectedRegIds) {
                 if (vm.selectedRegIds.hasOwnProperty(prop) && vm.selectedRegIds[prop]) {
                     regIdList.push(parseInt(prop, 10));
                 }
             }
-            console.log(regIdList);
             return regIdList;
         }
 
