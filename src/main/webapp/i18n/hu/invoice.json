@@ -30,6 +30,7 @@
             "navVatCategory": "NAV vat category",
             "invoiceType": "Invoice type",
             "partner": "Set billing address by workplace/partner",
+            "publicCompanyData": "Public company info",
             "invoiceNumber": "Invoice number",
             "stornoInvoiceNumber": "Storno Invoice number",
             "lastName": "Family name",

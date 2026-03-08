@@ -63,24 +63,49 @@
                 </div>
             </div>
 
-            <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
-                <div class="ibox-title float-e-margins">
-                    <strong>{{'pcsApp.invoice.partner' | translate}}</strong>
-                    <!--<div ibox-tools></div>-->
+            <div class="col-lg-6 no-padding-left">
+                <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
+                    <div class="ibox-title float-e-margins">
+                        <strong>{{'pcsApp.invoice.partner' | translate}}</strong>
+                        <!--<div ibox-tools></div>-->
+                    </div>
+                    <div class="ibox-content">
+                        <ui-select ng-model="dummyValuePartner" ng-change="vm.selectPartner($select.selected)" name="partner-search" id="partner-search" theme="bootstrap">
+                            <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
+                                <span ng-class="{'bold-option': $select.selected.congressId}">
+                                    {{$select.selected.name}}
+                                </span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="partner in (vm.partners | filter: $select.search) track by partner.id">
+                                <div ng-class="{'bold-option': partner.congressId}">
+                                    <span ng-bind-html="partner.name | highlight: $select.search"></span>
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
                 </div>
-                <div class="ibox-content">
-                    <ui-select ng-model="dummyvalue" ng-change="vm.selectPartner($select.selected)" name="partner-search" id="partner-search" theme="bootstrap">
-                        <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
-                            <span ng-class="{'bold-option': $select.selected.congressId}">
-                                {{$select.selected.name}}
-                            </span>
-                        </ui-select-match>
-                        <ui-select-choices repeat="partner in (vm.partners | filter: $select.search) track by partner.id">
-                            <div ng-class="{'bold-option': partner.congressId}">
-                                <span ng-bind-html="partner.name | highlight: $select.search"></span>
-                            </div>
-                        </ui-select-choices>
-                    </ui-select>
+            </div>
+
+            <div class="col-lg-6 no-padding-right">
+                <div class="ibox" ng-show="!vm.isShowConfirmationPanel">
+                    <div class="ibox-title float-e-margins">
+                        <strong>{{'pcsApp.invoice.publicCompanyData' | translate}}</strong>
+                        <!--<div ibox-tools></div>-->
+                    </div>
+                    <div class="ibox-content">
+                        <ui-select ng-model="dummyValueCompanyData" on-select="vm.selectPublicCompanyData($select.selected)"
+                                   reset-search-input="true" name="public-company-data-search" id="field-public-company-data-search"
+                                   theme="bootstrap" reset-search-input="false">
+                            <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
+                                <span ng-bind="$select.selected.shortName ? $select.selected.shortName : $select.selected.fullName"></span>
+                            </ui-select-match>
+
+                            <ui-select-choices repeat="publicCompanyData as companyData in vm.publicCompanyDatas track by companyData.id"
+                                refresh="vm.searchPublicCompanyData($select.search)" refresh-delay="300">
+                                <div ng-bind-html="(companyData.shortName ? companyData.shortName : companyData.fullName) | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
                 </div>
             </div>
 

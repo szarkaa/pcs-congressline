@@ -6,9 +6,9 @@
         .controller('MiscInvoiceSetupDialogController', MiscInvoiceSetupDialogController);
 
     MiscInvoiceSetupDialogController.$inject = ['$scope', '$state', '$stateParams', 'miscInvoice', 'MiscInvoice', 'Country',
-        'OptionalText', 'CongressSelector', 'BankAccount', 'InvoiceUtils', 'Workplace'];
+        'OptionalText', 'CongressSelector', 'BankAccount', 'InvoiceUtils', 'Workplace', 'PublicCompanyData'];
 
-    function MiscInvoiceSetupDialogController ($scope, $state, $stateParams, miscInvoice, MiscInvoice, Country, OptionalText, CongressSelector, BankAccount, InvoiceUtils, Workplace) {
+    function MiscInvoiceSetupDialogController ($scope, $state, $stateParams, miscInvoice, MiscInvoice, Country, OptionalText, CongressSelector, BankAccount, InvoiceUtils, Workplace, PublicCompanyData) {
         var vm = this;
         vm.isShowInvoicePanel = false;
         vm.datePickerOpenStatus = {};
@@ -16,6 +16,7 @@
         vm.optionalTexts = [];
         vm.bankAccounts = [];
         vm.partners = [];
+        vm.publicCompanyDatas = [];
         vm.datePickerOpenStatus.startDate = false;
         vm.datePickerOpenStatus.endDate = false;
         vm.datePickerOpenStatus.dateOfFulfilment = false;
@@ -33,16 +34,17 @@
         vm.changeBillingMethod = changeBillingMethod;
         vm.navVatCategoryChanged = navVatCategoryChanged;
         vm.invoiceTypeChanged = invoiceTypeChanged;
-        vm.isTaxNumberDisabled = isTaxNumberDisabled;
+        vm.isTaxNumberDisabled = isTaxNumberDisabled;PublicCompanyDataService
         vm.isTaxNumberRequired = isTaxNumberRequired;
-
+        vm.searchPublicCompanyData = searchPublicCompanyData;
+        vm.selectPublicCompanyData = selectPublicCompanyData;
 
         vm.countries = Country.query();
-        Workplace.queryForCongress({ id: CongressSelector.getSelectedCongress().id }, function(result) {
+        Workplace.queryForCongress({id: CongressSelector.getSelectedCongress().id}, function (result) {
             vm.partners = result;
         });
 
-        OptionalText.queryByCongress({id: CongressSelector.getSelectedCongress().id}, function(result) {
+        OptionalText.queryByCongress({id: CongressSelector.getSelectedCongress().id}, function (result) {
             vm.optionalTexts = result;
         });
 
@@ -75,17 +77,16 @@
             .then(function (response) {
                 if (response.hasValidRate) {
                     vm.hasValidRate = true;
-                }
-                else {
+                } else {
                     vm.hasValidRate = false;
                 }
             })
-            .catch(function() {
+            .catch(function () {
                 vm.hasValidRate = false;
             });
 
 
-        BankAccount.queryByCongressId({congressId: CongressSelector.getSelectedCongress().id, currency: vm.getCurrency() }, function(result) {
+        BankAccount.queryByCongressId({congressId: CongressSelector.getSelectedCongress().id, currency: vm.getCurrency()}, function (result) {
             vm.bankAccounts = result;
             if (vm.bankAccounts.length === 1) {
                 vm.invoice.bankAccountId = vm.bankAccounts[0].id;
@@ -123,7 +124,7 @@
             $state.go('misc-invoice', {}, {reload: true, notify: true});
         }
 
-        function onSaveError (result) {
+        function onSaveError(result) {
             $state.go('misc-invoice', {}, {reload: true, notify: true});
             vm.isSaving = false;
         }
@@ -134,7 +135,7 @@
             MiscInvoice.save(vm.invoice, onSaveSuccess, onSaveError);
         }
 
-        function sendAndPrintInvoice () {
+        function sendAndPrintInvoice() {
             vm.isSaving = true;
             transformInvoice();
             MiscInvoice.saveAndSendEmail(vm.invoice, onSaveSuccess, onSaveError);
@@ -148,16 +149,15 @@
             }
         }
 
-        function openCalendar (date) {
+        function openCalendar(date) {
             vm.datePickerOpenStatus[date] = true;
         }
 
-        function changeBillingMethod () {
+        function changeBillingMethod() {
             if (vm.invoice.billingMethod === 'TRANSFER') {
                 vm.invoice.dateOfFulfilment = vm.invoice.startDate;
                 vm.invoice.paymentDeadline = (new Date()).setDate((new Date()).getDate() + 10);
-            }
-            else {
+            } else {
                 vm.invoice.dateOfFulfilment = new Date();
                 vm.invoice.paymentDeadline = new Date();
             }
@@ -166,8 +166,7 @@
         function isTaxNumberDisabled() {
             if (vm.invoice.navVatCategory === 'PRIVATE_PERSON') {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }
@@ -176,8 +175,7 @@
             if (vm.invoice.navVatCategory === 'DOMESTIC_NORMAL_VAT_TAX_NUMBER' ||
                 vm.invoice.navVatCategory === 'DOMESTIC_GROUP_VAT_TAX_NUMBER') {
                 return true;
-            }
-            else {
+            } else {
                 return false;
             }
         }
@@ -185,8 +183,7 @@
         function invoiceTypeChanged() {
             if (vm.invoice.invoiceType === 'PRO_FORMA') {
                 vm.invoice.navVatCategory = 'DOMESTIC_NORMAL_VAT_TAX_NUMBER';
-            }
-            else {
+            } else {
                 vm.invoice.navVatCategory = null;
             }
         }
@@ -198,14 +195,41 @@
 
             if (vm.invoice.navVatCategory === 'DOMESTIC_NORMAL_VAT_TAX_NUMBER') {
                 vm.taxNumberPattern = /^[0-9]{8}-[0-9]{1}-[0-9]{2}$/;
-            }
-            else if (vm.invoice.navVatCategory === 'EU_NO_VAT_EU_TAX_NUMBER' || vm.invoice.navVatCategory === 'EU_VAT_EU_TAX_NUMBER') {
+            } else if (vm.invoice.navVatCategory === 'EU_NO_VAT_EU_TAX_NUMBER' || vm.invoice.navVatCategory === 'EU_VAT_EU_TAX_NUMBER') {
                 vm.taxNumberPattern = /^[A-Z]{2}[0-9A-Z]{2,13}$/;
-            }
-            else {
+            } else {
                 vm.taxNumberPattern = '';
             }
         }
 
+        function searchPublicCompanyData(keyword) {
+            if (!keyword || keyword.length < 4) {
+                vm.publicCompanyDatas = [];
+                return;
+            }
+
+            PublicCompanyData.search({keyword: keyword}).$promise.then(function (result) {
+                vm.publicCompanyDatas = result;
+            });
+        }
+
+        function selectPublicCompanyData(companyData) {
+            if (companyData) {
+                PublicCompanyData.detail({id: companyData.id}).$promise.then(function (result) {
+                    vm.invoice.savePartner = false;
+                    vm.invoice.name1 = result.shortName ? result.shortName : result.fullName;
+                    vm.invoice.vatRegNumber = result.vatNumber ? result.vatNumber.replace(/^(\d{8})(\d)(\d{2})$/, '$1-$2-$3') : null;
+                    vm.invoice.country = result.addressCounty;
+                    vm.invoice.department = null;
+                    vm.invoice.zipCode = result.addressPostalCode;
+                    vm.invoice.city = result.addressCity;
+                    vm.invoice.street = result.addressStreet;
+                    vm.invoice.country = 'HU';
+                    vm.invoice.phone = result.phoneNumber;
+                    vm.invoice.fax = null;
+                    vm.invoice.email = result.emailAddress;
+                });
+            }
+        }
     }
 })();

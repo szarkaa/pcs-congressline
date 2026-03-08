@@ -18,6 +18,7 @@ public class ApplicationProperties {
     private final System system = new System();
     private final Nav nav = new Nav();
     private final Payment payment = new Payment();
+    private final PublicCompanyData publicCompanyData = new PublicCompanyData();
 
     @Getter
     @Setter
@@ -88,5 +89,12 @@ public class ApplicationProperties {
         private String paymentKeyFilePath;
         private Boolean signRequired;
         private Long checkingFrequencyInMillis;
+    }
+
+    @Getter
+    @Setter
+    public static class PublicCompanyData {
+        private String baseUrl;
+        private String apiKey;
     }
 }

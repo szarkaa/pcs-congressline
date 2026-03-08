@@ -115,4 +115,7 @@ application:
             signRequired: true
             returnUrl: https://pcs-system-test.congressline.hu/api/registration/online/kh/payment/result
             checkingFrequencyInMillis: 60000
+    public-company-data:
+        base-url: https://api.cegadatapi.hu/v1
+        api-key: 29.ea35adea153cbc8896913d744548dafc
 
