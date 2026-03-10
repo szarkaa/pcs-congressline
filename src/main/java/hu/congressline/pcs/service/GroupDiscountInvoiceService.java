@@ -30,6 +30,7 @@ import hu.congressline.pcs.repository.InvoiceRepository;
 import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
 import hu.congressline.pcs.repository.RegistrationRegistrationTypeRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
+import hu.congressline.pcs.service.dto.PayingGroupInvoiceDTO;
 import hu.congressline.pcs.web.rest.vm.GroupDiscountInvoiceVM;
 import hu.congressline.pcs.web.rest.vm.SetPaymentDateVM;
 import lombok.RequiredArgsConstructor;
@@ -52,11 +53,11 @@ public class GroupDiscountInvoiceService {
     private final DiscountService discountService;
     private final PriceService priceService;
     private final CurrencyService currencyService;
-    private CountryRepository countyRepository;
+    private final CountryRepository countyRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     public InvoicePayingGroup save(GroupDiscountInvoiceVM invoiceVM) {
-        log.debug("Request to save invoice from GroupDiscountInvoice : {}", invoiceVM);
+        log.debug("Request to save invoice from group discount invoice : {}", invoiceVM);
         Invoice invoice = new Invoice();
         invoice.setInvoiceType(InvoiceType.REGULAR);
         invoice.setNavVatCategory(invoiceVM.getNavVatCategory());
@@ -225,7 +226,7 @@ public class GroupDiscountInvoiceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public InvoicePayingGroup findOne(Long id) {
-        log.debug("Request to get InvoicePayingGroup : {}", id);
+        log.debug("Request to get invoice paying group : {}", id);
         return invoicePayingGroupRepository.findById(id).orElse(null);
     }
 
@@ -256,8 +257,8 @@ public class GroupDiscountInvoiceService {
         }
     }
 
-    public List<InvoicePayingGroup> findByCongressId(Long id) {
-        return invoicePayingGroupRepository.findByPayingGroupCongressId(id);
+    public List<PayingGroupInvoiceDTO> findByCongressId(Long id) {
+        return invoicePayingGroupRepository.findByPayingGroupCongressId(id).stream().map(PayingGroupInvoiceDTO::new).toList();
     }
 
     @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
@@ -287,14 +288,14 @@ public class GroupDiscountInvoiceService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public InvoicePayingGroup findInvoicePayingGroupByInvoiceId(Long invoiceId) {
-        log.debug("Request to get Invoice : {}", invoiceId);
+        log.debug("Request to get invoice paying group: {}", invoiceId);
         return invoicePayingGroupRepository.findByInvoiceId(invoiceId).orElse(null);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional
     public Invoice stornoInvoice(Long id) {
-        log.debug("Request to storno GroupDiscountInvoice : {}", id);
+        log.debug("Request to storno invoice paying group : {}", id);
         Invoice invoice = invoiceRepository.findById(id).orElse(null);
         if (invoice == null) {
             throw new IllegalArgumentException("Storno can not be done, invoice is not found for id: " + id);

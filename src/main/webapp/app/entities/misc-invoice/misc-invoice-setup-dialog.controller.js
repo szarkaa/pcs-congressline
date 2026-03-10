@@ -34,7 +34,7 @@
         vm.changeBillingMethod = changeBillingMethod;
         vm.navVatCategoryChanged = navVatCategoryChanged;
         vm.invoiceTypeChanged = invoiceTypeChanged;
-        vm.isTaxNumberDisabled = isTaxNumberDisabled;PublicCompanyDataService
+        vm.isTaxNumberDisabled = isTaxNumberDisabled;
         vm.isTaxNumberRequired = isTaxNumberRequired;
         vm.searchPublicCompanyData = searchPublicCompanyData;
         vm.selectPublicCompanyData = selectPublicCompanyData;

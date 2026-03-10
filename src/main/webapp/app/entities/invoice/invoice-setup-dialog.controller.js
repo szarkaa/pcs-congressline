@@ -6,21 +6,23 @@
         .controller('InvoiceSetupDialogController', InvoiceSetupDialogController);
 
     InvoiceSetupDialogController.$inject = ['$timeout', '$scope', '$state', '$stateParams', 'registration', 'invoice', 'Invoice',
-        'OptionalText', 'CongressSelector', 'BankAccount', 'Country', 'Workplace', 'InvoiceUtils', 'registrationRegistrationTypes', 'roomReservations', 'orderedOptionalServices'];
+        'OptionalText', 'CongressSelector', 'BankAccount', 'Country', 'Workplace', 'InvoiceUtils', 'registrationRegistrationTypes', 'roomReservations', 'orderedOptionalServices', 'PublicCompanyData'];
 
     function InvoiceSetupDialogController($timeout, $scope, $state, $stateParams, registration, invoice, Invoice,
-              OptionalText, CongressSelector, BankAccount, Country, Workplace, InvoiceUtils, registrationRegistrationTypes, roomReservations, orderedOptionalServices) {
+              OptionalText, CongressSelector, BankAccount, Country, Workplace, InvoiceUtils, registrationRegistrationTypes, roomReservations, orderedOptionalServices, PublicCompanyData) {
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.isShowInvoicePanel = false;
         vm.invoice = invoice;
         vm.bankAccounts = [];
         vm.partners = [];
+        vm.publicCompanyDatas = [];
         vm.registration = registration;
         vm.registrationRegistrationTypes = registrationRegistrationTypes;
         vm.roomReservations = roomReservations;
         vm.orderedOptionalServices = orderedOptionalServices;
         vm.taxNumberPattern = '';
+
         vm.openCalendar = openCalendar;
         vm.createInvoiceForPrinting = createInvoiceForPrinting;
         vm.setOptionalTextMessage = setOptionalTextMessage;
@@ -38,7 +40,8 @@
         vm.navVatCategoryChanged = navVatCategoryChanged;
         vm.isTaxNumberDisabled = isTaxNumberDisabled;
         vm.isTaxNumberRequired = isTaxNumberRequired;
-
+        vm.searchPublicCompanyData = searchPublicCompanyData;
+        vm.selectPublicCompanyData = selectPublicCompanyData;
 
         vm.countries = Country.query();
         OptionalText.queryByCongress({id: CongressSelector.getSelectedCongress().id}, function(result) {
@@ -251,5 +254,34 @@
             }
         }
 
+        function searchPublicCompanyData(keyword) {
+            if (!keyword || keyword.length < 4) {
+                vm.publicCompanyDatas = [];
+                return;
+            }
+
+            PublicCompanyData.search({keyword: keyword}).$promise.then(function (result) {
+                vm.publicCompanyDatas = result;
+            });
+        }
+
+        function selectPublicCompanyData(companyData) {
+            if (companyData) {
+                PublicCompanyData.detail({id: companyData.id}).$promise.then(function (result) {
+                    vm.invoice.savePartner = false;
+                    vm.invoice.name1 = result.shortName ? result.shortName : result.fullName;
+                    vm.invoice.vatRegNumber = result.vatNumber ? result.vatNumber.replace(/^(\d{8})(\d)(\d{2})$/, '$1-$2-$3') : null;
+                    vm.invoice.country = result.addressCounty;
+                    vm.invoice.department = null;
+                    vm.invoice.zipCode = result.addressPostalCode;
+                    vm.invoice.city = result.addressCity;
+                    vm.invoice.street = result.addressStreet;
+                    vm.invoice.country = 'HU';
+                    vm.invoice.phone = result.phoneNumber;
+                    vm.invoice.fax = null;
+                    vm.invoice.email = result.emailAddress;
+                });
+            }
+        }
     }
 })();

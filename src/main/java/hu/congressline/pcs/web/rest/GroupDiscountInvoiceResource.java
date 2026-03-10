@@ -27,6 +27,7 @@ import hu.congressline.pcs.service.GroupDiscountInvoiceService;
 import hu.congressline.pcs.service.GroupDiscountInvoiceXlsService;
 import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.service.NavOnlineService;
+import hu.congressline.pcs.service.dto.PayingGroupInvoiceDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.GroupDiscountInvoiceVM;
 import hu.congressline.pcs.web.rest.vm.SetPaymentDateVM;
@@ -51,7 +52,7 @@ public class GroupDiscountInvoiceResource {
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/group-discount-invoices")
     public ResponseEntity<InvoicePayingGroup> createGroupDiscountInvoice(@Valid @RequestBody GroupDiscountInvoiceVM invoiceVM) throws URISyntaxException {
-        log.debug("REST request to save Invoice : {}", invoiceVM);
+        log.debug("REST request to save group discount invoice : {}", invoiceVM);
         InvoicePayingGroup result = invoiceService.save(invoiceVM);
         if (!InvoiceType.PRO_FORMA.equals(result.getInvoice().getInvoiceType())) {
             navOnlineService.postInvoiceToNav(result.getInvoice().getId());
@@ -90,8 +91,8 @@ public class GroupDiscountInvoiceResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/group-discount-invoices/congress/{id}")
-    public List<InvoicePayingGroup> getAllByCongressId(@PathVariable Long id) {
-        log.debug("REST request to get all Invoices of GroupDiscount by congress id: {}", id);
+    public List<PayingGroupInvoiceDTO> getAllByCongressId(@PathVariable Long id) {
+        log.debug("REST request to get all group discount invoices by congress id: {}", id);
         return invoiceService.findByCongressId(id);
     }
 

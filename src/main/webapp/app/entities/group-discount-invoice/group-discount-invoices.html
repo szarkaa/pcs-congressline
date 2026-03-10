@@ -26,23 +26,23 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="groupDiscountInvoice in vm.groupDiscountInvoices track by groupDiscountInvoice.id">
-                            <td>{{groupDiscountInvoice.invoice.invoiceNumber}}</td>
-                            <td>{{groupDiscountInvoice.invoice.stornired}}</td>
-                            <td>{{groupDiscountInvoice.invoice.stornoInvoiceNumber}}</td>
-                            <td>{{groupDiscountInvoice.invoice.name1}}</td>
+                        <tr ng-repeat="groupDiscountInvoice in vm.groupDiscountInvoices track by groupDiscountInvoice.invoicePayingGroupId">
+                            <td>{{groupDiscountInvoice.invoiceNumber}}</td>
+                            <td>{{groupDiscountInvoice.stornired}}</td>
+                            <td>{{groupDiscountInvoice.stornoInvoiceNumber}}</td>
+                            <td>{{groupDiscountInvoice.name1}}</td>
                             <td>{{groupDiscountInvoice.dateOfGroupPayment | date:'mediumDate'}}</td>
-                            <td>{{groupDiscountInvoice.invoice.createdDate | date:'mediumDate'}}</td>
-                            <td>{{groupDiscountInvoice.payingGroup.name}}</td>
+                            <td>{{groupDiscountInvoice.createdDate | date:'mediumDate'}}</td>
+                            <td>{{groupDiscountInvoice.payingGroupName}}</td>
                             <td>
                                 <button class="btn btn-info" type="button" tooltip-placement="left" uib-tooltip="Download pdf"
-                                        ng-click="vm.downloadPdf(groupDiscountInvoice.id)"><i class="fa fa-download"></i></button>
+                                        ng-click="vm.downloadPdf(groupDiscountInvoice.invoicePayingGroupId)"><i class="fa fa-download"></i></button>
                                 <button class="btn btn-info" type="button" tooltip-placement="left" uib-tooltip="Download xls report"
-                                        ng-click="vm.downloadXls(groupDiscountInvoice.id)"><i class="fa fa-file-excel-o"></i></button>
-                                <button class="btn btn-danger" type="submit" ng-hide="groupDiscountInvoice.invoice.storno || groupDiscountInvoice.invoice.stornired"
-                                        ui-sref="group-discount-invoice.storno({id: groupDiscountInvoice.id})" tooltip-placement="left" uib-tooltip="Storno invoice"><i class="fa fa-undo"></i></button>
-                                <button class="btn btn-success" type="submit" ng-hide="groupDiscountInvoice.invoice.storno || groupDiscountInvoice.invoice.stornired"
-                                        ui-sref="group-discount-invoice.set-payment-date({id: groupDiscountInvoice.id})" tooltip-placement="left" uib-tooltip="Set payment date"><i class="fa fa-calendar"></i></button>
+                                        ng-click="vm.downloadXls(groupDiscountInvoice.invoicePayingGroupId)"><i class="fa fa-file-excel-o"></i></button>
+                                <button class="btn btn-danger" type="submit" ng-hide="groupDiscountInvoice.storno || groupDiscountInvoice.stornired"
+                                        ui-sref="group-discount-invoice.storno({id: groupDiscountInvoice.invoicePayingGroupId})" tooltip-placement="left" uib-tooltip="Storno invoice"><i class="fa fa-undo"></i></button>
+                                <button class="btn btn-success" type="submit" ng-hide="groupDiscountInvoice.storno || groupDiscountInvoice.stornired"
+                                        ui-sref="group-discount-invoice.set-payment-date({id: groupDiscountInvoice.invoicePayingGroupId})" tooltip-placement="left" uib-tooltip="Set payment date"><i class="fa fa-calendar"></i></button>
                             </td>
                         </tr>
                         </tbody>

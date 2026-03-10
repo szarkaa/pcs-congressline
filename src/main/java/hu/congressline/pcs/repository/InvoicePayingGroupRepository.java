@@ -11,8 +11,6 @@ import hu.congressline.pcs.domain.enumeration.InvoiceType;
 
 public interface InvoicePayingGroupRepository extends JpaRepository<InvoicePayingGroup, Long> {
 
-    List<InvoicePayingGroup> findByPayingGroupId(Long id);
-
     Optional<InvoicePayingGroup> findByInvoiceId(Long id);
 
     List<InvoicePayingGroup> findByPayingGroupCongressId(Long id);

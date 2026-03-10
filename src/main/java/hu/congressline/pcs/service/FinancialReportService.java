@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -43,7 +42,7 @@ public class FinancialReportService extends XlsReportService {
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
     public List<FinancialReportDTO> findAll(FinancialReportVM filter) {
-        log.debug("Request to get all FinancialReportDTO");
+        log.debug("Request to get all financial report rows");
         Map<String, FinancialReportDTO> financialReportMap = new HashMap<>();
         final Congress congress = congressService.getById(Long.valueOf(filter.getCongressId()));
 
@@ -235,7 +234,7 @@ public class FinancialReportService extends XlsReportService {
 
     private FinancialReportDTO getDTOFromRegistrationRow(Object[] row) {
         FinancialReportDTO bean = new FinancialReportDTO();
-        bean.setId(((BigInteger) row[0]).longValue());
+        bean.setId((Long) row[0]);
         bean.setRegId((Integer) row[1]);
         bean.setName(row[2] + " " + row[3]);
         bean.setRegTypes((String) row[4]);

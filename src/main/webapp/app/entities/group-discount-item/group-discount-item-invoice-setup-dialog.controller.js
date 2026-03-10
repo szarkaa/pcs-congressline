@@ -45,7 +45,7 @@
             vm.invoice.optionalText = text;
         }
 
-        InvoiceUtils.hasValidRate(vm.invoice.payingGroup.currency)
+        InvoiceUtils.hasValidRate(vm.invoice.payingGroup.currency.currency)
             .then(function (response) {
                 if (response.hasValidRate) {
                     vm.hasValidRate = true;
@@ -60,7 +60,7 @@
 
         BankAccount.queryByCongressId({congressId: CongressSelector.getSelectedCongress().id, currency: vm.invoice.payingGroup.currency.currency }, function(result) {
             vm.bankAccounts = result;
-            if (vm.bankAccounts.length == 1) {
+            if (vm.bankAccounts.length === 1) {
                 vm.invoice.bankAccount = vm.bankAccounts[0];
             }
         });
