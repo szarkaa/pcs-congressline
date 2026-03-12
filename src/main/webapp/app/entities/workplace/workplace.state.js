@@ -51,7 +51,7 @@
                                     id: null,
                                     name: null,
                                     vatRegNumber: null,
-                                    countryId: null,
+                                    countryId: CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null,
                                     department: null,
                                     zipCode: null,
                                     city: null,

@@ -26,6 +26,7 @@ import hu.congressline.pcs.config.Constants;
 import hu.congressline.pcs.domain.User;
 import hu.congressline.pcs.repository.UserRepository;
 import hu.congressline.pcs.security.AuthoritiesConstants;
+import hu.congressline.pcs.service.MailService;
 import hu.congressline.pcs.service.UserService;
 import hu.congressline.pcs.service.dto.ManagedUserDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
@@ -46,7 +47,7 @@ public class UserResource {
     private static final String LOGIN_ALREADY_IN_USE = "Login already in use";
 
     private final UserRepository userRepository;
-    //private final MailService mailService;
+    private final MailService mailService;
     private final UserService userService;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -72,7 +73,7 @@ public class UserResource {
                 + ":"                                // ":"
                 + request.getServerPort()            // "80"
                 + request.getContextPath();          // "/myContextPath" or "" if deployed in root context
-            //mailService.sendCreationEmail(newUser, baseUrl);
+            mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
                 .body(new ManagedUserDTO(userService.getUserWithAuthorities(newUser.getId())));

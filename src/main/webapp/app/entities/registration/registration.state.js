@@ -92,7 +92,7 @@
                         position: null,
                         otherData: null,
                         department: null,
-                        countryId: null,
+                        country: CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry : null,
                         zipCode: null,
                         city: null,
                         street: null,
@@ -100,7 +100,7 @@
                         email: null,
                         fax: null,
                         invoiceName: null,
-                        invoiceCountryId: null,
+                        invoiceCountry: CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry : null,
                         invoiceZipCode: null,
                         invoiceCity: null,
                         invoiceAddress: null,
@@ -112,7 +112,7 @@
                         presenter: null,
                         closed: null,
                         etiquette: null,
-                        workplaceId: null,
+                        workplace: null,
                         congressId: CongressSelector.getSelectedCongress().id
                     };
                 }],
@@ -235,17 +235,18 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 name: null,
                                 vatRegNumber: null,
                                 department: null,
+                                countryId: CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null,
                                 zipCode: null,
                                 city: null,
                                 street: null,
                                 phone: null,
                                 fax: null,
                                 email: null,
-                                id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }
@@ -281,17 +282,18 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 name: null,
                                 vatRegNumber: null,
                                 department: null,
+                                countryId: CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.id : null,
                                 zipCode: null,
                                 city: null,
                                 street: null,
                                 phone: null,
                                 fax: null,
                                 email: null,
-                                id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }
@@ -328,9 +330,9 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 code: null,
-                                name: null,
-                                id: null
+                                name: null
                             };
                         }
                     }
@@ -359,9 +361,9 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 code: null,
-                                name: null,
-                                id: null
+                                name: null
                             };
                         }
                     }

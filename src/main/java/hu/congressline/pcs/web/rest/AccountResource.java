@@ -127,7 +127,7 @@ public class AccountResource {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
-    @RequestMapping(value = "/account/change_password", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/account/change-password", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<?> changePassword(@RequestBody String password) {
         if (!checkPasswordLength(password)) {
             return new ResponseEntity<>(INCORRECT_PASSWORD, HttpStatus.BAD_REQUEST);

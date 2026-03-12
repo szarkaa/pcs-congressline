@@ -159,7 +159,7 @@ public class UserService {
             viewModel.getCongressIds().forEach(congressId -> congresses.add(congressService.getById(congressId)));
             user.setCongresses(congresses);
         }
-        String encryptedPassword = passwordEncoder.encode(viewModel.getPassword());
+        String encryptedPassword = passwordEncoder.encode(viewModel.getPassword() != null ? viewModel.getPassword() : "congressline");
         user.setPassword(encryptedPassword);
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(Instant.now());
