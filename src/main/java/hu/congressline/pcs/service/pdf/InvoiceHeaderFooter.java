@@ -75,10 +75,8 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
     @SuppressWarnings({"MissingJavadocMethod", "MethodLength"})
     public void onStartPage(PdfWriter writer, Document document) {
         Paragraph header = new Paragraph();
-
-        Paragraph tempParagraph = new Paragraph(textContext.getMainTitleLabel(), h1);
-        tempParagraph.setAlignment(Element.ALIGN_CENTER);
-        header.add(tempParagraph);
+        header.setAlignment(Element.ALIGN_CENTER);
+        header.add(new Paragraph(textContext.getMainTitleLabel(), h1));
         addEmptyLine(header, 1); // enters
 
         //new table with 2 columns
@@ -92,7 +90,7 @@ public class InvoiceHeaderFooter extends PdfPageEventHelper {
         table.setSpacingAfter(0);
         table.setSpacingBefore(0);
 
-        tempParagraph = new Paragraph();
+        Paragraph tempParagraph = new Paragraph();
         tempParagraph.setLeading(11);
         tempParagraph.add(new Chunk(textContext.getCustomerLabel(), parSmallBold));
         tempParagraph.add(Chunk.NEWLINE);
