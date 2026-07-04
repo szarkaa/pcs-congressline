@@ -20,4 +20,6 @@ public interface WorkplaceRepository extends JpaRepository<Workplace, Long> {
     List<Workplace> findAllForCongressId(@Param("id") Long id);
 
     Optional<Workplace> findOneByCongressAndName(Congress congress, String name);
+
+    void deleteAllByCongressId(Long id);
 }

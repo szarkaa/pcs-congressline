@@ -217,6 +217,14 @@ public class UserService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
+    public void deleteCongressFromAllUsers(Long congressId) {
+        userRepository.findAllEagerlyByCongressId(congressId).forEach(u -> {
+            u.getCongresses().removeIf(congress -> congress.getId().equals(congressId));
+            userRepository.save(u);
+        });
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
     public void changePassword(String password) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new IllegalArgumentException(NO_LOGGED_IN_USER_FOUND))).ifPresent(u -> {
             String encryptedPassword = passwordEncoder.encode(password);

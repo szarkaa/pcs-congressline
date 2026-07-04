@@ -9,4 +9,6 @@ import hu.congressline.pcs.domain.CongressHotel;
 public interface CongressHotelRepository extends JpaRepository<CongressHotel, Long> {
 
     List<CongressHotel> findByCongressId(Long id);
+
+    void deleteAllByCongressId(Long id);
 }

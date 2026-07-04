@@ -10,6 +10,7 @@ import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.CongressHotel;
 import hu.congressline.pcs.domain.Room;
 import hu.congressline.pcs.repository.CongressHotelRepository;
+import hu.congressline.pcs.repository.CongressRepository;
 import hu.congressline.pcs.repository.HotelRepository;
 import hu.congressline.pcs.repository.RoomRepository;
 import hu.congressline.pcs.web.rest.vm.CongressHotelVM;
@@ -22,11 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional
 public class CongressHotelService {
+    private static final String CONGRESS_NOT_FOUND = "Congress not found by id: ";
 
     private final CongressHotelRepository repository;
     private final HotelRepository hotelRepository;
     private final RoomRepository roomRepository;
-    private final CongressService congressService;
+    private final CongressRepository congressRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     public CongressHotel save(CongressHotel congressHotel) {
@@ -39,7 +41,8 @@ public class CongressHotelService {
         CongressHotel congressHotel = viewModel.getId() != null ? getById(viewModel.getId()) : new CongressHotel();
         congressHotel.setHotel(viewModel.getHotelId() != null ? hotelRepository.findById(viewModel.getHotelId()).orElse(null) : null);
         if (congressHotel.getCongress() == null) {
-            congressHotel.setCongress(congressService.getById(viewModel.getCongressId()));
+            final Long congressId = viewModel.getCongressId();
+            congressHotel.setCongress(congressRepository.findById(congressId).orElseThrow(() -> new IllegalArgumentException(CONGRESS_NOT_FOUND + congressId)));
         }
         return repository.save(congressHotel);
     }
@@ -72,20 +75,29 @@ public class CongressHotelService {
     }
 
     @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public void deleteByCongressId(Long id) {
+        log.debug("Request to delete all congress hotels by congress id: {}", id);
+        roomRepository.deleteAllByCongressHotelCongressId(id);
+        repository.deleteAllByCongressId(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
     @Transactional
     public void migrate(Long fromCongressId, Long toCongressId) {
-        Congress toCongress = congressService.getById(toCongressId);
+        Congress toCongress = congressRepository.findById(toCongressId).orElseThrow(() -> new IllegalArgumentException(CONGRESS_NOT_FOUND + toCongressId));
         final List<CongressHotel> congressHotels = repository.findByCongressId(fromCongressId);
         congressHotels.forEach(congressHotel -> {
             CongressHotel copyCongressHotel = new CongressHotel();
             copyCongressHotel.setCongress(toCongress);
             copyCongressHotel.setHotel(congressHotel.getHotel());
             final CongressHotel resultCongressHotel = repository.save(copyCongressHotel);
-            roomRepository.findAllByCongressHotelCongressId(resultCongressHotel.getId()).forEach(room -> {
-                Room copyRoom = Room.copy(room);
-                copyRoom.setCongressHotel(resultCongressHotel);
-                roomRepository.save(copyRoom);
-            });
+            roomRepository.findAllByCongressHotelCongressId(fromCongressId).stream().filter(room -> toCongress.getCurrencies().contains(room.getCurrency()))
+                .forEach(room -> {
+                    Room copyRoom = Room.copy(room);
+                    copyRoom.setCongressHotel(resultCongressHotel);
+                    roomRepository.save(copyRoom);
+                });
         });
     }
 }

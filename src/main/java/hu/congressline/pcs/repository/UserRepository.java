@@ -32,6 +32,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select distinct user from User user left join fetch user.authorities left join fetch user.congresses where user.id in :ids")
     List<User> findAllEagerlyByIdIn(@Param("ids") List<Long> ids);
 
+    @Query("select distinct user from User user left join fetch user.authorities left join fetch user.congresses congress where exists (select 1 from User u2 "
+        + "join u2.congresses c where u2 = user and c.id = :congressId)")
+    List<User> findAllEagerlyByCongressId(@Param("congressId") Long congressId);
+
     @Override
     void delete(User user);
 

@@ -14,6 +14,8 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     List<Room> findAllByCongressHotelCongressId(Long id);
 
+    void deleteAllByCongressHotelCongressId(Long id);
+
     List<Room> findByOnlineVisibilityAndCongressHotelCongressUuidAndCurrencyCurrency(OnlineVisibility visibility, String uuid, String currency);
 
     Optional<Room> findOneByRoomTypeAndCongressHotelId(String roomType, Long congressId);

@@ -18,4 +18,6 @@ public interface OptionalServiceRepository extends JpaRepository<OptionalService
     Optional<OptionalService> findOneByCodeAndCongressId(String code, Long congressId);
 
     List<OptionalService> findAllByIdIn(Set<Long> ids);
+
+    void deleteAllByCongressId(Long id);
 }

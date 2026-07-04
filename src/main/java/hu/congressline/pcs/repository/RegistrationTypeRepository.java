@@ -17,4 +17,6 @@ public interface RegistrationTypeRepository extends JpaRepository<RegistrationTy
     Optional<RegistrationType> findOneByCode(String code);
 
     Optional<RegistrationType> findOneByCodeAndCongressId(String code, Long congressId);
+
+    void deleteAllByCongressId(Long id);
 }

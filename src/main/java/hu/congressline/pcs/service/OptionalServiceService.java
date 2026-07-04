@@ -91,7 +91,7 @@ public class OptionalServiceService {
     public void migrate(Long fromCongressId, Long toCongressId) {
         Congress toCongress = congressService.getById(toCongressId);
         final List<OptionalService> optionalServices = repository.findByCongressIdOrderByName(fromCongressId);
-        optionalServices.forEach(optionalService -> {
+        optionalServices.stream().filter(service -> toCongress.getCurrencies().contains(service.getCurrency())).forEach(optionalService -> {
             final OptionalService copy = OptionalService.copy(optionalService);
             copy.setCongress(toCongress);
             repository.save(copy);

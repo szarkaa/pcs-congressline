@@ -17,6 +17,10 @@ import hu.congressline.pcs.repository.CountryRepository;
 import hu.congressline.pcs.repository.OnlineRegConfigRepository;
 import hu.congressline.pcs.repository.OnlineRegCustomQuestionRepository;
 import hu.congressline.pcs.repository.OnlineRegDiscountCodeRepository;
+import hu.congressline.pcs.repository.OptionalServiceRepository;
+import hu.congressline.pcs.repository.RegistrationTypeRepository;
+import hu.congressline.pcs.repository.UserRepository;
+import hu.congressline.pcs.repository.WorkplaceRepository;
 import hu.congressline.pcs.security.RandomUtil;
 import hu.congressline.pcs.service.dto.OnlineRegConfigDTO;
 import hu.congressline.pcs.service.util.RichTextHtmlCodec;
@@ -31,12 +35,17 @@ import lombok.extern.slf4j.Slf4j;
 public class CongressService {
 
     private final CongressRepository congressRepository;
+    private final CongressHotelService congressHotelService;
     private final OnlineRegConfigRepository onlineRegConfigRepository;
     private final OnlineRegCustomQuestionRepository onlineRegCustomQuestionRepository;
     private final OnlineRegDiscountCodeRepository onlineRegDiscountCodeRepository;
     private final BankAccountRepository bankAccountRepository;
     private final CurrencyService currencyService;
     private final CountryRepository countryRepository;
+    private final UserRepository userRepository;
+    private final RegistrationTypeRepository registrationTypeRepository;
+    private final OptionalServiceRepository optionalServiceRepository;
+    private final WorkplaceRepository workplaceRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     public List<Congress> findAllCongresses() {
@@ -73,9 +82,20 @@ public class CongressService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long id) {
+        registrationTypeRepository.deleteAllByCongressId(id);
+        congressHotelService.deleteByCongressId(id);
+        optionalServiceRepository.deleteAllByCongressId(id);
+        workplaceRepository.deleteAllByCongressId(id);
         onlineRegDiscountCodeRepository.deleteAllByCongressId(id);
         onlineRegCustomQuestionRepository.deleteAllByCongressId(id);
         onlineRegConfigRepository.deleteAllByCongressId(id);
+
+        userRepository.findAllEagerlyByCongressId(id).forEach(u -> {
+            boolean removed = u.getCongresses().removeIf(congress -> congress.getId().equals(id));
+            if (removed) {
+                userRepository.save(u);
+            }
+        });
         congressRepository.deleteById(id);
     }
 

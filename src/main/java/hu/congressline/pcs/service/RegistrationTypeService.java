@@ -107,7 +107,7 @@ public class RegistrationTypeService {
     public void migrate(Long fromCongressId, Long toCongressId) {
         Congress toCongress = congressService.getById(toCongressId);
         final List<RegistrationType> regTypes = repository.findByCongressId(fromCongressId);
-        regTypes.forEach(regType -> {
+        regTypes.stream().filter(regType -> toCongress.getCurrencies().contains(regType.getCurrency())).forEach(regType -> {
             final RegistrationType copy = RegistrationType.copy(regType);
             copy.setCongress(toCongress);
             repository.save(copy);
