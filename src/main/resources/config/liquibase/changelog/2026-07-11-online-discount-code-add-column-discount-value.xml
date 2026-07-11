@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2026-07-11-online-discount-code-add-column-discount-value" author="aszarka">
+
+        <addColumn tableName="online_reg_discount_code">
+            <column name="discount_value" type="INT(11)"/>
+        </addColumn>
+
+        <dropNotNullConstraint tableName="online_reg_discount_code" columnName="discount_percentage" columnDataType="INT(11)"/>
+
+    </changeSet>
+</databaseChangeLog>

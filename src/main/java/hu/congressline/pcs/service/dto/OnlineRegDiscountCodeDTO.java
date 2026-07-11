@@ -12,6 +12,7 @@ public class OnlineRegDiscountCodeDTO {
     private Long id;
     private String code;
     private Integer discountPercentage;
+    private Integer discountValue;
     private OnlineDiscountCodeType discountType;
     private Long congressId;
 
@@ -19,6 +20,7 @@ public class OnlineRegDiscountCodeDTO {
         this.id = discountCode.getId();
         this.code = discountCode.getCode();
         this.discountPercentage = discountCode.getDiscountPercentage();
+        this.discountValue = discountCode.getDiscountValue();
         this.discountType = discountCode.getDiscountType();
         this.congressId = discountCode.getCongress() != null ? discountCode.getCongress().getId() : null;
     }

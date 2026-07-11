@@ -27,6 +27,7 @@
                         <tr>
                             <th><span translate="pcsApp.onlineRegDiscountCode.code">Code</span></th>
                             <th><span translate="pcsApp.onlineRegDiscountCode.discountPercentage">Discount percentage</span></th>
+                            <th><span translate="pcsApp.onlineRegDiscountCode.discountValue">Discount value</span></th>
                             <th><span translate="pcsApp.onlineRegDiscountCode.discountType">Discount type</span></th>
                             <th></th>
                         </tr>
@@ -35,6 +36,7 @@
                         <tr ng-repeat="discountCode in vm.discountCodes track by discountCode.id">
                             <td>{{discountCode.code}}</td>
                             <td>{{discountCode.discountPercentage}}</td>
+                            <td>{{discountCode.discountValue}}</td>
                             <td data-translate="{{'pcsApp.OnlineDiscountCodeType.' + discountCode.discountType}}">{{discountCode.discountType}}</td>
                             <td>
                                 <button class="btn btn-info" type="submit"

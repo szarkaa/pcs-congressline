@@ -39,12 +39,17 @@ public class OnlineRegDiscountCode implements Serializable {
     @Column(name = "code", length = 32, nullable = false)
     private String code;
 
-    @NotNull
     @Min(0)
     @Max(100)
     @Column(name = "discount_percentage")
     private Integer discountPercentage;
 
+    @Min(0)
+    @Max(100000000)
+    @Column(name = "discount_value")
+    private Integer discountValue;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "discount_type", nullable = false)
     private OnlineDiscountCodeType discountType;
@@ -56,6 +61,7 @@ public class OnlineRegDiscountCode implements Serializable {
     public void update(@NonNull OnlineRegDiscountCodeVM viewModel) {
         this.code = viewModel.getCode();
         this.discountPercentage = viewModel.getDiscountPercentage();
+        this.discountValue = viewModel.getDiscountValue();
         this.discountType = viewModel.getDiscountType();
     }
 

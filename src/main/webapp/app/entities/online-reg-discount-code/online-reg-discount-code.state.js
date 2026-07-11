@@ -54,6 +54,7 @@
                                 id: null,
                                 code: null,
                                 discountPercentage: null,
+                                discountValue: null,
                                 discountType: null,
                                 congressId: $stateParams.congressId
                             };

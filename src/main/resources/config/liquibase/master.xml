@@ -87,4 +87,6 @@
     <include file="/config/liquibase/changelog/2026-02-12-create-online_reg_custom_data_fields.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2026-02-20-create-online_reg_config_attachment_fields.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2026-02-20-create-pcs-file.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2026-07-11-online-discount-code-add-column-discount-value.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2026-07-11-online-discount-code-add-constraint-discount-type.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

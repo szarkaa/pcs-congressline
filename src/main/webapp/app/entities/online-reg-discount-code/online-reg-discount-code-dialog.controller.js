@@ -14,12 +14,15 @@
             id: entity.id,
             code: entity.code,
             discountPercentage: entity.discountPercentage,
+            discountValue: entity.discountValue,
             discountType: entity.discountType,
             congressId: entity.congressId
         };
         vm.clear = clear;
         vm.save = save;
         vm.onDiscountTypeChanged = onDiscountTypeChanged;
+        vm.clearOtherFields = clearOtherFields;
+        vm.isFieldRequired = isFieldRequired;
 
         $timeout(function (){
             angular.element('.form-group:eq(0)>input').focus();
@@ -54,5 +57,17 @@
             }
         }
 
+        function clearOtherFields(fieldType) {
+            if ('VALUE' === fieldType) {
+                vm.discountCode.discountPercentage = null;
+            }
+            else if ('PERCENTAGE' === fieldType) {
+                vm.discountCode.discountValue = null;
+            }
+        }
+
+        function isFieldRequired() {
+            return !vm.discountCode.discountValue && !vm.discountCode.discountPercentage;
+        }
     }
 })();
