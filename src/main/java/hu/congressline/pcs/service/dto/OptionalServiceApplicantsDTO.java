@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class OptionalServiceApplicantsDTO implements Serializable {
     private Long id;
+    private String optionalService;
     private Integer regId;
     private String firstName;
     private String lastName;

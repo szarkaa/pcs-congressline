@@ -25,6 +25,7 @@
                         <thead>
                         <tr>
                             <th><span data-translate="pcsApp.optionalServiceApplicant.regId">Reg Id</span></th>
+                            <th><span data-translate="pcsApp.optionalServiceApplicant.optionalService">Optional Service</span></th>
                             <th><span data-translate="pcsApp.optionalServiceApplicant.lastName">Last Name</span></th>
                             <th><span data-translate="pcsApp.optionalServiceApplicant.firstName">First Name</span></th>
                             <th><span data-translate="pcsApp.optionalServiceApplicant.email">First Name</span></th>
@@ -42,6 +43,7 @@
                         <tbody>
                         <tr ng-repeat="optionalServiceApplicant in vm.optionalServiceApplicants track by optionalServiceApplicant.id">
                             <td>{{optionalServiceApplicant.regId}}</td>
+                            <td>{{optionalServiceApplicant.optionalService}}</td>
                             <td>{{optionalServiceApplicant.lastName}}</td>
                             <td>{{optionalServiceApplicant.firstName}}</td>
                             <td>{{optionalServiceApplicant.email}}</td>
