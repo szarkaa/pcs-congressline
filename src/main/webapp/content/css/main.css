@@ -602,10 +602,9 @@ PCS custom classes
     cursor: default;
 }
 
-.bold-option {
-    font-weight: 700;
+.italic-option {
+    font-style: italic;
 }
-
 .file-upload[readonly], .file-upload {
     background-color: #fff !important;
     cursor: not-allowed;
