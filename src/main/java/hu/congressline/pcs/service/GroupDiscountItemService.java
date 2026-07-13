@@ -141,8 +141,9 @@ public class GroupDiscountItemService extends XlsReportService {
         stringBuilder.append("where gdih.chargeable_item_id = c2 and ipg.paying_group_id = c6 order by i.id desc limit 1) c11,\n");
         stringBuilder.append("h.name c12,\n");
         stringBuilder.append("rm.room_type c13,\n");
-        stringBuilder.append("(select group_concat(concat_ws(',', concat(r.last_name, ' ', r.first_name))) from registration r\n");
-        stringBuilder.append("join room_reservation_registration rrr on rrr.registration_id = r.id where rrr.room_reservation_id = rr.id and rrr.registration_id <> r.id) c14\n");
+        stringBuilder.append("(select group_concat(distinct concat_ws(' ', r2.last_name, r2.first_name) order by r2.last_name, r2.first_name separator ', ')\n");
+        stringBuilder.append("from room_reservation_registration rrr2 join registration r2 on r2.id = rrr2.registration_id where rrr2.room_reservation_id = rr.id\n");
+        stringBuilder.append("and rrr2.registration_id <> r.id) c14\n");
         stringBuilder.append("from\n");
         stringBuilder.append("registration r\n");
         stringBuilder.append("inner join congress c on r.congress_id = c.id\n");
