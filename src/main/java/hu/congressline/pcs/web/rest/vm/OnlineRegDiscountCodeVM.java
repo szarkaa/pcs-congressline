@@ -4,7 +4,6 @@ import java.io.Serial;
 import java.io.Serializable;
 
 import hu.congressline.pcs.domain.enumeration.OnlineDiscountCodeType;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -25,13 +24,10 @@ public class OnlineRegDiscountCodeVM implements Serializable {
     @Size(min = 5, max = 32)
     private String code;
 
+    @NotNull
     @Min(0)
     @Max(100)
     private Integer discountPercentage;
-
-    @Min(0)
-    @Max(100000000)
-    private Integer discountValue;
 
     private OnlineDiscountCodeType discountType;
 

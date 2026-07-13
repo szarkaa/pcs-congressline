@@ -14,8 +14,7 @@
             },
             "code": "Code",
             "discountType": "Discount type",
-            "discountPercentage": "Discount percentage",
-            "discountValue": "Discount value"
+            "discountPercentage": "Discount percentage"
         }
     }
 }

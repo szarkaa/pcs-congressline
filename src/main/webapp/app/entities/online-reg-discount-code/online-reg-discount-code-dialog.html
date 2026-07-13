@@ -32,8 +32,8 @@
         </div>
         <div class="form-group">
             <label class="control-label" data-translate="pcsApp.onlineRegDiscountCode.discountPercentage" for="field_discountPercentage">Amount Percentage</label>
-            <input type="number" class="form-control" name="discountPercentage" id="field_discountPercentage" ng-change="vm.clearOtherFields('PERCENTAGE')"
-                   ng-model="vm.discountCode.discountPercentage" autocomplete="off" min="0" max="100" ng-required="vm.isFieldRequired()"/>
+            <input type="number" class="form-control" name="discountPercentage" id="field_discountPercentage"
+                   ng-model="vm.discountCode.discountPercentage" autocomplete="off" min="0" max="100" required/>
             <div ng-show="editForm.discountPercentage.$invalid">
                 <p class="error-block" ng-show="editForm.discountPercentage.$error.required" data-translate="entity.validation.required">
                     This field is required.
@@ -53,30 +53,8 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="pcsApp.onlineRegDiscountCode.discountValue" for="field_discountValue">Discount Value</label>
-            <input type="number" class="form-control" name="discountValue" id="field_discountValue" ng-change="vm.clearOtherFields('VALUE')"
-                   ng-model="vm.discountCode.discountValue" autocomplete="off" min="0" max="100000000" ng-required="vm.isFieldRequired()" />
-            <div ng-show="editForm.discountValue.$invalid">
-                <p class="error-block" ng-show="editForm.discountValue.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="error-block"
-                   ng-show="editForm.discountValue.$error.min" data-translate="entity.validation.min" translate-value-min="0">
-                    This field should be more than 0.
-                </p>
-                <p class="error-block"
-                   ng-show="editForm.discountValue.$error.max" data-translate="entity.validation.max" translate-value-max="100000000">
-                    This field cannot be more than 100000000.
-                </p>
-                <p class="error-block"
-                   ng-show="editForm.discountValue.$error.number" data-translate="entity.validation.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="control-label" data-translate="pcsApp.onlineRegDiscountCode.discountType" for="field_discountType">Discount Type</label>
-            <select class="form-control" name="discountType" ng-model="vm.discountCode.discountType" ng-change="vm.onDiscountTypeChanged()" id="field_discountType" required>
+            <select class="form-control" name="discountType" ng-model="vm.discountCode.discountType" ng-change="vm.onDiscountTypeChanged()" id="field_discountType">
                 <option value="" data-translate="global.form.please.select">Please select</option>
                 <option value="REGISTRATION" data-translate="pcsApp.OnlineDiscountCodeType.REGISTRATION">REGISTRATION</option>
                 <option value="NORMAL_REGISTRATION" data-translate="pcsApp.OnlineDiscountCodeType.NORMAL_REGISTRATION">NORMAL_REGISTRATION</option>
