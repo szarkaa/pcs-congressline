@@ -125,6 +125,10 @@
                             <input ng-model="vm.registration.onSpot" id="onSpotCheckbox" ng-click="vm.saveCheckboxProperties('onSpot')"
                                    ng-disabled="vm.isSaving" type="checkbox">
                             <strong>{{ "pcsApp.registration.onSpot" | translate }}</strong></label>
+                        <label class="checkbox-inline">
+                            <input ng-model="vm.registration.noShow" id="noShowCheckbox" ng-click="vm.saveCheckboxProperties('noShow')"
+                                   ng-disabled="vm.isSaving" type="checkbox">
+                            <strong>{{ "pcsApp.registration.noShow" | translate }}</strong></label>
                     </div>
                 </div>
             </div>

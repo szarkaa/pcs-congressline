@@ -81,6 +81,7 @@
             vm.reportFilter.countryNegation = false;
             vm.reportFilter.presenter = null;
             vm.reportFilter.etiquette = null;
+            vm.reportFilter.noShow = null;
             vm.reportFilter.closed = null;
             vm.reportFilter.onSpot = null;
             vm.reportFilter.cancelled = null;
@@ -107,6 +108,7 @@
                 countryNegation: reportFilter.countryNegation,
                 presenter: reportFilter.presenter,
                 etiquette: reportFilter.etiquette,
+                noShow: reportFilter.noShow,
                 closed: reportFilter.closed,
                 onSpot: reportFilter.onSpot,
                 cancelled: reportFilter.cancelled,
@@ -215,6 +217,7 @@
             vm.reportFilter.congressHotel ||
             vm.reportFilter.presenter ||
             vm.reportFilter.etiquette ||
+            vm.reportFilter.noShow ||
             vm.reportFilter.closed ||
             vm.reportFilter.onSpot ||
             vm.reportFilter.cancelled;

@@ -210,6 +210,11 @@ public class GeneralRegistrationReportService extends XlsReportService {
             stringBuilder.append(str).append(endline);
         }
 
+        if (reportFilter.getNoShow() != null) {
+            final String str = "and (r.no_show" + (reportFilter.getNoShow() ? trueCondition : " = false or r.no_show is null)");
+            stringBuilder.append(str).append(endline);
+        }
+
         if (reportFilter.getClosed() != null) {
             final String str = "and (r.closed" + (reportFilter.getClosed() ? trueCondition : " = false or r.closed is null)");
             stringBuilder.append(str).append(endline);

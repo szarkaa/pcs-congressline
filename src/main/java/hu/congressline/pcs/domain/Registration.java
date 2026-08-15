@@ -132,6 +132,9 @@ public class Registration implements Serializable {
     @Column(name = "etiquette")
     private Boolean etiquette;
 
+    @Column(name = "no_show")
+    private Boolean noShow;
+
     @ManyToOne
     private Workplace workplace;
 
@@ -167,6 +170,7 @@ public class Registration implements Serializable {
         this.presenter = viewModel.getPresenter();
         this.closed = viewModel.getClosed();
         this.etiquette = viewModel.getEtiquette();
+        this.noShow = viewModel.getNoShow();
     }
 
     @Override

@@ -112,6 +112,7 @@
                         presenter: null,
                         closed: null,
                         etiquette: null,
+                        noShow: null,
                         workplace: null,
                         congressId: CongressSelector.getSelectedCongress().id
                     };

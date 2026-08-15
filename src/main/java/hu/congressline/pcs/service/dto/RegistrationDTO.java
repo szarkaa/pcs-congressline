@@ -44,6 +44,7 @@ public class RegistrationDTO implements Serializable {
     private Boolean presenter;
     private Boolean closed;
     private Boolean etiquette;
+    private Boolean noShow;
     private WorkplaceDTO workplace;
     private CountryDTO country;
     private Long congressId;
@@ -77,6 +78,7 @@ public class RegistrationDTO implements Serializable {
         this.presenter = registration.getPresenter();
         this.closed = registration.getClosed();
         this.etiquette = registration.getEtiquette();
+        this.noShow = registration.getNoShow();
         this.workplace = registration.getWorkplace() != null ? new WorkplaceDTO(registration.getWorkplace()) : null;
         this.country = registration.getCountry() != null ? new CountryDTO(registration.getCountry()) : null;
         this.congressId = registration.getCongress() != null ? registration.getCongress().getId() : null;

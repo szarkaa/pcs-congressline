@@ -29,6 +29,7 @@ public class GeneralRegistrationReportVM extends GeneralReportVM {
     private Boolean countryNegation;
     private Boolean presenter;
     private Boolean etiquette;
+    private Boolean noShow;
     private Boolean closed;
     private Boolean onSpot;
     private Boolean cancelled;

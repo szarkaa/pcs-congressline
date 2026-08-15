@@ -42,6 +42,7 @@
                             countryNegation: false,
                             presenter: null,
                             etiquette: null,
+                            noShow: null,
                             closed: null,
                             onSpot: null,
                             cancelled: null,

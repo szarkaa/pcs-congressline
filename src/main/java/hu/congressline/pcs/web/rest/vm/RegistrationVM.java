@@ -58,6 +58,7 @@ public class RegistrationVM {
     private Boolean presenter;
     private Boolean closed;
     private Boolean etiquette;
+    private Boolean noShow;
     private Long workplaceId;
     private Long countryId;
     @NotNull

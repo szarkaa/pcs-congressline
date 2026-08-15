@@ -199,7 +199,7 @@
                             </div>
                             <div class="col-lg-4 col-md-6 col-sm-4">
                                 <div class="form-group full-width">
-                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.optionalService" for="optionalServices"></label>
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.optionalService" for="optionalService"></label>
                                     <ui-select multiple ng-model="vm.reportFilter.optionalServices" name="optionalService" id="optionalService" theme="bootstrap">
                                         <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">{{$item.name}}</ui-select-match>
                                         <ui-select-choices repeat="optionalService in (vm.optionalServices | filter: $select.search) track by optionalService.id">
@@ -237,6 +237,17 @@
                                 <div class="form-group full-width">
                                     <label class="control-label" data-translate="pcsApp.generalRegistrationReport.closed" for="closed"></label>
                                     <select class="form-control full-width" name="closed" ng-model="vm.reportFilter.closed" id="closed">
+                                        <option value="" data-translate="global.form.please.select">Please select</option>
+                                        <option value="true">true</option>
+                                        <option value="false">false</option>
+                                    </select>
+                                </div>
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group full-width">
+                                    <label class="control-label" data-translate="pcsApp.generalRegistrationReport.noShow"
+                                           for="noShow"></label>
+                                    <select class="form-control full-width" name="noShow" ng-model="vm.reportFilter.noShow"
+                                            id="noShow">
                                         <option value="" data-translate="global.form.please.select">Please select</option>
                                         <option value="true">true</option>
                                         <option value="false">false</option>
