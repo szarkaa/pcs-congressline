@@ -99,15 +99,25 @@ public class CongressResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/congresses/migrate-items")
-    public ResponseEntity<Void> migrateItems(@Valid @RequestBody CongressMigrateItemVM cmw) {
-        log.debug("REST request to migrate congress items from: {} to: {}", cmw.getFrom(), cmw.getTo());
-        workplaceService.migrate(cmw.getFrom(), cmw.getTo());
-        registrationTypeService.migrate(cmw.getFrom(), cmw.getTo());
-        congressHotelService.migrate(cmw.getFrom(), cmw.getTo());
-        optionalServiceService.migrate(cmw.getFrom(), cmw.getTo());
-        optionalTextService.migrate(cmw.getFrom(), cmw.getTo());
-        Congress from = congressService.getById(cmw.getFrom());
-        Congress to = congressService.getById(cmw.getTo());
+    public ResponseEntity<Void> migrateItems(@Valid @RequestBody CongressMigrateItemVM vm) {
+        log.debug("REST request to migrate congress items from: {} to: {}", vm.getFrom(), vm.getTo());
+        if (vm.isMigrateWorkplace()) {
+            workplaceService.migrate(vm.getFrom(), vm.getTo());
+        }
+        if (vm.isMigrateRegType()) {
+            registrationTypeService.migrate(vm.getFrom(), vm.getTo());
+        }
+        if (vm.isMigrateHotel()) {
+            congressHotelService.migrate(vm.getFrom(), vm.getTo());
+        }
+        if (vm.isMigrateOptionalService()) {
+            optionalServiceService.migrate(vm.getFrom(), vm.getTo());
+        }
+        if (vm.isMigrateOptionalText()) {
+            optionalTextService.migrate(vm.getFrom(), vm.getTo());
+        }
+        Congress from = congressService.getById(vm.getFrom());
+        Congress to = congressService.getById(vm.getTo());
         to.setMigratedFromCongressCode(from.getMeetingCode());
         congressService.save(to);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityCreationAlert("congress.migrate", from.getName())).build();

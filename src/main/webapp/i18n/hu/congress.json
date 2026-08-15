@@ -34,7 +34,12 @@
             "additionalBillingTextHu": "Additional billing text (HU)",
             "additionalBillingTextEn": "Additional billing text (EN)",
             "bankAccounts": "Bank account for {{ currency }}",
-            "congressFromCopyWp": "Migrate workplaces from this congress",
+            "migrateFromCongress": "Migrate from congress",
+            "migrateWorkplace": "Migrate workplaces",
+            "migrateRegType": "Migrate registration types",
+            "migrateHotel": "Migrate hotels",
+            "migrateOptionalService": "Migrate optional services",
+            "migrateOptionalText": "Migrate optional texts",
             "message" : {
                 "endDateLessThanStartDate": "End date must be later than Start date."
             }

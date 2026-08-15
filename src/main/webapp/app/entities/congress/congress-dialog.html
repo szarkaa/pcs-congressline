@@ -219,8 +219,8 @@
             </div>
         </div>
         <div class="form-group" ng-if="!vm.congress.id">
-            <label translate="pcsApp.congress.congressFromCopyWp" for="field_congressFromCopyWp">Migrate workplaces from this congress</label>
-            <ui-select ng-model="vm.congressFromCopyWp" name="congressFromCopyWp" id="field_congressFromCopyWp" theme="bootstrap">
+            <label translate="pcsApp.congress.migrateFromCongress" for="field_migrate_from_congress">Migrate from this congress</label>
+            <ui-select ng-model="vm.migrateFromCongress" name="migrate_from_congress" id="field_migrate_from_congress" theme="bootstrap">
                 <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.name"></span>
                 </ui-select-match>
@@ -228,6 +228,66 @@
                     <div ng-bind-html="congress.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
+        </div>
+        <div class="form-group" ng-if="vm.migrateFromCongress.id">
+            <label class="control-label" data-translate="pcsApp.congress.migrateWorkplace">Migrate workplaces</label>
+            <div class="switch">
+                <div class="onoffswitch">
+                    <input type="checkbox" name="migrate_workplace" id="field_migrate_workplace" ng-model="vm.migrateWorkplace" class="onoffswitch-checkbox"/>
+                    <label class="onoffswitch-label" for="field_migrate_workplace">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-if="vm.migrateFromCongress.id">
+            <label class="control-label" data-translate="pcsApp.congress.migrateRegType">Migrate registration types</label>
+            <div class="switch">
+                <div class="onoffswitch">
+                    <input type="checkbox" name="migrate_regtype" id="field_migrate_regtype" ng-model="vm.migrateRegType" class="onoffswitch-checkbox"/>
+                    <label class="onoffswitch-label" for="field_migrate_regtype">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-if="vm.migrateFromCongress.id">
+            <label class="control-label" data-translate="pcsApp.congress.migrateHotel">Migrate hotels</label>
+            <div class="switch">
+                <div class="onoffswitch">
+                    <input type="checkbox" name="migrate_hotel" id="field_migrate_hotel" ng-model="vm.migrateHotel" class="onoffswitch-checkbox"/>
+                    <label class="onoffswitch-label" for="field_migrate_hotel">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-if="vm.migrateFromCongress.id">
+            <label class="control-label" data-translate="pcsApp.congress.migrateOptionalService">Migrate optional services</label>
+            <div class="switch">
+                <div class="onoffswitch">
+                    <input type="checkbox" name="migrate_optional_service" id="field_migrate_optional_service" ng-model="vm.migrateOptionalService" class="onoffswitch-checkbox"/>
+                    <label class="onoffswitch-label" for="field_migrate_optional_service">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-if="vm.migrateFromCongress.id">
+            <label class="control-label" data-translate="pcsApp.congress.migrateOptionalText">Migrate optional texts</label>
+            <div class="switch">
+                <div class="onoffswitch">
+                    <input type="checkbox" name="migrate_optional_text" id="field_migrate_optional_text" ng-model="vm.migrateOptionalText" class="onoffswitch-checkbox"/>
+                    <label class="onoffswitch-label" for="field_migrate_optional_text">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
         </div>
         <div class="form-group" ng-if="vm.congress.id">
             <label translate="pcsApp.congress.archive" for="field_archive">Archive</label>

@@ -30,8 +30,14 @@
             bankAccounts: entity.bankAccounts
         };
 
-        vm.congressFromCopyWp;
-        vm.datePickerOpenStatus = {};
+        vm.migrateFromCongress;
+        vm.migrateWorkplace = true;
+        vm.migrateRegType = false;
+        vm.migrateHotel = false;
+        vm.migrateOptionalService = false;
+        vm.migrateOptionalText = false;
+
+            vm.datePickerOpenStatus = {};
         vm.countries = Country.query();
         vm.currencies = Currency.query();
         vm.congresses = Congress.query();
@@ -93,8 +99,9 @@
 
         function onSaveSuccess (result) {
             $scope.$emit('pcsApp:congressUpdate', result);
-            if (vm.congressFromCopyWp) {
-                Congress.migrateItems({from: vm.congressFromCopyWp.id, to: result.id},
+            if (vm.migrateFromCongress) {
+                Congress.migrateItems({from: vm.migrateFromCongress.id, to: result.id, migrateWorkplace: vm.migrateWorkplace, migrateRegType: vm.migrateRegType,
+                        migrateHotel: vm.migrateHotel, migrateOptionalService: vm.migrateOptionalService, migrateOptionalText: vm.migrateOptionalText},
                     function () {
                         vm.congressFromCopyWp = null;
                     }, function () {
