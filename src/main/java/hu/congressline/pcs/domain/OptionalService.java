@@ -65,9 +65,6 @@ public class OptionalService implements Serializable {
     @Column(name = "max_person", nullable = false)
     private Integer maxPerson;
 
-    @Column(name = "reserved")
-    private Integer reserved;
-
     @ManyToOne
     private Currency currency;
 
@@ -104,7 +101,6 @@ public class OptionalService implements Serializable {
         this.endDate = viewModel.getEndDate();
         this.price = viewModel.getPrice();
         this.maxPerson = viewModel.getMaxPerson();
-        this.reserved = viewModel.getReserved();
         this.onlineType = viewModel.getOnlineType();
         this.onlineVisibility = viewModel.getOnlineVisibility();
         this.onlineLabel = viewModel.getOnlineLabel();
@@ -120,7 +116,6 @@ public class OptionalService implements Serializable {
         copy.setEndDate(optionalService.getEndDate());
         copy.setPrice(optionalService.getPrice());
         copy.setMaxPerson(optionalService.getMaxPerson());
-        copy.setReserved(0);
         copy.setVatInfo(optionalService.getVatInfo());
         copy.setCurrency(optionalService.getCurrency());
         copy.setOnlineType(optionalService.getOnlineType());

@@ -45,7 +45,7 @@ public class OptionalServiceDTO implements Serializable {
         this.endDate = optionalService.getEndDate();
         this.price = optionalService.getPrice();
         this.maxPerson = optionalService.getMaxPerson();
-        this.reserved = optionalService.getReserved();
+        this.reserved = 0;
         this.onlineType = optionalService.getOnlineType();
         this.onlineVisibility = optionalService.getOnlineVisibility();
         this.onlineLabel = optionalService.getOnlineLabel();

@@ -44,8 +44,8 @@
                     This field should be a number.
                 </p>
                 <p class="error-block"
-                   ng-show="editForm.participant.$error.exceededMaxPerson" translate="pcsApp.orderedOptionalService.error.exceededMaxPerson" translate-values="{notReservedSpots: '{{vm.orderedOptionalService.optionalService.maxPerson - vm.orderedOptionalService.optionalService.reserved}}'}">
-                    Available free spots exceeded. Max participants can be {{ orderedOptionalService.optionalService.maxPerson - orderedOptionalService.optionalService.reserved}}.
+                   ng-show="editForm.participant.$error.exceededMaxPerson" translate="pcsApp.orderedOptionalService.error.exceededMaxPerson" translate-values="{notReservedSpots: '{{vm.selectedOptionalService.maxPerson - vm.selectedOptionalService.reserved}}'}">
+                    Available free spots exceeded. Max participants can be {{ selectedOptionalService.maxPerson - selectedOptionalService.reserved}}.
                 </p>
             </div>
         </div>

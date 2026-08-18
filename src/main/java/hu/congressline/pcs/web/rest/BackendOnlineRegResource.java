@@ -171,10 +171,6 @@ public class BackendOnlineRegResource {
                 range.forEach(localDate -> rrService.decreaseRoomReservedNumber(onlineRegistration.getRoom(), localDate));
             }
 
-            final List<OnlineRegistrationOptionalService> orosList = orosRepository.findAllByRegistration(onlineRegistration);
-            orosList.forEach(oros -> {
-                oosService.decreaseOptionalServiceReservedNumber(oros.getOptionalService(), oros.getParticipant());
-            });
             onlineRegService.delete(onlineRegistration.getId());
             orcaRepository.deleteAllByOnlineRegistrationId(onlineRegistration.getId());
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

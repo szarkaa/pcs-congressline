@@ -18,14 +18,14 @@ public class OptionalServiceDTO {
     private Integer available;
     private OnlineType onlineType;
 
-    public OptionalServiceDTO(OptionalService optionalService) {
+    public OptionalServiceDTO(OptionalService optionalService, int reserved) {
         this.id = optionalService.getId();
         this.name = optionalService.getName() + (optionalService.getOnlineLabel() != null ? " " + optionalService.getOnlineLabel() : "");
         this.startDate = optionalService.getStartDate();
         this.endDate = optionalService.getEndDate();
         this.price = optionalService.getPrice();
         this.currency = optionalService.getCurrency().getCurrency();
-        this.available = optionalService.getMaxPerson() - optionalService.getReserved();
+        this.available = optionalService.getMaxPerson() - reserved;
         this.onlineType = optionalService.getOnlineType();
     }
 }

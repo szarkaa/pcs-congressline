@@ -1,5 +1,6 @@
 package hu.congressline.pcs.web.rest;
 
+import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,11 +37,12 @@ public class OptionalServiceResource {
     private static final String OPTIONAL_SERVICE_CODE_EXISTS_MSG = "Optional service code already exists";
 
     private final OptionalServiceService service;
+    private final OrderedOptionalServiceRepository oosRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/optional-services")
     public ResponseEntity<OptionalServiceDTO> create(@Valid @RequestBody OptionalServiceVM viewModel) throws URISyntaxException {
-        log.debug("REST request to save optional service : {}", viewModel);
+        log.debug("REST request to save optional service: {}", viewModel);
         if (viewModel.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
                 .createFailureAlert(ENTITY_NAME, "idexists", "A new optional service cannot already have an ID"))
@@ -60,7 +62,7 @@ public class OptionalServiceResource {
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/optional-services")
     public ResponseEntity<OptionalServiceDTO> update(@Valid @RequestBody OptionalServiceVM viewModel) throws URISyntaxException {
-        log.debug("REST request to update optional service : {}", viewModel);
+        log.debug("REST request to update optional service: {}", viewModel);
         if (viewModel.getId() == null) {
             return create(viewModel);
         }
@@ -72,16 +74,23 @@ public class OptionalServiceResource {
         }
 
         OptionalService result = service.save(viewModel);
+        final OptionalServiceDTO dto = new OptionalServiceDTO(result);
+        dto.setReserved(oosRepository.getOptionalServiceTotalReservationNumber(result.getId()));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
-            .body(new OptionalServiceDTO(result));
+            .body(dto);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/optional-services/congress/{id}")
     public List<OptionalServiceDTO> getAllByCongressId(@PathVariable Long id) {
         log.debug("REST request to get all optional services by congress id: {}", id);
-        return service.findByCongressId(id).stream().map(OptionalServiceDTO::new).toList();
+        return service.findByCongressId(id).stream()
+            .map(os -> {
+                OptionalServiceDTO dto = new OptionalServiceDTO(os);
+                dto.setReserved(oosRepository.getOptionalServiceTotalReservationNumber(dto.getId()));
+                return dto;
+            }).toList();
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -89,7 +98,11 @@ public class OptionalServiceResource {
     public ResponseEntity<OptionalServiceDTO> getById(@PathVariable Long id) {
         log.debug("REST request to get optional service : {}", id);
         return service.findById(id)
-            .map(result -> new ResponseEntity<>(new OptionalServiceDTO(result), HttpStatus.OK))
+            .map(result -> {
+                OptionalServiceDTO dto = new OptionalServiceDTO(result);
+                dto.setReserved(oosRepository.getOptionalServiceTotalReservationNumber(dto.getId()));
+                return new ResponseEntity<>(dto, HttpStatus.OK);
+            })
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

@@ -1,5 +1,7 @@
 package hu.congressline.pcs.service;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -250,7 +252,12 @@ public class OnlineRegService {
     @SuppressWarnings("MissingJavadocMethod")
     public List<OptionalServiceDTO> getAllOptionalServices(String uuid, String currency) {
         return osRepository.findByOnlineVisibilityAndCongressUuidAndCurrencyCurrencyOrderByOnlineOrder(OnlineVisibility.VISIBLE, uuid, currency.toUpperCase())
-                .stream().filter(os -> os.getMaxPerson().compareTo(os.getReserved()) > 0).map(OptionalServiceDTO::new).collect(Collectors.toList());
+                .stream()
+                .map(result -> {
+                    var reserved = oosRepository.getOptionalServiceTotalReservationNumber(result.getId());
+                    return new OptionalServiceDTO(result,  reserved);
+                })
+                .filter(dto -> dto.getAvailable() > 0).collect(Collectors.toList());
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -373,7 +380,6 @@ public class OnlineRegService {
             oros.setOptionalService(optionalService);
             oros.setParticipant(os.getParticipants());
             final OnlineRegistrationOptionalService oos = orosRepository.save(oros);
-            oosService.increaseOptionalServiceReservedNumber(optionalService, oos.getParticipant());
         });
 
         LocalDate now = LocalDate.now();

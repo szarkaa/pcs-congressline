@@ -47,8 +47,6 @@ public class OptionalServiceVM implements Serializable {
     @Min(0)
     private Integer maxPerson;
 
-    private Integer reserved;
-
     private OnlineType onlineType;
 
     @NotNull
