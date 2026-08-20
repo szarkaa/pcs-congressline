@@ -1,7 +1,5 @@
 package hu.congressline.pcs.service;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -11,7 +9,6 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -58,11 +55,9 @@ import hu.congressline.pcs.repository.OnlineRegistrationRepository;
 import hu.congressline.pcs.repository.OptionalServiceRepository;
 import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
 import hu.congressline.pcs.repository.RegistrationTypeRepository;
-import hu.congressline.pcs.repository.RoomReservationEntryRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
 import hu.congressline.pcs.repository.RoomReservationRepository;
 import hu.congressline.pcs.service.dto.OnlineRegDiscountCodeDTO;
-import hu.congressline.pcs.service.dto.RoomReservationEntryDTO;
 import hu.congressline.pcs.service.dto.kh.PaymentStatus;
 import hu.congressline.pcs.service.dto.online.CongressDTO;
 import hu.congressline.pcs.service.dto.online.HotelDTO;
@@ -111,14 +106,12 @@ public class OnlineRegService {
     private final RoomReservationRepository rrRepository;
     private final RoomReservationRegistrationRepository rrrRepository;
     private final RoomReservationService rrService;
-    private final OrderedOptionalServiceService oosService;
     private final OptionalServiceService osService;
     private final PcsFileService pcsFileService;
     private final MailService mailService;
 
     private final CountryRepository countryRepository;
     private final OnlineRegistrationRepository onlineRegistrationRepository;
-    private final RoomReservationEntryRepository rreRepository;
     private final WorkplaceService workplaceService;
     private final ApplicationProperties applicationProperties;
     private final OnlineRegDiscountCodeRepository discountCodeRepository;
@@ -280,13 +273,12 @@ public class OnlineRegService {
                 }
 
                 RoomDTO roomDTO = new RoomDTO(room);
-                roomDTO.setReservations(rreRepository.findAllByRoomId(roomDTO.getId()).stream().map(RoomReservationEntryDTO::new)
-                        .filter(dto -> !dto.getReserved().equals(0)).collect(Collectors.toList()));
+                roomDTO.setReservations(rrService.getAllReservationCountByRoomId(room.getId()));
 
                 boolean hasVacancy = roomDTO.getReservations().isEmpty()
-                    || roomDTO.getReservations().stream()
-                    .filter(rre -> rre.getReservationDate().equals(room.getCongressHotel().getCongress().getStartDate())
-                        && roomDTO.getQuantity() <= rre.getReserved()).findAny().isEmpty();
+                    || roomDTO.getReservations().keySet().stream()
+                    .filter(date -> date.equals(room.getCongressHotel().getCongress().getStartDate())
+                        && roomDTO.getQuantity() <= roomDTO.getReservations().get(date)).findAny().isEmpty();
 
                 if (hasVacancy) {
                     List<RoomDTO> list = room.getBed().equals(1) ? hotelDTO.getSingleList() : hotelDTO.getDoubleList();
@@ -391,13 +383,6 @@ public class OnlineRegService {
             orca.setCreatedDate(now);
             orcaRepository.save(orca);
         });
-
-        if (result.getRoom() != null) {
-            final Room room = roomService.getById(result.getRoom().getId());
-            final Stream<LocalDate> range = Stream.iterate(result.getArrivalDate(), d -> d.plusDays(1))
-                    .limit(ChronoUnit.DAYS.between(result.getArrivalDate(), result.getDepartureDate()));
-            range.forEach(localDate -> rrService.increaseRoomReservedNumber(room, localDate));
-        }
 
         if (vm.getAttachmentFile() != null && vm.getAttachmentFile().length > 0) {
             PcsFile attachmentFile = new PcsFile();

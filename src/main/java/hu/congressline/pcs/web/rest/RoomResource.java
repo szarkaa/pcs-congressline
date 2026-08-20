@@ -1,5 +1,6 @@
 package hu.congressline.pcs.web.rest;
 
+import hu.congressline.pcs.service.RoomReservationService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +21,9 @@ import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.CongressHotel;
 import hu.congressline.pcs.domain.Room;
-import hu.congressline.pcs.repository.RoomReservationEntryRepository;
 import hu.congressline.pcs.service.CongressHotelService;
 import hu.congressline.pcs.service.RoomService;
 import hu.congressline.pcs.service.dto.RoomDTO;
-import hu.congressline.pcs.service.dto.RoomReservationEntryDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.RoomVM;
 import jakarta.validation.Valid;
@@ -39,11 +38,10 @@ public class RoomResource {
     private static final String ENTITY_NAME = "room";
     private static final String ROOM_TYPE_EXISTS = "roomtypeexists";
     private static final String ROOM_TYPE_EXISTS_MSG = "Room type already exists";
-    private static final String CONGRESS_HOTEL_NOT_FOUND = "CongressHotel not found by id: ";
 
     private final RoomService service;
+    private final RoomReservationService rrService;
     private final CongressHotelService congressHotelService;
-    private final RoomReservationEntryRepository rreRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/rooms")
@@ -94,9 +92,7 @@ public class RoomResource {
         final List<Room> roomList = service.findAllByCongressHotelId(id);
         final List<RoomDTO> roomDTOList = roomList.stream().map(RoomDTO::new).collect(Collectors.toList());
         roomDTOList.forEach(roomDTO -> {
-            roomDTO.setReservations(rreRepository.findAllByRoomId(roomDTO.getId()).stream().map(RoomReservationEntryDTO::new)
-                .filter(dto -> !dto.getReserved().equals(0)).collect(Collectors.toList()));
-            roomDTO.getReservations().sort(Comparator.comparing(RoomReservationEntryDTO::getReservationDate));
+            roomDTO.setReservations(rrService.getAllReservationCountByRoomId(roomDTO.getId()));
         });
 
         return roomDTOList;
@@ -108,9 +104,8 @@ public class RoomResource {
         log.debug("REST request to get all rooms by congress id: {}", id);
         final List<Room> roomList = service.findAllByCongressId(id);
         final List<RoomDTO> roomDTOList = roomList.stream().map(RoomDTO::new).collect(Collectors.toList());
-        roomDTOList.forEach(roomDTO -> {
-            roomDTO.setReservations(rreRepository.findAllByRoomId(roomDTO.getId()).stream().map(RoomReservationEntryDTO::new)
-                .filter(dto -> !dto.getReserved().equals(0)).collect(Collectors.toList()));
+        roomDTOList.forEach(dto -> {
+            dto.setReservations(rrService.getAllReservationCountByRoomId(dto.getId()));
         });
         return roomDTOList;
 
@@ -123,8 +118,7 @@ public class RoomResource {
         return service.findById(id)
             .map(r -> {
                 RoomDTO dto = new RoomDTO(r);
-                dto.setReservations(rreRepository.findAllByRoomId(r.getId()).stream().map(RoomReservationEntryDTO::new)
-                    .filter(rdto -> !rdto.getReserved().equals(0)).collect(Collectors.toList()));
+                dto.setReservations(rrService.getAllReservationCountByRoomId(dto.getId()));
                 return dto;
             })
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))

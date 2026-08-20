@@ -40,7 +40,7 @@
                             <td>{{room.roomType}}</td>
                             <td>{{room.bed}}</td>
                             <td>{{room.quantity}}</td>
-                            <td><span ng-repeat=" reservation in room.reservations track by reservation.id">{{reservation.reservationDate | date: 'yyyy-MM-dd' }}: {{reservation.reserved }}<br></span></td>
+                            <td><span ng-repeat="(reservationDate, reserved) in room.reservations">{{reservationDate | date: 'yyyy-MM-dd' }}: {{reserved }}<br></span></td>
                             <td>{{room.price}}</td>
                             <td>{{room.currency.currency}}</td>
                             <td>{{room.vatInfo.name}}</td>

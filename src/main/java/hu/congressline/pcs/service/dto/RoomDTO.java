@@ -1,8 +1,10 @@
 package hu.congressline.pcs.service.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import hu.congressline.pcs.domain.Room;
 import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
@@ -25,7 +27,7 @@ public class RoomDTO {
     private String onlineExternalEmail;
     private String hotelName;
     private Long congressHotelId;
-    private List<RoomReservationEntryDTO> reservations = Collections.emptyList();
+    private Map<LocalDate, Long> reservations = Collections.emptyMap();
 
     public RoomDTO(Room room) {
         this.id = room.getId();

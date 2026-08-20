@@ -165,12 +165,6 @@ public class BackendOnlineRegResource {
         log.debug("REST request to delete online registrations by id : {}", id);
         try {
             OnlineRegistration onlineRegistration = onlineRegService.getById(id);
-            if (onlineRegistration.getRoom() != null) {
-                final Stream<LocalDate> range = Stream.iterate(onlineRegistration.getArrivalDate(), d -> d.plusDays(1))
-                        .limit(ChronoUnit.DAYS.between(onlineRegistration.getArrivalDate(), onlineRegistration.getDepartureDate()));
-                range.forEach(localDate -> rrService.decreaseRoomReservedNumber(onlineRegistration.getRoom(), localDate));
-            }
-
             onlineRegService.delete(onlineRegistration.getId());
             orcaRepository.deleteAllByOnlineRegistrationId(onlineRegistration.getId());
             return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();

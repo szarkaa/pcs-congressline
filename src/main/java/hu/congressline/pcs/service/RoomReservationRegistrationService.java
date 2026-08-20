@@ -26,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class RoomReservationRegistrationService {
 
-    private final RoomReservationService roomReservationService;
     private final RoomReservationRegistrationRepository repository;
     private final RoomReservationRepository rrRepository;
     private final ChargeableItemInvoiceHistoryRepository ciihRepository;
@@ -78,10 +77,6 @@ public class RoomReservationRegistrationService {
         }
 
         if (rrr.getRoomReservation().getRoomReservationRegistrations().size() == 1) {
-            RoomReservation rr = rrr.getRoomReservation();
-            final Stream<LocalDate> range = Stream.iterate(rr.getArrivalDate(), d -> d.plusDays(1))
-                    .limit(ChronoUnit.DAYS.between(rr.getArrivalDate(), rr.getDepartureDate()));
-            range.forEach(localDate -> roomReservationService.decreaseRoomReservedNumber(rr.getRoom(), localDate));
             rrRepository.deleteById(rrr.getRoomReservation().getId());
         } else {
             repository.deleteById(id);

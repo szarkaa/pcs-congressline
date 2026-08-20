@@ -1,25 +1,31 @@
 package hu.congressline.pcs.service;
 
+import hu.congressline.pcs.domain.OnlineRegistration;
+import hu.congressline.pcs.repository.OnlineRegistrationRepository;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.domain.Hotel;
 import hu.congressline.pcs.domain.Registration;
-import hu.congressline.pcs.domain.Room;
 import hu.congressline.pcs.domain.RoomReservation;
-import hu.congressline.pcs.domain.RoomReservationEntry;
 import hu.congressline.pcs.domain.RoomReservationRegistration;
 import hu.congressline.pcs.repository.RegistrationRepository;
-import hu.congressline.pcs.repository.RoomReservationEntryRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
 import hu.congressline.pcs.repository.RoomReservationRepository;
 import hu.congressline.pcs.service.dto.RoomReservationDTO;
@@ -38,9 +44,9 @@ public class RoomReservationService {
     private final RegistrationRepository registrationRepository;
     private final RoomReservationRepository rrRepository;
     private final RoomReservationRegistrationRepository rrrRepository;
+    private final OnlineRegistrationRepository onlineRegistrationRepository;
     private final DiscountService discountService;
     private final RoomService roomService;
-    private final RoomReservationEntryRepository rreRepository;
     private final PayingGroupItemService payingGroupItemService;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -61,11 +67,7 @@ public class RoomReservationService {
         rrr.setPayingGroupItem(viewModel.getPayingGroupItemId() != null ? payingGroupItemService.getById(viewModel.getPayingGroupItemId()) : null);
         rrr.setComment(viewModel.getComment());
         RoomReservationRegistration rrrResult = rrrRepository.save(rrr);
-
         rr.getRoomReservationRegistrations().add(rrr);
-        final Stream<LocalDate> range = Stream.iterate(rrResult.getArrivalDate(), d -> d.plusDays(1))
-                .limit(ChronoUnit.DAYS.between(rrResult.getArrivalDate(), rrResult.getDepartureDate()));
-        range.forEach(localDate -> increaseRoomReservedNumber(rrResult.getRoom(), localDate));
         return rrrResult;
     }
 
@@ -80,10 +82,6 @@ public class RoomReservationService {
         log.debug("Request to update room reservation by rrr id: {}", viewModel.getId());
         RoomReservationRegistration rrr = rrrRepository.findById(viewModel.getId())
             .orElseThrow(() -> new IllegalArgumentException("Room reservation registration not found by id: " + viewModel.getRegistrationId()));
-        // decrease the room reservations on dates according to the old date values
-        Stream<LocalDate> range = Stream.iterate(rrr.getRoomReservation().getArrivalDate(), d -> d.plusDays(1))
-            .limit(ChronoUnit.DAYS.between(rrr.getRoomReservation().getArrivalDate(), rrr.getRoomReservation().getDepartureDate()));
-        range.forEach(localDate -> decreaseRoomReservedNumber(rrr.getRoomReservation().getRoom(), localDate));
 
         rrr.getRoomReservation().setRoom(roomService.getById(viewModel.getRoomId()));
         rrr.getRoomReservation().setArrivalDate(viewModel.getArrivalDate());
@@ -91,13 +89,7 @@ public class RoomReservationService {
         rrr.getRoomReservation().setShared(viewModel.getShared());
         rrr.setPayingGroupItem(viewModel.getPayingGroupItemId() != null ? payingGroupItemService.getById(viewModel.getPayingGroupItemId()) : null);
         rrr.setComment(viewModel.getComment());
-        RoomReservationRegistration result = rrrRepository.save(rrr);
-        // increase the room reservations on dates according to the new date values
-        range = Stream.iterate(result.getRoomReservation().getArrivalDate(), d -> d.plusDays(1))
-            .limit(ChronoUnit.DAYS.between(result.getRoomReservation().getArrivalDate(), result.getRoomReservation().getDepartureDate()));
-        range.forEach(localDate -> increaseRoomReservedNumber(result.getRoomReservation().getRoom(), localDate));
-
-        return result;
+        return rrrRepository.save(rrr);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -112,6 +104,46 @@ public class RoomReservationService {
     public RoomReservation getById(Long id) {
         log.debug("Request to get room reservation : {}", id);
         return rrRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Room reservation not found by id: " + id));
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public List<LocalDate> getAvailableReservedDates(Long roomId) {
+        final List<LocalDate> reservationDates = rrRepository.findAllByRoomId(roomId).stream()
+            .flatMap(reservation ->
+                Stream.iterate(reservation.getArrivalDate(), date -> date.plusDays(1))
+                    .limit(ChronoUnit.DAYS.between(reservation.getArrivalDate(), reservation.getDepartureDate()))
+            )
+            .distinct()
+            .toList();
+
+        final List<LocalDate> onlineRegDates = onlineRegistrationRepository.findAllByRoomId(roomId).stream()
+            .flatMap(onlineRegistration ->
+                Stream.iterate(onlineRegistration.getArrivalDate(), date -> date.plusDays(1))
+                    .limit(ChronoUnit.DAYS.between(onlineRegistration.getArrivalDate(), onlineRegistration.getDepartureDate()))
+            )
+            .distinct()
+            .toList();
+        Set<LocalDate> dateSet = new HashSet<>(reservationDates);
+        dateSet.addAll(onlineRegDates);
+        return dateSet.stream().sorted().toList();
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public Long getReservationCountByRoomId(Long roomId, LocalDate date) {
+        return rrRepository.countReservationsByRoomAndDate(roomId, date) + onlineRegistrationRepository.countReservationsByRoomAndDate(roomId, date);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public Map<LocalDate, Long> getAllReservationCountByRoomId(Long roomId) {
+        log.debug("Request to get room reservation numbers for dates by room id: {}", roomId);
+        Map<LocalDate, Long> reservationNumbers = new LinkedHashMap<>();
+        getAvailableReservedDates(roomId).forEach(date -> {
+            reservationNumbers.put(date, getReservationCountByRoomId(roomId, date));
+        });
+        return reservationNumbers;
     }
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -149,33 +181,10 @@ public class RoomReservationService {
         final List<RoomReservation> roomReservations = rrRepository.findAllByRegistrationId(registrationId);
         roomReservations.forEach(rr -> {
             if (rr.getRoomReservationRegistrations().size() == 1) {
-                final Stream<LocalDate> range = Stream.iterate(rr.getArrivalDate(), d -> d.plusDays(1))
-                        .limit(ChronoUnit.DAYS.between(rr.getArrivalDate(), rr.getDepartureDate()));
-                range.forEach(localDate -> decreaseRoomReservedNumber(rr.getRoom(), localDate));
                 rrRepository.deleteById(rr.getId());
             }
         });
 
         rrrRepository.deleteAllByRegistrationId(registrationId);
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    public void increaseRoomReservedNumber(Room room, LocalDate reservationDate) {
-        RoomReservationEntry entry = rreRepository.findAllByRoomId(room.getId()).stream()
-                .filter(rre -> rre.getReservationDate().isEqual(reservationDate)).findFirst().orElse(new RoomReservationEntry());
-        entry.setRoom(room);
-        entry.setReservationDate(reservationDate);
-        entry.setReserved(entry.getReserved() + 1);
-        rreRepository.save(entry);
-    }
-
-    @SuppressWarnings("MissingJavadocMethod")
-    public void decreaseRoomReservedNumber(Room room, LocalDate reservationDate) {
-        RoomReservationEntry entry = rreRepository.findAllByRoomId(room.getId()).stream()
-                .filter(rre -> rre.getReservationDate().isEqual(reservationDate)).findFirst().orElse(new RoomReservationEntry());
-        entry.setRoom(room);
-        entry.setReservationDate(reservationDate);
-        entry.setReserved(Math.max(0, entry.getReserved() - 1));
-        rreRepository.save(entry);
     }
 }

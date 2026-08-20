@@ -10,7 +10,6 @@ import hu.congressline.pcs.domain.Room;
 import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
 import hu.congressline.pcs.repository.CurrencyRepository;
 import hu.congressline.pcs.repository.RoomRepository;
-import hu.congressline.pcs.repository.RoomReservationEntryRepository;
 import hu.congressline.pcs.repository.VatInfoRepository;
 import hu.congressline.pcs.web.rest.vm.RoomVM;
 import jakarta.validation.constraints.NotNull;
@@ -25,7 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 public class RoomService {
 
     private final RoomRepository repository;
-    private final RoomReservationEntryRepository rreRepository;
     private final VatInfoRepository vatInfoRepository;
     private final CurrencyRepository currencyRepository;
     private final CongressHotelService congressHotelService;
@@ -95,7 +93,6 @@ public class RoomService {
 
     @SuppressWarnings("MissingJavadocMethod")
     public void delete(Long roomId) {
-        rreRepository.deleteAllByRoomId(roomId);
         repository.deleteById(roomId);
     }
 }

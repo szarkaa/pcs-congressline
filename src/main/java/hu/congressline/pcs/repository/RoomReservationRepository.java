@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import hu.congressline.pcs.domain.Congress;
@@ -15,6 +16,8 @@ public interface RoomReservationRepository extends JpaRepository<RoomReservation
     @Query("select e.roomReservation from RoomReservationRegistration e where e.registration.id = :id")
     List<RoomReservation> findAllByRegistrationId(@Param("id") Long registrationId);
 
+    List<RoomReservation> findAllByRoomId(Long roomId);
+
     @Query("select e from RoomReservation e where e.room.congressHotel.congress = :congress and e.room.congressHotel.hotel = :hotel")
     List<RoomReservation> findAllByCongressAndHotel(@Param("congress") Congress congress, @Param("hotel") Hotel hotel);
 
@@ -23,5 +26,8 @@ public interface RoomReservationRepository extends JpaRepository<RoomReservation
             + "RoomReservationRegistration r where r.roomReservation = e.roomReservation) and not exists "
             + "(select rrr.roomReservation from RoomReservationRegistration rrr where rrr.roomReservation = e.roomReservation and rrr.registration.id = :registrationId)")
     List<RoomReservation> findAllSharedOnesByRegistrationId(@Param("congressId") Long congressId, @Param("registrationId") Long registrationId);
+
+    @Query("select count(rrr) from RoomReservation rr join rr.roomReservationRegistrations rrr where rr.room.id = :roomId and rr.arrivalDate <= :date and rr.departureDate > :date")
+    long countReservationsByRoomAndDate(@Param("roomId") Long roomId, @Param("date") LocalDate date);
 
 }

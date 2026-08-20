@@ -27,10 +27,8 @@ import java.util.stream.Stream;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.Room;
 import hu.congressline.pcs.domain.RoomReservation;
-import hu.congressline.pcs.domain.RoomReservationEntry;
 import hu.congressline.pcs.domain.RoomReservationRegistration;
 import hu.congressline.pcs.repository.RoomRepository;
-import hu.congressline.pcs.repository.RoomReservationEntryRepository;
 import hu.congressline.pcs.service.RegistrationService;
 import hu.congressline.pcs.service.RoomReservationRegistrationService;
 import hu.congressline.pcs.service.RoomReservationService;
@@ -55,7 +53,6 @@ public class RoomReservationResource {
     private final RoomRepository roomRepository;
     private final RoomReservationRegistrationService rrrService;
     private final RegistrationService registrationService;
-    private final RoomReservationEntryRepository rreRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/room-reservations")
@@ -71,11 +68,10 @@ public class RoomReservationResource {
         Room room = roomRepository.findById(viewModel.getRoomId()).orElseThrow(() -> new IllegalArgumentException("Room not found by id: " + viewModel.getRoomId()));
         final Stream<LocalDate> range = Stream.iterate(viewModel.getArrivalDate(), d -> d.plusDays(1))
                 .limit(ChronoUnit.DAYS.between(viewModel.getArrivalDate(), viewModel.getDepartureDate()));
-        range.forEach(localDate -> {
-            final Optional<RoomReservationEntry> entry = rreRepository.findAllByRoomId(room.getId()).stream()
-                .filter(e -> e.getReservationDate().isEqual(localDate)).findFirst();
-            if (entry.isPresent() && room.getQuantity().equals(entry.get().getReserved())) {
-                noAvailableRoomDates.add(localDate);
+        range.forEach(date -> {
+            final Long reservationCount = rrService.getReservationCountByRoomId(room.getId(), date);
+            if (room.getQuantity().longValue() == reservationCount) {
+                noAvailableRoomDates.add(date);
             }
         });
 
