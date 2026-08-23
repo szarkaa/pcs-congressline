@@ -112,6 +112,5 @@
                 vm.onlineRegConfig.billingRemarkPt = null;
             }
         }
-
     }
 })();
