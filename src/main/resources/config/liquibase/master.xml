@@ -88,4 +88,5 @@
     <include file="/config/liquibase/changelog/2026-02-20-create-online_reg_config_attachment_fields.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2026-02-20-create-pcs-file.xml" relativeToChangelogFile="false"/>
     <include file="/config/liquibase/changelog/2026-08-15-registration_add_no_show_field.xml" relativeToChangelogFile="false"/>
+    <include file="/config/liquibase/changelog/2026-08-23-remove-reserved-related-fields.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

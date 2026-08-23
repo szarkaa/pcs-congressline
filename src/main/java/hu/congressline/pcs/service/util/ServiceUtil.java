@@ -90,9 +90,9 @@ public class ServiceUtil {
     @AllArgsConstructor
     public static class ItemRowByVat {
         private Integer vat = 0;
-        private BigDecimal vatBase;
-        private BigDecimal vatValue;
-        private BigDecimal total;
+        private BigDecimal vatBase = BigDecimal.ZERO;
+        private BigDecimal vatValue = BigDecimal.ZERO;
+        private BigDecimal total = BigDecimal.ZERO;
     }
 
 }
