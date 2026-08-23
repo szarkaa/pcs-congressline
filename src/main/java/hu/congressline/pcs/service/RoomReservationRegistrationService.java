@@ -3,15 +3,11 @@ package hu.congressline.pcs.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import hu.congressline.pcs.domain.ChargeableItemInvoiceHistory;
 import hu.congressline.pcs.domain.GroupDiscountInvoiceHistory;
-import hu.congressline.pcs.domain.RoomReservation;
 import hu.congressline.pcs.domain.RoomReservationRegistration;
 import hu.congressline.pcs.repository.ChargeableItemInvoiceHistoryRepository;
 import hu.congressline.pcs.repository.GroupDiscountInvoiceHistoryRepository;

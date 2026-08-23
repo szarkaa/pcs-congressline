@@ -1,6 +1,5 @@
 package hu.congressline.pcs.web.rest;
 
-import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +19,7 @@ import java.util.Optional;
 
 import hu.congressline.pcs.domain.OptionalService;
 import hu.congressline.pcs.service.OptionalServiceService;
+import hu.congressline.pcs.service.OrderedOptionalServiceService;
 import hu.congressline.pcs.service.dto.OptionalServiceDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.OptionalServiceVM;
@@ -37,7 +37,7 @@ public class OptionalServiceResource {
     private static final String OPTIONAL_SERVICE_CODE_EXISTS_MSG = "Optional service code already exists";
 
     private final OptionalServiceService service;
-    private final OrderedOptionalServiceRepository oosRepository;
+    private final OrderedOptionalServiceService oosService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/optional-services")
@@ -75,7 +75,7 @@ public class OptionalServiceResource {
 
         OptionalService result = service.save(viewModel);
         final OptionalServiceDTO dto = new OptionalServiceDTO(result);
-        dto.setReserved(oosRepository.getOptionalServiceTotalReservationNumber(result.getId()));
+        dto.setReserved(oosService.getOptionalServiceTotalReservationNumber(result.getId()));
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, viewModel.getId().toString()))
             .body(dto);
@@ -88,7 +88,7 @@ public class OptionalServiceResource {
         return service.findByCongressId(id).stream()
             .map(os -> {
                 OptionalServiceDTO dto = new OptionalServiceDTO(os);
-                dto.setReserved(oosRepository.getOptionalServiceTotalReservationNumber(dto.getId()));
+                dto.setReserved(oosService.getOptionalServiceTotalReservationNumber(dto.getId()));
                 return dto;
             }).toList();
     }
@@ -100,7 +100,7 @@ public class OptionalServiceResource {
         return service.findById(id)
             .map(result -> {
                 OptionalServiceDTO dto = new OptionalServiceDTO(result);
-                dto.setReserved(oosRepository.getOptionalServiceTotalReservationNumber(dto.getId()));
+                dto.setReserved(oosService.getOptionalServiceTotalReservationNumber(dto.getId()));
                 return new ResponseEntity<>(dto, HttpStatus.OK);
             })
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

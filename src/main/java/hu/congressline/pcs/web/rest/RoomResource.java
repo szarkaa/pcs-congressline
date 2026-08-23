@@ -1,6 +1,5 @@
 package hu.congressline.pcs.web.rest;
 
-import hu.congressline.pcs.service.RoomReservationService;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.CongressHotel;
 import hu.congressline.pcs.domain.Room;
 import hu.congressline.pcs.service.CongressHotelService;
+import hu.congressline.pcs.service.RoomReservationService;
 import hu.congressline.pcs.service.RoomService;
 import hu.congressline.pcs.service.dto.RoomDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;

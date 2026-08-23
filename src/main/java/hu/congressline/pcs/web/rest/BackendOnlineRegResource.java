@@ -13,14 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
-import java.util.stream.Stream;
 
 import hu.congressline.pcs.domain.OnlineRegistration;
 import hu.congressline.pcs.domain.OnlineRegistrationCustomAnswer;
-import hu.congressline.pcs.domain.OnlineRegistrationOptionalService;
 import hu.congressline.pcs.domain.PcsFile;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.repository.OnlineRegistrationCustomAnswerRepository;

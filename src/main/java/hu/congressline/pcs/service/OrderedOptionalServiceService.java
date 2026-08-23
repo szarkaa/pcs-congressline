@@ -12,6 +12,7 @@ import hu.congressline.pcs.domain.OrderedOptionalService;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.repository.ChargeableItemInvoiceHistoryRepository;
 import hu.congressline.pcs.repository.GroupDiscountInvoiceHistoryRepository;
+import hu.congressline.pcs.repository.OnlineRegistrationOptionalServiceRepository;
 import hu.congressline.pcs.repository.OptionalServiceRepository;
 import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
 import hu.congressline.pcs.repository.PayingGroupItemRepository;
@@ -29,6 +30,7 @@ public class OrderedOptionalServiceService {
 
     private final OrderedOptionalServiceRepository repository;
     private final OptionalServiceRepository optionalServiceRepository;
+    private final OnlineRegistrationOptionalServiceRepository orosRepository;
     private final ChargeableItemInvoiceHistoryRepository ciihRepository;
     private final GroupDiscountInvoiceHistoryRepository gdihRepository;
     private final PayingGroupItemRepository pgiRepository;
@@ -73,6 +75,13 @@ public class OrderedOptionalServiceService {
     public OrderedOptionalService getById(Long id) {
         log.debug("Request to get OrderedOptionalService : {}", id);
         return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("OrderedOptionalService not found by id: " + id));
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public Integer getOptionalServiceTotalReservationNumber(Long id) {
+        log.debug("Request to get optional service total reservation number by optional service id : {}", id);
+        return repository.getOptionalServiceTotalReservationNumber(id) + orosRepository.countOrderedOptionalServiceParticipants(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")

@@ -248,7 +248,7 @@ public class OnlineRegService {
                 .stream()
                 .map(result -> {
                     var reserved = oosRepository.getOptionalServiceTotalReservationNumber(result.getId());
-                    return new OptionalServiceDTO(result,  reserved);
+                    return new OptionalServiceDTO(result, reserved);
                 })
                 .filter(dto -> dto.getAvailable() > 0).collect(Collectors.toList());
     }

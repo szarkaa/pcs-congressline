@@ -3,7 +3,6 @@ package hu.congressline.pcs.service.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 import hu.congressline.pcs.domain.Room;

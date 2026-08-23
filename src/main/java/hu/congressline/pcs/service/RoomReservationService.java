@@ -1,16 +1,11 @@
 package hu.congressline.pcs.service;
 
-import hu.congressline.pcs.domain.OnlineRegistration;
-import hu.congressline.pcs.repository.OnlineRegistrationRepository;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -25,6 +20,7 @@ import hu.congressline.pcs.domain.Hotel;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.RoomReservation;
 import hu.congressline.pcs.domain.RoomReservationRegistration;
+import hu.congressline.pcs.repository.OnlineRegistrationRepository;
 import hu.congressline.pcs.repository.RegistrationRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
 import hu.congressline.pcs.repository.RoomReservationRepository;
