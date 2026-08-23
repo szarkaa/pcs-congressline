@@ -20,12 +20,10 @@ import hu.congressline.pcs.domain.OnlineRegistrationCustomAnswer;
 import hu.congressline.pcs.domain.PcsFile;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.repository.OnlineRegistrationCustomAnswerRepository;
-import hu.congressline.pcs.repository.OnlineRegistrationOptionalServiceRepository;
 import hu.congressline.pcs.service.OnlineRegPdfService;
 import hu.congressline.pcs.service.OnlineRegService;
-import hu.congressline.pcs.service.OrderedOptionalServiceService;
 import hu.congressline.pcs.service.PcsFileService;
-import hu.congressline.pcs.service.RoomReservationService;
+import hu.congressline.pcs.service.dto.OnlineRegistrationDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.OnlineRegFilterVM;
 import hu.congressline.pcs.web.rest.vm.OnlineRegistrationVM;
@@ -45,10 +43,7 @@ public class BackendOnlineRegResource {
     private final PcsFileService pcsFileService;
     private final OnlineRegService onlineRegService;
     private final OnlineRegPdfService onlineRegPdfService;
-    private final RoomReservationService rrService;
-    private final OnlineRegistrationOptionalServiceRepository orosRepository;
     private final OnlineRegistrationCustomAnswerRepository orcaRepository;
-    private final OrderedOptionalServiceService oosService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/backend-online-regs")
@@ -104,7 +99,7 @@ public class BackendOnlineRegResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/backend-online-regs/congress/{id}")
-    public List<OnlineRegistration> getAllOnlineRegsById(@PathVariable Long id) {
+    public List<OnlineRegistrationDTO> getAllOnlineRegsById(@PathVariable Long id) {
         log.debug("REST request to get all online registrations by congress id: {}", id);
         return onlineRegService.findAllByCongressId(id);
     }

@@ -26,6 +26,7 @@
         vm.backendOnlineRegs = [];
         vm.downloadAllSelected = downloadAllSelected;
         vm.downloadPdf = downloadPdf;
+        vm.downloadAttachment = downloadAttachment;
 
         loadAll();
 
@@ -42,6 +43,10 @@
                     var pdfLink = (window.URL || window.webkitURL).createObjectURL(blob);
                     window.open(pdfLink, '_blank');
                 });
+        }
+
+        function downloadAttachment (id) {
+            window.open('/api/backend-online-regs/' + id + '/download', '_blank');
         }
 
         function downloadAllSelected() {

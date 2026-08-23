@@ -13,6 +13,7 @@
             abbreviate: abbreviate,
             byteSize: byteSize,
             openFile: openFile,
+            downloadFile: downloadFile,
             toBase64: toBase64
         };
 
@@ -58,8 +59,55 @@
             return formatAsBytes(size(base64String));
         }
 
-        function openFile (type, data) {
-            $window.open('data:' + type + ';base64,' + data, '_blank');
+        function createBlob(type, data) {
+            var byteCharacters = atob(data);
+            var byteArrays = [];
+            var sliceSize = 512;
+
+            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                var slice = byteCharacters.slice(offset, offset + sliceSize);
+                var byteNumbers = new Array(slice.length);
+
+                for (var i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+
+                byteArrays.push(new Uint8Array(byteNumbers));
+            }
+
+            return new Blob(byteArrays, { type: type });
+        }
+
+        function openFile(type, data) {
+            var blob = createBlob(type, data);
+            var url = $window.URL.createObjectURL(blob);
+
+            var newWindow = $window.open('', '_blank');
+
+            if (newWindow) {
+                newWindow.location.href = url;
+            }
+        }
+
+        function downloadFile(type, data, fileName) {
+            var blob = createBlob(type, data);
+            var url = $window.URL.createObjectURL(blob);
+
+            var link = document.createElement('a');
+
+            link.href = url;
+            link.download = fileName || 'download';
+            link.style.display = 'none';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            // Do NOT revoke immediately.
+            // Give the browser time to start the download.
+            setTimeout(function() {
+                $window.URL.revokeObjectURL(url);
+            }, 1000);
         }
 
         function toBase64 (file, cb) {

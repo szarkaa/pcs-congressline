@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import hu.congressline.pcs.domain.PcsFile;
 import hu.congressline.pcs.repository.PcsFileRepository;
@@ -44,6 +45,13 @@ public class PcsFileService {
     public List<PcsFile> findAllByOnlineRegistrationId(Long id) {
         log.debug("Request to find all pcs files by online registration id: {}", id);
         return repository.findAllByOnlineRegistrationId(id);
+    }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @Transactional(readOnly = true)
+    public Set<Long> findAllOnlineRegistrationIdsWithAttachment(Set<Long> onlineRegIds) {
+        log.debug("Request to find all online registration ids with attachments");
+        return repository.findAllOnlineRegistrationIdsWithAttachment(onlineRegIds);
     }
 
     @SuppressWarnings("MissingJavadocMethod")

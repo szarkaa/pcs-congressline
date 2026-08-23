@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -148,9 +149,13 @@ public class OnlineRegService {
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
-    public List<OnlineRegistration> findAllByCongressId(Long congressId) {
+    public List<hu.congressline.pcs.service.dto.OnlineRegistrationDTO> findAllByCongressId(Long congressId) {
         log.debug("Request to find all online registration by congress id {}", congressId);
-        return repository.findByCongressIdOrderByDateOfAppDesc(congressId);
+        final List<OnlineRegistration> onlineRegistrations = repository.findByCongressIdOrderByDateOfAppDesc(congressId);
+        final Set<Long> onlineRegIdsWithAttachment = pcsFileService.findAllOnlineRegistrationIdsWithAttachment(onlineRegistrations.stream()
+            .map(OnlineRegistration::getId).collect(Collectors.toSet()));
+        return onlineRegistrations.stream().map(hu.congressline.pcs.service.dto.OnlineRegistrationDTO::new)
+            .peek(dto -> dto.setHasAttachment(onlineRegIdsWithAttachment.contains(dto.getId()))).collect(Collectors.toList());
     }
 
     @SuppressWarnings("MissingJavadocMethod")
