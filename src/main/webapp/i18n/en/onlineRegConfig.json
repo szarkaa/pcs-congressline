@@ -37,6 +37,8 @@
             "regTypeExtraTitleEn": "Reg type extra title(en)",
             "regTypeExtraTitleEs": "Reg type extra title(es)",
             "regTypeExtraTitlePt": "Reg type extra title(pt)",
+            "arrivalDateExtraDay": "Room reservation arrival date extra day",
+            "departureDateExtraDay": "Room reservation departure date extra day",
             "optionalServiceExtraTitleHu": "Optional service extra title(hu)",
             "optionalServiceExtraTitleEn": "Optional service extra title(en)",
             "optionalServiceExtraTitleEs": "Optional service extra title(es)",

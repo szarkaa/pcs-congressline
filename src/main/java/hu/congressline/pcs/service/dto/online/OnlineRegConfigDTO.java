@@ -115,8 +115,8 @@ public class OnlineRegConfigDTO {
     private String regTypeThirdFeeLabelEn;
     private String regTypeThirdFeeLabelEs;
     private String regTypeThirdFeeLabelPt;
-    private boolean roommateRequiredVisible;
-    private boolean specialBookingRequiredVisible;
+    private Integer arrivalDateExtraDay;
+    private Integer departureDateExtraDay;
     private String regTypeExtraTitleHu;
     private String regTypeExtraTitleEn;
     private String regTypeExtraTitleEs;
@@ -273,8 +273,8 @@ public class OnlineRegConfigDTO {
         this.regTypeThirdFeeLabelEn = config.getRegTypeThirdFeeLabelEn();
         this.regTypeThirdFeeLabelEs = config.getRegTypeThirdFeeLabelEs();
         this.regTypeThirdFeeLabelPt = config.getRegTypeThirdFeeLabelPt();
-        this.roommateRequiredVisible = config.getRoommateRequiredVisible();
-        this.specialBookingRequiredVisible = config.getSpecialBookingRequiredVisible();
+        this.arrivalDateExtraDay = config.getArrivalDateExtraDay();
+        this.departureDateExtraDay = config.getDepartureDateExtraDay();
         this.regTypeExtraTitleHu = config.getRegTypeExtraTitleHu();
         this.regTypeExtraTitleEn = config.getRegTypeExtraTitleEn();
         this.regTypeExtraTitleEs = config.getRegTypeExtraTitleEs();

@@ -384,7 +384,7 @@
                 var diffTime = Math.abs(vm.congress.endDate.getTime() - vm.congress.startDate.getTime());
                 var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-                for (var i = -4; i < diffDays; i++) {
+                for (var i = vm.config.arrivalDateExtraDay; i < diffDays; i++) {
                     var date = (new Date(vm.congress.startDate)).setDate((d).getDate() + i);
                     vm.arrivalDates.push({value: date, label: $filter('date')(date, 'longDate')});
                 }
@@ -399,7 +399,7 @@
                 var diffTime = Math.abs(vm.congress.endDate.getTime() - vm.congress.startDate.getTime());
                 var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                 var d = new Date(vm.congress.startDate);
-                for (var i = 1; i < diffDays + 4; i++) {
+                for (var i = 1; i <= diffDays + vm.config.departureDateExtraDay; i++) {
                     var date = (new Date(vm.congress.startDate)).setDate((d).getDate() + i);
                     vm.departureDates.push({value: date, label: $filter('date')(date, 'longDate')});
                 }

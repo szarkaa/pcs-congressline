@@ -1926,6 +1926,21 @@
                         </div>
 
                         <div class="form-group">
+                            <div class="col-xs-6">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.arrivalDateExtraDay"  for="field_arrivalDateExtraDay">Room reservation arrival date extra day</label>
+                                <select class="form-control" name="arrivalDateExtraDay" id="field_arrivalDateExtraDay" ng-model="vm.onlineRegConfig.arrivalDateExtraDay"
+                                        ng-options="day as day for day in [0, -1, -2, -3, -4, -5]">
+                                </select>
+                            </div>
+                            <div class="col-xs-6">
+                                <label class="control-label" data-translate="pcsApp.onlineRegConfig.departureDateExtraDay"  for="field_departureDateExtraDay">Room reservation arrival date extra day</label>
+                                <select class="form-control" name="departureDateExtraDay" id="field_departureDateExtraDay" ng-model="vm.onlineRegConfig.departureDateExtraDay"
+                                        ng-options="day as day for day in [0, 1, 2, 3, 4, 5]">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="control-label" data-translate="pcsApp.onlineRegConfig.roomRemarkHu" for="field_roomRemarkHu">Room remark(hu)</label>
                             <summernote id="field_roomRemarkHu" name="roomRemarkHu" ng-model="vm.onlineRegConfig.roomRemarkHu" config="vm.summerNoteConfig"></summernote>
                             <div ng-show="editForm.roomRemarkHu.$invalid">

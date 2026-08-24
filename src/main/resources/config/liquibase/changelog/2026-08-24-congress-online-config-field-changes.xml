@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="2026-08-24-congress-online-config-field-changes-1" author="aszarka">
+        <dropColumn tableName="online_reg_config" columnName="roommate_required_visible"/>
+        <dropColumn tableName="online_reg_config" columnName="special_booking_request_visible"/>
+    </changeSet>
+
+    <changeSet id="2026-08-24-congress-online-config-field-changes-2" author="aszarka">
+        <addColumn tableName="online_reg_config">
+            <column name="arrival_date_extra_day" type="int"/>
+        </addColumn>
+        <addColumn tableName="online_reg_config">
+            <column name="departure_date_extra_day" type="int"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

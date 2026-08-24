@@ -19,6 +19,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -423,11 +425,15 @@ public class OnlineRegConfig {
     @Column(name = "reg_type_third_fee_label_pt", length = 100)
     private String regTypeThirdFeeLabelPt;
 
-    @Column(name = "roommate_required_visible")
-    private Boolean roommateRequiredVisible;
+    @Min(-5)
+    @Max(0)
+    @Column(name = "arrival_date_extra_day")
+    private Integer arrivalDateExtraDay;
 
-    @Column(name = "special_booking_request_visible")
-    private Boolean specialBookingRequiredVisible;
+    @Min(0)
+    @Max(5)
+    @Column(name = "departure_date_extra_day")
+    private Integer departureDateExtraDay;
 
     @Size(max = 255)
     @Column(name = "reg_type_extra_title_hu")
@@ -735,8 +741,8 @@ public class OnlineRegConfig {
         copy.setRegTypeThirdFeeLabelEn(onlineRegConfig.getRegTypeThirdFeeLabelEn());
         copy.setRegTypeThirdFeeLabelEs(onlineRegConfig.getRegTypeThirdFeeLabelEs());
         copy.setRegTypeThirdFeeLabelPt(onlineRegConfig.getRegTypeThirdFeeLabelPt());
-        copy.setRoommateRequiredVisible(onlineRegConfig.getRoommateRequiredVisible());
-        copy.setSpecialBookingRequiredVisible(onlineRegConfig.getSpecialBookingRequiredVisible());
+        copy.setArrivalDateExtraDay(onlineRegConfig.getArrivalDateExtraDay());
+        copy.setDepartureDateExtraDay(onlineRegConfig.getDepartureDateExtraDay());
         copy.setRegTypeExtraTitleHu(onlineRegConfig.getRegTypeExtraTitleHu());
         copy.setRegTypeExtraTitleEn(onlineRegConfig.getRegTypeExtraTitleEn());
         copy.setRegTypeExtraTitleEs(onlineRegConfig.getRegTypeExtraTitleEs());

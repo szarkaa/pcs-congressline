@@ -254,8 +254,8 @@ public class CongressService {
         onlineRegConfig.setRegTypeThirdFeeLabelEn(viewModel.getRegTypeThirdFeeLabelEn());
         onlineRegConfig.setRegTypeThirdFeeLabelEs(viewModel.getRegTypeThirdFeeLabelEs());
         onlineRegConfig.setRegTypeThirdFeeLabelPt(viewModel.getRegTypeThirdFeeLabelPt());
-        onlineRegConfig.setRoommateRequiredVisible(viewModel.isRoommateRequiredVisible());
-        onlineRegConfig.setSpecialBookingRequiredVisible(viewModel.isSpecialBookingRequiredVisible());
+        onlineRegConfig.setArrivalDateExtraDay(viewModel.getArrivalDateExtraDay());
+        onlineRegConfig.setDepartureDateExtraDay(viewModel.getDepartureDateExtraDay());
         onlineRegConfig.setRegTypeExtraTitleHu(viewModel.getRegTypeExtraTitleHu());
         onlineRegConfig.setRegTypeExtraTitleEn(viewModel.getRegTypeExtraTitleEn());
         onlineRegConfig.setRegTypeExtraTitleEs(viewModel.getRegTypeExtraTitleEs());
