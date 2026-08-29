@@ -1,0 +1,12 @@
+Éles: https://pay.khpos.hu/keygen/
+Teszt: https://sandbox.khpos.hu/keygen
+Tesztkörnyezetben (Sandbox) a kulcs azonnal használható. Éles környezet esetén a POS24 alkalmazásban jóvá kell hagyni a generált kulcsot!
+A jóváhagyó kód emailben érkezik a KH pos24 (manage.khpos.hu)
+KH POS24: https://manage.khpos.hu/posmerchant/nw_oopnJaDo/nw_95
+Leírás: https://github.com/khpos/Payment-gateway_EN/wiki/Generating-a-key
+Technikai probléma esetén a vpos_khpos@kh.hu mail címen tud segítséget kérni!
+
+
+Pem(cer/key) privát kulcsból der generálása:
+openssl pkcs8 -topk8 -inform PEM -outform DER -in kh-private-key-M199002605-eur.key -nocrypt -out kh-private-key-M199002605-eur.der
+
