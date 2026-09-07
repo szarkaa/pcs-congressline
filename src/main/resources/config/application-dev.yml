@@ -111,7 +111,7 @@ application:
             url: https://api.sandbox.khpos.hu/api/v1.0
             merchantIdForEUR: M199002605
             merchantIdForHUF: M199002604
-            paymentKeyFilePath: c:/projects/pcs/sign/v2
+            paymentKeyFilePath: c:/projects/pcs/sign/v2/test
             signRequired: true
             returnUrl: https://pcs-system-test.congressline.hu/api/registration/online/kh/payment/result
             checkingFrequencyInMillis: 60000

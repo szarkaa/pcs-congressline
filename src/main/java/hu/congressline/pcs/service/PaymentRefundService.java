@@ -6,10 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import hu.congressline.pcs.domain.PaymentRefundTransaction;
 import hu.congressline.pcs.domain.PaymentTransaction;
+import hu.congressline.pcs.domain.enumeration.Currency;
 import hu.congressline.pcs.repository.PaymentRefundTransactionRepository;
 import hu.congressline.pcs.service.dto.kh.PaymentRefundResult;
 import hu.congressline.pcs.service.dto.kh.PaymentReverseResult;
@@ -29,7 +31,7 @@ import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_WAITING_F
 public class PaymentRefundService {
     private static final String BANK_AUTH_NUMBER = "bankAuthNumber";
     private final CompanyService companyService;
-    //private final MailService mailService;
+    private final MailService mailService;
     private final PaymentTransactionService paymentTransactionService;
     private final PaymentRefundTransactionRepository repository;
     private final OnlinePaymentService paymentService;
@@ -93,8 +95,8 @@ public class PaymentRefundService {
                 PaymentRefundTransaction result = repository.save(refundTransaction);
 
                 final PaymentTransaction paymentTransaction = paymentTransactionService.getByTransactionId(result.getTransactionId());
-                //mailService.sendOnlinePaymentRefundNotificationEmail(paymentTransaction.getEmail(), paymentTransaction, refundTransaction,
-                //companyService.getCompanyProfile(), new Locale(Currency.HUF.toString().equalsIgnoreCase(currency) ? "hu" : "en"));
+                mailService.sendOnlinePaymentRefundNotificationEmail(paymentTransaction.getEmail(), paymentTransaction, refundTransaction,
+                    companyService.getCompanyProfile(), Locale.forLanguageTag(Currency.HUF.toString().equalsIgnoreCase(currency) ? "hu" : "en"));
             }
         });
     }

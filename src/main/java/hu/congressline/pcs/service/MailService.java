@@ -6,22 +6,30 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import hu.congressline.pcs.config.PcsProperties;
+import hu.congressline.pcs.domain.Company;
 import hu.congressline.pcs.domain.Invoice;
+import hu.congressline.pcs.domain.OnlineRegistration;
 import hu.congressline.pcs.domain.PayingGroup;
+import hu.congressline.pcs.domain.PaymentRefundTransaction;
+import hu.congressline.pcs.domain.PaymentTransaction;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.User;
 import hu.congressline.pcs.service.dto.SendAllConfirmationPdfToEmailDTO;
+import hu.congressline.pcs.service.dto.kh.PaymentStatus;
 import hu.congressline.pcs.web.rest.vm.ConfirmationTitleType;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -51,7 +59,7 @@ public class MailService {
     @SuppressWarnings("ParameterNumber")
     @Async
     public void sendEmail(String from, String fromName, String to, String cc, String subject, String content, boolean isMultipart, boolean isHtml) {
-        sendEmailSync(from, fromName, to, cc, subject, content, isMultipart, isHtml);
+        sendEmailSync(from, fromName, to, cc, null, subject, content, isMultipart, isHtml);
     }
 
     @Async
@@ -61,7 +69,7 @@ public class MailService {
 
     @SuppressWarnings({"MissingJavadocMethod", "ParameterNumber", "MultipleStringLiterals"})
     @Async
-    public void sendConfirmationPdfEmail(String from, String to, String ccAddress, String fileName, ConfirmationTitleType titleType, Locale locale,
+    public void sendConfirmationPdfEmail(String from, String to, String cc, String fileName, ConfirmationTitleType titleType, Locale locale,
                                          Registration registration, byte[] pdfBytes) {
         log.debug("Send confirmation e-mail[ to '{}']", to);
         Map<String, Object> contextVariables = new HashMap<>();
@@ -78,7 +86,7 @@ public class MailService {
         String subject = messageSource.getMessage("confirmation.pdf.email.subject." + (ConfirmationTitleType.PRO_FORMA_INVOICE.equals(titleType)
             ? "proFormaInvoice" : "confirmation"), new Object[]{}, locale);
         MailAttachment mailAttachment = MailAttachment.builder().fileName(fileName).fileExtension("pdf").content(pdfBytes).mimeType("application/pdf").build();
-        sendEmailFromTemplateSync(from, null, to, ccAddress, subject, "mail/confirmationEmail", locale, contextVariables, mailAttachment);
+        sendEmailFromTemplateSync(from, null, to, cc, null, subject, "mail/confirmationEmail", locale, contextVariables, mailAttachment);
     }
 
     @SuppressWarnings({"MissingJavadocMethod"})
@@ -89,7 +97,7 @@ public class MailService {
         contextVariables.put("locale", locale);
         String subject = messageSource.getMessage("confirmation.all.pdf.email.subject", new Object[]{}, locale);
         contextVariables.put("confirmationTitle", subject);
-        sendEmailFromTemplateSync(from, null, to, null, subject, "mail/confirmationAllEmail", locale, contextVariables,
+        sendEmailFromTemplateSync(from, null, to, null, null, subject, "mail/confirmationAllEmail", locale, contextVariables,
             pdfList.stream().map(dto -> {
                 return MailAttachment.builder()
                     .fileName("confirmation-reg-id-" + dto.getRegId())
@@ -110,7 +118,7 @@ public class MailService {
 
         String subject = messageSource.getMessage("invoice.pdf.email.subject", new Object[]{}, locale);
         MailAttachment mailAttachment = MailAttachment.builder().fileName(fileName).fileExtension("pdf").content(pdfBytes).mimeType("application/pdf").build();
-        sendEmailFromTemplateSync(from, null, to, from, subject, "mail/invoiceEmail", locale, contextVariables, mailAttachment);
+        sendEmailFromTemplateSync(from, null, to, from, null, subject, "mail/invoiceEmail", locale, contextVariables, mailAttachment);
     }
 
     @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
@@ -122,7 +130,7 @@ public class MailService {
         contextVariables.put("name", payingGroup.getName());
         String subject = messageSource.getMessage("group.discount.invoice.pdf.email.subject", new Object[]{}, locale);
         MailAttachment mailAttachment = MailAttachment.builder().fileName("invoice").fileExtension("pdf").content(pdfBytes).mimeType("application/pdf").build();
-        sendEmailFromTemplateSync(from, null, to, from, subject, "mail/groupDiscountInvoiceEmail", locale, contextVariables, mailAttachment);
+        sendEmailFromTemplateSync(from, null, to, from, null, subject, "mail/groupDiscountInvoiceEmail", locale, contextVariables, mailAttachment);
     }
 
     @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
@@ -134,18 +142,95 @@ public class MailService {
         contextVariables.put("name", invoice.getName1());
         String subject = messageSource.getMessage("misc.invoice.pdf.email.subject", new Object[]{}, locale);
         MailAttachment mailAttachment = MailAttachment.builder().fileName("invoice").fileExtension("pdf").content(pdfBytes).mimeType("application/pdf").build();
-        sendEmailFromTemplateSync(from, null, to, from, subject, "mail/miscInvoiceEmail", locale, contextVariables, mailAttachment);
+        sendEmailFromTemplateSync(from, null, to, from, null, subject, "mail/miscInvoiceEmail", locale, contextVariables, mailAttachment);
     }
 
     @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
     @Async
-    public void sendOnlineRegNotificationEmail(String to, String ccEmail, String congressName, Locale locale) {
+    public void sendOnlineRegNotificationEmail(String to, String cc, String congressName, Locale locale) {
         log.debug("Send online reg notification e-mail[ to '{}']", to);
         Map<String, Object> contextVariables = new HashMap<>();
         contextVariables.put("locale", locale);
         contextVariables.put("congressName", congressName);
         String subject = messageSource.getMessage("online.reg.notification.email.subject", new Object[]{congressName}, locale);
-        sendEmailFromTemplateSync(null, null, to, ccEmail, subject, "mail/onlineRegNotificationEmail", locale, contextVariables);
+        sendEmailFromTemplateSync(null, null, to, cc, null, subject, "mail/onlineRegNotificationEmail", locale, contextVariables);
+    }
+
+    @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
+    @Async
+    public void sendOnlinePaymentRefundNotificationEmail(String to, PaymentTransaction trx, PaymentRefundTransaction refundTrx, Company company, Locale locale) {
+        log.debug("Send online reg refund notification e-mail[ to '{}']", to);
+        Map<String, Object> contextVariables = new HashMap<>();
+        String title = StringUtils.hasText(trx.getTitle()) ? trx.getTitle() : "";
+        String lastName = StringUtils.hasText(trx.getLastName()) ? trx.getLastName() : "";
+        String firstName = StringUtils.hasText(trx.getFirstName()) ? trx.getFirstName() : "";
+        String name = "hu".equals(locale.getLanguage()) ? lastName + (StringUtils.hasText(lastName) ? " " : "") + firstName
+            : firstName + (StringUtils.hasText(firstName) ? " " : "") + lastName;
+        String paymentStatusText = messageSource.getMessage("online.refund.notification.email.successful", new Object[] {}, locale);
+        String paymentStatusMessage = messageSource.getMessage("online.refund.notification.email.status", new Object[]{}, locale);
+        String meetingCode = trx.getCongress().getMeetingCode();
+
+        contextVariables.put("locale", locale);
+        contextVariables.put("title", title);
+        contextVariables.put("lastName", lastName);
+        contextVariables.put("firstName", firstName);
+        contextVariables.put("name", name);
+        contextVariables.put("nameWithTitle", (StringUtils.hasText(title) ? title + " " : "") + name);
+        contextVariables.put("paymentStatusMessage", paymentStatusMessage);
+        contextVariables.put("paymentStatusText", paymentStatusText.toUpperCase());
+        contextVariables.put("paymentTrxStatus", refundTrx.getPaymentTrxStatus() + " " + paymentStatusText);
+        contextVariables.put("paymentTrxResponse", (StringUtils.hasText(refundTrx.getPaymentTrxAuthCode()) ? refundTrx.getPaymentTrxAuthCode() : "") + " " + paymentStatusMessage);
+        contextVariables.put("paymentTrxId", refundTrx.getTransactionId());
+        contextVariables.put("paymentTrxDate", refundTrx.getPaymentTrxDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        contextVariables.put("amount", refundTrx.getAmount());
+        contextVariables.put("currency", refundTrx.getCurrency().toUpperCase());
+        contextVariables.put("meetingCode", meetingCode);
+        contextVariables.put("companyName", company.getName());
+        contextVariables.put("companyWebsite", StringUtils.hasText(trx.getCongress().getWebsite()) ? trx.getCongress().getWebsite() : "");
+        contextVariables.put("companyEmail", StringUtils.hasText(trx.getCongress().getContactEmail()) ? trx.getCongress().getContactEmail() : "");
+
+        String subject = messageSource.getMessage("online.refund.notification.email.subject", new Object[]{paymentStatusText, trx.getCongress().getMeetingCode()}, locale);
+        sendEmailFromTemplateSync(null, null, to, null, trx.getCongress().getContactEmail() != null ? trx.getCongress().getContactEmail() : null,
+            subject, "mail/onlineRefundNotificationEmail", locale, contextVariables);
+    }
+
+    @SuppressWarnings({"MissingJavadocMethod", "MultipleStringLiterals"})
+    @Async
+    public void sendOnlinePaymentNotificationEmail(String to, OnlineRegistration onlineReg, BigDecimal total, String currency, Company company, Locale locale) {
+        log.debug("Send online reg payment notification e-mail[ to '{}']", to);
+        String title = StringUtils.hasText(onlineReg.getTitle()) ? onlineReg.getTitle() : "";
+        String lastName = StringUtils.hasText(onlineReg.getLastName()) ? onlineReg.getLastName() : "";
+        String firstName = StringUtils.hasText(onlineReg.getFirstName()) ? onlineReg.getFirstName() : "";
+        String name = "hu".equals(locale.getLanguage()) ? lastName + (StringUtils.hasText(lastName) ? " " : "") + firstName
+            : firstName + (StringUtils.hasText(firstName) ? " " : "") + lastName;
+        String nameWithTitle = (StringUtils.hasText(title) ? title + " " : "") + name;
+        String paymentStatusText = messageSource.getMessage("online.payment.notification.email."
+            + (PaymentStatus.PAYMENT_WAITING_FOR_SETTLEMENT.toString().equals(onlineReg.getPaymentTrxStatus()) ? "" : "un") + "successful", new Object[] {}, locale);
+        String mailStatusCode = onlineReg.getPaymentTrxStatus() + (PaymentStatus.PAYMENT_DENIED.toString().equals(onlineReg.getPaymentTrxStatus())
+            ? ("130".equals(onlineReg.getPaymentTrxResultCode()) ? "_SESSION_EXPIRED" : "_ERROR") : "");
+        String paymentStatusMessage = messageSource.getMessage("online.payment.notification.email.status." + mailStatusCode, new Object[]{}, locale);
+
+        String meetingCode = onlineReg.getCongress().getMeetingCode();
+        String subject = messageSource.getMessage("online.payment.notification.email.subject", new Object[]{paymentStatusText, meetingCode}, locale);
+        Map<String, Object> contextVariables = new HashMap<>();
+        contextVariables.put("locale", locale);
+        contextVariables.put("subject", subject);
+        contextVariables.put("meetingCode", meetingCode);
+        contextVariables.put("name", name);
+        contextVariables.put("email", onlineReg.getEmail());
+        contextVariables.put("paymentStatusText", paymentStatusText.toUpperCase());
+        contextVariables.put("paymentTrxStatus", onlineReg.getPaymentTrxStatus() + " " + paymentStatusText);
+        contextVariables.put("paymentTrxResponse", (StringUtils.hasText(onlineReg.getPaymentTrxAuthCode()) ? onlineReg.getPaymentTrxAuthCode() : "") + " " + paymentStatusMessage);
+        contextVariables.put("paymentTrxId", onlineReg.getPaymentTrxId());
+        contextVariables.put("paymentTrxDate", onlineReg.getPaymentTrxDate().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        contextVariables.put("total", total);
+        contextVariables.put("currency", currency.toUpperCase());
+        contextVariables.put("companyName", company.getName());
+        contextVariables.put("companyWebsite", StringUtils.hasText(onlineReg.getCongress().getWebsite()) ? onlineReg.getCongress().getWebsite() : "");
+        contextVariables.put("mailStatusCode", mailStatusCode);
+        contextVariables.put("nameWithTitle", nameWithTitle);
+        sendEmailFromTemplateSync(null, null, to, null, null, subject, "mail/onlinePaymentNotificationEmail", locale, contextVariables);
+        log.debug("Send online payment notification e-mail to '{}'", to);
     }
 
     @SuppressWarnings("MultipleStringLiterals")
@@ -179,21 +264,21 @@ public class MailService {
         context.setVariable(BASE_URL, properties.getMail().getBaseUrl());
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
-        sendEmailSync(null, null, user.getEmail(), null, subject, content, false, true);
+        sendEmailSync(null, null, user.getEmail(), null, null, subject, content, false, true);
     }
 
     @SuppressWarnings("ParameterNumber")
-    private void sendEmailFromTemplateSync(String from, String fromName, String to, String ccAddress, String subject, @NonNull String templateName,
+    private void sendEmailFromTemplateSync(String from, String fromName, String to, String cc, String bcc, String subject, @NonNull String templateName,
                                            @NonNull Locale locale, @NonNull Map<String, Object> contextVariables, MailAttachment... attachments) {
         Context context = new Context(locale);
         context.setVariable(BASE_URL, properties.getMail().getBaseUrl());
         contextVariables.keySet().forEach(key -> context.setVariable(key, contextVariables.get(key)));
         String content = templateEngine.process(templateName, context);
-        sendEmailSync(from, fromName, to, ccAddress, subject, content, true, true, attachments);
+        sendEmailSync(from, fromName, to, cc, bcc, subject, content, true, true, attachments);
     }
 
     @SuppressWarnings("ParameterNumber")
-    private void sendEmailSync(String from, String fromName, String to, String ccAddress, String subject, String content, boolean isMultipart,
+    private void sendEmailSync(String from, String fromName, String to, String cc, String bcc, String subject, String content, boolean isMultipart,
                                boolean isHtml, MailAttachment... attachments) {
         log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
 
@@ -203,8 +288,11 @@ public class MailService {
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
             message.setFrom(nonNull(from) ? from : properties.getMail().getFrom(), nonNull(fromName) ? fromName : "Congressline PCS System");
             message.setTo(to);
-            if (nonNull(ccAddress)) {
-                message.setCc(ccAddress);
+            if (nonNull(cc)) {
+                message.setCc(cc);
+            }
+            if (nonNull(bcc)) {
+                message.setBcc(bcc);
             }
             message.setSubject(subject);
             message.setText(content, isHtml);

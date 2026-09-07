@@ -20,6 +20,7 @@ import java.util.Base64;
 import java.util.List;
 
 import hu.congressline.pcs.domain.PaymentTransaction;
+import hu.congressline.pcs.service.PaymentRefundService;
 import hu.congressline.pcs.service.PaymentTransactionService;
 import hu.congressline.pcs.service.dto.PaymentRefundTransactionDTO;
 import hu.congressline.pcs.service.dto.PaymentTransactionReportDTO;
@@ -36,13 +37,13 @@ import lombok.extern.slf4j.Slf4j;
 public class PaymentTransactionReportResource {
 
     private final PaymentTransactionService service;
-    //private final PaymentRefundService paymentRefundService;
+    private final PaymentRefundService paymentRefundService;
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/payment-transaction-report/refunds")
     public ResponseEntity<Void> refundPayment(@Valid @RequestBody PaymentRefundTransactionVM vm) {
         log.debug("REST request to refund a payment transaction");
-        //paymentRefundService.refundPayment(vm.getTxId(), vm.getAmount(), vm.getCurrency());
+        paymentRefundService.refundPayment(vm.getTxId(), vm.getAmount(), vm.getCurrency());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

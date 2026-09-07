@@ -1,0 +1,38 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:font-family="http://www.w3.org/1999/xhtml" th:lang="${#locale.language}" lang="en">
+<head>
+    <title th:text="#{online.payment.notification.email.subject(${paymentStatusText}, ${meetingCode})}">{0} fizetés - Online regisztráció - {1}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}"/>
+</head>
+<body>
+    <b th:text="#{online.payment.notification.email.header(${name})}">Tisztelt {0}!</b>
+    <br/>
+    <p th:text="#{online.payment.notification.email.content1(${meetingCode}, ${paymentStatusText})}">Ezúton tájékoztatjuk, hogy a(z) {0} kongresszus online regisztrációs oldaláról érkezett {1} fizetési tranzakciót rögzítettük.</p>
+    <p th:text="#{online.payment.notification.email.transactionDetails}">Tranzakció részleteit az alábbiakban tekintheti meg:</p>
+    <p>
+        <span th:text="#{online.payment.notification.email.transactionStatus(${paymentTrxStatus})}">Tranzakció státusz: {0}</span><br>
+        <span th:text="#{online.payment.notification.email.transactionResponse(${paymentTrxResponse})}">Tranzakció válasz: {0}</span><br>
+        <span th:text="#{online.payment.notification.email.transactionId(${paymentTrxId})}">Tranzakció azonosító: {0}</span><br>
+        <span th:text="#{online.payment.notification.email.transactionDate(${paymentTrxDate})}">Tranzakció dátuma: {0}</span><br>
+        <span th:text="#{online.payment.notification.email.total(${total}, ${currency})}">Fizetett összeg: {7} {8}</span><br>
+        <span th:text="#{online.payment.notification.email.serviceName}">Szolgáltatás megnevezése: on-line regisztráció</span><br>
+        <span th:text="#{online.payment.notification.email.companyName(${companyName})}">Kereskedő: {0}</span><br>
+        <span><span th:text="#{online.payment.notification.email.companyWebsite}">Kereskedő internet címe:</span><a th:href="${companyWebsite}" th:text="${companyWebsite}">companyWebsite</a></span><br>
+    </p>
+    <p><b th:text="#{online.payment.notification.email.customerDetails}">Az Ön adatai:</b><br>
+        <span th:text="#{online.payment.notification.email.customerName(${nameWithTitle})}">Név: {0}</span><br>
+        <span th:text="#{online.payment.notification.email.customerEmail(${email})}">Email: <a href="${email}">${email}</a></span>
+    </p>
+    <br><p th:text="#{online.payment.notification.email.noReplyWarning}">Tájékoztatjuk, hogy jelen e-mail egy automatikusan generált üzenet.</p>
+    <p>
+        <span th:text="#{online.reg.notification.email.regards}">Üdvözlettel,</span>
+        <br/>
+        <em th:text="#{online.reg.notification.email.signature}">CongressLine Kft.</em>
+    </p>
+    <p>
+        <span th:text="#{online.payment.notification.email.footer}" style="font-size:7.0pt; font-family: Arial, sans-serif">Jelen elektronikus levélben rögzített információ csak és kizárólag a címzett természetes, illetve jogi személynek szól. A levél, és csatolmányai bizalmas, illetve jogszabály által védett információt tartalmazhatnak. Az eredeti címzetteknek szánt információk bármilyen formájú illetéktelen felhasználása, megismertetése, publikálása, továbbítása, vagy az azzal végzett bármely más művelet szigorúan tilos. Amennyiben ezt a levelet sérülten kapta meg vagy nem Ön annak valós címzettje kérjük, haladéktalanul tájékoztassa erről a feladót (Congressline Kft. • 1065 Budapest, Révay köz 2., Tel: (+36-1) 429-0146, (+36-1) 312-1582 • Fax: (+36-1) 429-0147 • e-mail: info@congressline.hu. • Adószám: 14038905-2-42 ) és a levelet törölje</span>
+    </p>
+</body>
+</html>
+

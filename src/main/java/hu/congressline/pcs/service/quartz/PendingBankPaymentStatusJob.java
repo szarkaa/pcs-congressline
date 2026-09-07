@@ -6,6 +6,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.transaction.annotation.Transactional;
 
+import hu.congressline.pcs.service.OnlinePaymentService;
+import hu.congressline.pcs.service.PaymentRefundService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,14 +16,14 @@ import lombok.extern.slf4j.Slf4j;
 @DisallowConcurrentExecution
 public class PendingBankPaymentStatusJob implements Job {
 
-    //private final OnlineRegService onlineRegService;
-    //private final PaymentRefundService refundService;
+    private final OnlinePaymentService onlinePaymentService;
+    private final PaymentRefundService refundService;
 
     @Override
     @Transactional
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        //onlineRegService.checkPendingPaymentResults();
-        //refundService.checkPendingRefundResults();
+        onlinePaymentService.checkPendingPaymentResults();
+        refundService.checkPendingRefundResults();
         log.debug("Pending bank payment status checker job done!");
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
@@ -25,11 +24,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import hu.congressline.pcs.config.ApplicationProperties;
-import hu.congressline.pcs.domain.OnlineRegistration;
 import hu.congressline.pcs.domain.PaymentRefundTransaction;
 import hu.congressline.pcs.domain.PaymentTransaction;
-import hu.congressline.pcs.domain.enumeration.Currency;
 import hu.congressline.pcs.repository.PaymentRefundTransactionRepository;
 import hu.congressline.pcs.repository.PaymentTransactionRepository;
 import hu.congressline.pcs.service.dto.PaymentRefundTransactionDTO;
@@ -44,37 +40,8 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 public class PaymentTransactionService extends XlsReportService {
 
-    private ApplicationProperties properties;
-    private PaymentTransactionRepository repository;
-    private PaymentRefundTransactionRepository refundRepository;
-    private OnlineRegService onlineRegService;
-
-    @SuppressWarnings("MissingJavadocMethod")
-    public void createPaymentTransaction(OnlineRegistration or) {
-        BigDecimal regSubTotal = onlineRegService.getRegistrationTypeSubTotalAmountOfOnlineReg(or);
-        BigDecimal roomSubTotal = onlineRegService.getHotelAmountOfOnlineReg(or);
-        BigDecimal osSubTotal = onlineRegService.getOptionalServiceTotalAmountOfOnlineReg(or);
-
-        PaymentTransaction paymentTransaction = new PaymentTransaction();
-        paymentTransaction.setAmount(regSubTotal.add(roomSubTotal).add(osSubTotal));
-        paymentTransaction.setCurrency(or.getCurrency());
-        paymentTransaction.setPaymentOrderNumber(or.getPaymentOrderNumber());
-        paymentTransaction.setTransactionId(or.getPaymentTrxId());
-        paymentTransaction.setMerchantId(Currency.HUF.toString().equalsIgnoreCase(or.getCurrency())
-                ? properties.getPayment().getGateway().getMerchantIdForHUF() : properties.getPayment().getGateway().getMerchantIdForEUR());
-        paymentTransaction.setPaymentTrxStatus(or.getPaymentTrxStatus());
-        paymentTransaction.setPaymentTrxResultCode(or.getPaymentTrxResultCode());
-        paymentTransaction.setPaymentTrxResultMessage(or.getPaymentTrxResultMessage());
-        paymentTransaction.setPaymentTrxAuthCode(or.getPaymentTrxAuthCode());
-        paymentTransaction.setPaymentTrxDate(or.getPaymentTrxDate());
-        paymentTransaction.setBankAuthNumber(or.getBankAuthNumber());
-        paymentTransaction.setTitle(or.getTitle());
-        paymentTransaction.setLastName(or.getLastName());
-        paymentTransaction.setFirstName(or.getFirstName());
-        paymentTransaction.setEmail(or.getEmail());
-        paymentTransaction.setCongress(or.getCongress());
-        repository.save(paymentTransaction);
-    }
+    private final PaymentTransactionRepository repository;
+    private final PaymentRefundTransactionRepository refundRepository;
 
     @SuppressWarnings("MissingJavadocMethod")
     @Transactional(readOnly = true)
@@ -89,16 +56,16 @@ public class PaymentTransactionService extends XlsReportService {
         ZonedDateTime toDate = reportFilter.getToDate() != null ? ZonedDateTime.of(reportFilter.getToDate(), LocalTime.MAX, ZoneId.systemDefault()) : defaultToDate;
         if (StringUtils.hasText(transactionId) && StringUtils.hasText(orderNumber)) {
             paymentTransactionPayments.addAll(repository.findAllByPaymentTrxDateBetweenAndTransactionIdAndPaymentOrderNumber(fromDate, toDate, transactionId, orderNumber)
-                    .stream().map(PaymentTransactionReportDTO::new).collect(Collectors.toList()));
+                    .stream().map(PaymentTransactionReportDTO::new).toList());
         } else if (StringUtils.hasText(transactionId) && !StringUtils.hasText(orderNumber)) {
             paymentTransactionPayments.addAll(repository.findAllByPaymentTrxDateBetweenAndTransactionId(fromDate, toDate, transactionId)
-                    .stream().map(PaymentTransactionReportDTO::new).collect(Collectors.toList()));
+                    .stream().map(PaymentTransactionReportDTO::new).toList());
         } else if (!StringUtils.hasText(transactionId) && StringUtils.hasText(orderNumber)) {
             paymentTransactionPayments.addAll(repository.findAllByPaymentTrxDateBetweenAndPaymentOrderNumber(fromDate, toDate, orderNumber)
-                    .stream().map(PaymentTransactionReportDTO::new).collect(Collectors.toList()));
+                    .stream().map(PaymentTransactionReportDTO::new).toList());
         } else {
             paymentTransactionPayments.addAll(repository.findAllByPaymentTrxDateBetween(fromDate, toDate)
-                    .stream().map(PaymentTransactionReportDTO::new).collect(Collectors.toList()));
+                    .stream().map(PaymentTransactionReportDTO::new).toList());
         }
 
         final Set<String> refundTrxIds = refundRepository.findByTransactionIdIn(paymentTransactionPayments

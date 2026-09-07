@@ -31,6 +31,7 @@ import hu.congressline.pcs.domain.OnlineRegistrationOptionalService;
 import hu.congressline.pcs.domain.OnlineRegistrationRegistrationType;
 import hu.congressline.pcs.domain.OptionalService;
 import hu.congressline.pcs.domain.OrderedOptionalService;
+import hu.congressline.pcs.domain.PaymentTransaction;
 import hu.congressline.pcs.domain.PcsFile;
 import hu.congressline.pcs.domain.Registration;
 import hu.congressline.pcs.domain.RegistrationRegistrationType;
@@ -41,6 +42,7 @@ import hu.congressline.pcs.domain.RoomReservationRegistration;
 import hu.congressline.pcs.domain.Workplace;
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
 import hu.congressline.pcs.domain.enumeration.Currency;
+import hu.congressline.pcs.domain.enumeration.Language;
 import hu.congressline.pcs.domain.enumeration.OnlineVisibility;
 import hu.congressline.pcs.domain.enumeration.PaymentSupplier;
 import hu.congressline.pcs.repository.AccPeopleOnlineRepository;
@@ -55,6 +57,7 @@ import hu.congressline.pcs.repository.OnlineRegistrationRegistrationTypeReposito
 import hu.congressline.pcs.repository.OnlineRegistrationRepository;
 import hu.congressline.pcs.repository.OptionalServiceRepository;
 import hu.congressline.pcs.repository.OrderedOptionalServiceRepository;
+import hu.congressline.pcs.repository.PaymentTransactionRepository;
 import hu.congressline.pcs.repository.RegistrationTypeRepository;
 import hu.congressline.pcs.repository.RoomReservationRegistrationRepository;
 import hu.congressline.pcs.repository.RoomReservationRepository;
@@ -78,6 +81,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import static hu.congressline.pcs.service.OnlinePaymentService.BANK_AUTH_NUMBER;
+import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_CANCELLED;
+import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_DENIED;
 import static hu.congressline.pcs.service.dto.kh.PaymentStatus.PAYMENT_WAITING_FOR_SETTLEMENT;
 import static java.lang.Boolean.TRUE;
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -89,6 +94,9 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class OnlineRegService {
     private static final String ONLINE_REGISTRATION_NOT_FOUND = "OnlineRegistration not found by trx id: ";
 
+    private final ApplicationProperties applicationProperties;
+    private final PaymentTransactionRepository paymentTransactionRepository;
+    private final OnlineRegistrationRepository onlineRegistrationRepository;
     private final CongressRepository congressRepository;
     private final RegistrationService registrationService;
     private final RegistrationTypeRepository rtRepository;
@@ -110,13 +118,13 @@ public class OnlineRegService {
     private final OptionalServiceService osService;
     private final PcsFileService pcsFileService;
     private final MailService mailService;
+    private final CompanyService companyService;
 
     private final CountryRepository countryRepository;
-    private final OnlineRegistrationRepository onlineRegistrationRepository;
     private final WorkplaceService workplaceService;
-    private final ApplicationProperties applicationProperties;
+    private final ApplicationProperties properties;
     private final OnlineRegDiscountCodeRepository discountCodeRepository;
-    private final PaymentTransactionService paymentTransactionService;
+
     private final RegistrationTypeService registrationTypeService;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -204,27 +212,48 @@ public class OnlineRegService {
         onlineReg = onlineRegistrationRepository.save(onlineReg);
         log.debug("Handle KH payment process response online reg updated with payment info");
         if (PAYMENT_WAITING_FOR_SETTLEMENT.toString().equals(onlineReg.getPaymentTrxStatus())) {
-            paymentTransactionService.createPaymentTransaction(onlineReg);
+            createPaymentTransaction(onlineReg);
         }
 
         manageFinalPaymentStatus(onlineReg);
     }
 
+    @SuppressWarnings("MissingJavadocMethod")
+    public void createPaymentTransaction(OnlineRegistration or) {
+        BigDecimal regSubTotal = getRegistrationTypeSubTotalAmountOfOnlineReg(or);
+        BigDecimal roomSubTotal = getHotelAmountOfOnlineReg(or);
+        BigDecimal osSubTotal = getOptionalServiceTotalAmountOfOnlineReg(or);
+
+        PaymentTransaction paymentTransaction = new PaymentTransaction();
+        paymentTransaction.setAmount(regSubTotal.add(roomSubTotal).add(osSubTotal));
+        paymentTransaction.setCurrency(or.getCurrency());
+        paymentTransaction.setPaymentOrderNumber(or.getPaymentOrderNumber());
+        paymentTransaction.setTransactionId(or.getPaymentTrxId());
+        paymentTransaction.setMerchantId(Currency.HUF.toString().equalsIgnoreCase(or.getCurrency())
+            ? properties.getPayment().getGateway().getMerchantIdForHUF() : properties.getPayment().getGateway().getMerchantIdForEUR());
+        paymentTransaction.setPaymentTrxStatus(or.getPaymentTrxStatus());
+        paymentTransaction.setPaymentTrxResultCode(or.getPaymentTrxResultCode());
+        paymentTransaction.setPaymentTrxResultMessage(or.getPaymentTrxResultMessage());
+        paymentTransaction.setPaymentTrxAuthCode(or.getPaymentTrxAuthCode());
+        paymentTransaction.setPaymentTrxDate(or.getPaymentTrxDate());
+        paymentTransaction.setBankAuthNumber(or.getBankAuthNumber());
+        paymentTransaction.setTitle(or.getTitle());
+        paymentTransaction.setLastName(or.getLastName());
+        paymentTransaction.setFirstName(or.getFirstName());
+        paymentTransaction.setEmail(or.getEmail());
+        paymentTransaction.setCongress(or.getCongress());
+        paymentTransactionRepository.save(paymentTransaction);
+    }
+
     private void manageFinalPaymentStatus(OnlineRegistration onlineReg) {
         log.debug("manageFinalPaymentStatus payment status: {}", PaymentStatus.valueOf(onlineReg.getPaymentTrxStatus()));
         //Manage the transactions that are in a final state
-        /*
         if (List.of(PAYMENT_DENIED, PAYMENT_CANCELLED, PAYMENT_WAITING_FOR_SETTLEMENT)
             .contains(PaymentStatus.valueOf(onlineReg.getPaymentTrxStatus()))) {
-            mailService.sendOnlinePaymentNotificationEmail(onlineReg.getEmail(),
-                onlineReg,
-                getTotalAmountOfOnlineReg(onlineReg),
-                onlineReg.getCurrency(),
-                companyService.getCompanyProfile(),
-                Locale.forLanguageTag(Currency.HUF.toString().equalsIgnoreCase(onlineReg.getCurrency()) ? Language.HU.toString().toLowerCase()
+            mailService.sendOnlinePaymentNotificationEmail(onlineReg.getEmail(), onlineReg, getTotalAmountOfOnlineReg(onlineReg), onlineReg.getCurrency(),
+                companyService.getCompanyProfile(), Locale.forLanguageTag(Currency.HUF.toString().equalsIgnoreCase(onlineReg.getCurrency()) ? Language.HU.toString().toLowerCase()
                 : Language.EN.toString().toLowerCase()));
         }
-        */
     }
 
     @SuppressWarnings("MissingJavadocMethod")

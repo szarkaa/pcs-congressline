@@ -1,0 +1,9 @@
+1: Törölni kell az összes constraint ami a typos online registation táblához tartozik, majd a táblát is (van benne adat, mert annak taka!!!):
+
+SELECT CONCAT('ALTER TABLE `', TABLE_NAME, '` DROP FOREIGN KEY `', CONSTRAINT_NAME, '`;') AS drop_statement FROM information_schema.KEY_COLUMN_USAGE
+WHERE REFERENCED_TABLE_SCHEMA = DATABASE() AND REFERENCED_TABLE_NAME = 'online_registation';
+
+visszaadja a queriket amiket le kell futtatni majd:
+
+drop table online_registation CASCADE;
+
