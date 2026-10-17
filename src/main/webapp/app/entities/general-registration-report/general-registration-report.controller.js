@@ -34,7 +34,7 @@
             vm.optionalServices = result;
         });
         CongressHotel.queryByCongress({id: CongressSelector.getSelectedCongress().id}, function(result) {
-            vm.congressHotels = result;
+            vm.hotels = result;
         });
 
         vm.positions = null;
@@ -77,7 +77,7 @@
             vm.reportFilter.country = null;
             vm.reportFilter.payingGroup = null;
             vm.reportFilter.optionalServices = [];
-            vm.reportFilter.congressHotel = null;
+            vm.reportFilter.hotel = null;
             vm.reportFilter.countryNegation = false;
             vm.reportFilter.presenter = null;
             vm.reportFilter.etiquette = null;
@@ -103,7 +103,7 @@
                 workplace: reportFilter.workplace ? reportFilter.workplace.id : null,
                 payingGroup: reportFilter.payingGroup ? reportFilter.payingGroup.id : null,
                 optionalServices: reportFilter.optionalServices && reportFilter.optionalServices.length ? reportFilter.optionalServices.map(o => o.id) : [],
-                hotelId: reportFilter.congressHotel ? reportFilter.congressHotel.hotel.id : null,
+                hotelId: reportFilter.hotel ? reportFilter.hotel.hotelId : null,
                 country: reportFilter.country ? reportFilter.country.id : null,
                 countryNegation: reportFilter.countryNegation,
                 presenter: reportFilter.presenter,
@@ -214,7 +214,7 @@
             vm.reportFilter.country ||
             vm.reportFilter.payingGroup ||
             vm.reportFilter.optionalServices ||
-            vm.reportFilter.congressHotel ||
+            vm.reportFilter.hotel ||
             vm.reportFilter.presenter ||
             vm.reportFilter.etiquette ||
             vm.reportFilter.noShow ||

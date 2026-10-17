@@ -6,7 +6,7 @@
     <link rel="icon" th:href="@{|${baseUrl}/favicon.ico|}"/>
 </head>
 <body>
-    <p th:text="#{misc.invoice.pdf.email.greeting(${name ?: ''})}">Dear</p>
+    <p><b th:text="#{misc.invoice.pdf.email.greeting(${name ?: ''})}">Dear</b></p>
     <p th:text="#{misc.invoice.pdf.email.content}">Please find the invoice attached</p>
     <p>
         <span th:text="#{misc.invoice.pdf.email.regards}">Sincerely,</span>

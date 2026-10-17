@@ -16,7 +16,7 @@
 logging:
     level:
         ROOT: info
-        hu.congressline.pcs: info
+        hu.congressline.pcs: debug
 
 management:
     prometheus:

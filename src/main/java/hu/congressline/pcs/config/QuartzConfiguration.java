@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -27,10 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-//@Configuration
+@Configuration
 public class QuartzConfiguration {
 
     private final DataSource dataSource;
+    private final PlatformTransactionManager transactionManager;
     private final ApplicationProperties properties;
 
     @SuppressWarnings("MissingJavadocMethod")
@@ -50,6 +53,7 @@ public class QuartzConfiguration {
         factory.setJobFactory(jobFactory);
         factory.setQuartzProperties(quartzProperties());
         factory.setDataSource(dataSource);
+        factory.setTransactionManager(transactionManager);
         factory.setTriggers(navCheckJobTrigger, pendingBankPaymentStatusJobTrigger);
         log.info("starting jobs....");
         return factory;

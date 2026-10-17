@@ -38,7 +38,7 @@
                             workplace: null,
                             payingGroup: null,
                             optionalServices: [],
-                            congressHotel: null,
+                            hotel: null,
                             countryNegation: false,
                             presenter: null,
                             etiquette: null,
