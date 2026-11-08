@@ -12,7 +12,15 @@
         GroupDiscountPayment, Currency, Congress, CongressSelector, PayingGroup) {
         var vm = this;
 
-        vm.groupDiscountPayment = entity;
+        vm.groupDiscountPayment = {
+            id: entity.id,
+            payingGroupId: entity.payingGroupId,
+            paymentType: entity.paymentType,
+            amount: entity.amount,
+            dateOfPayment: entity.dateOfPayment,
+            currencyId: entity.currency ? entity.currency.id : null,
+            congressId: entity.congress ? entity.congress.id : entity.congressId
+        };
         vm.payingGroups = PayingGroup.queryByCongress({id: CongressSelector.getSelectedCongress().id});
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;

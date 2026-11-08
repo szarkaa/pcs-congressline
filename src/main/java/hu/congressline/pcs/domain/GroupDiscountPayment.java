@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import hu.congressline.pcs.domain.enumeration.ChargeableItemType;
+import hu.congressline.pcs.web.rest.vm.GroupDiscountPaymentVM;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -57,6 +58,13 @@ public class GroupDiscountPayment implements Serializable {
 
     @ManyToOne
     private Congress congress;
+
+    @SuppressWarnings("MissingJavadocMethod")
+    public void update(GroupDiscountPaymentVM viewModel) {
+        this.amount = viewModel.getAmount();
+        this.paymentType = viewModel.getPaymentType();
+        this.dateOfPayment = viewModel.getDateOfPayment();
+    }
 
     @Override
     public boolean equals(Object o) {

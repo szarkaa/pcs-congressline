@@ -31,7 +31,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="groupDiscountPayment in vm.groupDiscountPayments track by groupDiscountPayment.id">
-                            <td>{{groupDiscountPayment.payingGroup.name}}</td>
+                            <td>{{groupDiscountPayment.payingGroupName}}</td>
                             <td data-translate="{{'pcsApp.ChargeableItemType.' + groupDiscountPayment.paymentType}}">{{groupDiscountPayment.paymentType}}</td>
                             <td>{{groupDiscountPayment.amount}}</td>
                             <td>{{groupDiscountPayment.currency.currency}}</td>

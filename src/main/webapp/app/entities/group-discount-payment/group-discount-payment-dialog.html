@@ -10,11 +10,11 @@
         <jhi-alert-error></jhi-alert-error>
         <div class="form-group">
             <label data-translate="pcsApp.groupDiscountPayment.payingGroup" for="field_payingGroup">Paying Group</label>
-            <ui-select ng-model="vm.groupDiscountPayment.payingGroup" name="payingGroup" id="field_payingGroup" theme="bootstrap" required>
+            <ui-select ng-model="vm.groupDiscountPayment.payingGroupId" name="payingGroup" id="field_payingGroup" theme="bootstrap" required>
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.name"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="payingGroup in (vm.payingGroups | filter: $select.search) track by payingGroup.id">
+                <ui-select-choices repeat="payingGroup.id as payingGroup in (vm.payingGroups | filter: $select.search) track by payingGroup.id">
                     <div ng-bind-html="payingGroup.name | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>
@@ -68,11 +68,11 @@
 
         <div class="form-group">
             <label translate="pcsApp.groupDiscountPayment.currency" for="field_currency">Currency</label>
-            <ui-select ng-model="vm.groupDiscountPayment.currency" name="currency" id="field_currency" theme="bootstrap" required>
+            <ui-select ng-model="vm.groupDiscountPayment.currencyId" name="currency" id="field_currency" theme="bootstrap" required>
                 <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                     <span ng-bind="$select.selected.currency"></span>
                 </ui-select-match>
-                <ui-select-choices repeat="currency in (vm.currencies | filter: $select.search) track by currency.id">
+                <ui-select-choices repeat="currency.id as currency in (vm.currencies | filter: $select.search) track by currency.id">
                     <div ng-bind-html="currency.currency | highlight: $select.search"></div>
                 </ui-select-choices>
             </ui-select>

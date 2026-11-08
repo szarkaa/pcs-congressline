@@ -73,11 +73,12 @@
                     resolve: {
                         entity: function () {
                             return {
+                                id: null,
                                 paymentType: null,
                                 dateOfPayment: new Date(),
                                 amount: null,
-                                id: null,
-                                congress: CongressSelector.getSelectedCongress()
+                                currencyId: null,
+                                congressId: CongressSelector.getSelectedCongress().id
                             };
                         }
                     }

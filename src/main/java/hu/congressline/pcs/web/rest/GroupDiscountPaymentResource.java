@@ -15,9 +15,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
-import hu.congressline.pcs.domain.GroupDiscountPayment;
 import hu.congressline.pcs.service.GroupDiscountPaymentService;
+import hu.congressline.pcs.service.dto.GroupDiscountPaymentDTO;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
+import hu.congressline.pcs.web.rest.vm.GroupDiscountPaymentVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,14 +34,14 @@ public class GroupDiscountPaymentResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PostMapping("/group-discount-payments")
-    public ResponseEntity<GroupDiscountPayment> create(@Valid @RequestBody GroupDiscountPayment groupDiscountPayment) throws URISyntaxException {
-        log.debug("REST request to save GroupDiscountPayment : {}", groupDiscountPayment);
-        if (groupDiscountPayment.getId() != null) {
+    public ResponseEntity<GroupDiscountPaymentDTO> create(@Valid @RequestBody GroupDiscountPaymentVM vm) throws URISyntaxException {
+        log.debug("REST request to save GroupDiscountPayment : {}", vm);
+        if (vm.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil
-                .createFailureAlert(ENTITY_NAME, "idexists", "A new groupDiscountPayment cannot already have an ID"))
+                .createFailureAlert(ENTITY_NAME, "idexists", "A new vm cannot already have an ID"))
                 .body(null);
         }
-        GroupDiscountPayment result = groupDiscountPaymentService.save(groupDiscountPayment);
+        GroupDiscountPaymentDTO result = new GroupDiscountPaymentDTO(groupDiscountPaymentService.save(vm));
         return ResponseEntity.created(new URI("/api/group-discount-payments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -48,34 +49,34 @@ public class GroupDiscountPaymentResource {
 
     @SuppressWarnings("MissingJavadocMethod")
     @PutMapping("/group-discount-payments")
-    public ResponseEntity<GroupDiscountPayment> update(@Valid @RequestBody GroupDiscountPayment groupDiscountPayment) throws URISyntaxException {
-        log.debug("REST request to update GroupDiscountPayment : {}", groupDiscountPayment);
-        if (groupDiscountPayment.getId() == null) {
-            return create(groupDiscountPayment);
+    public ResponseEntity<GroupDiscountPaymentDTO> update(@Valid @RequestBody GroupDiscountPaymentVM vm) throws URISyntaxException {
+        log.debug("REST request to update GroupDiscountPayment : {}", vm);
+        if (vm.getId() == null) {
+            return create(vm);
         }
-        GroupDiscountPayment result = groupDiscountPaymentService.save(groupDiscountPayment);
+        GroupDiscountPaymentDTO result = new GroupDiscountPaymentDTO(groupDiscountPaymentService.save(vm));
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, groupDiscountPayment.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, vm.getId().toString()))
             .body(result);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/group-discount-payments/congress/{id}")
-    public List<GroupDiscountPayment> getAllByCongressId(@PathVariable Long id) {
+    public List<GroupDiscountPaymentDTO> getAllByCongressId(@PathVariable Long id) {
         log.debug("REST request to get all GroupDiscountPayments by congress id: {}", id);
         return groupDiscountPaymentService.findByCongressId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/group-discount-payments/paying-group/{id}")
-    public List<GroupDiscountPayment> getAllByPayingGroupId(@PathVariable Long id) {
+    public List<GroupDiscountPaymentDTO> getAllByPayingGroupId(@PathVariable Long id) {
         log.debug("REST request to get all GroupDiscountPayments by paying group id: {}", id);
         return groupDiscountPaymentService.findByPayingGroupId(id);
     }
 
     @SuppressWarnings("MissingJavadocMethod")
     @GetMapping("/group-discount-payments/{id}")
-    public ResponseEntity<GroupDiscountPayment> getById(@PathVariable Long id) {
+    public ResponseEntity<GroupDiscountPaymentDTO> getById(@PathVariable Long id) {
         log.debug("REST request to get GroupDiscountPayment : {}", id);
         return groupDiscountPaymentService.findById(id)
             .map(result -> new ResponseEntity<>(result, HttpStatus.OK))
