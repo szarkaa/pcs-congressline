@@ -5,17 +5,12 @@
         .module('pcsApp')
         .controller('SendFinancialNoticeToAllDialogController', SendFinancialNoticeToAllDialogController);
 
-    SendFinancialNoticeToAllDialogController.$inject = ['$timeout', '$scope', '$uibModalInstance', 'Confirmation', 'OptionalText', 'CongressSelector'];
+    SendFinancialNoticeToAllDialogController.$inject = ['$timeout', '$scope', '$uibModalInstance', 'Confirmation', 'OptionalText', 'CongressSelector', 'registrationSettings'];
 
-    function SendFinancialNoticeToAllDialogController ($timeout, $scope, $uibModalInstance, Confirmation, OptionalText, CongressSelector) {
+    function SendFinancialNoticeToAllDialogController ($timeout, $scope, $uibModalInstance, Confirmation, OptionalText, CongressSelector, registrationSettings) {
         var vm = this;
-
-        vm.confirmationSettings = {
-            sendAllEmail: '',
-            language: 'hu',
-            optionalText: '',
-            congressId: CongressSelector.getSelectedCongress().id
-        };
+        vm.registrationSettings = registrationSettings;
+        vm.registrationSettings.congressId = CongressSelector.getSelectedCongress().id;
 
         OptionalText.queryByCongress({id: CongressSelector.getSelectedCongress().id}, function(result) {
             vm.optionalTexts = result;
@@ -34,7 +29,7 @@
 
         function send () {
             vm.isSaving = true;
-            Confirmation.sendFinancialNoticeToAll(vm.confirmationSettings, onSaveSuccess, onSaveError);
+            Confirmation.sendFinancialNoticeToAll(vm.registrationSettings, onSaveSuccess, onSaveError);
         }
 
         function onSaveSuccess (result) {
@@ -48,7 +43,7 @@
         }
 
         function setOptionalTextMessage(text) {
-            vm.confirmationSettings.optionalText = text;
+            vm.registrationSettings.optionalText = text;
         }
     }
 })();

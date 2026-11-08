@@ -24,7 +24,7 @@
             "totalToPay": "T to pay",
             "currency": "Currency",
             "remark": "Remark",
-            "sendFinancialNoticeToAll": "Send financial notice to all",
+            "sendFinancialNoticeToAll": "Send financial notice to all selected",
             "created": "Financial notice successfully sent to {{ param }} registration(s)"
         }
     }

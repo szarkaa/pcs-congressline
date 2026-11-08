@@ -19,8 +19,8 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="col-md-9 no-padding-left">
-                                                <send-financial-notice-to-all-dialog>
-                                                    <button class="btn btn-info" type="button" data-translate="pcsApp.financialReport.sendFinancialNoticeToAll">Send financial notice to all</button>
+                                                <send-financial-notice-to-all-dialog ids="vm.getSelectedRegIds()">
+                                                    <button class="btn btn-info" type="button" ng-disabled="!vm.isAnyRegIdSelected()" data-translate="pcsApp.financialReport.sendFinancialNoticeToAll">Send financial notice to all selected</button>
                                                 </send-financial-notice-to-all-dialog>
                                             </div>
                                             <div class="col-md-3 input-group">
@@ -47,6 +47,7 @@
                         <thead>
                         <tr>
                             <th></th>
+                            <th><input ng-model="vm.allRegIdSelected" ng-change="vm.toggleAllRegIdSelection()" type="checkbox" /></th>
                             <th><span data-translate="pcsApp.financialReport.regId">Reg Id</span></th>
                             <th><span data-translate="pcsApp.financialReport.name">Name</span></th>
                             <th><span data-translate="pcsApp.financialReport.regTypes">Reg types</span></th>
@@ -79,6 +80,9 @@
                                         <i class="fa fa-envelope-square email-icon"></i>
                                     </button>
                                 </send-confirmation-dialog>
+                            </td>
+                            <td>
+                                <input ng-model="vm.selectedRegIds[financialReport.id.toString()]" ng-change="vm.toggleRegIdSelection(financialReport.id)" type="checkbox" />
                             </td>
                             <td>{{financialReport.regId}}</td>
                             <td>{{financialReport.name}}</td>

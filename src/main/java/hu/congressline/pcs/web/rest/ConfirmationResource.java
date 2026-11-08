@@ -113,6 +113,7 @@ public class ConfirmationResource {
         FinancialReportVM filter = new FinancialReportVM();
         filter.setParticipantsToPay(true);
         filter.setCongressId(vm.getCongressId());
+        filter.setRegistrationIds(vm.getRegistrationIds());
         final List<FinancialReportDTO> reportDTOList = financialReportService.findAll(filter);
         reportDTOList.forEach(dto -> {
             ConfirmationPdfVM pdfVM = new ConfirmationPdfVM();

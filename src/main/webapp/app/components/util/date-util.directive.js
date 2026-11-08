@@ -19,10 +19,6 @@
         function linkFunc(scope, element, attrs, ngModel) {
             var validate = function (modelValue) {
                 var thresholdValue = attrs.dateLessThan;
-/*
-                console.log('thresholdValue:' + thresholdValue);
-                console.log('modelValue:' + modelValue);
-*/
                 //todo valamiert "" jelek között érkezik meg ezért substr kell hogy meghamozzam, megnézni hogy miért van ez
                 if (!modelValue || !thresholdValue) {
                     ngModel.$setValidity('dateLessThan', true);

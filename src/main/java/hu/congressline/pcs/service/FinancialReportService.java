@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import hu.congressline.pcs.domain.Congress;
 import hu.congressline.pcs.service.dto.FinancialReportDTO;
@@ -47,7 +48,7 @@ public class FinancialReportService extends XlsReportService {
         final Congress congress = congressService.getById(Long.valueOf(filter.getCongressId()));
 
         // from registrations
-        Query query = entityManager.createNativeQuery(composeRegistrationQuery(congress));
+        Query query = entityManager.createNativeQuery(composeRegistrationQuery(congress, filter.getRegistrationIds()));
         List result = query.getResultList();
         for (Object item : result) {
             FinancialReportDTO dto = getDTOFromRegistrationRow((Object[]) item);
@@ -55,21 +56,21 @@ public class FinancialReportService extends XlsReportService {
         }
 
         // from rrt
-        query = entityManager.createNativeQuery(composeRRTFinancialQuery(congress));
+        query = entityManager.createNativeQuery(composeRRTFinancialQuery(congress, filter.getRegistrationIds()));
         result = query.getResultList();
         for (Object item : result) {
             getDataFromFinancialRows(financialReportMap, (Object[]) item);
         }
 
         // from rrr
-        query = entityManager.createNativeQuery(composeRRRFinancialQuery(congress));
+        query = entityManager.createNativeQuery(composeRRRFinancialQuery(congress, filter.getRegistrationIds()));
         result = query.getResultList();
         for (Object item : result) {
             getDataFromFinancialRows(financialReportMap, (Object[]) item);
         }
 
         // from oos
-        query = entityManager.createNativeQuery(composeOOSFinancialQuery(congress));
+        query = entityManager.createNativeQuery(composeOOSFinancialQuery(congress, filter.getRegistrationIds()));
         result = query.getResultList();
         for (Object item : result) {
             getDataFromFinancialRows(financialReportMap, (Object[]) item);
@@ -211,25 +212,26 @@ public class FinancialReportService extends XlsReportService {
     }
 
     @SuppressWarnings("MultipleStringLiterals")
-    private String composeRegistrationQuery(Congress congress) {
+    private String composeRegistrationQuery(Congress congress, Set<Long> registrationIds) {
         return "select\n"
-                + "r.id,\n"
-                + "r.reg_id,\n"
-                + "r.last_name,\n"
-                + "r.first_name,\n"
-                + "(select group_concat(distinct concat_ws(',', rt.name)) from registration_type rt\n"
-                + "join registration_registration_type rrt on rrt.registration_type_id = rt.id where rrt.registration_id = r.id) reg_types,\n"
-                + "c.code county_code,\n"
-                + "c.name county,\n"
-                + "r.city,\n"
-                + "wp.name workplace,\n"
-                + "r.phone,\n"
-                + "r.email,\n"
-                + "r.remark\n"
-                + "from registration r\n"
-                + "left join workplace wp on wp.id = r.workplace_id\n"
-                + "left join country c on c.id = r.country_id\n"
-                + "where r.congress_id = " + congress.getId();
+            + "r.id,\n"
+            + "r.reg_id,\n"
+            + "r.last_name,\n"
+            + "r.first_name,\n"
+            + "(select group_concat(distinct concat_ws(',', rt.name)) from registration_type rt\n"
+            + "join registration_registration_type rrt on rrt.registration_type_id = rt.id where rrt.registration_id = r.id) reg_types,\n"
+            + "c.code county_code,\n"
+            + "c.name county,\n"
+            + "r.city,\n"
+            + "wp.name workplace,\n"
+            + "r.phone,\n"
+            + "r.email,\n"
+            + "r.remark\n"
+            + "from registration r\n"
+            + "left join workplace wp on wp.id = r.workplace_id\n"
+            + "left join country c on c.id = r.country_id\n"
+            + "where r.congress_id = " + congress.getId()
+            + (!registrationIds.isEmpty() ? " and r.id in (" + registrationIds.stream().map(String::valueOf).collect(Collectors.joining(",")) + ")\n" : "");
     }
 
     private FinancialReportDTO getDTOFromRegistrationRow(Object[] row) {
@@ -259,7 +261,7 @@ public class FinancialReportService extends XlsReportService {
     }
 
     @SuppressWarnings({"MultipleStringLiterals", "AbbreviationAsWordInName"})
-    private String composeRRTFinancialQuery(Congress congress) {
+    private String composeRRTFinancialQuery(Congress congress, Set<Long> registrationIds) {
         return "select\n"
                 + "rrt.registration_id,\n"
                 + "sum(rrt.reg_fee * rrt.acc_people) total_cost,\n"
@@ -281,11 +283,12 @@ public class FinancialReportService extends XlsReportService {
                 + "inner join registration r on r.id = rrt.registration_id\n"
                 + "inner join congress c on r.congress_id = c.id\n"
                 + "where c.id = " + congress.getId() + "\n"
+                + (!registrationIds.isEmpty() ? " and r.id in (" + registrationIds.stream().map(String::valueOf).collect(Collectors.joining(",")) + ")\n" : "")
                 + "group by rrt.registration_id\n";
     }
 
     @SuppressWarnings({"MultipleStringLiterals", "AbbreviationAsWordInName"})
-    private String composeRRRFinancialQuery(Congress congress) {
+    private String composeRRRFinancialQuery(Congress congress, Set<Long> registrationIds) {
         return "select\n"
                 + "rrr.registration_id,\n"
                 + "sum(rm.price * datediff(rr.departure_date, rr.arrival_date) / "
@@ -326,11 +329,12 @@ public class FinancialReportService extends XlsReportService {
                 + "inner join registration r on r.id = rrr.registration_id\n"
                 + "inner join congress c on r.congress_id = c.id\n"
                 + "where c.id = " + congress.getId() + "\n"
+                + (!registrationIds.isEmpty() ? " and r.id in (" + registrationIds.stream().map(String::valueOf).collect(Collectors.joining(",")) + ")\n" : "")
                 + "group by rrr.registration_id\n";
     }
 
     @SuppressWarnings({"MultipleStringLiterals", "AbbreviationAsWordInName"})
-    private String composeOOSFinancialQuery(Congress congress) {
+    private String composeOOSFinancialQuery(Congress congress, Set<Long> registrationIds) {
         return "select\n"
                 + "oos.registration_id,\n"
                 + "sum(os.price * oos.participant) total_cost,\n"
@@ -353,6 +357,7 @@ public class FinancialReportService extends XlsReportService {
                 + "inner join registration r on r.id = oos.registration_id\n"
                 + "inner join congress c on r.congress_id = c.id\n"
                 + "where c.id = " + congress.getId() + "\n"
+                + (!registrationIds.isEmpty() ? " and r.id in (" + registrationIds.stream().map(String::valueOf).collect(Collectors.joining(",")) + ")\n" : "")
                 + "group by oos.registration_id\n";
     }
 

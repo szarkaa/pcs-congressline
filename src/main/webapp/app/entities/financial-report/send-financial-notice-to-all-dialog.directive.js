@@ -13,6 +13,7 @@
             restrict: 'EA',
             template: '<a ng-click="open()" ng-transclude>{{email}}</a>',
             scope: {
+                ids: "&"
             },
             link: linkFunc
         };
@@ -27,6 +28,15 @@
                     controllerAs: 'vm',
                     size: 'md',
                     resolve: {
+                        registrationSettings: function() {
+                            return {
+                                sendAllEmail: '',
+                                language: 'hu',
+                                optionalText: '',
+                                registrationIds: scope.ids(),
+                                congressId: null
+                            };
+                        },
                         translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                             $translatePartialLoader.addPart('sendFinancialNoticeToAllDialog');
                             $translatePartialLoader.addPart('global');

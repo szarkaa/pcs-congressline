@@ -20,7 +20,6 @@
         ];
 
         function initComplete () {
-            console.log('initComplete');
             angular.element('#search-datatable_filter label input').focus();
         }
 
