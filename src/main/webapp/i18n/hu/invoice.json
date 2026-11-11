@@ -45,6 +45,7 @@
             "zipCode": "Zip code",
             "street": "Street",
             "country": "Country",
+            "email": "Email",
             "optionalText": "Optional text",
             "startDate": "Start date",
             "endDate": "End date",

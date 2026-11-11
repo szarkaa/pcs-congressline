@@ -33,6 +33,10 @@ public class InvoiceCongress implements Serializable {
 
     @NotNull
     @ManyToOne
+    private Workplace workplace;
+
+    @NotNull
+    @ManyToOne
     private Congress congress;
 
     @Column(name = "date_of_payment")

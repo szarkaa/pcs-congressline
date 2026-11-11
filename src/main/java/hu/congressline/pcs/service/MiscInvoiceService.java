@@ -55,15 +55,19 @@ public class MiscInvoiceService {
     @SuppressWarnings({"MissingJavadocMethod", "MethodLength"})
     public InvoiceCongress save(MiscInvoiceVM invoiceVM) {
         log.debug("Request to save misc invoice : {}", invoiceVM);
+        Workplace workplace;
         if (invoiceVM.isSavePartner()) {
-            Workplace workplace = new Workplace();
+            workplace = new Workplace();
             workplace.setName(invoiceVM.getName1());
             workplace.setVatRegNumber(invoiceVM.getVatRegNumber());
             countyRepository.findOneByCodeIgnoreCase(invoiceVM.getCountry()).ifPresent(workplace::setCountry);
             workplace.setZipCode(invoiceVM.getZipCode());
             workplace.setCity(invoiceVM.getCity());
             workplace.setStreet(invoiceVM.getStreet());
-            workplaceService.save(workplace);
+            workplace.setEmail(invoiceVM.getEmail());
+            workplace = workplaceService.save(workplace);
+        } else {
+            workplace = workplaceService.getById(invoiceVM.getWorkplaceId());
         }
         Invoice invoice = new Invoice();
         invoice.setInvoiceType(invoiceVM.getInvoiceType());
@@ -102,6 +106,7 @@ public class MiscInvoiceService {
         InvoiceCongress ic = new InvoiceCongress();
         ic.setInvoice(result);
         ic.setCongress(congressService.getById(invoiceVM.getCongressId()));
+        ic.setWorkplace(workplace);
         InvoiceCongress invoiceCongress = invoiceCongressRepository.save(ic);
 
         invoiceVM.getMiscInvoiceItems().forEach(vm -> {

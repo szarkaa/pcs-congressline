@@ -46,6 +46,7 @@
             "street": "Street",
             "country": "Country",
             "optionalText": "Optional text",
+            "email": "Email",
             "startDate": "Start date",
             "endDate": "End date",
             "dateOfFulfilment": "Date of fulfilment",

@@ -36,6 +36,7 @@
                         city: null,
                         zipCode: null,
                         country: CongressSelector.getSelectedCongress().defaultCountry ? CongressSelector.getSelectedCongress().defaultCountry.code : null,
+                        email: null,
                         optionalText: null,
                         startDate: new Date(CongressSelector.getSelectedCongress().startDate),
                         endDate: new Date(CongressSelector.getSelectedCongress().endDate),
@@ -49,6 +50,7 @@
                         bankAccountId: null,
                         createdDate: new Date(),
                         miscInvoiceItems: [],
+                        workplaceId: null,
                         congressId: CongressSelector.getSelectedCongress().id
                     };
                 }],

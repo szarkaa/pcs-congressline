@@ -28,6 +28,7 @@ public class MiscInvoiceVM {
     private LocalDate paymentDeadline;
     private String billingMethod;
     private String language;
+    private String email;
     @NotNull
     private InvoiceType invoiceType;
     @NotNull
@@ -38,5 +39,6 @@ public class MiscInvoiceVM {
     private Long congressId;
     @NotNull
     private Long bankAccountId;
+    private Long workplaceId;
     private List<MiscInvoiceItemVM> miscInvoiceItems;
 }

@@ -23,6 +23,8 @@
         vm.datePickerOpenStatus.paymentDeadline = false;
         vm.taxNumberPattern = '';
 
+        vm.dummyValueCompanyData = null;
+
         vm.openCalendar = openCalendar;
         vm.setOptionalTextMessage = setOptionalTextMessage;
         vm.clear = clear;
@@ -54,6 +56,7 @@
 
         function selectPartner(partner) {
             vm.invoice.savePartner = false;
+            vm.invoice.workplaceId = partner.id;
             vm.invoice.name1 = partner.name;
             vm.invoice.vatRegNumber = partner.vatRegNumber;
             vm.invoice.country = partner.country ? partner.country.code : '';
@@ -94,6 +97,7 @@
         });
 
         function clear() {
+            vm.invoice.workplaceId = null;
             vm.invoice.invoiceType = null;
             vm.invoice.name1 = null;
             vm.invoice.name2 = null;
@@ -204,7 +208,6 @@
 
         function searchPublicCompanyData(keyword) {
             if (!keyword || keyword.length < 4) {
-                vm.publicCompanyDatas = [];
                 return;
             }
 
@@ -216,7 +219,7 @@
         function selectPublicCompanyData(companyData) {
             if (companyData) {
                 PublicCompanyData.detail({id: companyData.id}).$promise.then(function (result) {
-                    vm.invoice.savePartner = false;
+                    vm.invoice.savePartner = true;
                     vm.invoice.name1 = result.shortName ? result.shortName : result.fullName;
                     vm.invoice.vatRegNumber = result.vatNumber ? result.vatNumber.replace(/^(\d{8})(\d)(\d{2})$/, '$1-$2-$3') : null;
                     vm.invoice.country = result.addressCounty;

@@ -70,7 +70,8 @@
                         <!--<div ibox-tools></div>-->
                     </div>
                     <div class="ibox-content">
-                        <ui-select ng-model="dummyValuePartner" ng-change="vm.selectPartner($select.selected)" name="partner-search" id="partner-search" theme="bootstrap">
+                        <ui-select ng-model="dummyValuePartner" ng-change="vm.selectPartner($select.selected)" name="partner-search" id="partner-search"
+                                   theme="bootstrap" reset-search-input="true">
                             <ui-select-match placeholder="{{ 'global.form.please.select' | translate }}">
                                 <span ng-class="{'italic-option': $select.selected.congressId}">
                                     {{$select.selected.name}}
@@ -93,14 +94,14 @@
                         <!--<div ibox-tools></div>-->
                     </div>
                     <div class="ibox-content">
-                        <ui-select ng-model="dummyValueCompanyData" on-select="vm.selectPublicCompanyData($select.selected)"
+                        <ui-select ng-model="vm.dummyValueCompanyData" on-select="vm.selectPublicCompanyData($select.selected)"
                                    reset-search-input="true" name="public-company-data-search" id="field-public-company-data-search"
-                                   theme="bootstrap" reset-search-input="false">
+                                   theme="bootstrap">
                             <ui-select-match allow-clear="true" placeholder="{{ 'global.form.please.select' | translate }}">
                                 <span ng-bind="$select.selected.shortName ? $select.selected.shortName : $select.selected.fullName"></span>
                             </ui-select-match>
 
-                            <ui-select-choices repeat="publicCompanyData as companyData in vm.publicCompanyDatas track by companyData.id"
+                            <ui-select-choices repeat="companyData in vm.publicCompanyDatas"
                                 refresh="vm.searchPublicCompanyData($select.search)" refresh-delay="300">
                                 <div ng-bind-html="(companyData.shortName ? companyData.shortName : companyData.fullName) | highlight: $select.search"></div>
                             </ui-select-choices>
@@ -234,6 +235,21 @@
                         <div ng-show="editForm.country.$invalid">
                             <p class="error-block" ng-show="editForm.country.$error.required" data-translate="entity.validation.required">
                                 This field is required.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" data-translate="pcsApp.invoice.email" for="field_email">Email</label>
+                        <input class="form-control" name="email" id="field_email" ng-minlength="5" ng-maxlength="255" ng-model="vm.invoice.email" autocomplete="off" type="email">
+                        <div  ng-show="editForm.email.$invalid">
+                            <p class="error-block" ng-show="editForm.email.$error.email" data-translate="global.messages.validate.email.invalid">
+                                Your e-mail is invalid.
+                            </p>
+                            <p class="error-block" ng-show="editForm.email.$error.minlength" data-translate="entity.validation.minlength" translate-value-min="5">
+                                This field is required to be at least 5 characters.
+                            </p>
+                            <p class="error-block" ng-show="editForm.email.$error.maxlength" data-translate="entity.validation.maxlength" translate-value-max="255">
+                                This field cannot be longer than 255 characters.
                             </p>
                         </div>
                     </div>
