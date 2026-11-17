@@ -1,0 +1,13 @@
+{
+    "pcsApp": {
+        "sendMiscFinancialNoticeToSelectedDialog" : {
+            "home": {
+                "title": "Send misc financial notice to selected",
+                "createLabel": "Send misc financial notice to selected"
+            },
+            "created": "Notice successfully sent to {{ param }} invoice owner(s)",
+            "language": "Language",
+            "optionalText": "Optional text"
+        }
+    }
+}

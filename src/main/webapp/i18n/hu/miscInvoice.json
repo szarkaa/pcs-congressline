@@ -18,6 +18,7 @@
             "detail": {
                 "title": "Misc invoice"
             },
+            "sendMiscFinancialNoticeToSelected": "Send financial notice to selected",
             "invoiceType": "Invoice type",
             "invoiceNumber": "Invoice number",
             "stornoInvoiceNumber": "Storno invoice number",

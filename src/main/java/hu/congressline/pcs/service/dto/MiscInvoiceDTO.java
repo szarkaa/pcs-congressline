@@ -29,6 +29,7 @@ public class MiscInvoiceDTO implements Serializable {
     private String street;
     private String country;
     private String countryCode;
+    private String email;
     private String optionalText;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -54,6 +55,7 @@ public class MiscInvoiceDTO implements Serializable {
     public MiscInvoiceDTO(InvoiceCongress invoiceCongress) {
         this.invoiceCongressId = invoiceCongress.getId();
         var invoice = invoiceCongress.getInvoice();
+        var workplace = invoiceCongress.getWorkplace();
         this.invoiceId = invoice.getId();
         this.invoiceNumber = invoice.getInvoiceNumber();
         this.stornoInvoiceNumber = invoice.getStornoInvoiceNumber();
@@ -67,6 +69,7 @@ public class MiscInvoiceDTO implements Serializable {
         this.street = invoice.getStreet();
         this.country = invoice.getCountry();
         this.countryCode = invoice.getCountryCode();
+        this.email = workplace != null && workplace.getEmail() != null ?  workplace.getEmail() : null;
         this.optionalText = invoice.getOptionalText();
         this.startDate = invoice.getStartDate();
         this.endDate = invoice.getEndDate();
@@ -86,7 +89,6 @@ public class MiscInvoiceDTO implements Serializable {
         this.navStatus = invoice.getNavStatus();
         this.navVatCategory = invoice.getNavVatCategory();
         this.invoiceType = invoice.getInvoiceType();
-
         this.congressId = invoiceCongress.getCongress().getId();
         this.dateOfPayment = invoiceCongress.getDateOfPayment();
     }

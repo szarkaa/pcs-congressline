@@ -82,6 +82,10 @@
             'storno': {
                 method: 'GET',
                 url: 'api/misc-invoices/:id/storno'
+            },
+            'sendFinancialNoticeToSelected': {
+                method: 'POST',
+                url: 'api/misc-invoices/financial-notice-to-selected',
             }
         });
     }

@@ -1,5 +1,13 @@
 package hu.congressline.pcs.web.rest;
 
+import hu.congressline.pcs.service.dto.FinancialReportDTO;
+import hu.congressline.pcs.service.pdf.ConfirmationPdfContext;
+import hu.congressline.pcs.service.pdf.MiscInvoicePdfContext;
+import hu.congressline.pcs.web.rest.vm.ConfirmationPdfVM;
+import hu.congressline.pcs.web.rest.vm.ConfirmationTitleType;
+import hu.congressline.pcs.web.rest.vm.FinancialReportVM;
+import hu.congressline.pcs.web.rest.vm.SendFinancialNoticeToAllVM;
+import hu.congressline.pcs.web.rest.vm.SendMiscFinancialNoticeToSelectedVM;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -40,6 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 public class MiscInvoiceResource {
 
+    private final MiscInvoicePdfService miscInvoicePdfService;
     private final MiscInvoiceService miscInvoiceService;
     private final MiscInvoicePdfService pdfService;
     private final CongressService congressService;
@@ -133,4 +143,24 @@ public class MiscInvoiceResource {
                 .map(result -> new ResponseEntity<>(new MiscInvoiceDTO(result), HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @SuppressWarnings("MissingJavadocMethod")
+    @PostMapping("/financial-notice-to-selected")
+    public ResponseEntity<Void> sendFinancialNoticeToSelected(@RequestBody SendMiscFinancialNoticeToSelectedVM vm) {
+        log.debug("REST request to send financial notice to selected");
+        vm.getMiscInvoiceIds().forEach(id -> {
+            miscInvoiceService.findById(id).ifPresent(invoiceCongress -> {
+                if (invoiceCongress.getWorkplace() != null && invoiceCongress.getWorkplace().getEmail() != null) {
+                    final MiscInvoicePdfContext invoicePdfContext = miscInvoicePdfService.createInvoicePdfContext(invoiceCongress);
+                    byte[] pdfBytes = miscInvoicePdfService.generatePdf(invoicePdfContext);
+                    mailService.sendMiscInvoicePdfEmail(invoiceCongress.getCongress().getContactEmail(), invoiceCongress.getWorkplace().getEmail(), invoiceCongress.getInvoice(),
+                        Locale.forLanguageTag(invoiceCongress.getInvoice().getPrintLocale()), pdfBytes);
+                }
+            });
+        });
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityCreationAlert("sendFinancialNoticeToAllDialog", String.valueOf(vm.getMiscInvoiceIds().size()))).build();
+    }
+
 }

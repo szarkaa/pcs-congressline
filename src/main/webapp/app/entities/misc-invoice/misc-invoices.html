@@ -15,17 +15,22 @@
                     <button class="btn btn-primary" type="submit" ui-sref="misc-invoice-item">
                         <i class="fa fa-plus"></i>
                     </button>
+                    <send-misc-financial-notice-to-selected-dialog ids="vm.getSelectedMiscInvoiceIds()">
+                        <button class="btn btn-info" type="button" ng-disabled="!vm.isAnyMiscInvoiceIdSelected()" data-translate="pcsApp.miscInvoice.sendMiscFinancialNoticeToSelected">Send financial notice to selected</button>
+                    </send-misc-financial-notice-to-selected-dialog>
                     <!--<div ibox-tools></div>-->
                 </div>
                 <div class="ibox-content">
                     <table datatable="ng" id="misc-invoice-datatable" dt-options="vm.dtOptions" dt-column-defs="vm.dtColumnDefs" class="table table-striped table-bordered table-hover datatable-with-operations">
                         <thead>
                         <tr>
+                            <th><input ng-model="vm.allMiscInvoiceIdSelected" ng-change="vm.toggleAllMiscInvoiceIdSelection()" type="checkbox" /></th>
                             <th><span translate="pcsApp.miscInvoice.invoiceNumber">Invoice number</span></th>
                             <th><span translate="pcsApp.miscInvoice.stornoInvoiceNumber">Storno invoice number</span></th>
                             <th><span translate="pcsApp.miscInvoice.invoiceType">Invoice type</span></th>
                             <th><span translate="pcsApp.miscInvoice.createdDate">Create date</span></th>
                             <th><span translate="pcsApp.miscInvoice.name1">Name1</span></th>
+                            <th><span translate="pcsApp.miscInvoice.email">Email</span></th>
                             <th><span translate="pcsApp.miscInvoice.vatRegNumber">Vat Reg number</span></th>
                             <th><span translate="pcsApp.miscInvoice.dateOfPayment">Date of payment</span></th>
                             <th></th>
@@ -33,11 +38,15 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="miscInvoice in vm.miscInvoices track by miscInvoice.invoiceCongressId">
+                            <td>
+                                <input ng-model="vm.selectedMiscInvoiceIds[miscInvoice.invoiceCongressId.toString()]" ng-change="vm.toggleMiscInvoiceIdSelection(miscInvoice.invoiceCongressId)" type="checkbox" />
+                            </td>
                             <td>{{miscInvoice.invoiceNumber}}</td>
                             <td>{{miscInvoice.stornoInvoiceNumber}}</td>
                             <td data-translate="pcsApp.InvoiceType.{{miscInvoice.invoiceType}}"></td>
                             <td>{{miscInvoice.createdDate | date: 'mediumDate'}}</td>
                             <td>{{miscInvoice.name1}}</td>
+                            <td><email-dialog email="{{miscInvoice.email}}" last-name="{{miscInvoice.name1}}" first-name="{{''}}">{{miscInvoice.email}}</email-dialog></td>
                             <td>{{miscInvoice.vatRegNumber}}</td>
                             <td>{{miscInvoice.dateOfPayment}}</td>
                             <td>
