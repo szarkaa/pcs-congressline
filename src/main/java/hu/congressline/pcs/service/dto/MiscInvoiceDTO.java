@@ -55,7 +55,6 @@ public class MiscInvoiceDTO implements Serializable {
     public MiscInvoiceDTO(InvoiceCongress invoiceCongress) {
         this.invoiceCongressId = invoiceCongress.getId();
         var invoice = invoiceCongress.getInvoice();
-        var workplace = invoiceCongress.getWorkplace();
         this.invoiceId = invoice.getId();
         this.invoiceNumber = invoice.getInvoiceNumber();
         this.stornoInvoiceNumber = invoice.getStornoInvoiceNumber();
@@ -69,7 +68,8 @@ public class MiscInvoiceDTO implements Serializable {
         this.street = invoice.getStreet();
         this.country = invoice.getCountry();
         this.countryCode = invoice.getCountryCode();
-        this.email = workplace != null && workplace.getEmail() != null ?  workplace.getEmail() : null;
+        var workplace = invoiceCongress.getWorkplace();
+        this.email = workplace != null && workplace.getEmail() != null ? workplace.getEmail() : null;
         this.optionalText = invoice.getOptionalText();
         this.startDate = invoice.getStartDate();
         this.endDate = invoice.getEndDate();

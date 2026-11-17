@@ -1,13 +1,5 @@
 package hu.congressline.pcs.web.rest;
 
-import hu.congressline.pcs.service.dto.FinancialReportDTO;
-import hu.congressline.pcs.service.pdf.ConfirmationPdfContext;
-import hu.congressline.pcs.service.pdf.MiscInvoicePdfContext;
-import hu.congressline.pcs.web.rest.vm.ConfirmationPdfVM;
-import hu.congressline.pcs.web.rest.vm.ConfirmationTitleType;
-import hu.congressline.pcs.web.rest.vm.FinancialReportVM;
-import hu.congressline.pcs.web.rest.vm.SendFinancialNoticeToAllVM;
-import hu.congressline.pcs.web.rest.vm.SendMiscFinancialNoticeToSelectedVM;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -36,8 +27,10 @@ import hu.congressline.pcs.service.MiscInvoiceService;
 import hu.congressline.pcs.service.NavOnlineService;
 import hu.congressline.pcs.service.dto.InvoiceDTO;
 import hu.congressline.pcs.service.dto.MiscInvoiceDTO;
+import hu.congressline.pcs.service.pdf.MiscInvoicePdfContext;
 import hu.congressline.pcs.web.rest.util.HeaderUtil;
 import hu.congressline.pcs.web.rest.vm.MiscInvoiceVM;
+import hu.congressline.pcs.web.rest.vm.SendMiscFinancialNoticeToSelectedVM;
 import hu.congressline.pcs.web.rest.vm.SetPaymentDateVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
